@@ -4,18 +4,30 @@
   <div class="wrap">
     <div class="eyebrow">{{ page.eyebrow }}</div>
     <h1>{{ page.h1 }}</h1>
+    <p class="lead">{{ page.lead }}</p>
 
-    <table>
-      <tr><th>상품</th><th>비고</th></tr>
-      {% for name, note in page.products_table %}
-      <tr><td>{{ name }}</td><td>{{ note }}</td></tr>
+    <div class="doc-grid">
+      {% for p in page.product_cards %}
+      <div class="doc-card"><div class="doc-icon">{{ p.icon }}</div><div class="doc-name">{{ p.name }}</div>{% if p.note %}<div class="doc-reason">{{ p.note }}</div>{% endif %}</div>
       {% endfor %}
-    </table>
+    </div>
 
-    <h2 style="margin-top:28px">취급 통신사</h2>
+    {% if page.cta_mid %}
+    <p style="margin-top:18px"><a class="btn btn-primary" href="#">{{ page.cta_mid }}</a></p>
+    {% endif %}
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>{{ page.carrier_heading }}</h2>
     <ul class="doclist">
       {% for c in page.carriers %}<li>{{ c }}</li>{% endfor %}
     </ul>
+
+    {% if page.cta_bottom %}
+    <p style="margin-top:18px"><a class="btn btn-primary" href="#">{{ page.cta_bottom }}</a></p>
+    {% endif %}
   </div>
 </section>
 {% endblock %}

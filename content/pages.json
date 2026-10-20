@@ -1452,34 +1452,22 @@
   },
   "products": {
     "template": "products.html",
-    "title": "취급상품 — ENTER 유선 전문 총판",
-    "meta_description": "인터넷·IPTV·CCTV·가전렌탈·유심까지, SKT·KT·LG U+ 등 통신사별 유선 상품을 ENTER 한 곳에서 취급합니다.",
+    "title": "취급상품 — 인터넷부터 유심까지 한 곳에서 | ENTER 유선 전문 총판",
+    "meta_description": "인터넷·IPTV·CCTV·가전렌탈·유심까지, SKT·KT·LG U+ 등 통신사 6곳의 유선 상품을 ENTER 한 곳에서 접수합니다.",
     "date_published": "2026-10-19",
-    "date_modified": "2026-10-19",
+    "date_modified": "2026-10-20",
     "eyebrow": "취급 상품",
     "h1": "유선은 한 곳에서",
-    "products_table": [
-      [
-        "인터넷",
-        "초고속인터넷"
-      ],
-      [
-        "IPTV",
-        ""
-      ],
-      [
-        "CCTV",
-        ""
-      ],
-      [
-        "가전렌탈",
-        ""
-      ],
-      [
-        "유심(UIT)",
-        "통신사 유심연계상품"
-      ]
+    "lead": "인터넷부터 유심까지, 통신사 6곳 상품을 따로따로 알아볼 필요 없습니다.",
+    "cta_mid": "지금 연락하고 취급 상품 더 알아보기",
+    "product_cards": [
+      {"icon": "🌐", "name": "인터넷", "note": "초고속인터넷"},
+      {"icon": "📺", "name": "IPTV", "note": ""},
+      {"icon": "📹", "name": "CCTV", "note": ""},
+      {"icon": "🏠", "name": "가전렌탈", "note": ""},
+      {"icon": "📱", "name": "유심(UIT)", "note": "통신사 유심연계상품"}
     ],
+    "carrier_heading": "취급 통신사",
     "carriers": [
       "SKT",
       "SK브로드밴드",
@@ -1487,7 +1475,8 @@
       "LG U+",
       "스카이라이프",
       "헬로비전"
-    ]
+    ],
+    "cta_bottom": "지금 연락하고 취급 상품 더 알아보기"
   },
   "startup": {
     "template": "startup.html",
