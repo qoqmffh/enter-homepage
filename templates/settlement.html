@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block content %}
+<section style="padding-top:28px">
+  <div class="wrap">
+    <div class="eyebrow">{{ page.eyebrow }}</div>
+    <h1>{{ page.h1 }}</h1>
+    <p class="lead">{{ page.lead }}</p>
+
+    {% if page.cta_mid %}
+    <p style="margin-top:18px"><a class="btn btn-primary" href="#">{{ page.cta_mid }}</a></p>
+    {% endif %}
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>{{ page.flow_icon_heading_1 }}</h2>
+    {% if page.flow_1_speed %}<p class="lead">⚡ {{ page.flow_1_speed }}</p>{% endif %}
+    <div class="icon-steps">
+      {% for s in page.flow_steps_1 %}
+      <div class="icon-step"><span class="icon-step-num">{{ loop.index }}</span><span class="icon-step-icon">{{ s.icon }}</span><span class="icon-step-text-wrap"><span class="icon-step-text">{{ s.text }}</span>{% if s.sub %}<span class="icon-step-sub">{{ s.sub }}</span>{% endif %}</span></div>
+      {% endfor %}
+    </div>
+
+    <h2 style="margin-top:28px">{{ page.flow_icon_heading_2 }}</h2>
+    <div class="icon-steps">
+      {% for s in page.flow_steps_2 %}
+      <div class="icon-step"><span class="icon-step-num">{{ loop.index }}</span><span class="icon-step-icon">{{ s.icon }}</span><span class="icon-step-text-wrap"><span class="icon-step-text">{{ s.text }}</span>{% if s.sub %}<span class="icon-step-sub">{{ s.sub }}</span>{% endif %}</span></div>
+      {% endfor %}
+    </div>
+    {% if page.flow_2_note %}<p class="tagline" style="margin-top:12px">{{ page.flow_2_note }}</p>{% endif %}
+
+    {% if page.stats %}
+    <ul class="doclist" style="margin-top:16px">
+      {% for s in page.stats %}<li>{{ s }}</li>{% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if page.ticker_rows %}
+    <p class="lead" style="margin-top:16px">{{ page.ticker_heading }}</p>
+    <div class="ticker-wrap">
+      <div class="ticker-list">
+        {% for row in page.ticker_rows %}
+        <div class="ticker-row"><span class="t-date">{{ row.date }} ({{ row.dow[:1] }})</span><span class="t-count">{{ row.count }}건</span><span class="t-amount">{{ row.amount }}</span></div>
+        {% endfor %}
+        {% for row in page.ticker_rows %}
+        <div class="ticker-row" aria-hidden="true"><span class="t-date">{{ row.date }} ({{ row.dow[:1] }})</span><span class="t-count">{{ row.count }}건</span><span class="t-amount">{{ row.amount }}</span></div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if page.settlement_source_label %}
+    <div class="source-note">
+      <span>{{ page.settlement_source_label }}</span>
+    </div>
+    {% endif %}
+
+    {% if page.next_qas %}
+    {% for qa in page.next_qas %}
+    <div class="faq-item" style="margin-top:{{ '18px' if loop.first else '0' }}">
+      <div class="faq-q">{{ qa.q }}</div>
+      <div class="faq-a">{{ qa.a }}</div>
+    </div>
+    {% endfor %}
+    {% endif %}
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>{{ page.db_icon }} {{ page.db_heading }}</h2>
+
+    {% if page.db_history_heading %}
+    <h3 style="font-size:17px">{{ page.db_history_heading }}</h3>
+    {% if page.db_history_badges %}
+    <div class="no-obligations">
+      {% for b in page.db_history_badges %}<span>{{ b }}</span>{% endfor %}
+    </div>
+    {% endif %}
+    <p class="lead" style="margin-top:12px">{{ page.db_history_text }}</p>
+    {% if page.db_history_tagline %}<p class="tagline">{{ page.db_history_tagline }}</p>{% endif %}
+    {% endif %}
+
+    {% if page.db_result_stat %}
+    <div class="stat-grid" style="grid-template-columns:1fr; max-width:260px; margin-top:18px">
+      <div class="stat-box"><div class="num">{{ page.db_result_stat.num }}</div><div class="label">{{ page.db_result_stat.label }}</div></div>
+    </div>
+    {% endif %}
+
+    {% if page.db_mechanism_steps %}
+    <div class="icon-steps" style="margin-top:18px">
+      {% for s in page.db_mechanism_steps %}
+      <div class="icon-step"><span class="icon-step-icon">{{ s.icon }}</span><span class="icon-step-text">{{ s.text }}</span></div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% if page.db_tagline %}<p class="tagline" style="margin-top:14px">{{ page.db_tagline }}</p>{% endif %}
+
+    {% if page.db_steps %}
+    <div class="steps flow">
+      {% for s in page.db_steps %}<div class="step">{{ s }}</div>{% endfor %}
+    </div>
+    {% endif %}
+
+    {% if page.db_note %}<p class="lead" style="margin-top:10px">{{ page.db_note }}</p>{% endif %}
+
+    {% if page.db_compare %}
+    <div class="compare">
+      <div class="compare-item">
+        <div class="compare-tag">BEFORE</div>
+        <img src="{{ page.db_compare.before_img }}" alt="{{ page.db_compare.before_label }}">
+        <p>{{ page.db_compare.before_label }}</p>
+      </div>
+      <div class="compare-item">
+        <div class="compare-tag compare-tag-after">AFTER</div>
+        <img src="{{ page.db_compare.after_img }}" alt="{{ page.db_compare.after_label }}">
+        <p>{{ page.db_compare.after_label }}</p>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if page.db_source_label %}
+    <div class="source-note">
+      <span>{{ page.db_source_label }}</span>
+    </div>
+    {% endif %}
+
+    {% if page.cta_bottom %}
+    <p style="margin-top:18px"><a class="btn btn-primary" href="#">{{ page.cta_bottom }}</a></p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

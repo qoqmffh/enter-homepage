@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow" style="color:var(--gold)">{{ page.eyebrow }}</div>
+    <h1>{{ page.h1 | safe }}</h1>
+    <p class="sub">{{ page.sub }}</p>
+    <div class="trustbar">
+      {% for t in page.trustbar %}<span>{{ t }}</span>{% endfor %}
+    </div>
+    <a class="btn btn-primary" href="#">{{ page.cta_primary }}</a>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">{{ page.why_summary.eyebrow }}</div>
+    <h2 style="font-size:22px">{{ page.why_summary.h2 }}</h2>
+    <div class="cards">
+      {% for c in page.why_summary.cards %}
+      <div class="card"><span class="num">{{ c.num }}</span><h3>{{ c.title }}</h3><p>{{ c.text }}</p></div>
+      {% endfor %}
+    </div>
+    <p style="margin-top:14px"><a class="more-link" href="why.html">{{ page.why_summary.link_text }}</a></p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">{{ page.start_summary.eyebrow }}</div>
+    <h2 style="font-size:22px">{{ page.start_summary.h2 }}</h2>
+    <p class="lead">{{ page.start_summary.lead }}</p>
+    <p style="margin-top:14px"><a class="more-link" href="start.html">{{ page.start_summary.link_text }}</a></p>
+  </div>
+</section>
+{% endblock %}

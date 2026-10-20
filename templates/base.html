@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{% if site.noindex %}<meta name="robots" content="noindex, nofollow">{% endif %}
+<title>{{ page.title }}</title>
+<meta name="description" content="{{ page.meta_description }}">
+<link rel="canonical" href="{{ site.base_url }}/{{ slug }}.html">
+<meta property="og:title" content="{{ page.title }}">
+<meta property="og:description" content="{{ page.meta_description }}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ site.base_url }}/{{ slug }}.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2310182B'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='800' fill='%23B98A3D' text-anchor='middle' font-family='sans-serif'%3EE%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="static/common.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "ENTER",
+  "legalName": "(유)위드컴퍼니",
+  "url": "{{ site.base_url }}/",
+  "telephone": "{{ site.phone }}",
+  "foundingDate": "2010"
+}
+</script>
+{% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="index.html">{{ site.site_name }}<small>{{ site.site_tagline }}</small></a>
+    <nav class="site">
+      {% for item in site.nav %}
+      <a href="{{ item.slug }}.html"{% if item.slug == slug %} class="active"{% endif %}>{{ item.label }}</a>
+      {% endfor %}
+    </nav>
+  </div>
+</header>
+
+<main>
+{% block content %}{% endblock %}
+</main>
+
+<footer class="legal">
+  <div class="wrap">{{ legal_text }}</div>
+</footer>
+
+<div class="footerbar">
+  <a href="tel:{{ site.phone }}">📞 전화</a>
+  <a href="sms:{{ site.phone }}">💬 문자</a>
+  <a href="#">카카오톡</a>
+</div>
+
+</body>
+</html>

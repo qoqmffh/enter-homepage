@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<section style="padding-top:28px">
+  <div class="wrap">
+    <div class="eyebrow">{{ page.eyebrow }}</div>
+    <h1>{{ page.h1 }}</h1>
+    <p class="lead">{{ page.lead }}</p>
+
+    <ul class="bloglist">
+      {% for p in page.posts %}
+      <li>{{ p.title }} <span class="tag">{{ p.tag }}</span></li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endblock %}

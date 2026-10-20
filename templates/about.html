@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<section style="padding-top:28px">
+  <div class="wrap">
+    <div class="eyebrow">{{ page.eyebrow }}</div>
+    <h1>{{ page.h1 }}</h1>
+
+    <h2 style="margin-top:24px">{{ page.cert_heading }}</h2>
+    <ul class="doclist">
+      {% for c in page.certs %}<li>{{ c }}</li>{% endfor %}
+    </ul>
+
+    <h2 style="margin-top:28px">{{ page.lg_heading }}</h2>
+    <ul class="doclist">
+      {% for i in page.lg_items %}<li>{{ i }}</li>{% endfor %}
+    </ul>
+
+    <h2 style="margin-top:28px">{{ page.code_heading }}</h2>
+    <p>{{ page.code_text }}</p>
+  </div>
+</section>
+{% endblock %}

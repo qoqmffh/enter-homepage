@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<section style="padding-top:28px">
+  <div class="wrap">
+    <div class="eyebrow">{{ page.eyebrow }}</div>
+    <h1>{{ page.h1 }}</h1>
+
+    <div class="steps" style="align-items:stretch">
+      {% for s in page.steps %}<div class="step">{{ s }}</div>{% endfor %}
+    </div>
+
+    <p style="margin-top:22px"><a class="btn btn-primary" href="#" style="background:var(--green); color:#fff">{{ page.cta_text }}</a></p>
+  </div>
+</section>
+{% endblock %}

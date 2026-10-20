@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+<section style="padding-top:28px">
+  <div class="wrap">
+    <div class="eyebrow">{{ page.eyebrow }}</div>
+    <h1>{{ page.h1 }}</h1>
+    <p class="lead">{{ page.lead }}</p>
+
+    <div class="icon-steps">
+      {% for s in page.steps %}
+      <div class="icon-step"><span class="icon-step-num">{{ loop.index }}</span><span class="icon-step-icon">{{ s.icon }}</span><span class="icon-step-text">{{ s.text }}</span></div>
+      {% endfor %}
+    </div>
+
+    {% if page.cta_mid %}
+    <p style="margin-top:18px"><a class="btn btn-primary" href="#">{{ page.cta_mid }}</a></p>
+    {% endif %}
+  </div>
+</section>
+
+{% if page.fear_heading %}
+<section>
+  <div class="wrap">
+    <h2>{{ page.fear_icon }} {{ page.fear_heading }}</h2>
+    <p>{{ page.fear_text }}</p>
+    {% if page.no_obligations %}
+    <div class="no-obligations">
+      {% for o in page.no_obligations %}<span>✕ {{ o }}</span>{% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endif %}
+
+<section>
+  <div class="wrap">
+    <h2>{{ page.doc_section_title }}</h2>
+    <div class="doc-grid">
+      {% for d in page.docs %}
+      <div class="doc-card"><div class="doc-icon">{{ d.icon }}</div><div class="doc-name">{{ d.name }}</div><div class="doc-reason">{{ d.reason }}</div></div>
+      {% endfor %}
+    </div>
+
+    {% if page.next_q %}
+    <div class="faq-item" style="margin-top:18px">
+      <div class="faq-q">{{ page.next_q }}</div>
+      <div class="faq-a">{{ page.next_a }}</div>
+    </div>
+    {% endif %}
+
+    {% if page.cta_bottom %}
+    <p style="margin-top:18px"><a class="btn btn-primary" href="#">{{ page.cta_bottom }}</a></p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

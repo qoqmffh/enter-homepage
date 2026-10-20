@@ -1,0 +1,21 @@
+{
+  "site_name": "ENTER",
+  "site_tagline": "유선 전문 총판 · (유)위드컴퍼니",
+  "base_url": "https://REPLACE-WITH-REAL-DOMAIN.kr",
+  "noindex": true,
+  "phone": "010-2222-4183",
+  "legal_footer": "(유)위드컴퍼니 도매영업팀이 운영하는 유선 전문 브랜드 ENTER · 사업자정보/주소 추후 표기 · 010-2222-4183",
+  "legal_footer_about": "ENTER는 (유)위드컴퍼니 도매영업팀이 운영하는 유선 전문 브랜드입니다. · 010-2222-4183",
+  "nav": [
+    {"slug": "index", "label": "홈"},
+    {"slug": "why", "label": "왜 ENTER"},
+    {"slug": "start", "label": "거래 시작하기"},
+    {"slug": "settlement", "label": "정산·DB보호"},
+    {"slug": "products", "label": "취급상품"},
+    {"slug": "startup", "label": "창업자 가이드"},
+    {"slug": "faq", "label": "FAQ"},
+    {"slug": "blog", "label": "블로그"},
+    {"slug": "stories", "label": "거래처 이야기"},
+    {"slug": "about", "label": "회사소개"}
+  ]
+}
