@@ -4,12 +4,58 @@
   <div class="wrap">
     <div class="eyebrow">{{ page.eyebrow }}</div>
     <h1>{{ page.h1 }}</h1>
+    <p class="lead">{{ page.lead }}</p>
 
-    <div class="steps" style="align-items:stretch">
-      {% for s in page.steps %}<div class="step">{{ s }}</div>{% endfor %}
+    {% if page.margin_stats %}
+    <div class="stat-grid" style="margin-top:16px">
+      {% for s in page.margin_stats %}
+      <div class="stat-box"><div class="num">{{ s.num }}</div><div class="label">{{ s.label }}</div></div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if page.cta_mid %}
+    <p style="margin-top:18px"><a class="btn btn-primary" href="#">{{ page.cta_mid }}</a></p>
+    {% endif %}
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>{{ page.dongpan_heading }}</h2>
+    <p class="lead">{{ page.dongpan_note }}</p>
+    <p>{{ page.dongpan_body }}</p>
+    <p class="tagline">{{ page.dongpan_tagline }}</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>{{ page.checklist_heading }}</h2>
+    <div class="icon-steps">
+      {% for c in page.checklist %}
+      <div class="icon-step"><span class="icon-step-num">{{ loop.index }}</span><span class="icon-step-icon">{{ c.icon }}</span><span class="icon-step-text-wrap"><span class="icon-step-text">{{ c.name }}</span><span class="icon-step-sub">{{ c.note }}</span></span></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>{{ page.wholesale_heading }}</h2>
+    <div class="cards">
+      {% for c in page.wholesale_cards %}
+      <div class="card">
+        <h3>{{ c.title }}</h3>
+        <p>{{ c.text }}</p>
+        <p style="margin-top:10px"><a class="more-link" href="{{ c.link_slug }}.html">{{ c.link_text }}</a></p>
+      </div>
+      {% endfor %}
     </div>
 
-    <p style="margin-top:22px"><a class="btn btn-primary" href="#" style="background:var(--green); color:#fff">{{ page.cta_text }}</a></p>
+    {% if page.cta_bottom %}
+    <p style="margin-top:20px"><a class="btn btn-primary" href="#">{{ page.cta_bottom }}</a></p>
+    {% endif %}
   </div>
 </section>
 {% endblock %}
