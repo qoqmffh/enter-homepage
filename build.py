@@ -28,6 +28,10 @@ def main():
     site = load_json("site.json")
     pages = load_json("pages.json")
 
+    # 창업 가이드 챕터(guide.json)도 같은 방식으로 합쳐서 렌더링
+    guide = load_json("guide.json")
+    pages.update(guide["pages"])
+
     env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
 
     # dist/ 비우고 다시 생성

@@ -1,0 +1,199 @@
+{
+  "categories": [
+    {
+      "slug": "opening",
+      "label": "창업 준비",
+      "status": "live",
+      "chapters": ["guide-dealer-vs-reseller", "guide-wholesale-selection", "guide-activation-prep", "guide-store-setup", "guide-opening-checklist"]
+    },
+    {
+      "slug": "sales",
+      "label": "판매 실무",
+      "status": "soon",
+      "chapters": []
+    },
+    {
+      "slug": "marketing",
+      "label": "마케팅",
+      "status": "soon",
+      "chapters": []
+    },
+    {
+      "slug": "growth",
+      "label": "매장 성장",
+      "status": "soon",
+      "chapters": []
+    }
+  ],
+
+  "pages": {
+
+    "guide-dealer-vs-reseller": {
+      "template": "guide_chapter.html",
+      "title": "대리점과 판매점의 차이 — 창업 가이드 | ENTER",
+      "meta_description": "이동통신 유통구조는 직영점·대리점·판매점으로 나뉩니다. 휴대폰 매장 창업 전에 알아야 할 대리점과 판매점의 차이를 정리했습니다.",
+      "date_published": "2026-10-21",
+      "date_modified": "2026-10-21",
+      "category": "opening",
+      "eyebrow": "창업 준비 · 1/5",
+      "h1": "대리점과 판매점의 차이",
+      "intro": "휴대폰 매장을 열기 전에, 내가 '대리점'으로 시작하는지 '판매점'으로 시작하는지부터 알아야 합니다.",
+      "concept_heading": "핵심 개념",
+      "concept_body": [
+        "이동통신 유통은 직영점 · 대리점 · 판매점 3단계로 나뉩니다.",
+        "직영점은 통신사가 직접 운영합니다.",
+        "대리점은 통신사와 정식 계약을 맺고 개통·판매 업무를 대행합니다.",
+        "판매점은 대리점 산하에서 영업하며, 대부분 개인사업자로 시작합니다."
+      ],
+      "compare_table": [
+        ["구분", "계약 주체", "창업 난이도"],
+        ["직영점", "통신사 직영", "해당 없음 (직원 채용)"],
+        ["대리점", "통신사와 직접 계약", "높음 (초기 투자·심사 큼)"],
+        ["판매점", "대리점 산하", "상대적으로 낮음 (대부분 여기서 시작)"]
+      ],
+      "mistake_heading": "초보 창업자가 자주 하는 실수",
+      "mistake_body": "'대리점'이라는 간판만 보고 아무 업체와 계약하는 경우가 많습니다. 실제로는 대부분의 신규 창업자가 판매점 형태로 시작하고, 정책·정산·DB보호 조건이 좋은 공급처(대리점 또는 도매 총판)를 고르는 게 핵심입니다.",
+      "checkpoint_heading": "체크포인트",
+      "checkpoint_items": [
+        "내가 계약하려는 곳이 통신사와 직접 계약한 대리점인지, 그 아래 도매 총판인지 확인하기",
+        "공급처가 여러 통신사 상품을 함께 취급하는지 확인하기 (한 곳에서 비교 가능)"
+      ],
+      "summary": "휴대폰 매장 창업은 대부분 '판매점'으로 시작합니다. 중요한 건 간판이 아니라, 어떤 공급처에서 정책을 받느냐입니다.",
+      "next_slug": "guide-wholesale-selection",
+      "next_label": "도매 거래처 선정 기준"
+    },
+
+    "guide-wholesale-selection": {
+      "template": "guide_chapter.html",
+      "title": "도매 거래처 선정 기준 — 창업 가이드 | ENTER",
+      "meta_description": "휴대폰 판매점이 도매 공급처(대리점·총판)를 고를 때 확인해야 할 기준 — 정책, 정산, DB보호를 정리했습니다.",
+      "date_published": "2026-10-21",
+      "date_modified": "2026-10-21",
+      "category": "opening",
+      "eyebrow": "창업 준비 · 2/5",
+      "h1": "도매 거래처 선정 기준",
+      "intro": "판매점의 수익은 결국 '어디서 정책을 받느냐'로 결정됩니다. 확인해야 할 3가지 기준입니다.",
+      "concept_heading": "핵심 개념",
+      "concept_body": [
+        "도매 공급처(대리점·총판)마다 정책 단가, 정산 주기, 고객정보 보호 방식이 다릅니다.",
+        "매달 바뀌는 정책만 보고 거래처를 고르면, 정산이 밀리거나 정보가 새는 곳을 고를 위험이 있습니다."
+      ],
+      "criteria_cards": [
+        {"icon": "📊", "title": "정책", "text": "물량이 큰 공급처일수록 통신사로부터 받는 정책이 좋습니다."},
+        {"icon": "💰", "title": "정산", "text": "정산일이 정해져 있고, 늦어진 적이 없는지 확인하세요."},
+        {"icon": "🔒", "title": "DB 보호", "text": "고객 정보를 어떻게 관리하는지, 유출 시 대응 방식이 있는지 확인하세요."}
+      ],
+      "mistake_heading": "초보 창업자가 자주 하는 실수",
+      "mistake_body": "당장 눈앞의 정책 단가만 보고 거래처를 정하는 경우가 많습니다. 정책은 매일 바뀌지만, 정산일을 안 지키거나 고객정보 관리가 허술한 곳은 장기적으로 더 큰 손해로 이어집니다.",
+      "checkpoint_heading": "체크포인트",
+      "checkpoint_items": [
+        "정산일이 명확하고 실제로 지켜지는지 확인하기",
+        "고객정보 보호 방식(마스킹 등)이 있는지 확인하기",
+        "서류 없이 접수부터 시작할 수 있는지 확인하기 (초기 진입장벽)"
+      ],
+      "summary": "정책 · 정산 · DB보호, 이 3가지를 기준으로 공급처를 고르세요.",
+      "extra_links": [
+        {"text": "ENTER의 정책 경쟁력 보기", "slug": "why"},
+        {"text": "ENTER의 정산·DB보호 방식 보기", "slug": "settlement"}
+      ],
+      "next_slug": "guide-activation-prep",
+      "next_label": "개통 준비"
+    },
+
+    "guide-activation-prep": {
+      "template": "guide_chapter.html",
+      "title": "개통 준비 — 창업 가이드 | ENTER",
+      "meta_description": "휴대폰 판매점이 실제로 개통 업무를 시작하기 전에 준비해야 할 전산·서류를 정리했습니다.",
+      "date_published": "2026-10-21",
+      "date_modified": "2026-10-21",
+      "category": "opening",
+      "eyebrow": "창업 준비 · 3/5",
+      "h1": "개통 준비",
+      "intro": "거래처가 정해졌다면, 실제로 접수를 넣고 개통까지 처리하는 데 필요한 것들을 준비할 차례입니다.",
+      "concept_heading": "핵심 개념",
+      "concept_body": [
+        "개통 업무는 '접수 → 청약 → 설치 → 개통확인 → 정산' 흐름으로 진행됩니다.",
+        "온라인 셀러는 CRM(전산)에 직접 접수를 등록하고, 오프라인 매장은 카톡 양식으로 접수를 보내는 방식이 일반적입니다."
+      ],
+      "doc_section_title": "접수 전 준비할 것",
+      "docs": [
+        {"icon": "📋", "name": "사업자등록증", "reason": "정식 거래처 등록"},
+        {"icon": "🏦", "name": "수수료 통장 사본", "reason": "정산금 입금 계좌"},
+        {"icon": "🪪", "name": "대표자 신분증", "reason": "본인 확인"},
+        {"icon": "📱", "name": "대표자 명의 휴대폰", "reason": "본인 인증·안내 채널"}
+      ],
+      "mistake_heading": "초보 창업자가 자주 하는 실수",
+      "mistake_body": "서류부터 다 갖춰야 접수를 넣을 수 있다고 생각해 시작을 미루는 경우가 많습니다. 공급처에 따라 서류 없이 접수·개통부터 먼저 하고, 첫 정산 전에만 서류를 확인하는 곳도 있습니다.",
+      "checkpoint_heading": "체크포인트",
+      "checkpoint_items": [
+        "접수 방식이 CRM 직접등록인지 카톡 양식인지 확인하기",
+        "접수부터 청약까지 보통 얼마나 걸리는지 확인하기"
+      ],
+      "summary": "서류를 다 갖출 때까지 기다리지 마세요. 서류 없이 접수부터 먼저 할 수 있는 공급처도 있습니다.",
+      "extra_links": [
+        {"text": "ENTER의 거래 시작 절차 보기", "slug": "start"}
+      ],
+      "next_slug": "guide-store-setup",
+      "next_label": "매장 시설"
+    },
+
+    "guide-store-setup": {
+      "template": "guide_chapter.html",
+      "title": "매장 시설 — 창업 가이드 | ENTER",
+      "meta_description": "휴대폰 판매점 매장을 꾸릴 때 꼭 필요한 시설과, 없어도 되는 것을 구분해서 정리했습니다.",
+      "date_published": "2026-10-21",
+      "date_modified": "2026-10-21",
+      "category": "opening",
+      "eyebrow": "창업 준비 · 4/5",
+      "h1": "매장 시설",
+      "intro": "매장 인테리어에 과도하게 투자하기 전에, 꼭 필요한 것과 나중에 해도 되는 것을 구분하세요.",
+      "concept_heading": "핵심 개념",
+      "concept_body": [
+        "휴대폰 판매점은 전산 업무(접수·개통) 비중이 커서, 인테리어보다 전산·통신 환경이 먼저입니다."
+      ],
+      "compare_table": [
+        ["구분", "필수", "비고"],
+        ["전산 장비 (PC·프린터)", "필수", "접수·개통 처리용"],
+        ["안정적인 인터넷 회선", "필수", "전산 장애 시 업무 중단"],
+        ["진열대·쇼케이스", "선택", "단말기 재고 운영 시"],
+        ["CCTV", "권장", "매장·재고 보안"],
+        ["간판·인테리어", "선택", "상권·예산에 맞게 단계적으로"]
+      ],
+      "mistake_heading": "초보 창업자가 자주 하는 실수",
+      "mistake_body": "개업 초기에 간판·인테리어에 예산을 과하게 쓰고, 정작 전산 환경이나 초기 운전자금이 부족해지는 경우가 많습니다.",
+      "checkpoint_heading": "체크포인트",
+      "checkpoint_items": [
+        "전산 장비와 인터넷 회선부터 안정적으로 준비하기",
+        "인테리어는 매출이 안정된 뒤 단계적으로 투자하기"
+      ],
+      "summary": "휴대폰 판매점은 인테리어보다 전산 환경이 우선입니다.",
+      "next_slug": "guide-opening-checklist",
+      "next_label": "개업 체크리스트"
+    },
+
+    "guide-opening-checklist": {
+      "template": "guide_chapter.html",
+      "title": "개업 체크리스트 — 창업 가이드 | ENTER",
+      "meta_description": "휴대폰 매장 개업 전 확인해야 할 전체 체크리스트 — 창업 준비부터 첫 개통까지 한눈에 정리했습니다.",
+      "date_published": "2026-10-21",
+      "date_modified": "2026-10-21",
+      "category": "opening",
+      "eyebrow": "창업 준비 · 5/5",
+      "h1": "개업 체크리스트",
+      "intro": "지금까지 본 4가지 내용을 하나의 체크리스트로 정리했습니다.",
+      "checklist": [
+        {"icon": "🏪", "name": "유통구조 이해", "note": "대리점·판매점 중 어디로 시작하는지 확인"},
+        {"icon": "🤝", "name": "도매 거래처 선정", "note": "정책·정산·DB보호 기준으로 비교"},
+        {"icon": "📋", "name": "사업자등록", "note": "사업 개시 후 20일 이내"},
+        {"icon": "🛒", "name": "통신판매업신고", "note": "사업자등록 후 신청"},
+        {"icon": "✅", "name": "사전승낙", "note": "대리점이 KAIT를 통해 신청"},
+        {"icon": "💻", "name": "전산·서류 준비", "note": "서류 없이 접수부터 시작 가능한 곳도 있음"},
+        {"icon": "🔧", "name": "매장 시설 준비", "note": "전산 환경 우선, 인테리어는 단계적으로"},
+        {"icon": "📞", "name": "첫 개통 테스트", "note": "접수부터 개통확인까지 실제로 한 번 돌려보기"}
+      ],
+      "summary": "이 체크리스트를 따라가면, 창업 준비부터 첫 개통까지의 흐름을 놓치지 않을 수 있습니다.",
+      "cta": "지금 연락하고 창업 상담받기"
+    }
+
+  }
+}

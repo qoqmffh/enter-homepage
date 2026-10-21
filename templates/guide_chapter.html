@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block content %}
+<section style="padding-top:28px">
+  <div class="wrap">
+    <p class="lead" style="margin-bottom:4px"><a class="more-link" href="startup.html">← 창업 가이드</a></p>
+    <div class="eyebrow">{{ page.eyebrow }}</div>
+    <h1>{{ page.h1 }}</h1>
+    <p class="lead">{{ page.intro }}</p>
+  </div>
+</section>
+
+{% if page.concept_body %}
+<section>
+  <div class="wrap">
+    <h2>{{ page.concept_heading }}</h2>
+    {% for p in page.concept_body %}<p>{{ p }}</p>{% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if page.compare_table %}
+<section>
+  <div class="wrap">
+    <div class="table-scroll">
+      <table>
+        <thead><tr>{% for cell in page.compare_table[0] %}<th>{{ cell }}</th>{% endfor %}</tr></thead>
+        <tbody>
+          {% for row in page.compare_table[1:] %}
+          <tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if page.criteria_cards %}
+<section>
+  <div class="wrap">
+    <div class="cards">
+      {% for c in page.criteria_cards %}
+      <div class="card"><div style="font-size:22px; margin-bottom:6px">{{ c.icon }}</div><h3>{{ c.title }}</h3><p>{{ c.text }}</p></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if page.docs %}
+<section>
+  <div class="wrap">
+    <h2>{{ page.doc_section_title }}</h2>
+    <div class="doc-grid">
+      {% for d in page.docs %}
+      <div class="doc-card"><div class="doc-icon">{{ d.icon }}</div><div class="doc-name">{{ d.name }}</div><div class="doc-reason">{{ d.reason }}</div></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if page.checklist %}
+<section>
+  <div class="wrap">
+    <div class="icon-steps">
+      {% for c in page.checklist %}
+      <div class="icon-step"><span class="icon-step-num">{{ loop.index }}</span><span class="icon-step-icon">{{ c.icon }}</span><span class="icon-step-text-wrap"><span class="icon-step-text">{{ c.name }}</span><span class="icon-step-sub">{{ c.note }}</span></span></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if page.mistake_body %}
+<section>
+  <div class="wrap">
+    <h2>{{ page.mistake_heading }}</h2>
+    <p>{{ page.mistake_body }}</p>
+  </div>
+</section>
+{% endif %}
+
+{% if page.checkpoint_items %}
+<section>
+  <div class="wrap">
+    <h2>{{ page.checkpoint_heading }}</h2>
+    <ul class="doclist">
+      {% for c in page.checkpoint_items %}<li>{{ c }}</li>{% endfor %}
+    </ul>
+  </div>
+</section>
+{% endif %}
+
+<section>
+  <div class="wrap">
+    {% if page.summary %}<p class="tagline">{{ page.summary }}</p>{% endif %}
+
+    {% if page.extra_links %}
+    <ul class="doclist" style="margin-top:14px">
+      {% for l in page.extra_links %}<li><a class="more-link" href="{{ l.slug }}.html">{{ l.text }} →</a></li>{% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if page.next_slug %}
+    <p style="margin-top:20px"><a class="more-link" href="{{ page.next_slug }}.html">다음: {{ page.next_label }} →</a></p>
+    {% endif %}
+
+    {% if page.cta %}
+    <p style="margin-top:20px"><a class="btn btn-primary" href="#">{{ page.cta }}</a></p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

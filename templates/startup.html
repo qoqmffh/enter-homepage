@@ -52,9 +52,29 @@
       </div>
       {% endfor %}
     </div>
+  </div>
+</section>
 
+{% if page.guide_categories %}
+<section>
+  <div class="wrap">
+    <h2>{{ page.guide_heading }}</h2>
+    {% for cat in page.guide_categories %}
+    <h3 style="font-size:15px; margin-top:18px">{{ cat.label }}{% if cat.status == "soon" %} <span style="color:var(--muted); font-weight:400; font-size:12px">(준비 중)</span>{% endif %}</h3>
+    {% if cat.chapters %}
+    <ul class="doclist">
+      {% for ch in cat.chapters %}<li><a class="more-link" href="{{ ch.slug }}.html">{{ ch.title }} →</a></li>{% endfor %}
+    </ul>
+    {% endif %}
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section>
+  <div class="wrap">
     {% if page.cta_bottom %}
-    <p style="margin-top:20px"><a class="btn btn-primary" href="#">{{ page.cta_bottom }}</a></p>
+    <p><a class="btn btn-primary" href="#">{{ page.cta_bottom }}</a></p>
     {% endif %}
   </div>
 </section>

@@ -1513,6 +1513,21 @@
       {"title": "정책", "text": "전국 순증 대비 물량으로 받는 경쟁력 있는 정책", "link_slug": "why", "link_text": "왜 ENTER 보기 →"},
       {"title": "정산 · DB보호", "text": "정해진 날 정산, 하드마킹으로 지키는 고객정보", "link_slug": "settlement", "link_text": "정산·DB보호 보기 →"}
     ],
+
+    "guide_heading": "더 깊이 알아보기",
+    "guide_categories": [
+      {"label": "창업 준비", "status": "live", "chapters": [
+        {"slug": "guide-dealer-vs-reseller", "title": "대리점과 판매점의 차이"},
+        {"slug": "guide-wholesale-selection", "title": "도매 거래처 선정 기준"},
+        {"slug": "guide-activation-prep", "title": "개통 준비"},
+        {"slug": "guide-store-setup", "title": "매장 시설"},
+        {"slug": "guide-opening-checklist", "title": "개업 체크리스트"}
+      ]},
+      {"label": "판매 실무", "status": "soon", "chapters": []},
+      {"label": "마케팅", "status": "soon", "chapters": []},
+      {"label": "매장 성장", "status": "soon", "chapters": []}
+    ],
+
     "cta_bottom": "지금 연락하고 창업 상담받기"
   },
   "faq": {
