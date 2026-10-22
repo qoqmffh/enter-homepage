@@ -18,6 +18,30 @@
 
 <section>
   <div class="wrap">
+    <h2>{{ page.work_heading }}</h2>
+    <p>{{ page.work_text }}</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>{{ page.team_heading }}</h2>
+    <p class="lead">{{ page.team_lead }}</p>
+    <div class="cards">
+      {% for t in page.team_cards %}
+      <div class="card">
+        <div style="font-size:22px; margin-bottom:6px">{{ t.icon }}</div>
+        <h3>{{ t.name }} <span style="color:var(--muted); font-weight:400; font-size:12px">· {{ t.role }}</span></h3>
+        <p>{{ t.text }}</p>
+        {% if t.link_slug %}<p style="margin-top:8px"><a class="more-link" href="{{ t.link_slug }}.html">{{ t.link_text }}</a></p>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
     <h2>{{ page.cert_heading }}</h2>
     <p class="lead">{{ page.cert_lead }}</p>
     <div class="doc-grid">
