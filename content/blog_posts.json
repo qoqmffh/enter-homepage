@@ -288,18 +288,6 @@
           "slug": "settlement"
         }
       ]
-    },
-    "blog-20261022-52ab31": {
-      "template": "blog_post.html",
-      "title": "__TEST_연동확인용_삭제예정__ | ENTER",
-      "meta_description": "관리자도구 연동 테스트용 글입니다.",
-      "date_published": "2026-10-22",
-      "date_modified": "2026-10-22",
-      "tag": "업계",
-      "eyebrow": "블로그 · 업계",
-      "h1": "__TEST_연동확인용_삭제예정__",
-      "intro": "관리자도구 연동 테스트용 글입니다.",
-      "body_html": "<p>이것은 자동 발행 파이프라인 테스트용 글입니다.</p>"
     }
   }
 }
