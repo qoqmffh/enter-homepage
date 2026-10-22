@@ -12,6 +12,7 @@
   </div>
 </section>
 
+<!-- 2. 왜 ENTER 요약 -->
 <section>
   <div class="wrap">
     <div class="eyebrow">{{ page.why_summary.eyebrow }}</div>
@@ -25,12 +26,105 @@
   </div>
 </section>
 
+<!-- 3. 증거를 하나 크게 -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">{{ page.evidence_summary.eyebrow }}</div>
+    <h2 style="font-size:22px">{{ page.evidence_summary.h2 }}</h2>
+    <div class="ticker-wrap">
+      <div class="ticker-list">
+        {% for row in page.evidence_summary.ticker_rows %}
+        <div class="ticker-row"><span class="t-date">{{ row.date }} ({{ row.dow[:1] }})</span><span class="t-count">{{ row.count }}건</span><span class="t-amount">{{ row.amount }}</span></div>
+        {% endfor %}
+        {% for row in page.evidence_summary.ticker_rows %}
+        <div class="ticker-row" aria-hidden="true"><span class="t-date">{{ row.date }} ({{ row.dow[:1] }})</span><span class="t-count">{{ row.count }}건</span><span class="t-amount">{{ row.amount }}</span></div>
+        {% endfor %}
+      </div>
+    </div>
+    <p style="margin-top:14px"><a class="more-link" href="settlement.html">{{ page.evidence_summary.link_text }}</a></p>
+  </div>
+</section>
+
+<!-- 4. 거래 시작하기 요약 -->
 <section>
   <div class="wrap">
     <div class="eyebrow">{{ page.start_summary.eyebrow }}</div>
     <h2 style="font-size:22px">{{ page.start_summary.h2 }}</h2>
     <p class="lead">{{ page.start_summary.lead }}</p>
-    <p style="margin-top:14px"><a class="more-link" href="start.html">{{ page.start_summary.link_text }}</a></p>
+    <p style="margin-top:14px"><a class="btn btn-primary" href="#">{{ page.start_summary.cta_text }}</a></p>
+    <p style="margin-top:10px"><a class="more-link" href="start.html">{{ page.start_summary.link_text }}</a></p>
+  </div>
+</section>
+
+<!-- 5. 창업 준비 중이시라면 -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">{{ page.startup_summary.eyebrow }}</div>
+    <h2 style="font-size:22px">{{ page.startup_summary.h2 }}</h2>
+    <p class="lead">{{ page.startup_summary.lead }}</p>
+    <p style="margin-top:14px"><a class="btn btn-primary" href="#">{{ page.startup_summary.cta_text }}</a></p>
+    <p style="margin-top:10px"><a class="more-link" href="{{ page.startup_summary.link_slug }}.html">자세히 보기 →</a></p>
+  </div>
+</section>
+
+<!-- 6. 취급상품 미니 -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">{{ page.products_summary.eyebrow }}</div>
+    <h2 style="font-size:22px">{{ page.products_summary.h2 }}</h2>
+    <div class="doclist" style="display:flex">
+      {% for i in page.products_summary.list %}<span style="background:var(--paper-dim); border:1px solid var(--line); border-radius:10px; padding:9px 12px; font-size:13px">{{ i }}</span>{% endfor %}
+    </div>
+    <p style="margin-top:14px"><a class="more-link" href="{{ page.products_summary.link_slug }}.html">{{ page.products_summary.link_text }}</a></p>
+  </div>
+</section>
+
+<!-- 7. 회사소개 압축 -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">{{ page.about_summary.eyebrow }}</div>
+    <h2 style="font-size:22px">{{ page.about_summary.h2 }}</h2>
+    <div class="trustbar" style="margin:14px 0 0">
+      {% for b in page.about_summary.badges %}<span style="background:var(--paper-dim); border:1px solid var(--line); color:var(--ink)">{{ b }}</span>{% endfor %}
+    </div>
+    <p style="margin-top:14px"><a class="more-link" href="{{ page.about_summary.link_slug }}.html">{{ page.about_summary.link_text }}</a></p>
+  </div>
+</section>
+
+<!-- 8. FAQ 미리보기 -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">{{ page.faq_summary.eyebrow }}</div>
+    <h2 style="font-size:22px">{{ page.faq_summary.h2 }}</h2>
+    {% for item in page.faq_summary.list %}
+    <div class="faq-item">
+      <div class="faq-q">{{ item.q }}</div>
+      <div class="faq-a">{{ item.a }}</div>
+    </div>
+    {% endfor %}
+    <p style="margin-top:14px"><a class="more-link" href="{{ page.faq_summary.link_slug }}.html">{{ page.faq_summary.link_text }}</a></p>
+  </div>
+</section>
+
+<!-- 9. 블로그 최신글 -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">{{ page.blog_summary.eyebrow }}</div>
+    <h2 style="font-size:22px">{{ page.blog_summary.h2 }}</h2>
+    <ul class="bloglist">
+      {% for p in page.blog_summary.list %}
+      <li><a href="{{ p.slug }}.html">{{ p.title }}</a> <span class="tag">{{ p.tag }}</span></li>
+      {% endfor %}
+    </ul>
+    <p style="margin-top:14px"><a class="more-link" href="{{ page.blog_summary.link_slug }}.html">{{ page.blog_summary.link_text }}</a></p>
+  </div>
+</section>
+
+<!-- 10. 최종 CTA -->
+<section>
+  <div class="wrap" style="text-align:center">
+    <p class="tagline" style="font-size:18px">{{ page.final_cta.text }}</p>
+    <p style="margin-top:14px"><a class="btn btn-primary" href="#">{{ page.final_cta.cta_text }}</a></p>
   </div>
 </section>
 {% endblock %}
