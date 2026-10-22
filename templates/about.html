@@ -4,19 +4,49 @@
   <div class="wrap">
     <div class="eyebrow">{{ page.eyebrow }}</div>
     <h1>{{ page.h1 }}</h1>
+    <p class="lead">{{ page.lead }}</p>
 
-    <h2 style="margin-top:24px">{{ page.cert_heading }}</h2>
-    <ul class="doclist">
-      {% for c in page.certs %}<li>{{ c }}</li>{% endfor %}
-    </ul>
+    {% if page.stat_grid %}
+    <div class="stat-grid" style="grid-template-columns:repeat(2,1fr); margin-top:16px">
+      {% for s in page.stat_grid %}
+      <div class="stat-box"><div class="num">{{ s.num }}</div><div class="label">{{ s.label }}</div></div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
 
-    <h2 style="margin-top:28px">{{ page.lg_heading }}</h2>
-    <ul class="doclist">
-      {% for i in page.lg_items %}<li>{{ i }}</li>{% endfor %}
-    </ul>
+<section>
+  <div class="wrap">
+    <h2>{{ page.cert_heading }}</h2>
+    <p class="lead">{{ page.cert_lead }}</p>
+    <div class="doc-grid">
+      {% for c in page.certs %}
+      <div class="doc-card"><div class="doc-icon">{{ c.icon }}</div><div class="doc-name">{{ c.name }}</div><div class="doc-reason">{{ c.note }}</div></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
 
-    <h2 style="margin-top:28px">{{ page.code_heading }}</h2>
+<section>
+  <div class="wrap">
+    <h2>{{ page.lg_heading }}</h2>
+    <p class="lead">{{ page.lg_lead }}</p>
+    <div class="doc-grid">
+      {% for i in page.lg_items %}
+      <div class="doc-card"><div class="doc-icon">{{ i.icon }}</div><div class="doc-name">{{ i.name }}</div>{% if i.note %}<div class="doc-reason">{{ i.note }}</div>{% endif %}</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>{{ page.code_heading }}</h2>
     <p>{{ page.code_text }}</p>
+    {% if page.code_link_slug %}
+    <p style="margin-top:10px"><a class="more-link" href="{{ page.code_link_slug }}.html">{{ page.code_link_text }}</a></p>
+    {% endif %}
   </div>
 </section>
 {% endblock %}
