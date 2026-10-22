@@ -9,6 +9,14 @@
   </div>
 </section>
 
+{% if page.body_html %}
+<section>
+  <div class="wrap blog-body">
+    {{ page.body_html | safe }}
+  </div>
+</section>
+{% endif %}
+
 {% for s in page.sections %}
 <section>
   <div class="wrap">

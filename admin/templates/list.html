@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>ENTER 블로그 관리</title>
+<style>
+  body{font-family:-apple-system,"Noto Sans KR",sans-serif; background:#F6F6F1; color:#10182B; margin:0; padding:32px}
+  .wrap{max-width:720px; margin:0 auto}
+  h1{font-size:20px}
+  .new-btn{display:inline-block; background:#B98A3D; color:#10182B; padding:10px 18px; border-radius:999px; font-weight:700; text-decoration:none; margin-bottom:20px}
+  ul{list-style:none; padding:0}
+  li{background:#fff; border:1px solid #DCD8CC; border-radius:10px; padding:14px 16px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center}
+  a{color:#1E6F50; text-decoration:none; font-weight:700}
+  .tag{font-size:11px; color:#6B6558; background:#ECE9DF; padding:3px 9px; border-radius:999px}
+  .muted{color:#6B6558; font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>ENTER 블로그 관리</h1>
+  <a class="new-btn" href="/new">+ 새 글쓰기</a>
+  <ul>
+    {% for p in posts %}
+    <li>
+      {% if p.slug %}<a href="/edit/{{ p.slug }}">{{ p.title }}</a>{% else %}<span class="muted">{{ p.title }} (미작성)</span>{% endif %}
+      <span class="tag">{{ p.tag }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+</body>
+</html>

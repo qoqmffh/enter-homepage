@@ -1391,13 +1391,28 @@
     "db_icon": "🔒",
     "db_heading": "DB 보호",
     "db_history_heading": "우리는 다 해봤습니다.",
-    "db_history_badges": ["보안업체 위탁", "OTP", "비밀번호 복잡화", "자동 로그아웃", "로그 기록"],
+    "db_history_badges": [
+      "보안업체 위탁",
+      "OTP",
+      "비밀번호 복잡화",
+      "자동 로그아웃",
+      "로그 기록"
+    ],
     "db_history_text": "그런데도 두 번이나 뚫렸습니다. 왜 뚫렸는지 정확한 경로는 저희도 모릅니다. OTP까지 썼지만, 너무 불편해서 오래 못 갔습니다. 대기업도 해킹당하는 마당에, 저희 웹이라고 안전하다고 할 수는 없겠더라고요.",
     "db_history_tagline": "그래서 질문을 바꿨습니다. '막을 수 있는가'가 아니라, '뚫려도 괜찮은가.'",
-    "db_result_stat": {"num": "0회", "label": "하드마킹 도입 이후, 해킹 이슈"},
+    "db_result_stat": {
+      "num": "0회",
+      "label": "하드마킹 도입 이후, 해킹 이슈"
+    },
     "db_mechanism_steps": [
-      {"icon": "🔐", "text": "개통이 완료되면 CRM의 고객 핵심정보는 자동으로 하드마킹됩니다."},
-      {"icon": "🗂️", "text": "원본 정보는 별도로 보관하고, 고객 VOC나 재영업 등 필요한 경우 요청을 통해 제공합니다."}
+      {
+        "icon": "🔐",
+        "text": "개통이 완료되면 CRM의 고객 핵심정보는 자동으로 하드마킹됩니다."
+      },
+      {
+        "icon": "🗂️",
+        "text": "원본 정보는 별도로 보관하고, 고객 VOC나 재영업 등 필요한 경우 요청을 통해 제공합니다."
+      }
     ],
     "db_tagline": "보여주는 곳과 보관하는 곳을 구분하는 것. ENTER가 고객정보를 관리하는 방식입니다.",
     "db_steps": [
@@ -1461,11 +1476,31 @@
     "lead": "인터넷부터 유심까지, 통신사 6곳 상품을 따로따로 알아볼 필요 없습니다.",
     "cta_mid": "지금 연락하고 취급 상품 더 알아보기",
     "product_cards": [
-      {"icon": "🌐", "name": "인터넷", "note": "초고속인터넷"},
-      {"icon": "📺", "name": "IPTV", "note": ""},
-      {"icon": "📹", "name": "CCTV", "note": ""},
-      {"icon": "🏠", "name": "가전렌탈", "note": ""},
-      {"icon": "📱", "name": "유심(UIT)", "note": "통신사 유심연계상품"}
+      {
+        "icon": "🌐",
+        "name": "인터넷",
+        "note": "초고속인터넷"
+      },
+      {
+        "icon": "📺",
+        "name": "IPTV",
+        "note": ""
+      },
+      {
+        "icon": "📹",
+        "name": "CCTV",
+        "note": ""
+      },
+      {
+        "icon": "🏠",
+        "name": "가전렌탈",
+        "note": ""
+      },
+      {
+        "icon": "📱",
+        "name": "유심(UIT)",
+        "note": "통신사 유심연계상품"
+      }
     ],
     "carrier_heading": "취급 통신사",
     "carriers": [
@@ -1488,46 +1523,112 @@
     "h1": "휴대폰 매장만 하면, 유선 실적은 그냥 넘어갑니다",
     "lead": "500+TV 번들상품 기준, 소매점에 넘기면 건당 약 30만원, 도매로 직접 처리하면 약 70만원. 건당 40만원 차이입니다.",
     "margin_stats": [
-      {"num": "약 30만원", "label": "소매점에 넘길 때"},
-      {"num": "약 70만원", "label": "도매로 직접 처리할 때"}
+      {
+        "num": "약 30만원",
+        "label": "소매점에 넘길 때"
+      },
+      {
+        "num": "약 70만원",
+        "label": "도매로 직접 처리할 때"
+      }
     ],
     "cta_mid": "지금 연락하고 창업 상담받기",
-
     "dongpan_heading": "동판을 아직도 소매점으로 넘기시나요?",
     "dongpan_note": "※ 동시판매(동판) = 유선과 무선을 같이 판매하는 것",
     "dongpan_body": "항상은 아니지만, 유-무선을 분리하는 게 결국 돈을 만듭니다.",
     "dongpan_tagline": "같은 개수를 해도, 돈 많이 버는 매장의 비밀은 여기에 있습니다.",
-
     "checklist_heading": "창업 체크리스트",
     "checklist": [
-      {"icon": "📋", "name": "사업자등록", "note": "사업 개시 후 20일 이내, 세무서 또는 홈택스"},
-      {"icon": "🛒", "name": "통신판매업신고", "note": "사업자등록 후 신청 가능. 관할 시·군·구청 또는 정부24, 등록면허세는 지자체별로 다름"},
-      {"icon": "✅", "name": "사전승낙 (이동통신 판매점)", "note": "대리점이 KAIT를 통해 이통사 승인을 받는 절차. 세부 서류·기간은 KAIT 통신시장 유통포털에서 확인"},
-      {"icon": "🏪", "name": "매장·온라인 채널 준비", "note": "오프라인 매장 임대 또는 온라인 셀러 채널(스마트스토어 등) 개설"},
-      {"icon": "🤝", "name": "정책 공급처(도매) 연결", "note": "여기서부터는 ENTER가 함께합니다"},
-      {"icon": "➕", "name": "유선 외에도 필요하면", "note": "온라인입점광고, 무선 단가도 원하시면 함께 공급해 드립니다"}
+      {
+        "icon": "📋",
+        "name": "사업자등록",
+        "note": "사업 개시 후 20일 이내, 세무서 또는 홈택스"
+      },
+      {
+        "icon": "🛒",
+        "name": "통신판매업신고",
+        "note": "사업자등록 후 신청 가능. 관할 시·군·구청 또는 정부24, 등록면허세는 지자체별로 다름"
+      },
+      {
+        "icon": "✅",
+        "name": "사전승낙 (이동통신 판매점)",
+        "note": "대리점이 KAIT를 통해 이통사 승인을 받는 절차. 세부 서류·기간은 KAIT 통신시장 유통포털에서 확인"
+      },
+      {
+        "icon": "🏪",
+        "name": "매장·온라인 채널 준비",
+        "note": "오프라인 매장 임대 또는 온라인 셀러 채널(스마트스토어 등) 개설"
+      },
+      {
+        "icon": "🤝",
+        "name": "정책 공급처(도매) 연결",
+        "note": "여기서부터는 ENTER가 함께합니다"
+      },
+      {
+        "icon": "➕",
+        "name": "유선 외에도 필요하면",
+        "note": "온라인입점광고, 무선 단가도 원하시면 함께 공급해 드립니다"
+      }
     ],
-
     "wholesale_heading": "도매처, 아무나 고르면 안 됩니다",
     "wholesale_cards": [
-      {"title": "정책", "text": "전국 순증 대비 물량으로 받는 경쟁력 있는 정책", "link_slug": "why", "link_text": "왜 ENTER 보기 →"},
-      {"title": "정산 · DB보호", "text": "정해진 날 정산, 하드마킹으로 지키는 고객정보", "link_slug": "settlement", "link_text": "정산·DB보호 보기 →"}
+      {
+        "title": "정책",
+        "text": "전국 순증 대비 물량으로 받는 경쟁력 있는 정책",
+        "link_slug": "why",
+        "link_text": "왜 ENTER 보기 →"
+      },
+      {
+        "title": "정산 · DB보호",
+        "text": "정해진 날 정산, 하드마킹으로 지키는 고객정보",
+        "link_slug": "settlement",
+        "link_text": "정산·DB보호 보기 →"
+      }
     ],
-
     "guide_heading": "더 깊이 알아보기",
     "guide_categories": [
-      {"label": "창업 준비", "status": "live", "chapters": [
-        {"slug": "guide-dealer-vs-reseller", "title": "대리점과 판매점의 차이"},
-        {"slug": "guide-wholesale-selection", "title": "도매 거래처 선정 기준"},
-        {"slug": "guide-activation-prep", "title": "개통 준비"},
-        {"slug": "guide-store-setup", "title": "매장 시설"},
-        {"slug": "guide-opening-checklist", "title": "개업 체크리스트"}
-      ]},
-      {"label": "판매 실무", "status": "soon", "chapters": []},
-      {"label": "마케팅", "status": "soon", "chapters": []},
-      {"label": "매장 성장", "status": "soon", "chapters": []}
+      {
+        "label": "창업 준비",
+        "status": "live",
+        "chapters": [
+          {
+            "slug": "guide-dealer-vs-reseller",
+            "title": "대리점과 판매점의 차이"
+          },
+          {
+            "slug": "guide-wholesale-selection",
+            "title": "도매 거래처 선정 기준"
+          },
+          {
+            "slug": "guide-activation-prep",
+            "title": "개통 준비"
+          },
+          {
+            "slug": "guide-store-setup",
+            "title": "매장 시설"
+          },
+          {
+            "slug": "guide-opening-checklist",
+            "title": "개업 체크리스트"
+          }
+        ]
+      },
+      {
+        "label": "판매 실무",
+        "status": "soon",
+        "chapters": []
+      },
+      {
+        "label": "마케팅",
+        "status": "soon",
+        "chapters": []
+      },
+      {
+        "label": "매장 성장",
+        "status": "soon",
+        "chapters": []
+      }
     ],
-
     "cta_bottom": "지금 연락하고 창업 상담받기"
   },
   "faq": {
@@ -1579,6 +1680,11 @@
     "h1": "판매점 사장님이 궁금한 것들",
     "lead": "8편 발행 완료, 이후 주 1편.",
     "posts": [
+      {
+        "title": "__TEST_연동확인용_삭제예정__",
+        "tag": "업계",
+        "slug": "blog-20261022-52ab31"
+      },
       {
         "title": "통신판매업신고 방법 — 온라인 셀러가 처음 막히는 곳",
         "tag": "셀러",
@@ -1645,43 +1751,114 @@
     "h1": "2010년부터, 3,000곳의 거래처와 함께",
     "lead": "ENTER는 (유)위드컴퍼니가 운영하는 유선 전문 총판입니다. 2010년부터 LG U+ 공식 대리점 '화승'과 함께 성장해왔습니다.",
     "stat_grid": [
-      {"num": "2010년", "label": "설립"},
-      {"num": "3,000곳+", "label": "전국 거래처"},
-      {"num": "4,000건+", "label": "월평균 개통"},
-      {"num": "310억", "label": "2024년 매출"}
+      {
+        "num": "2010년",
+        "label": "설립"
+      },
+      {
+        "num": "3,000곳+",
+        "label": "전국 거래처"
+      },
+      {
+        "num": "4,000건+",
+        "label": "월평균 개통"
+      },
+      {
+        "num": "310억",
+        "label": "2024년 매출"
+      }
     ],
-
     "work_heading": "우리가 하는 일",
     "work_text": "ENTER는 통신사로부터 정책을 받아, 전국 판매점·온라인셀러에게 공급하는 유선 전문 도매 총판입니다. 15년 이상 이 일만 해왔습니다.",
-
     "team_heading": "팀 구성",
     "team_lead": "도매영업팀 안에서 역할이 나뉘어 있습니다.",
     "team_cards": [
-      {"icon": "📊", "name": "정책팀", "role": "정책 분석 및 배포", "text": "매일 아침 통신사 정책을 분석해 전체 거래처에 배포합니다.", "link_slug": "why", "link_text": "정책 경쟁력 보기 →"},
-      {"icon": "💰", "name": "정산팀", "role": "정산 관리", "text": "매주 수요일 정산서 발송, 금요일 입금까지 정산 전체를 관리합니다.", "link_slug": "settlement", "link_text": "정산 방식 보기 →"},
-      {"icon": "🛡️", "name": "지원팀", "role": "보안·프로세스 개선", "text": "고객정보 보안과 업무 프로세스 개선을 전담합니다.", "link_slug": "settlement", "link_text": "DB보호 방식 보기 →"},
-      {"icon": "📞", "name": "CS팀", "role": "거래처 응대", "text": "거래처의 문의와 요청에 응대합니다.", "link_slug": "", "link_text": ""}
+      {
+        "icon": "📊",
+        "name": "정책팀",
+        "role": "정책 분석 및 배포",
+        "text": "매일 아침 통신사 정책을 분석해 전체 거래처에 배포합니다.",
+        "link_slug": "why",
+        "link_text": "정책 경쟁력 보기 →"
+      },
+      {
+        "icon": "💰",
+        "name": "정산팀",
+        "role": "정산 관리",
+        "text": "매주 수요일 정산서 발송, 금요일 입금까지 정산 전체를 관리합니다.",
+        "link_slug": "settlement",
+        "link_text": "정산 방식 보기 →"
+      },
+      {
+        "icon": "🛡️",
+        "name": "지원팀",
+        "role": "보안·프로세스 개선",
+        "text": "고객정보 보안과 업무 프로세스 개선을 전담합니다.",
+        "link_slug": "settlement",
+        "link_text": "DB보호 방식 보기 →"
+      },
+      {
+        "icon": "📞",
+        "name": "CS팀",
+        "role": "거래처 응대",
+        "text": "거래처의 문의와 요청에 응대합니다.",
+        "link_slug": "",
+        "link_text": ""
+      }
     ],
-
     "cert_heading": "인증",
     "cert_lead": "아무 회사나 받을 수 있는 인증은 아닙니다.",
     "certs": [
-      {"icon": "🏅", "name": "메인비즈", "note": "경영혁신형 중소기업"},
-      {"icon": "🔬", "name": "연구개발전담부서", "note": "기업부설연구소"},
-      {"icon": "📜", "name": "ISO 9001:2015", "note": "품질경영시스템"},
-      {"icon": "🏆", "name": "한국브랜드대상", "note": "2022 한국브랜드 소비자평가"}
+      {
+        "icon": "🏅",
+        "name": "메인비즈",
+        "note": "경영혁신형 중소기업"
+      },
+      {
+        "icon": "🔬",
+        "name": "연구개발전담부서",
+        "note": "기업부설연구소"
+      },
+      {
+        "icon": "📜",
+        "name": "ISO 9001:2015",
+        "note": "품질경영시스템"
+      },
+      {
+        "icon": "🏆",
+        "name": "한국브랜드대상",
+        "note": "2022 한국브랜드 소비자평가"
+      }
     ],
-
     "lg_heading": "LG U+ 공식 대리점 '화승'",
     "lg_lead": "ENTER는 화승과 함께 정책을 공급받습니다. 화승이 LG U+로부터 받은 실적입니다.",
     "lg_items": [
-      {"icon": "🥇", "name": "최우수 대리점", "note": "Leader Club"},
-      {"icon": "⭐", "name": "2025 Honor Club", "note": ""},
-      {"icon": "🏆", "name": "2025 매출부문 우수상", "note": ""},
-      {"icon": "👥", "name": "누적가입자 4만", "note": "달성"},
-      {"icon": "💰", "name": "월매출 2억", "note": "달성"}
+      {
+        "icon": "🥇",
+        "name": "최우수 대리점",
+        "note": "Leader Club"
+      },
+      {
+        "icon": "⭐",
+        "name": "2025 Honor Club",
+        "note": ""
+      },
+      {
+        "icon": "🏆",
+        "name": "2025 매출부문 우수상",
+        "note": ""
+      },
+      {
+        "icon": "👥",
+        "name": "누적가입자 4만",
+        "note": "달성"
+      },
+      {
+        "icon": "💰",
+        "name": "월매출 2억",
+        "note": "달성"
+      }
     ],
-
     "code_heading": "취급 코드",
     "code_text": "LG 기업유선·기업모바일 코드를 직접 운영합니다. 대리점과 판매점의 차이가 궁금하시면 아래에서 확인하실 수 있습니다.",
     "code_link_slug": "guide-dealer-vs-reseller",
