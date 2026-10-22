@@ -32,6 +32,10 @@ def main():
     guide = load_json("guide.json")
     pages.update(guide["pages"])
 
+    # 블로그 포스트(blog_posts.json)도 같은 방식으로 합쳐서 렌더링
+    blog_posts = load_json("blog_posts.json")
+    pages.update(blog_posts["pages"])
+
     env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
 
     # dist/ 비우고 다시 생성

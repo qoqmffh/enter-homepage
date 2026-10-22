@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<section style="padding-top:28px">
+  <div class="wrap">
+    <p class="lead" style="margin-bottom:4px"><a class="more-link" href="blog.html">← 블로그</a></p>
+    <div class="eyebrow">{{ page.eyebrow }}</div>
+    <h1>{{ page.h1 }}</h1>
+    <p class="lead">{{ page.intro }}</p>
+  </div>
+</section>
+
+{% for s in page.sections %}
+<section>
+  <div class="wrap">
+    <h2>{{ s.heading }}</h2>
+    {% for p in s.body %}<p>{{ p }}</p>{% endfor %}
+  </div>
+</section>
+{% endfor %}
+
+{% if page.checklist_items %}
+<section>
+  <div class="wrap">
+    <h2>{{ page.checklist_heading }}</h2>
+    <ul class="doclist">
+      {% for c in page.checklist_items %}<li>{{ c }}</li>{% endfor %}
+    </ul>
+  </div>
+</section>
+{% endif %}
+
+<section>
+  <div class="wrap">
+    {% if page.summary %}<p class="tagline">{{ page.summary }}</p>{% endif %}
+
+    {% if page.extra_links %}
+    <ul class="doclist" style="margin-top:14px">
+      {% for l in page.extra_links %}<li><a class="more-link" href="{{ l.slug }}.html">{{ l.text }} →</a></li>{% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
