@@ -1,4 +1,4 @@
-/* ENTER 홈페이지 — 공통 스타일 (모바일 우선, 2026-10-19) */
+/* ENTER 홈페이지 — 공통 스타일 v2 (Desktop-Home 레퍼런스 기반 전면 재설계, 2026-10-26) */
 /* 폰트는 CSS @import 대신 base.html의 <link>로 로드함 — @import는 다운로드가 직렬로 걸려 LCP를 늦춤 */
 
 @font-face{font-family:'ONE Mobile'; src:url('fonts/OneMobile-Light.ttf') format('truetype'); font-weight:300; font-display:swap}
@@ -7,106 +7,93 @@
 @font-face{font-family:'ChosunCentennial'; src:url('fonts/ChosunCentennial.ttf') format('truetype'); font-weight:400; font-display:swap}
 
 :root{
-  --ink:#10182B; --paper:#F6F6F1; --paper-dim:#ECE9DF;
-  --green:#1E6F50; --green-soft:#DCEAE3;
-  --gold:#B98A3D; --gold-soft:#F1E4CC;
-  --line:#DCD8CC; --muted:#6B6558; --white:#fff;
-  /* v2 디자인(Desktop-Home 레퍼런스 기반) 전용 토큰 */
-  --v2-black:#111315; --v2-gray:#8d8d8d; --v2-line:#e3e3e0;
-  --v2-yellow:#f4d548; --v2-charcoal:#3c3c3c;
-  --v2-blue:#2f4cff; --v2-green:#1a8f3c; --v2-brown:#8a5a1f;
+  --ink:#111315; --paper:#ffffff; --paper-dim:#f5f5f4;
+  --green:#1a8f3c; --green-soft:#e3f5e8;
+  --gold:#8a5a1f; --gold-soft:#f1e4cc;
+  --yellow:#f4d548; --charcoal:#3c3c3c; --blue:#2f4cff;
+  --line:#e3e3e0; --muted:#8d8d8d; --white:#fff;
 }
 *{box-sizing:border-box}
 body{
   margin:0; background:var(--paper); color:var(--ink);
-  font-family:'Noto Sans KR', -apple-system, sans-serif;
+  font-family:'ONE Mobile', -apple-system, sans-serif;
   line-height:1.6; padding-bottom:76px; /* 하단 고정바 공간 */
   -webkit-text-size-adjust:100%;
 }
 a{color:inherit; text-decoration:none}
 .wrap{max-width:1040px; margin:0 auto; padding:0 16px}
 
-/* ---------- 헤더 (모바일 기본: 브랜드 + 가로 스크롤 네비) ---------- */
+/* ---------- 헤더 (화이트, 밑줄 호버 네비) ---------- */
 header.site{
-  background:var(--ink); color:var(--paper);
-  padding:12px 0; position:sticky; top:0; z-index:10;
+  background:var(--white); color:var(--ink);
+  padding:14px 0; position:sticky; top:0; z-index:10;
+  border-bottom:1px solid var(--line);
 }
 header.site .wrap{display:flex; flex-direction:column; gap:8px}
-.brand{font-weight:800; font-size:17px; letter-spacing:.01em; color:var(--white)}
-.brand small{display:block; font-size:9.5px; font-weight:500; color:var(--gold); letter-spacing:.06em}
+.brand{font-weight:700; font-size:19px; letter-spacing:.01em; color:var(--ink)}
+.brand small{display:none}
 nav.site{
-  display:flex; gap:2px; font-size:12px;
+  display:flex; gap:2px; font-size:12.5px;
   overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none;
   padding-bottom:2px;
 }
 nav.site::-webkit-scrollbar{display:none}
-nav.site a{padding:7px 9px; border-radius:6px; color:#C8C5BC; white-space:nowrap; flex:0 0 auto}
-nav.site a:hover, nav.site a.active{background:rgba(255,255,255,.1); color:var(--white)}
+nav.site a{padding:7px 9px; border-radius:6px; color:var(--ink); font-weight:500; white-space:nowrap; flex:0 0 auto}
+nav.site a:hover, nav.site a.active{text-decoration:underline; text-underline-offset:4px}
 
 /* ---------- 섹션 공통 ---------- */
 main{display:block}
 section{padding:36px 0; border-bottom:1px solid var(--line)}
 section:last-of-type{border-bottom:none}
-.eyebrow{font-size:11.5px; font-weight:800; letter-spacing:.08em; color:var(--green); text-transform:uppercase; margin-bottom:8px}
-h1{font-size:clamp(22px,6vw,36px); line-height:1.35; margin:0 0 14px; letter-spacing:-.01em}
-h2{font-size:19px; margin:0 0 10px}
+.eyebrow{font-size:12px; font-weight:500; letter-spacing:.04em; color:var(--muted); margin-bottom:8px}
+h1{font-family:'ONE Mobile',sans-serif; font-weight:700; font-size:clamp(26px,6.5vw,40px); line-height:1.2; margin:0 0 14px; letter-spacing:-.01em}
+h2{font-family:'ONE Mobile',sans-serif; font-weight:700; font-size:20px; margin:0 0 10px}
 p{margin:0 0 10px; color:#2B2E3A}
 .lead{font-size:15px; color:var(--muted)}
 
-/* ---------- 히어로(홈) ---------- */
-.hero{background:var(--ink); color:var(--paper); padding:40px 0 32px}
-.hero h1{color:var(--white)}
-.hero .sub{font-size:15.5px; color:#D8D5CA; margin-bottom:22px}
-.trustbar{display:flex; flex-wrap:wrap; gap:8px; margin:18px 0 24px}
-.trustbar span{background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12); padding:6px 12px; border-radius:999px; font-size:11.5px; color:#E7E4D9}
+/* ---------- 버튼 (투톤 옐로우 CTA) ---------- */
 .btn{display:inline-block; padding:13px 24px; border-radius:999px; font-weight:700; font-size:14px}
-.btn-primary{background:var(--gold); color:var(--ink)}
+.btn-primary{background:var(--yellow); color:var(--ink)}
 
-/* ---------- 헤더 v2 (Desktop-Home 레퍼런스) ---------- */
-header.site.v2{background:var(--white); border-bottom:1px solid var(--v2-line)}
-header.site.v2 .brand{font-family:'ONE Mobile',sans-serif; font-weight:700; color:var(--v2-black); font-size:20px; letter-spacing:.02em}
-header.site.v2 .brand small{display:none}
-header.site.v2 nav.site a{color:var(--v2-black); font-weight:500}
-header.site.v2 nav.site a:hover, header.site.v2 nav.site a.active{background:none; color:var(--v2-black); text-decoration:underline; text-underline-offset:4px}
-
-/* ---------- 히어로 v2 ---------- */
-.hero-v2{background:var(--white); color:var(--v2-black); padding:48px 0 0; position:relative}
+/* ---------- 히어로 v2 (홈 전용) ---------- */
+.hero-v2{background:var(--white); color:var(--ink); padding:48px 0 0; position:relative}
 .hero-v2-grid{
-  background-image:repeating-linear-gradient(to right, transparent, transparent 239px, var(--v2-line) 239px, var(--v2-line) 240px);
+  background-image:repeating-linear-gradient(to right, transparent, transparent 239px, var(--line) 239px, var(--line) 240px);
   padding:28px 0 44px;
 }
-.hero-v2 .eyebrow-v2{font-family:'ONE Mobile',sans-serif; font-size:12px; color:var(--v2-gray); letter-spacing:.08em; margin-bottom:18px}
-.hero-v2 h1{
-  font-family:'ONE Mobile',sans-serif; font-weight:700; color:var(--v2-black);
-  font-size:clamp(32px,7.5vw,72px); line-height:1.12; letter-spacing:-.01em; margin:0 0 20px;
-}
+.hero-v2 .eyebrow-v2{font-size:12px; color:var(--muted); letter-spacing:.08em; margin-bottom:18px}
+.hero-v2 h1{font-size:clamp(32px,7.5vw,72px); line-height:1.12; margin:0 0 20px}
 .hero-v2 .sub-v2{font-size:15px; color:#555; margin-bottom:22px}
-.hero-v2-cta{display:inline-flex; align-items:stretch; border-radius:999px; overflow:hidden; font-family:'ONE Mobile',sans-serif}
-.hero-v2-cta .cta-icon{width:40px; background:var(--v2-charcoal)}
-.hero-v2-cta .cta-label{background:var(--v2-yellow); color:var(--v2-black); font-weight:700; padding:12px 22px; font-size:14px}
+.hero-v2-cta{display:inline-flex; align-items:stretch; border-radius:999px; overflow:hidden}
+.hero-v2-cta .cta-icon{width:40px; background:var(--charcoal)}
+.hero-v2-cta .cta-label{background:var(--yellow); color:var(--ink); font-weight:700; padding:12px 22px; font-size:14px}
 
-/* ---------- 통계 바 v2 ---------- */
-.stat-bar-v2{display:grid; grid-template-columns:repeat(2,1fr); border-top:1px solid var(--v2-line)}
-.stat-bar-v2 .stat-v2{padding:22px 12px; text-align:center; border-right:1px solid var(--v2-line); border-bottom:1px solid var(--v2-line)}
+/* ---------- 통계 바 v2 (홈 전용) ---------- */
+.stat-bar-v2{display:grid; grid-template-columns:repeat(2,1fr); border-top:1px solid var(--line)}
+.stat-bar-v2 .stat-v2{padding:22px 12px; text-align:center; border-right:1px solid var(--line); border-bottom:1px solid var(--line)}
 .stat-bar-v2 .stat-v2:nth-child(2n){border-right:none}
-.stat-bar-v2 .stat-v2-label{font-size:11px; color:var(--v2-gray); margin-bottom:6px}
-.stat-bar-v2 .stat-v2-num{font-family:'ONE Mobile',sans-serif; font-weight:700; font-size:clamp(22px,6vw,40px)}
+.stat-bar-v2 .stat-v2-label{font-size:11px; color:var(--muted); margin-bottom:6px}
+.stat-bar-v2 .stat-v2-num{font-weight:700; font-size:clamp(22px,6vw,40px)}
 
 @media (min-width:768px){
   .hero-v2-grid{padding:40px 0 56px}
   .stat-bar-v2{grid-template-columns:repeat(4,1fr)}
   .stat-bar-v2 .stat-v2{border-bottom:none}
-  .stat-bar-v2 .stat-v2:nth-child(2n){border-right:1px solid var(--v2-line)}
+  .stat-bar-v2 .stat-v2:nth-child(2n){border-right:1px solid var(--line)}
   .stat-bar-v2 .stat-v2:last-child{border-right:none}
 }
 @media (max-width:767px){
   .hero-v2-grid{background-image:none}
 }
 
+/* ---------- 트러스트 배지(라이트 필) ---------- */
+.trustbar{display:flex; flex-wrap:wrap; gap:8px; margin:18px 0 24px}
+.trustbar span{background:var(--paper-dim); border:1px solid var(--line); padding:6px 12px; border-radius:999px; font-size:11.5px; color:var(--ink)}
+
 /* ---------- 카드 ---------- */
 .cards{display:grid; grid-template-columns:1fr; gap:14px; margin-top:16px}
-.card{background:var(--white); border:1px solid var(--line); border-radius:14px; padding:18px}
-.card .num{display:inline-block; width:24px;height:24px;border-radius:50%;background:var(--green-soft); color:var(--green); font-weight:800; font-size:12px; text-align:center; line-height:24px; margin-bottom:8px}
+.card{background:var(--white); border:1px solid var(--line); border-radius:12px; padding:18px}
+.card .num{display:inline-block; width:24px;height:24px;border-radius:50%;background:var(--paper-dim); color:var(--ink); font-weight:800; font-size:12px; text-align:center; line-height:24px; margin-bottom:8px}
 .card h3{margin:0 0 6px; font-size:15px}
 .card p{font-size:13px; color:var(--muted); margin:0}
 
@@ -134,8 +121,8 @@ table th{color:var(--muted); font-weight:700; font-size:11.5px; letter-spacing:.
 .ticker-wrap:hover .ticker-list{animation-play-state:paused}
 .ticker-row{display:flex; align-items:center; gap:8px; padding:8px 12px; border-bottom:1px solid var(--line); font-size:12px; white-space:nowrap}
 .ticker-row .t-date{color:var(--muted); flex:0 0 92px}
-.ticker-row .t-bank{color:var(--green); font-weight:700; flex:0 0 52px}
-.ticker-row .t-count{color:var(--green); font-weight:700; flex:1}
+.ticker-row .t-bank{color:var(--blue); font-weight:700; flex:0 0 52px}
+.ticker-row .t-count{color:var(--blue); font-weight:700; flex:1}
 .ticker-row .t-recipient{color:var(--muted); flex:1; overflow:hidden; text-overflow:ellipsis}
 .ticker-row .t-amount{font-weight:700; flex:0 0 auto}
 @keyframes ticker-scroll{from{transform:translateY(0)}to{transform:translateY(-50%)}}
@@ -154,15 +141,20 @@ table th{color:var(--muted); font-weight:700; font-size:11.5px; letter-spacing:.
 }
 
 /* ---------- 강조 태그라인 ---------- */
-.tagline{margin-top:14px; font-size:16px; font-weight:800; color:var(--ink); line-height:1.5}
+.tagline{margin-top:14px; font-size:16px; font-weight:700; color:var(--ink); line-height:1.5}
 
 /* ---------- 이유 카드(스탯+필프로우 조합형) ---------- */
-.reason-card{background:var(--white); border:1px solid var(--line); border-radius:16px; padding:22px 18px}
+.reason-card{background:var(--white); border:1px solid var(--line); border-radius:14px; padding:22px 18px}
 .reason-card h2{margin-top:4px}
 .stat-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px}
 .stat-box{background:var(--paper-dim); border-radius:10px; padding:14px 15px}
-.stat-box .num{font-size:21px; font-weight:800; color:var(--ink); letter-spacing:-.01em}
+.stat-box .num{font-weight:700; font-size:22px; letter-spacing:-.01em; color:var(--ink)}
 .stat-box .label{font-size:11.5px; color:var(--muted); margin-top:3px}
+/* 4색 순환(레퍼런스 통계바와 동일한 멀티컬러 룰) */
+.stat-grid .stat-box:nth-child(4n+1) .num{color:var(--ink)}
+.stat-grid .stat-box:nth-child(4n+2) .num{color:var(--blue)}
+.stat-grid .stat-box:nth-child(4n+3) .num{color:var(--green)}
+.stat-grid .stat-box:nth-child(4n+4) .num{color:var(--gold)}
 .pill-flow{display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin-top:14px; font-size:12px; color:var(--muted)}
 .pill-flow .pill{background:var(--paper-dim); border-radius:999px; padding:6px 12px}
 .pill-flow .arrow{color:var(--line)}
@@ -174,7 +166,7 @@ table th{color:var(--muted); font-weight:700; font-size:11.5px; letter-spacing:.
 /* ---------- 아이콘 스텝(거래 시작하기) ---------- */
 .icon-steps{display:flex; flex-direction:column; gap:10px; margin-top:16px}
 .icon-step{display:flex; align-items:center; gap:12px; background:var(--white); border:1px solid var(--line); border-radius:12px; padding:14px 16px}
-.icon-step-num{flex:0 0 22px; height:22px; border-radius:50%; background:var(--green-soft); color:var(--green); font-weight:800; font-size:11px; text-align:center; line-height:22px}
+.icon-step-num{flex:0 0 22px; height:22px; border-radius:50%; background:var(--paper-dim); color:var(--ink); font-weight:800; font-size:11px; text-align:center; line-height:22px}
 .icon-step-icon{font-size:22px; flex:0 0 auto}
 .icon-step-text{font-size:14px; color:var(--ink)}
 .icon-step-text-wrap{display:flex; flex-direction:column; gap:2px}
@@ -199,14 +191,14 @@ table th{color:var(--muted); font-weight:700; font-size:11.5px; letter-spacing:.
 .faq-item{padding:14px 0; border-bottom:1px solid var(--line)}
 .faq-item:last-child{border-bottom:none}
 .faq-q{font-weight:700; margin-bottom:6px; font-size:14.5px}
-.faq-q::before{content:"Q. "; color:var(--green)}
+.faq-q::before{content:"Q. "; color:var(--blue)}
 .faq-a::before{content:"A. "; color:var(--gold); font-weight:700}
 .faq-a{color:var(--muted); font-size:14px}
 
 /* ---------- 블로그/후기 리스트 ---------- */
 .bloglist{list-style:none; padding:0; margin:16px 0 0; display:flex; flex-direction:column; gap:9px}
 .bloglist li{background:var(--white); border:1px solid var(--line); border-radius:10px; padding:12px 14px; display:flex; justify-content:space-between; gap:10px; font-size:13.5px}
-.bloglist .tag{font-size:10.5px; color:var(--green); font-weight:700; white-space:nowrap}
+.bloglist .tag{font-size:10.5px; color:var(--blue); font-weight:700; white-space:nowrap}
 .placeholder{background:var(--paper-dim); border:1px dashed var(--line); border-radius:14px; padding:32px 20px; text-align:center; color:var(--muted); margin-top:16px}
 
 /* ---------- 블로그 본문(리치텍스트 에디터 작성분) ---------- */
@@ -215,19 +207,19 @@ table th{color:var(--muted); font-weight:700; font-size:11.5px; letter-spacing:.
 .blog-body h3{font-size:16px; margin-top:18px}
 .blog-body ul, .blog-body ol{padding-left:20px; margin:0 0 10px}
 .blog-body li{margin-bottom:4px}
-.blog-body a{color:var(--green); text-decoration:underline}
+.blog-body a{color:var(--blue); text-decoration:underline}
 
 /* ---------- 링크 더보기 ---------- */
-.more-link{color:var(--green); font-weight:700; font-size:14px}
+.more-link{color:var(--blue); font-weight:700; font-size:14px}
 
 /* ---------- 하단 고정바 ---------- */
 .footerbar{
-  position:fixed; left:0; right:0; bottom:0; background:var(--ink); color:var(--white);
+  position:fixed; left:0; right:0; bottom:0; background:var(--charcoal); color:var(--white);
   display:flex; justify-content:center; gap:8px; padding:10px 12px; z-index:20;
   border-top:1px solid rgba(255,255,255,.08); flex-wrap:wrap;
 }
-.footerbar a{background:rgba(255,255,255,.08); padding:9px 16px; border-radius:999px; font-weight:700; font-size:13px}
-.footerbar a:hover{background:var(--gold); color:var(--ink)}
+.footerbar a{background:rgba(255,255,255,.1); padding:9px 16px; border-radius:999px; font-weight:700; font-size:13px}
+.footerbar a:hover{background:var(--yellow); color:var(--ink)}
 
 footer.legal{padding:24px 0 92px; font-size:11.5px; color:var(--muted)}
 
@@ -237,8 +229,6 @@ footer.legal{padding:24px 0 92px; font-size:11.5px; color:var(--muted)}
   header.site .wrap{flex-direction:row; align-items:center; justify-content:space-between; max-width:1040px}
   nav.site{overflow:visible}
   section{padding:56px 0}
-  .hero{padding:64px 0 48px}
-  .hero .sub{font-size:17px}
   .cards{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
   .steps{flex-direction:row; flex-wrap:wrap; align-items:center}
   .flow{gap:30px}
