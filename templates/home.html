@@ -1,16 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="hero">
-  <div class="wrap">
-    <div class="eyebrow" style="color:var(--gold)">{{ page.eyebrow }}</div>
+<section class="hero-v2">
+  <div class="wrap hero-v2-grid">
+    <div class="eyebrow-v2">{{ page.eyebrow_v2 }}</div>
     <h1>{{ page.h1 | safe }}</h1>
-    <p class="sub">{{ page.sub }}</p>
-    <div class="trustbar">
-      {% for t in page.trustbar %}<span>{{ t }}</span>{% endfor %}
-    </div>
-    <a class="btn btn-primary" href="#">{{ page.cta_primary }}</a>
+    <p class="sub-v2">{{ page.sub }}</p>
+    <a class="hero-v2-cta" href="#"><span class="cta-icon"></span><span class="cta-label">{{ page.cta_v2 }}</span></a>
   </div>
 </section>
+
+<div class="stat-bar-v2">
+  {% for s in page.stat_bar_v2 %}
+  <div class="stat-v2">
+    <div class="stat-v2-label">{{ s.label }}</div>
+    <div class="stat-v2-num" style="color:{{ s.color }}">{{ s.num }}</div>
+  </div>
+  {% endfor %}
+</div>
 
 <!-- 2. 왜 ENTER 요약 -->
 <section>

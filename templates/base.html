@@ -30,7 +30,7 @@
 </head>
 <body>
 
-<header class="site">
+<header class="site{% if slug == 'index' %} v2{% endif %}">
   <div class="wrap">
     <a class="brand" href="index.html">{{ site.site_name }}<small>{{ site.site_tagline }}</small></a>
     <nav class="site">
