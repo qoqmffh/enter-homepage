@@ -78,7 +78,7 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
 .hp-hero-ctas{ display:flex; flex-wrap:wrap; gap:12px; margin-bottom:28px; }
 .hp-hairline{ height:1px; background:var(--hp-line); margin:0 0 28px; }
 .hp-stats{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
-.hp-stat-card{ background:var(--hp-black); color:var(--hp-white); border:1px solid var(--hp-line-dark); border-radius:14px; padding:20px; min-height:150px; display:flex; flex-direction:column; justify-content:space-between; }
+.hp-stat-card{ position:relative; overflow:hidden; background:var(--hp-black); color:var(--hp-white); border:1px solid var(--hp-line-dark); border-radius:14px; padding:20px; min-height:150px; display:flex; flex-direction:column; justify-content:space-between; }
 .hp-stat-num{ font-size:34px; font-weight:700; letter-spacing:-.02em; line-height:1; }
 .hp-stat-label{ font-size:12px; color:rgba(255,255,250,.82); font-weight:600; margin-top:12px; }
 
@@ -99,7 +99,7 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
 /* ---------- 기능 카드 (블랙 카드 + 미니 UI) ---------- */
 .hp-features-head{ margin-bottom:36px; }
 .hp-features-head .hp-headline-lg{ margin-top:10px; }
-.hp-feature-card{ background:var(--hp-black); color:var(--hp-white); border:1px solid var(--hp-line-dark); border-radius:20px; padding:28px 20px; margin-bottom:20px; }
+.hp-feature-card{ position:relative; overflow:hidden; background:var(--hp-black); color:var(--hp-white); border:1px solid var(--hp-line-dark); border-radius:20px; padding:28px 20px; margin-bottom:20px; }
 .hp-feature-card-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
 .hp-feature-card-head h3{ color:var(--hp-white); }
 .hp-feature-index{ font-size:14px; color:rgba(255,255,250,.4); font-weight:700; white-space:nowrap; }
@@ -163,7 +163,7 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
 .hp-chat-text{ font-size:13px; line-height:1.55; margin:0; font-weight:600; }
 
 /* ---------- 약속 섹션 ---------- */
-.hp-promise{ background:var(--hp-black); color:var(--hp-white); }
+.hp-promise{ position:relative; overflow:hidden; background:var(--hp-black); color:var(--hp-white); }
 .hp-promise .hp-label{ color:var(--hp-green); }
 .hp-promise .hp-label-dot{ border-radius:2px; }
 .hp-quote{ font-size:20px; font-weight:700; line-height:1.4; letter-spacing:-.015em; margin:0 0 36px; max-width:760px; }
@@ -202,11 +202,32 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
 .hp-badge p{ font-size:11px; color:var(--hp-grey); margin:3px 0 0; }
 
 /* ---------- 통신사 섹션 ---------- */
-.hp-carriers{ background:var(--hp-black); color:var(--hp-white); }
+.hp-carriers{ position:relative; overflow:hidden; background:var(--hp-black); color:var(--hp-white); }
 .hp-carriers-label .hp-label{ color:rgba(255,255,250,.6); }
 .hp-carriers-label .hp-label-dot{ border-radius:2px; background:var(--hp-green); }
-.hp-carriers-names{ font-size:40px; font-weight:800; letter-spacing:-.02em; line-height:1.15; margin:16px 0 24px; }
+.hp-carriers-names{ position:relative; z-index:1; font-size:40px; font-weight:800; letter-spacing:-.02em; line-height:1.15; margin:16px 0 24px; }
 .hp-carriers-body{ color:rgba(255,255,250,.8); max-width:420px; margin:0 0 20px; }
+
+/* 통신사 줄 호버 — 포인터 있는 기기에서만(터치/모바일 제외) */
+@media (hover:hover) and (pointer:fine){
+  .hp-carriers-names > div{ transition:color .3s ease, transform .3s ease, opacity .3s ease; }
+  .hp-carriers-names:hover > div{ opacity:.5; }
+  .hp-carriers-names > div:hover{ opacity:1; color:#3FA176; transform:translateX(8px); }
+}
+
+/* ---------- 커서 추적 초록빛 번짐 (검은 영역 전용) ----------
+   호스트(.hp-glow-host)는 position:relative + overflow:hidden이어야 하고,
+   본문 콘텐츠는 z-index:1로 glow 레이어 위에 뜬다. transform만 사용해 60fps 유지.
+   static/home-poetic-glow.js가 hover:hover+pointer:fine+!prefers-reduced-motion일 때만
+   동작시킨다 — 조건이 안 맞으면 JS가 아예 리스너를 안 걸어서 opacity:0로 고정된다. */
+.hp-glow-host{ position:relative; }
+.hp-glow{
+  position:absolute; top:0; left:0; width:420px; height:420px;
+  border-radius:50%; pointer-events:none; z-index:0; opacity:0;
+  background:radial-gradient(circle, rgba(30,111,80,.35), rgba(30,111,80,0) 70%);
+  transition:opacity .4s ease; will-change:transform, opacity;
+}
+.hp-glow-host > :not(.hp-glow){ position:relative; z-index:1; }
 
 /* ---------- 마무리 CTA ---------- */
 .hp-closing-ctas{ display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin-top:28px; }

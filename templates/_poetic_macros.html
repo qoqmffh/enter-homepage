@@ -9,7 +9,8 @@
 {% endmacro %}
 
 {% macro stat_card(num, label) %}
-<div class="hp-stat-card">
+<div class="hp-stat-card hp-glow-host">
+  <div class="hp-glow" aria-hidden="true"></div>
   <span class="hp-stat-num">{{ num }}</span>
   <span class="hp-stat-label">{{ label }}</span>
 </div>
