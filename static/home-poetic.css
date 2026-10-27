@@ -306,3 +306,55 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
   .hp-display-xl{ font-size:84px; line-height:1.095; }
   .hp-hero-sub{ max-width:none; white-space:nowrap; }
 }
+
+/* ---------- 인트로 (poetic.com 실제 구현 분석값 기준, 2026-10-27 확정) ----------
+   static/intro.js가 <head>의 동기 인라인 스크립트로 html.intro-pending이 붙었을 때만
+   DOM을 생성·재생한다. 헤드라인만 미리 숨겨두고(FOUC 방지), 헤더 등 나머지는
+   처음부터 보이는 채로 두고 인트로 레이어(검은 커버+색 커버 3장)가 전부 덮는다 —
+   JS가 실패해도 intro-pending 클래스가 안 붙으므로(동기 스크립트 자체가 실패하지
+   않는 한) 기본 상태가 항상 "홈이 바로 보임"이다. */
+html.intro-pending body{ overflow:hidden; }
+html.intro-pending .hp-hero .hp-display-xl span{ opacity:0; transform:translateY(24px); }
+
+#introRoot{ position:fixed; inset:0; z-index:100; pointer-events:none; }
+.intro-color{ position:fixed; inset:0; }
+.intro-color--3{ z-index:101; background:#5DB88C; }
+.intro-color--2{ z-index:102; background:#2F8F68; }
+.intro-color--1{ z-index:103; background:#1E6F50; }
+.intro-black{ position:fixed; inset:0; z-index:104; background:var(--hp-black); display:flex; align-items:center; justify-content:center; }
+
+.intro-logo-outer{ position:relative; width:312px; height:56px; overflow:hidden; }
+.intro-logo-box{ position:absolute; left:56px; top:0; width:256px; height:56px; display:flex; align-items:center; justify-content:center; }
+.intro-logo-text{ color:var(--hp-white); font-weight:700; font-size:52px; letter-spacing:-.02em; white-space:nowrap; opacity:0; }
+.intro-cursor{ position:absolute; left:0; top:0; width:56px; height:56px; background:#1E6F50; opacity:0; will-change:transform; }
+
+.intro-letters{ position:absolute; left:56px; top:0; width:256px; height:56px; display:flex; align-items:center; justify-content:center; }
+.intro-letters .ls-root{ display:inline-flex; }
+.intro-letters .ls-cells{ font-weight:700; font-size:52px; letter-spacing:-.02em; color:var(--hp-white); }
+
+.intro-skip{ position:fixed; right:20px; bottom:20px; z-index:105; background:none; border:none; font-size:13px; color:rgba(255,255,250,.6); cursor:pointer; padding:8px; font-family:inherit; }
+.intro-skip:hover{ color:rgba(255,255,250,1); }
+
+@media (max-width:767px){
+  .intro-logo-outer{ transform:scale(.7); }
+}
+
+@media (prefers-reduced-motion:reduce){
+  html.intro-pending body{ overflow:visible; }
+  html.intro-pending .hp-hero .hp-display-xl span{ opacity:1; transform:none; }
+}
+
+/* ---------- Letter Swap (static/letter-swap.js) ----------
+   글자마다 칸(.ls-cell, overflow:hidden)에 primary/secondary 두 겹을 쌓아
+   롤 전환한다. .ls-sr-only는 스크린리더용 원문, .ls-cells는 실제 보이는 글자들
+   (aria-hidden) — 헤더 로고 호버 pingpong과 B안 인트로 글자 등장에 쓰인다. */
+.ls-root{ position:relative; display:inline-flex; align-items:center; }
+.ls-sr-only{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+}
+.ls-cells{ display:inline-flex; }
+.ls-cell{ position:relative; display:inline-block; overflow:hidden; white-space:pre; }
+.ls-cell.ls-space{ overflow:visible; }
+.ls-primary{ position:relative; display:inline-block; top:0; }
+.ls-secondary{ position:absolute; left:0; right:0; top:100%; display:inline-block; }
