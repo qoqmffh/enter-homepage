@@ -328,9 +328,6 @@ html.intro-pending .hp-hero .hp-display-xl span{ opacity:0; transform:translateY
 .intro-logo-text{ color:var(--hp-white); font-weight:700; font-size:52px; letter-spacing:-.02em; white-space:nowrap; opacity:0; }
 .intro-cursor{ position:absolute; left:0; top:0; width:56px; height:56px; background:#1E6F50; opacity:0; will-change:transform; }
 
-.intro-letters{ position:absolute; left:56px; top:0; width:256px; height:56px; display:flex; align-items:center; justify-content:center; }
-.intro-letters .ls-root{ display:inline-flex; }
-.intro-letters .ls-cells{ font-weight:700; font-size:52px; letter-spacing:-.02em; color:var(--hp-white); }
 
 .intro-skip{ position:fixed; right:20px; bottom:20px; z-index:105; background:none; border:none; font-size:13px; color:rgba(255,255,250,.6); cursor:pointer; padding:8px; font-family:inherit; }
 .intro-skip:hover{ color:rgba(255,255,250,1); }

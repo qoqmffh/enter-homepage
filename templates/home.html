@@ -6,7 +6,7 @@
 (function () {
   try {
     var params = new URLSearchParams(location.search);
-    var forced = params.get('intro'); // 'a' | 'b' | '1' | null
+    var forced = params.get('intro') === '1';
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var skip = false;
     if (!forced) {
@@ -17,7 +17,6 @@
     }
     if (!reduce && !skip) {
       document.documentElement.classList.add('intro-pending');
-      window.__introVariant = (forced === 'a' || forced === 'b') ? forced : 'a';
     }
   } catch (e) {}
 })();

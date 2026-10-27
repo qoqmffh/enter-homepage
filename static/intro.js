@@ -1,7 +1,8 @@
 /* ENTER 홈 — POETIC 인트로. poetic.com 실제 구현 분석값 기준(기획서/클로드코드_홈_POETIC_지시서.md §3).
+   A/B 비교 후 A안(로고 opacity 페이드 + 커서 바)으로 확정.
    <head>의 동기 인라인 스크립트가 html.intro-pending을 붙였을 때만 동작한다.
-   GSAP·LetterSwap이 없거나 실패하면 즉시 abortToPlainHome()으로 빠져서
-   레이어 없이 홈이 바로 보이게 한다 — 인트로는 항상 "없어도 되는" 장식이다. */
+   GSAP이 없거나 실패하면 즉시 레이어 없이 홈이 바로 보이게 한다 — 인트로는
+   항상 "없어도 되는" 장식이다. */
 (function () {
   'use strict';
 
@@ -13,13 +14,12 @@
 
   if (!document.documentElement.classList.contains('intro-pending')) return;
 
-  if (typeof gsap === 'undefined' || typeof LetterSwap === 'undefined') {
+  if (typeof gsap === 'undefined') {
     unlockAndReveal();
     return;
   }
 
   try {
-    var variant = window.__introVariant === 'b' ? 'b' : 'a';
     var WORD = 'ENTER';
 
     var root = document.createElement('div');
@@ -32,9 +32,7 @@
       '<div class="intro-black">' +
         '<div class="intro-logo-outer">' +
           '<div class="intro-cursor"></div>' +
-          (variant === 'a'
-            ? '<div class="intro-logo-box"><span class="intro-logo-text">' + WORD + '</span></div>'
-            : '<div class="intro-letters"></div>') +
+          '<div class="intro-logo-box"><span class="intro-logo-text">' + WORD + '</span></div>' +
         '</div>' +
       '</div>' +
       '<button type="button" class="intro-skip">건너뛰기 →</button>';
@@ -45,17 +43,8 @@
     var color1 = root.querySelector('.intro-color--1');
     var black = root.querySelector('.intro-black');
     var cursor = root.querySelector('.intro-cursor');
+    var logoText = root.querySelector('.intro-logo-text');
     var headlineSpans = document.querySelectorAll('.hp-hero .hp-display-xl span');
-
-    var letterSwaps = [];
-    if (variant === 'b') {
-      var lettersHost = root.querySelector('.intro-letters');
-      for (var i = 0; i < WORD.length; i++) {
-        var cell = document.createElement('span');
-        lettersHost.appendChild(cell);
-        letterSwaps.push(LetterSwap.mount(cell, '', { stagger: 0, duration: 0.5, ease: 'back.out(1.6)' }));
-      }
-    }
 
     // ---- 안전장치: 4초 강제 종료 / 완료 처리 ----
     var finished = false;
@@ -92,24 +81,8 @@
     // ---- 타임라인 ----
     var tl = gsap.timeline({ onComplete: finishIntro });
 
-    // 0.5s~1.5s 로고 등장
-    if (variant === 'a') {
-      var logoText = root.querySelector('.intro-logo-text');
-      // opacity 0->1, 1s 애니메이션의 70% 지점(=0.7s)에 완전히 보임 → 0.7s 구간만 트윈
-      tl.fromTo(logoText, { opacity: 0 }, { opacity: 1, duration: 0.7, ease: 'none' }, 0.5);
-    } else {
-      // B안: 커서가 지나가는 타이밍에 맞춰 글자가 하나씩 Letter Swap으로 등장
-      (function () {
-        for (var li = 0; li < letterSwaps.length; li++) {
-          (function (idx) {
-            var t = 0.5 + ((idx + 0.5) / WORD.length) * 0.5;
-            tl.call(function () {
-              letterSwaps[idx].replaceText(WORD[idx], { stagger: 0 });
-            }, null, t);
-          })(li);
-        }
-      })();
-    }
+    // 0.5s~1.2s 로고 등장: opacity 0->1, 1s 애니메이션의 70% 지점(=0.7s)에 완전히 보임
+    tl.fromTo(logoText, { opacity: 0 }, { opacity: 1, duration: 0.7, ease: 'none' }, 0.5);
 
     // 커서 바: 로고 왼쪽 밖(-56px)에서 로고 오른쪽 끝(로고폭)까지, 1s의 앞 50% 구간
     tl.set(cursor, { x: 0, opacity: 0 }, 0.5);
