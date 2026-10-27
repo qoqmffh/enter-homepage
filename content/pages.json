@@ -6,15 +6,20 @@
     "date_published": "2026-10-19",
     "date_modified": "2026-10-22",
     "eyebrow": "ENTER · 유선 도매",
-    "eyebrow_v2": "#1 · MAIN",
+    "eyebrow_v2": "§00 · WHOLESALE SPECIFICATION",
+    "status_badge": "신규 거래처 상담 중",
     "cta_v2": "정책 받기",
     "h1": "초대형 유선전문도매는<br>과연 정책이 얼마나 좋을까요?",
     "sub": "복잡한 서류 없이, 카톡 한 번으로 정책부터 접수까지",
+    "abstract_box": {
+      "label": "ABSTRACT",
+      "text": "ENTER는 2010년 설립, 16년간 유선(인터넷·IPTV)을 전문으로 공급해 온 도매 총판입니다. 정산 지연 0회 기록과 하드마킹 기반 고객정보 보호 체계를 운영합니다."
+    },
     "stat_bar_v2": [
-      {"label": "설립", "num": "16년", "color": "var(--v2-black)"},
-      {"label": "고객사", "num": "3,000+", "color": "var(--v2-blue)"},
-      {"label": "개통건", "num": "4,000+", "color": "var(--v2-green)"},
-      {"label": "정산누락", "num": "ZERO", "color": "var(--v2-brown)"}
+      {"label": "설립", "num": "16년", "sub": "2010년 설립", "color": "var(--ink)"},
+      {"label": "고객사", "num": "3,000+", "sub": "전국 거래처", "color": "var(--blue)"},
+      {"label": "개통건", "num": "4,000+", "sub": "월 평균 처리", "color": "var(--green)"},
+      {"label": "정산누락", "num": "ZERO", "sub": "90일 기록 전체", "color": "var(--gold)"}
     ],
     "trustbar": [
       "2010년 설립",
@@ -25,7 +30,8 @@
     ],
     "cta_primary": "오늘 정책 받아보기",
     "why_summary": {
-      "eyebrow": "왜 ENTER",
+      "eyebrow": "§01 · WHY ENTER",
+      "slug_label": "/why",
       "h2": "정책은 기본, 남는 이유는 일처리입니다",
       "cards": [
         {
@@ -52,15 +58,26 @@
       "link_text": "자세히 보기 →"
     },
     "start_summary": {
-      "eyebrow": "거래 시작하기",
+      "eyebrow": "§03 · START HERE",
+      "slug_label": "/start",
       "h2": "서류 없이, 접수와 개통부터 먼저 하세요",
       "lead": "접수 후 청약까지 보통 1시간, 빠르면 3분. 첫 정산 전에만 서류 4종만 주시면 됩니다.",
       "link_text": "자세히 보기 →",
-      "cta_text": "지금 연락하고 시작하기"
+      "cta_text": "지금 연락하고 시작하기",
+      "headers": ["지금 하는 일", "시작 방법", "받는 것"],
+      "rows": [
+        {"n": "01", "have": "전화·문자·카톡으로 연락", "start": "정책 공지 카톡방 입장", "benefit": "실시간 정책 확인"},
+        {"n": "02", "have": "업무방 개설", "start": "서류 없이 접수 → 개통 진행", "benefit": "보통 1시간, 빠르면 3분"},
+        {"n": "03", "have": "개통 완료", "start": "첫 정산 전 서류 4종 제출", "benefit": "사업자등록증·통장사본·신분증·휴대폰"},
+        {"n": "04", "have": "거래 조건", "start": "계약금·월정료 없음", "benefit": "최소 실적 의무도 없음"}
+      ]
     },
     "evidence_summary": {
-      "eyebrow": "말보다 숫자로",
-      "h2": "실제 정산일 전체, 90일 중 늦은 적 0회",
+      "eyebrow": "§02 · AUDIT LEDGER",
+      "slug_label": "/ledger",
+      "badge": "실제 정산 기록 · 90일분",
+      "status_label": "정산완료",
+      "h2": "말이 아니라 숫자로 증명합니다",
       "ticker_heading": "",
       "ticker_rows": [
         {
@@ -607,27 +624,30 @@
       "link_text": "정산 방식 자세히 보기 →"
     },
     "startup_summary": {
-      "eyebrow": "창업을 준비 중이시라면",
+      "eyebrow": "§04 · FOR STARTERS",
+      "slug_label": "/startup",
       "h2": "휴대폰 매장만 하면, 유선 실적은 그냥 넘어갑니다",
       "lead": "건당 40만원 차이입니다.",
       "cta_text": "창업 상담받기",
       "link_slug": "startup"
     },
     "products_summary": {
-      "eyebrow": "취급 상품",
+      "eyebrow": "§05 · PRODUCTS",
+      "slug_label": "/products",
       "h2": "유선은 한 곳에서",
       "link_text": "더 보기 →",
       "link_slug": "products",
-      "list": [
-        "🌐 인터넷",
-        "📺 IPTV",
-        "📹 CCTV",
-        "🏠 가전렌탈",
-        "📱 유심"
+      "cards": [
+        {"n": "01", "name": "인터넷", "desc": "유선 인터넷 공급"},
+        {"n": "02", "name": "IPTV", "desc": "인터넷 결합 상품"},
+        {"n": "03", "name": "CCTV", "desc": "소상공인 매장용"},
+        {"n": "04", "name": "가전렌탈", "desc": "인터넷 결합 렌탈"},
+        {"n": "05", "name": "유심", "desc": "무선 단가 별도 문의"}
       ]
     },
     "about_summary": {
-      "eyebrow": "ENTER는",
+      "eyebrow": "§06 · ABOUT",
+      "slug_label": "/about",
       "h2": "2010년부터, 3,000곳의 거래처와 함께",
       "badges": [
         "15년+ 경력",
@@ -638,7 +658,8 @@
       "link_slug": "about"
     },
     "faq_summary": {
-      "eyebrow": "FAQ",
+      "eyebrow": "§07 · FAQ",
+      "slug_label": "/faq",
       "h2": "자주 묻는 질문",
       "link_text": "FAQ 전체보기 →",
       "link_slug": "faq",
@@ -658,7 +679,8 @@
       ]
     },
     "blog_summary": {
-      "eyebrow": "블로그",
+      "eyebrow": "§08 · BLOG",
+      "slug_label": "/blog",
       "h2": "판매점 사장님이 궁금한 것들",
       "link_text": "블로그 전체보기 →",
       "link_slug": "blog",
@@ -681,7 +703,10 @@
       ]
     },
     "final_cta": {
+      "eyebrow": "§09 · CONTACT",
+      "slug_label": "/contact",
       "text": "복잡한 서류 없이, 카톡 한 번이면 시작됩니다",
+      "sub": "전화·문자·카카오톡 중 편한 방법으로 연락 주시면, 오늘 바로 정책표를 보내드립니다.",
       "cta_text": "지금 바로 문의하기"
     }
   },

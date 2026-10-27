@@ -2,10 +2,21 @@
 {% block content %}
 <section class="hero-v2">
   <div class="wrap hero-v2-grid">
-    <div class="eyebrow-v2">{{ page.eyebrow_v2 }}</div>
-    <h1>{{ page.h1 | safe }}</h1>
-    <p class="sub-v2">{{ page.sub }}</p>
-    <a class="hero-v2-cta" href="#"><span class="cta-icon"></span><span class="cta-label">{{ page.cta_v2 }}</span></a>
+    <div class="hero-v2-layout">
+      <div class="hero-v2-main">
+        <div class="eyebrow-v2">{{ page.eyebrow_v2 }}</div>
+        <h1>{{ page.h1 | safe }}</h1>
+        <p class="sub-v2">{{ page.sub }}</p>
+        <a class="hero-v2-cta" href="#">
+          <span class="cta-label">{{ page.cta_v2 }}</span>
+          <span class="cta-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+      </div>
+      <div class="abstract-box">
+        <div class="abstract-label">{{ page.abstract_box.label }}</div>
+        <p>{{ page.abstract_box.text }}</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -14,123 +25,173 @@
   <div class="stat-v2">
     <div class="stat-v2-label">{{ s.label }}</div>
     <div class="stat-v2-num" style="color:{{ s.color }}">{{ s.num }}</div>
+    <div class="stat-v2-sub">{{ s.sub }}</div>
   </div>
   {% endfor %}
 </div>
 
-<!-- 2. 왜 ENTER 요약 -->
+<!-- §01 왜 ENTER -->
 <section>
   <div class="wrap">
-    <div class="eyebrow">{{ page.why_summary.eyebrow }}</div>
-    <h2 style="font-size:22px">{{ page.why_summary.h2 }}</h2>
-    <div class="cards">
+    <div class="section-head"><span class="idx">{{ page.why_summary.eyebrow }}</span><span class="label">{{ page.why_summary.slug_label }}</span></div>
+    <h2 class="h2-xl">{{ page.why_summary.h2 }}</h2>
+    <div class="reason-list">
       {% for c in page.why_summary.cards %}
-      <div class="card"><span class="num">{{ c.num }}</span><h3>{{ c.title }}</h3><p>{{ c.text }}</p></div>
+      <div class="reason-row">
+        <div class="rn">{{ "%02d"|format(c.num) }}</div>
+        <div><h3>{{ c.title }}</h3><p>{{ c.text }}</p></div>
+      </div>
       {% endfor %}
     </div>
-    <p style="margin-top:14px"><a class="more-link" href="why.html">{{ page.why_summary.link_text }}</a></p>
+    <p style="margin-top:16px"><a class="more-link" href="why.html">{{ page.why_summary.link_text }}</a></p>
   </div>
 </section>
 
-<!-- 3. 증거를 하나 크게 -->
+<!-- §02 정산 원장(AUDIT LEDGER) -->
 <section>
   <div class="wrap">
-    <div class="eyebrow">{{ page.evidence_summary.eyebrow }}</div>
-    <h2 style="font-size:22px">{{ page.evidence_summary.h2 }}</h2>
+    <div class="section-head"><span class="idx">{{ page.evidence_summary.eyebrow }}</span><span class="label">{{ page.evidence_summary.slug_label }}</span></div>
+    <div class="ledger-top">
+      <h2 class="h2-xl">{{ page.evidence_summary.h2 }}</h2>
+      <span class="ledger-badge">{{ page.evidence_summary.badge }}</span>
+    </div>
+    <div class="ticker-head"><span class="h-date">날짜</span><span class="h-count">건수</span><span class="h-amount">정산금액</span><span class="h-status">상태</span></div>
     <div class="ticker-wrap">
       <div class="ticker-list">
         {% for row in page.evidence_summary.ticker_rows %}
-        <div class="ticker-row"><span class="t-date">{{ row.date }} ({{ row.dow[:1] }})</span><span class="t-count">{{ row.count }}건</span><span class="t-amount">{{ row.amount }}</span></div>
+        <div class="ticker-row"><span class="t-date">{{ row.date }} ({{ row.dow[:1] }})</span><span class="t-count">{{ row.count }}건</span><span class="t-amount">{{ row.amount }}</span><span class="t-status">{{ page.evidence_summary.status_label }}</span></div>
         {% endfor %}
         {% for row in page.evidence_summary.ticker_rows %}
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">{{ row.date }} ({{ row.dow[:1] }})</span><span class="t-count">{{ row.count }}건</span><span class="t-amount">{{ row.amount }}</span></div>
+        <div class="ticker-row" aria-hidden="true"><span class="t-date">{{ row.date }} ({{ row.dow[:1] }})</span><span class="t-count">{{ row.count }}건</span><span class="t-amount">{{ row.amount }}</span><span class="t-status">{{ page.evidence_summary.status_label }}</span></div>
         {% endfor %}
       </div>
     </div>
-    <p style="margin-top:14px"><a class="more-link" href="settlement.html">{{ page.evidence_summary.link_text }}</a></p>
+    <p style="margin-top:16px"><a class="more-link" href="settlement.html">{{ page.evidence_summary.link_text }}</a></p>
   </div>
 </section>
 
-<!-- 4. 거래 시작하기 요약 -->
+<!-- §03 거래 시작하기 (여정표) -->
 <section>
   <div class="wrap">
-    <div class="eyebrow">{{ page.start_summary.eyebrow }}</div>
-    <h2 style="font-size:22px">{{ page.start_summary.h2 }}</h2>
+    <div class="section-head"><span class="idx">{{ page.start_summary.eyebrow }}</span><span class="label">{{ page.start_summary.slug_label }}</span></div>
+    <h2 class="h2-xl">{{ page.start_summary.h2 }}</h2>
     <p class="lead">{{ page.start_summary.lead }}</p>
-    <p style="margin-top:14px"><a class="btn btn-primary" href="#">{{ page.start_summary.cta_text }}</a></p>
+    <div class="journey-table-wrap">
+      <table class="journey-table">
+        <thead><tr><th></th>{% for h in page.start_summary.headers %}<th>{{ h }}</th>{% endfor %}</tr></thead>
+        <tbody>
+          {% for r in page.start_summary.rows %}
+          <tr>
+            <td class="jt-n">{{ r.n }}</td>
+            <td data-label="{{ page.start_summary.headers[0] }}">{{ r.have }}</td>
+            <td data-label="{{ page.start_summary.headers[1] }}">{{ r.start }}</td>
+            <td data-label="{{ page.start_summary.headers[2] }}">{{ r.benefit }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:16px"><a class="btn btn-primary" href="#">{{ page.start_summary.cta_text }}</a></p>
     <p style="margin-top:10px"><a class="more-link" href="start.html">{{ page.start_summary.link_text }}</a></p>
   </div>
 </section>
 
-<!-- 5. 창업 준비 중이시라면 -->
+<!-- §04 창업 준비 중이시라면 -->
 <section>
   <div class="wrap">
-    <div class="eyebrow">{{ page.startup_summary.eyebrow }}</div>
-    <h2 style="font-size:22px">{{ page.startup_summary.h2 }}</h2>
-    <p class="lead">{{ page.startup_summary.lead }}</p>
-    <p style="margin-top:14px"><a class="btn btn-primary" href="#">{{ page.startup_summary.cta_text }}</a></p>
+    <div class="section-head"><span class="idx">{{ page.startup_summary.eyebrow }}</span><span class="label">{{ page.startup_summary.slug_label }}</span></div>
+    <div class="lead-row">
+      <div class="lead-row-main">
+        <h2 class="h2-xl">{{ page.startup_summary.h2 }}</h2>
+        <p class="lead">{{ page.startup_summary.lead }}</p>
+      </div>
+      <div>
+        <p style="margin-top:14px"><a class="btn btn-primary" href="#">{{ page.startup_summary.cta_text }}</a></p>
+      </div>
+    </div>
     <p style="margin-top:10px"><a class="more-link" href="{{ page.startup_summary.link_slug }}.html">자세히 보기 →</a></p>
   </div>
 </section>
 
-<!-- 6. 취급상품 미니 -->
+<!-- §05 취급상품 -->
 <section>
   <div class="wrap">
-    <div class="eyebrow">{{ page.products_summary.eyebrow }}</div>
-    <h2 style="font-size:22px">{{ page.products_summary.h2 }}</h2>
-    <div class="doclist" style="display:flex">
-      {% for i in page.products_summary.list %}<span style="background:var(--paper-dim); border:1px solid var(--line); border-radius:10px; padding:9px 12px; font-size:13px">{{ i }}</span>{% endfor %}
+    <div class="section-head"><span class="idx">{{ page.products_summary.eyebrow }}</span><span class="label">{{ page.products_summary.slug_label }}</span></div>
+    <h2 class="h2-xl">{{ page.products_summary.h2 }}</h2>
+    <div class="category-grid">
+      {% for c in page.products_summary.cards %}
+      <div class="category-card">
+        <div class="cc-n">{{ c.n }}</div>
+        <div class="cc-name">{{ c.name }}</div>
+        <div class="cc-desc">{{ c.desc }}</div>
+      </div>
+      {% endfor %}
     </div>
-    <p style="margin-top:14px"><a class="more-link" href="{{ page.products_summary.link_slug }}.html">{{ page.products_summary.link_text }}</a></p>
+    <p style="margin-top:16px"><a class="more-link" href="{{ page.products_summary.link_slug }}.html">{{ page.products_summary.link_text }}</a></p>
   </div>
 </section>
 
-<!-- 7. 회사소개 압축 -->
+<!-- §06 회사소개 압축 -->
 <section>
   <div class="wrap">
-    <div class="eyebrow">{{ page.about_summary.eyebrow }}</div>
-    <h2 style="font-size:22px">{{ page.about_summary.h2 }}</h2>
-    <div class="trustbar" style="margin:14px 0 0">
-      {% for b in page.about_summary.badges %}<span style="background:var(--paper-dim); border:1px solid var(--line); color:var(--ink)">{{ b }}</span>{% endfor %}
+    <div class="section-head"><span class="idx">{{ page.about_summary.eyebrow }}</span><span class="label">{{ page.about_summary.slug_label }}</span></div>
+    <h2 class="h2-xl">{{ page.about_summary.h2 }}</h2>
+    <div class="inline-divided" style="margin-top:14px">
+      {% for b in page.about_summary.badges %}<span>{{ b }}</span>{% endfor %}
     </div>
-    <p style="margin-top:14px"><a class="more-link" href="{{ page.about_summary.link_slug }}.html">{{ page.about_summary.link_text }}</a></p>
+    <p style="margin-top:16px"><a class="more-link" href="{{ page.about_summary.link_slug }}.html">{{ page.about_summary.link_text }}</a></p>
   </div>
 </section>
 
-<!-- 8. FAQ 미리보기 -->
+<!-- §07 FAQ 미리보기 -->
 <section>
   <div class="wrap">
-    <div class="eyebrow">{{ page.faq_summary.eyebrow }}</div>
-    <h2 style="font-size:22px">{{ page.faq_summary.h2 }}</h2>
+    <div class="section-head"><span class="idx">{{ page.faq_summary.eyebrow }}</span><span class="label">{{ page.faq_summary.slug_label }}</span></div>
+    <h2 class="h2-xl">{{ page.faq_summary.h2 }}</h2>
     {% for item in page.faq_summary.list %}
     <div class="faq-item">
       <div class="faq-q">{{ item.q }}</div>
       <div class="faq-a">{{ item.a }}</div>
     </div>
     {% endfor %}
-    <p style="margin-top:14px"><a class="more-link" href="{{ page.faq_summary.link_slug }}.html">{{ page.faq_summary.link_text }}</a></p>
+    <p style="margin-top:16px"><a class="more-link" href="{{ page.faq_summary.link_slug }}.html">{{ page.faq_summary.link_text }}</a></p>
   </div>
 </section>
 
-<!-- 9. 블로그 최신글 -->
+<!-- §08 블로그 최신글 -->
 <section>
   <div class="wrap">
-    <div class="eyebrow">{{ page.blog_summary.eyebrow }}</div>
-    <h2 style="font-size:22px">{{ page.blog_summary.h2 }}</h2>
-    <ul class="bloglist">
+    <div class="section-head"><span class="idx">{{ page.blog_summary.eyebrow }}</span><span class="label">{{ page.blog_summary.slug_label }}</span></div>
+    <h2 class="h2-xl">{{ page.blog_summary.h2 }}</h2>
+    <ul class="blog-row-list">
       {% for p in page.blog_summary.list %}
       <li><a href="{{ p.slug }}.html">{{ p.title }}</a> <span class="tag">{{ p.tag }}</span></li>
       {% endfor %}
     </ul>
-    <p style="margin-top:14px"><a class="more-link" href="{{ page.blog_summary.link_slug }}.html">{{ page.blog_summary.link_text }}</a></p>
+    <p style="margin-top:16px"><a class="more-link" href="{{ page.blog_summary.link_slug }}.html">{{ page.blog_summary.link_text }}</a></p>
   </div>
 </section>
 
-<!-- 10. 최종 CTA -->
+<!-- §09 최종 CTA / 연락 카드 -->
 <section>
-  <div class="wrap" style="text-align:center">
-    <p class="tagline" style="font-size:18px">{{ page.final_cta.text }}</p>
-    <p style="margin-top:14px"><a class="btn btn-primary" href="#">{{ page.final_cta.cta_text }}</a></p>
+  <div class="wrap final-cta-block">
+    <div class="section-head"><span class="idx">{{ page.final_cta.eyebrow }}</span><span class="label">{{ page.final_cta.slug_label }}</span></div>
+    <p class="tagline">{{ page.final_cta.text }}</p>
+    <p class="lead" style="margin-top:8px">{{ page.final_cta.sub }}</p>
+    <div class="contact-cards">
+      <a class="contact-card" href="tel:{{ site.phone }}">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.3 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.5 21 3 13.5 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.3 1l-2.2 2.2Z"/></svg>
+        <span>전화</span>
+      </a>
+      <a class="contact-card" href="sms:{{ site.phone }}">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.3c-1.2 0-2.3-.2-3.4-.7L3 20l1-5.9a8.3 8.3 0 0 1-.8-3.6A8.4 8.4 0 0 1 12 2a8.4 8.4 0 0 1 9 8.5v1Z"/></svg>
+        <span>문자</span>
+      </a>
+      <a class="contact-card" href="#">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3C6.9 3 3 6.3 3 10.4c0 2.6 1.6 4.9 4 6.3l-1 3.6 4-2.1c.6.1 1.3.2 2 .2 5.1 0 9-3.3 9-7.4S17.1 3 12 3Z"/></svg>
+        <span>카카오톡</span>
+      </a>
+    </div>
   </div>
 </section>
 {% endblock %}
