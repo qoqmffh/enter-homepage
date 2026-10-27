@@ -56,6 +56,8 @@
     <p class="hp-headline-md hp-center hp-two-tone">
       <span class="hp-ink">{{ p.statement.sub_ink }}</span><span class="hp-green">{{ p.statement.sub_green }}</span>
     </p>
+  </div>
+  <div class="hp-wrap">
     <div class="hp-photo-block" style="background-image:url('{{ p.statement.photo_src }}')">
       <div class="hp-photo-overlay"></div>
       <div class="hp-photo-corner hp-photo-corner--tl">{{ p.statement.photo_top_left }}</div>
@@ -168,23 +170,27 @@
 </section>
 
 <section class="hp-section hp-promise" id="promise">
-  <div class="hp-wrap">
-    {{ m.section_label(p.promise.label) }}
-    <blockquote class="hp-quote">{{ p.promise.quote }}</blockquote>
-    <div class="hp-promise-foot">
-      <div class="hp-promise-person">
-        <div class="hp-promise-photo" style="background-image:url('{{ p.promise.photo_src }}')"></div>
-        <div>
-          <span class="hp-promise-name">{{ p.promise.name }}</span>
-          <span class="hp-promise-title">{{ p.promise.title }}</span>
-          {{ m.pill(p.promise.cta, p.promise.cta_slug ~ '.html', 'inverted') }}
+  <div class="hp-wrap hp-promise-grid">
+    <div class="hp-promise-photo-col">
+      <div class="hp-promise-photo-lg" style="background-image:url('{{ p.promise.photo_src }}')"></div>
+    </div>
+    <div class="hp-promise-content">
+      {{ m.section_label(p.promise.label) }}
+      <blockquote class="hp-quote">{{ p.promise.quote }}</blockquote>
+      <div class="hp-promise-foot">
+        <div class="hp-promise-person">
+          <div>
+            <span class="hp-promise-name">{{ p.promise.name }}</span>
+            <span class="hp-promise-title">{{ p.promise.title }}</span>
+            {{ m.pill(p.promise.cta, p.promise.cta_slug ~ '.html', 'inverted') }}
+          </div>
         </div>
-      </div>
-      <div class="hp-promise-carousel">
-        <span class="hp-mono-muted">{{ p.promise.carousel_label }}</span>
-        <div class="hp-carousel-btns">
-          <button type="button" aria-label="이전" disabled>{{ m.icon('arrow-left') }}</button>
-          <button type="button" aria-label="다음" disabled>{{ m.icon('arrow-right') }}</button>
+        <div class="hp-promise-carousel">
+          <span class="hp-mono-muted">{{ p.promise.carousel_label }}</span>
+          <div class="hp-carousel-btns">
+            <button type="button" aria-label="이전" disabled>{{ m.icon('arrow-left') }}</button>
+            <button type="button" aria-label="다음" disabled>{{ m.icon('arrow-right') }}</button>
+          </div>
         </div>
       </div>
     </div>
