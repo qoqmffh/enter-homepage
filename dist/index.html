@@ -25,33 +25,7 @@
 }
 </script>
 
-<script>
-(function () {
-  try {
-    var params = new URLSearchParams(location.search);
-    var force = params.get('intro') === '1';
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var skip = false;
-    if (!force) {
-      try {
-        var last = localStorage.getItem('enter_intro_seen');
-        if (last && (Date.now() - parseInt(last, 10)) < 24 * 60 * 60 * 1000) skip = true;
-      } catch (e) {}
-    }
-    if (!reduce && !skip) {
-      document.documentElement.classList.add('cinema-pending');
-    }
-  } catch (e) {}
-})();
-</script>
-<link rel="stylesheet" href="static/cinema.css">
-<noscript><style>.footerbar{transform:none !important}</style></noscript>
-<script src="static/vendor/gsap.min.js" defer></script>
-<script src="static/vendor/ScrollTrigger.min.js" defer></script>
-<script src="static/vendor/SplitText.min.js" defer></script>
-<script src="static/vendor/Flip.min.js" defer></script>
-<script src="static/vendor/lenis.min.js" defer></script>
-<script src="static/cinema-intro.js" defer></script>
+<link rel="stylesheet" href="static/home-poetic.css">
 
 </head>
 <body>
@@ -64,19 +38,14 @@ FORM: itsua.com editorial grid + the user's own Desktop-Home.png format, refined
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance.
 -->
 
-<header class="site">
-  <div class="wrap">
-    <div class="brand-group">
-      <a class="brand" href="index.html">ENTER<small>유선 전문 총판 · (유)위드컴퍼니</small></a>
-      
-    </div>
-    <nav class="site">
-      
-      <a href="index.html" class="active">홈</a>
+
+<header class="hp-header">
+  <div class="hp-header-inner">
+    <a class="hp-brand" href="index.html">ENTER</a>
+    <input type="checkbox" id="hpNavToggle" class="hp-nav-toggle-input">
+    <nav class="hp-nav">
       
       <a href="why.html">왜 ENTER</a>
-      
-      <a href="start.html">거래 시작하기</a>
       
       <a href="settlement.html">정산·DB보호</a>
       
@@ -84,11 +53,28 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       
       <a href="startup.html">창업자 가이드</a>
       
-      <a href="faq.html">FAQ</a>
+      <a href="about.html">회사소개</a>
       
-      <a href="blog.html">블로그</a>
+    </nav>
+    <div class="hp-header-right">
       
-      <a href="stories.html">거래처 이야기</a>
+<a href="#" class="hp-pill hp-pill--primary">정책 받기</a>
+
+      <label for="hpNavToggle" class="hp-nav-toggle" aria-label="메뉴">
+
+<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+
+</label>
+    </div>
+    <nav class="hp-nav-mobile">
+      
+      <a href="why.html">왜 ENTER</a>
+      
+      <a href="settlement.html">정산·DB보호</a>
+      
+      <a href="products.html">취급상품</a>
+      
+      <a href="startup.html">창업자 가이드</a>
       
       <a href="about.html">회사소개</a>
       
@@ -96,46 +82,487 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   </div>
 </header>
 
+
 <main>
 
 
-<!-- 오프닝 스테이지 — 기본 display:none, html.cinema-pending일 때만 보임(cinema.css) -->
-<div class="h-cinema-stage" id="cinemaStage" aria-hidden="true">
-  <div class="h-cinema-cuts">
-    
-    <div class="h-cinema-cut" data-tone="ink">2010년.</div>
-    
-    <div class="h-cinema-cut" data-tone="ink">거래처 3,000곳.</div>
-    
-    <div class="h-cinema-cut" data-tone="ink">매달 4,000건.</div>
-    
-    <div class="h-cinema-cut" data-tone="gold">정산 지연, 0회.</div>
-    
-  </div>
-  <div class="h-cinema-wordmark" id="cinemaWordmark">ENTER</div>
-</div>
-<button class="h-cinema-skip" id="cinemaSkip" type="button">건너뛰기 →</button>
 
-<!-- 장면 1 · 헤드라인 (1단계: 정적 placeholder. 2단계에서 cinema-scenes.js가 핀+스크럽 연결) -->
-<section class="h-cinema-scene" id="scene-headline" data-scene-id="headline">
-  <div class="wrap">
-    <div class="h-cinema-scene-label">SCENE 01 · 헤드라인</div>
-    
-    <h1 class="h-cinema-line" data-line>초대형 유선전문도매,</h1>
-    
-    <h1 class="h-cinema-line" data-line>정책이 얼마나 좋을까요?</h1>
-    
+<section class="hp-section hp-hero" id="hero">
+  <div class="hp-wrap">
+    <div class="hp-hero-head">
+      <h1 class="hp-display-xl">
+        <span>초대형 유선전문도매,</span><span>정책이 얼마나 좋을까요?</span>
+      </h1>
+      <p class="hp-hero-sub">매달 4,000건을 처리하는 유선 전문 총판. 정책부터 정산까지, 숫자로 보여드립니다.</p>
+      <div class="hp-hero-ctas">
+        
+<a href="#" class="hp-pill hp-pill--primary"><span class="hp-pill-dot"></span>카카오톡으로 정책 받기</a>
+
+        
+<a href="tel:010-2222-4183" class="hp-pill hp-pill--secondary">전화 010-2222-4183</a>
+
+      </div>
+    </div>
+    <div class="hp-hairline"></div>
+    <div class="hp-stats" id="stats">
+      
+<div class="hp-stat-card">
+  <span class="hp-stat-num">16년</span>
+  <span class="hp-stat-label">2010년부터 유선 한 길</span>
+</div>
+
+<div class="hp-stat-card">
+  <span class="hp-stat-num">3,000곳</span>
+  <span class="hp-stat-label">전국 거래처</span>
+</div>
+
+<div class="hp-stat-card">
+  <span class="hp-stat-num">4,000건</span>
+  <span class="hp-stat-label">월 평균 개통</span>
+</div>
+
+<div class="hp-stat-card">
+  <span class="hp-stat-num">0회</span>
+  <span class="hp-stat-label">최근 90번의 정산, 지연 횟수</span>
+</div>
+
+    </div>
   </div>
 </section>
 
-<!-- 장면 2~6 + 엔딩 크레딧은 2·3단계에서 추가됩니다. -->
+<section class="hp-section hp-statement" id="statement">
+  <div class="hp-wrap hp-wrap--narrow">
+    <h2 class="hp-headline-lg hp-center">정책은 물량이 정합니다.</h2>
+    <p class="hp-headline-md hp-center hp-two-tone">
+      <span class="hp-ink">ENTER의 월 4,000건이 </span><span class="hp-green">상부에서 받는 정책의 근거입니다.</span>
+    </p>
+    <div class="hp-photo-block" style="background-image:url('static/photos/office.jpg')">
+      <div class="hp-photo-overlay"></div>
+      <div class="hp-photo-corner hp-photo-corner--tl">SYS // OPERATIONAL_HUB</div>
+      <div class="hp-photo-corner hp-photo-corner--bl">SEOUL 37.5665° N, 126.9780° E</div>
+      <div class="hp-photo-corner hp-photo-corner--br hp-green-text">ENTER NETWORK</div>
+      <div class="hp-photo-center">
+        <span class="hp-photo-badge">
+<span class="hp-label"><span class="hp-label-dot"></span>HEADQUARTERS CENTER</span>
+</span>
+        <p class="hp-photo-caption-small">실제 업무 현장</p>
+        <p class="hp-photo-caption">서울 본사 도매정산·개통운영센터</p>
+      </div>
+    </div>
+  </div>
+</section>
 
+<section class="hp-section hp-features" id="features">
+  <div class="hp-wrap">
+    <div class="hp-center hp-features-head">
+      
+<span class="hp-label"><span class="hp-label-dot"></span>HOW WE WORK</span>
+
+      <h2 class="hp-headline-lg hp-two-tone">
+        <span class="hp-ink">정해진 날 정산합니다. 고객 정보는 남기지 않습니다. </span><span class="hp-green">정책은 매일 아침 보냅니다.</span>
+      </h2>
+    </div>
+
+    
+    <div class="hp-feature-card">
+      <div class="hp-feature-card-head">
+        <h3 class="hp-headline-lg">약속은 날짜로 지킵니다.</h3>
+        <span class="hp-feature-index">/ 1</span>
+      </div>
+
+      
+      <div class="hp-mockup hp-mockup--ledger">
+        <div class="hp-mockup-head">
+          <div class="hp-mockup-head-left">
+            <span class="hp-mockup-title">정산 집행 장부</span>
+            <span class="hp-chip hp-chip--tint">실시간 자동집계</span>
+          </div>
+          <span class="hp-mono-muted">TERM: WEEKLY FRI</span>
+        </div>
+        <div class="hp-table-scroll">
+          <table class="hp-ledger-table">
+            <thead><tr><th>정산일</th><th>요일</th><th>개통건수</th><th>입금액</th><th>상태</th></tr></thead>
+            <tbody>
+              
+              <tr>
+                <td class="hp-strong">2026.10.16</td>
+                <td class="hp-muted">금</td>
+                <td class="hp-num">112건</td>
+                <td class="hp-num hp-strong">34,720,000원</td>
+                <td class="hp-num"><span class="hp-chip hp-chip--tint">● 정산완료</span></td>
+              </tr>
+              
+              <tr>
+                <td class="hp-strong">2026.10.09</td>
+                <td class="hp-muted">금</td>
+                <td class="hp-num">98건</td>
+                <td class="hp-num hp-strong">30,380,000원</td>
+                <td class="hp-num"><span class="hp-chip hp-chip--tint">● 정산완료</span></td>
+              </tr>
+              
+              <tr>
+                <td class="hp-strong">2026.10.02</td>
+                <td class="hp-muted">금</td>
+                <td class="hp-num">104건</td>
+                <td class="hp-num hp-strong">32,240,000원</td>
+                <td class="hp-num"><span class="hp-chip hp-chip--tint">● 정산완료</span></td>
+              </tr>
+              
+              <tr>
+                <td class="hp-strong">2026.09.25</td>
+                <td class="hp-muted">금</td>
+                <td class="hp-num">115건</td>
+                <td class="hp-num hp-strong">35,650,000원</td>
+                <td class="hp-num"><span class="hp-chip hp-chip--tint">● 정산완료</span></td>
+              </tr>
+              
+              <tr>
+                <td class="hp-strong">2026.09.18</td>
+                <td class="hp-muted">금</td>
+                <td class="hp-num">89건</td>
+                <td class="hp-num hp-strong">27,590,000원</td>
+                <td class="hp-num"><span class="hp-chip hp-chip--tint">● 정산완료</span></td>
+              </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+
+      <div class="hp-feature-card-foot">
+        <p>매주 수요일 정산서, 금요일 입금. 최근 90번의 금요일, 지연 0회.</p>
+      </div>
+    </div>
+    
+    <div class="hp-feature-card">
+      <div class="hp-feature-card-head">
+        <h3 class="hp-headline-lg">뚫려도, 가져갈 게 없습니다.</h3>
+        <span class="hp-feature-index">/ 2</span>
+      </div>
+
+      
+      <div class="hp-mockup hp-mockup--crm">
+        <div class="hp-mockup-head">
+          <span class="hp-mockup-title">고객 데이터 안전 폐기</span>
+          <span class="hp-chip hp-chip--tint">개통완료 · 자동 하드마킹 (복구불가)</span>
+        </div>
+        <div class="hp-crm-grid">
+          
+          <div class="hp-crm-field">
+            <span class="hp-field-label">고객명</span>
+            <span class="hp-field-value">홍●동</span>
+          </div>
+          
+          <div class="hp-crm-field">
+            <span class="hp-field-label">연락처</span>
+            <span class="hp-field-value">010-●●●●-5678</span>
+          </div>
+          
+          <div class="hp-crm-field">
+            <span class="hp-field-label">주민등록번호</span>
+            <span class="hp-field-value">900101-●●●●●●●</span>
+          </div>
+          
+          <div class="hp-crm-field">
+            <span class="hp-field-label">설치주소</span>
+            <span class="hp-field-value">서울시 강남구 테헤란로 ●●● (상세 암호화)</span>
+          </div>
+          
+        </div>
+        <div class="hp-mockup-foot">
+          <span class="hp-mono-muted">SECURITY PROTOCOL: SHA-256 SALT & DESTROY</span>
+          <span class="hp-mono-green">ENCRYPTION ACTIVE</span>
+        </div>
+      </div>
+      
+
+      <div class="hp-feature-card-foot">
+        <p>개통이 완료되면 고객 핵심정보는 자동으로 가려집니다. 내부 직원도 볼 수 없습니다.</p>
+      </div>
+    </div>
+    
+    <div class="hp-feature-card">
+      <div class="hp-feature-card-head">
+        <h3 class="hp-headline-lg">정책은 매일 아침 10시 30분.</h3>
+        <span class="hp-feature-index">/ 3</span>
+      </div>
+
+      
+      <div class="hp-mockup hp-mockup--chat">
+        <div class="hp-mockup-head">
+          <div class="hp-mockup-head-left">
+            <span class="hp-chat-dot"></span>
+            <span class="hp-mockup-title">ENTER 본사 공식 정책방 (도매회원 전용)</span>
+          </div>
+          <span class="hp-mono-muted">BROADCAST ACTIVE</span>
+        </div>
+        <div class="hp-chat-list">
+          
+          <div class="hp-chat-bubble">
+            <div class="hp-chat-bubble-head">
+              <span class="hp-chat-label">[10/28 유선 정책 공지]</span>
+              <span class="hp-mono-muted">10:30 AM</span>
+            </div>
+            <p class="hp-chat-text">오늘 통신 3사 및 알뜰유선 일일 정책표 보내드립니다. 통신사별 건당 최고단가 업데이트 완료되었습니다.</p>
+          </div>
+          
+          <div class="hp-chat-bubble hp-chat-bubble--accent">
+            <div class="hp-chat-bubble-head">
+              <span class="hp-chat-label">변경 공지 · 속보</span>
+              <span class="hp-mono-muted">14:20 PM</span>
+            </div>
+            <p class="hp-chat-text">KT 기가인터넷 + 지니TV 결합 추가단가 +3만 상향 조정되었습니다. 실시간 정책표 반영 확인 부탁드립니다.</p>
+          </div>
+          
+        </div>
+      </div>
+      
+
+      <div class="hp-feature-card-foot">
+        <p>변경되면 바로 다시 공지합니다. 정책방 입장은 연락 한 번이면 됩니다.</p>
+      </div>
+    </div>
+    
+
+    <div class="hp-center hp-features-foot">
+      <h3 class="hp-headline-md">정책표, 직접 받아보고 판단하세요.</h3>
+      
+<a href="#" class="hp-pill hp-pill--primary"><span class="hp-pill-dot"></span>카카오톡으로 정책 받기</a>
+
+    </div>
+  </div>
+</section>
+
+<section class="hp-section hp-promise" id="promise">
+  <div class="hp-wrap">
+    
+<span class="hp-label"><span class="hp-label-dot"></span>우리의 약속</span>
+
+    <blockquote class="hp-quote">“정산일을 미룬 적은 한 번도 없습니다. 앞으로도 그럴 겁니다.”</blockquote>
+    <div class="hp-promise-foot">
+      <div class="hp-promise-person">
+        <div class="hp-promise-photo" style="background-image:url('static/photos/director.jpg')"></div>
+        <div>
+          <span class="hp-promise-name">위드컴퍼니 총괄이사</span>
+          <span class="hp-promise-title">총괄이사 · (유)위드컴퍼니 유선도매사업본부</span>
+          
+<a href="settlement.html" class="hp-pill hp-pill--inverted">정산 방식 자세히 보기 →</a>
+
+        </div>
+      </div>
+      <div class="hp-promise-carousel">
+        <span class="hp-mono-muted">약속 · 거래처 이야기 (준비 중)</span>
+        <div class="hp-carousel-btns">
+          <button type="button" aria-label="이전" disabled>
+
+<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+
+</button>
+          <button type="button" aria-label="다음" disabled>
+
+<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+
+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hp-section hp-start" id="start">
+  <div class="hp-wrap hp-wrap--narrow">
+    <div class="hp-center hp-start-head">
+      
+<span class="hp-label"><span class="hp-label-dot"></span>HOW TO START</span>
+
+      <h2 class="hp-headline-lg hp-two-tone">
+        <span class="hp-ink">시작은 </span><span class="hp-green">연락 한 번이면 됩니다.</span>
+      </h2>
+    </div>
+    <div class="hp-start-list">
+      
+      <div class="hp-start-row">
+        <span class="hp-start-text">연락하기 — 전화 · 문자 · 카카오톡</span>
+        <span class="hp-mono-muted hp-strong">01</span>
+      </div>
+      
+      <div class="hp-start-row">
+        <span class="hp-start-text">정책방 입장 — 매일 아침 정책표 수신</span>
+        <span class="hp-mono-muted hp-strong">02</span>
+      </div>
+      
+      <div class="hp-start-row">
+        <span class="hp-start-text">서류 없이 접수 · 개통</span>
+        <span class="hp-mono-muted hp-strong">03</span>
+      </div>
+      
+      <div class="hp-start-row">
+        <span class="hp-start-text">첫 정산 전, 서류 4종 제출</span>
+        <span class="hp-mono-muted hp-strong">04</span>
+      </div>
+      
+    </div>
+    <div class="hp-center">
+      <p class="hp-start-note">계약금 0원 · 월정료 0원 · 최소 실적 의무 없음</p>
+      
+<a href="#contact" class="hp-pill hp-pill--primary">거래 시작하기</a>
+
+    </div>
+  </div>
+</section>
+
+<section class="hp-section hp-trust" id="trust">
+  <div class="hp-wrap">
+    
+<span class="hp-label"><span class="hp-label-dot"></span>TRUST</span>
+
+    <h2 class="hp-headline-lg">16년, 숫자와 인증으로 말합니다.</h2>
+    <p class="hp-body-xl hp-trust-body">2024년 매출 310억 원. 메인비즈·ISO 9001 인증, 기업부설연구소 운영. LG U+ 공식 대리점 화승과 함께 2025 Honor Club에 선정되었습니다.</p>
+    <div class="hp-trust-badges">
+      
+      <div class="hp-badge">
+        
+
+<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M8.5 14.5 7 22l5-2.5 5 2.5-1.5-7.5"/></svg>
+
+
+        <div>
+          <h4>메인비즈</h4>
+          <p>경영혁신형 중소기업</p>
+        </div>
+      </div>
+      
+      <div class="hp-badge">
+        
+
+<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="1.5"/><path d="M8 21h8M10 17v4M14 17v4"/><path d="M7.5 9.5l2.5 2.5 6-6"/></svg>
+
+
+        <div>
+          <h4>ISO 9001:2015</h4>
+          <p>품질경영시스템</p>
+        </div>
+      </div>
+      
+      <div class="hp-badge">
+        
+
+<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6l-5.5 9.5A1.6 1.6 0 0 0 6 21h12a1.6 1.6 0 0 0 1.4-2.4L14 9V3"/><path d="M7.5 15h9"/></svg>
+
+
+        <div>
+          <h4>기업부설연구소</h4>
+          <p>연구개발전담부서</p>
+        </div>
+      </div>
+      
+      <div class="hp-badge">
+        
+
+<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M7 5H4.5A2.5 2.5 0 0 0 4.5 10H7M17 5h2.5A2.5 2.5 0 0 1 19.5 10H17"/><path d="M12 14v4M9 21h6M9.5 18h5"/></svg>
+
+
+        <div>
+          <h4>한국브랜드대상</h4>
+          <p>2022 한국브랜드 소비자평가</p>
+        </div>
+      </div>
+      
+      <div class="hp-badge">
+        
+
+<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l2.6 5.5 6 .7-4.4 4.1 1.2 6-5.4-3-5.4 3 1.2-6-4.4-4.1 6-.7Z"/></svg>
+
+
+        <div>
+          <h4>LG U+ Honor Club</h4>
+          <p>2025 선정</p>
+        </div>
+      </div>
+      
+      <div class="hp-badge">
+        
+
+<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-6 9 6"/><path d="M5 10v9M9.5 10v9M14.5 10v9M19 10v9M3 19h18"/></svg>
+
+
+        <div>
+          <h4>매출 310억</h4>
+          <p>2024년 결산 기준</p>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<section class="hp-section hp-carriers" id="carriers">
+  <div class="hp-wrap">
+    <div class="hp-carriers-label">
+<span class="hp-label"><span class="hp-label-dot"></span>함께 일하는 통신사</span>
+</div>
+    <div class="hp-carriers-names">
+      <div>SKT</div><div>SK브로드밴드</div><div>KT</div><div>LG U+</div><div>스카이라이프</div><div>헬로비전</div>
+    </div>
+    <p class="hp-body-lg hp-carriers-body">인터넷 · IPTV · CCTV · 가전렌탈 · 유심까지, 유선은 한 곳에서 접수합니다.</p>
+    
+<a href="products.html" class="hp-pill hp-pill--inverted">취급 상품 보기 →</a>
+
+  </div>
+</section>
+
+<section class="hp-section hp-closing" id="contact">
+  <div class="hp-wrap hp-center">
+    <h2 class="hp-display-lg hp-two-tone-block">
+      <span class="hp-ink">내일 아침, 정책표를</span>
+      <span class="hp-green">먼저 받아보세요.</span>
+    </h2>
+    <div class="hp-closing-ctas">
+      
+<a href="#" class="hp-pill hp-pill--primary"><span class="hp-pill-dot"></span>카카오톡으로 정책 받기</a>
+
+      
+<a href="tel:010-2222-4183" class="hp-pill hp-pill--secondary">010-2222-4183 전화하기</a>
+
+    </div>
+  </div>
+</section>
 
 </main>
 
-<footer class="legal">
-  <div class="wrap">(유)위드컴퍼니 도매영업팀이 운영하는 유선 전문 브랜드 ENTER · 사업자정보/주소 추후 표기 · 010-2222-4183</div>
+
+
+<footer class="hp-footer">
+  <div class="hp-wrap">
+    <div class="hp-footer-top">
+      <div class="hp-footer-brand">
+        <span class="hp-brand">ENTER</span>
+        <p>(유)위드컴퍼니 도매영업팀이 운영하는 유선 전문 브랜드</p>
+      </div>
+      <div class="hp-footer-cols">
+        
+        <div class="hp-footer-col">
+          <span class="hp-footer-heading">회사</span>
+          <a href="why.html">왜 ENTER</a><a href="about.html">회사소개</a><a href="stories.html">거래처 이야기</a>
+        </div>
+        
+        <div class="hp-footer-col">
+          <span class="hp-footer-heading">거래</span>
+          <a href="start.html">거래 시작하기</a><a href="settlement.html">정산·DB보호</a><a href="products.html">취급상품</a>
+        </div>
+        
+        <div class="hp-footer-col">
+          <span class="hp-footer-heading">정보</span>
+          <a href="startup.html">창업자 가이드</a><a href="faq.html">FAQ</a><a href="blog.html">블로그</a>
+        </div>
+        
+      </div>
+    </div>
+    <div class="hp-footer-bottom">(유)위드컴퍼니 도매영업팀이 운영하는 유선 전문 브랜드 ENTER · 사업자정보/주소 추후 표기 · 010-2222-4183</div>
+  </div>
 </footer>
+
 
 <div class="footerbar">
   <a href="tel:010-2222-4183"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.3 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.5 21 3 13.5 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.3 1l-2.2 2.2Z"/></svg>전화</a>

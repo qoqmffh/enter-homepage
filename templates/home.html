@@ -1,56 +1,282 @@
 {% extends "base.html" %}
+{% import "_poetic_macros.html" as m %}
+
 {% block extra_head %}
-<script>
-(function () {
-  try {
-    var params = new URLSearchParams(location.search);
-    var force = params.get('intro') === '1';
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var skip = false;
-    if (!force) {
-      try {
-        var last = localStorage.getItem('enter_intro_seen');
-        if (last && (Date.now() - parseInt(last, 10)) < 24 * 60 * 60 * 1000) skip = true;
-      } catch (e) {}
-    }
-    if (!reduce && !skip) {
-      document.documentElement.classList.add('cinema-pending');
-    }
-  } catch (e) {}
-})();
-</script>
-<link rel="stylesheet" href="static/cinema.css">
-<noscript><style>.footerbar{transform:none !important}</style></noscript>
-<script src="static/vendor/gsap.min.js" defer></script>
-<script src="static/vendor/ScrollTrigger.min.js" defer></script>
-<script src="static/vendor/SplitText.min.js" defer></script>
-<script src="static/vendor/Flip.min.js" defer></script>
-<script src="static/vendor/lenis.min.js" defer></script>
-<script src="static/cinema-intro.js" defer></script>
+<link rel="stylesheet" href="static/home-poetic.css">
 {% endblock %}
-{% block content %}
 
-<!-- 오프닝 스테이지 — 기본 display:none, html.cinema-pending일 때만 보임(cinema.css) -->
-<div class="h-cinema-stage" id="cinemaStage" aria-hidden="true">
-  <div class="h-cinema-cuts">
-    {% for cut in page.cinema.opening.cuts %}
-    <div class="h-cinema-cut" data-tone="{{ cut.tone }}">{{ cut.text }}</div>
-    {% endfor %}
+{% block header %}
+<header class="hp-header">
+  <div class="hp-header-inner">
+    <a class="hp-brand" href="index.html">ENTER</a>
+    <input type="checkbox" id="hpNavToggle" class="hp-nav-toggle-input">
+    <nav class="hp-nav">
+      {% for item in page.poetic.nav %}
+      <a href="{{ item.slug }}.html"{% if item.slug == slug %} class="active"{% endif %}>{{ item.label }}</a>
+      {% endfor %}
+    </nav>
+    <div class="hp-header-right">
+      {{ m.pill(page.poetic.header_cta, '#', 'primary') }}
+      <label for="hpNavToggle" class="hp-nav-toggle" aria-label="메뉴">{{ m.icon('hamburger') }}</label>
+    </div>
+    <nav class="hp-nav-mobile">
+      {% for item in page.poetic.nav %}
+      <a href="{{ item.slug }}.html"{% if item.slug == slug %} class="active"{% endif %}>{{ item.label }}</a>
+      {% endfor %}
+    </nav>
   </div>
-  <div class="h-cinema-wordmark" id="cinemaWordmark">{{ page.cinema.opening.wordmark }}</div>
-</div>
-<button class="h-cinema-skip" id="cinemaSkip" type="button">{{ page.cinema.opening.skip_label }}</button>
+</header>
+{% endblock %}
 
-<!-- 장면 1 · 헤드라인 (1단계: 정적 placeholder. 2단계에서 cinema-scenes.js가 핀+스크럽 연결) -->
-<section class="h-cinema-scene" id="scene-headline" data-scene-id="headline">
-  <div class="wrap">
-    <div class="h-cinema-scene-label">{{ page.cinema.scenes[0].label }}</div>
-    {% for line in page.cinema.scenes[0].lines %}
-    <h1 class="h-cinema-line" data-line>{{ line }}</h1>
-    {% endfor %}
+{% block content %}
+{% set p = page.poetic %}
+
+<section class="hp-section hp-hero" id="hero">
+  <div class="hp-wrap">
+    <div class="hp-hero-head">
+      <h1 class="hp-display-xl">
+        {% for line in p.hero.headline %}<span>{{ line }}</span>{% endfor %}
+      </h1>
+      <p class="hp-hero-sub">{{ p.hero.sub }}</p>
+      <div class="hp-hero-ctas">
+        {{ m.pill(p.hero.cta_kakao, '#', 'primary', True) }}
+        {{ m.pill(p.hero.cta_tel, 'tel:' ~ site.phone, 'secondary') }}
+      </div>
+    </div>
+    <div class="hp-hairline"></div>
+    <div class="hp-stats" id="stats">
+      {% for s in p.stats %}{{ m.stat_card(s.num, s.label) }}{% endfor %}
+    </div>
   </div>
 </section>
 
-<!-- 장면 2~6 + 엔딩 크레딧은 2·3단계에서 추가됩니다. -->
+<section class="hp-section hp-statement" id="statement">
+  <div class="hp-wrap hp-wrap--narrow">
+    <h2 class="hp-headline-lg hp-center">{{ p.statement.headline }}</h2>
+    <p class="hp-headline-md hp-center hp-two-tone">
+      <span class="hp-ink">{{ p.statement.sub_ink }}</span><span class="hp-green">{{ p.statement.sub_green }}</span>
+    </p>
+    <div class="hp-photo-block" style="background-image:url('{{ p.statement.photo_src }}')">
+      <div class="hp-photo-overlay"></div>
+      <div class="hp-photo-corner hp-photo-corner--tl">{{ p.statement.photo_top_left }}</div>
+      <div class="hp-photo-corner hp-photo-corner--bl">{{ p.statement.photo_geo }}</div>
+      <div class="hp-photo-corner hp-photo-corner--br hp-green-text">{{ p.statement.photo_tag }}</div>
+      <div class="hp-photo-center">
+        <span class="hp-photo-badge">{{ m.section_label(p.statement.photo_badge) }}</span>
+        <p class="hp-photo-caption-small">{{ p.statement.photo_caption_small }}</p>
+        <p class="hp-photo-caption">{{ p.statement.photo_caption }}</p>
+      </div>
+    </div>
+  </div>
+</section>
 
+<section class="hp-section hp-features" id="features">
+  <div class="hp-wrap">
+    <div class="hp-center hp-features-head">
+      {{ m.section_label(p.features.label) }}
+      <h2 class="hp-headline-lg hp-two-tone">
+        <span class="hp-ink">{{ p.features.headline_ink }}</span><span class="hp-green">{{ p.features.headline_green }}</span>
+      </h2>
+    </div>
+
+    {% for card in p.features.cards %}
+    <div class="hp-feature-card">
+      <div class="hp-feature-card-head">
+        <h3 class="hp-headline-lg">{{ card.title }}</h3>
+        <span class="hp-feature-index">/ {{ card.index }}</span>
+      </div>
+
+      {% if card.mockup == 'ledger' %}
+      <div class="hp-mockup hp-mockup--ledger">
+        <div class="hp-mockup-head">
+          <div class="hp-mockup-head-left">
+            <span class="hp-mockup-title">{{ p.ledger.title }}</span>
+            <span class="hp-chip hp-chip--tint">{{ p.ledger.tag }}</span>
+          </div>
+          <span class="hp-mono-muted">{{ p.ledger.term }}</span>
+        </div>
+        <div class="hp-table-scroll">
+          <table class="hp-ledger-table">
+            <thead><tr>{% for c in p.ledger.columns %}<th>{{ c }}</th>{% endfor %}</tr></thead>
+            <tbody>
+              {% for row in p.ledger.rows %}
+              <tr>
+                <td class="hp-strong">{{ row[0] }}</td>
+                <td class="hp-muted">{{ row[1] }}</td>
+                <td class="hp-num">{{ row[2] }}</td>
+                <td class="hp-num hp-strong">{{ row[3] }}</td>
+                <td class="hp-num"><span class="hp-chip hp-chip--tint">● {{ row[4] }}</span></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {% elif card.mockup == 'crm' %}
+      <div class="hp-mockup hp-mockup--crm">
+        <div class="hp-mockup-head">
+          <span class="hp-mockup-title">{{ p.crm.title }}</span>
+          <span class="hp-chip hp-chip--tint">{{ p.crm.tag }}</span>
+        </div>
+        <div class="hp-crm-grid">
+          {% for f in p.crm.fields %}
+          <div class="hp-crm-field">
+            <span class="hp-field-label">{{ f.label }}</span>
+            <span class="hp-field-value">{{ f.value }}</span>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="hp-mockup-foot">
+          <span class="hp-mono-muted">{{ p.crm.footer_left }}</span>
+          <span class="hp-mono-green">{{ p.crm.footer_right }}</span>
+        </div>
+      </div>
+      {% elif card.mockup == 'chat' %}
+      <div class="hp-mockup hp-mockup--chat">
+        <div class="hp-mockup-head">
+          <div class="hp-mockup-head-left">
+            <span class="hp-chat-dot"></span>
+            <span class="hp-mockup-title">{{ p.chat.title }}</span>
+          </div>
+          <span class="hp-mono-muted">{{ p.chat.tag }}</span>
+        </div>
+        <div class="hp-chat-list">
+          {% for msg in p.chat.messages %}
+          <div class="hp-chat-bubble{% if msg.accent %} hp-chat-bubble--accent{% endif %}">
+            <div class="hp-chat-bubble-head">
+              <span class="hp-chat-label">{{ msg.label }}</span>
+              <span class="hp-mono-muted">{{ msg.time }}</span>
+            </div>
+            <p class="hp-chat-text">{{ msg.text }}</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="hp-feature-card-foot">
+        <p>{{ card.desc }}</p>
+      </div>
+    </div>
+    {% endfor %}
+
+    <div class="hp-center hp-features-foot">
+      <h3 class="hp-headline-md">{{ p.features.closing_line }}</h3>
+      {{ m.pill(p.features.cta_kakao, '#', 'primary', True) }}
+    </div>
+  </div>
+</section>
+
+<section class="hp-section hp-promise" id="promise">
+  <div class="hp-wrap">
+    {{ m.section_label(p.promise.label) }}
+    <blockquote class="hp-quote">{{ p.promise.quote }}</blockquote>
+    <div class="hp-promise-foot">
+      <div class="hp-promise-person">
+        <div class="hp-promise-photo" style="background-image:url('{{ p.promise.photo_src }}')"></div>
+        <div>
+          <span class="hp-promise-name">{{ p.promise.name }}</span>
+          <span class="hp-promise-title">{{ p.promise.title }}</span>
+          {{ m.pill(p.promise.cta, p.promise.cta_slug ~ '.html', 'inverted') }}
+        </div>
+      </div>
+      <div class="hp-promise-carousel">
+        <span class="hp-mono-muted">{{ p.promise.carousel_label }}</span>
+        <div class="hp-carousel-btns">
+          <button type="button" aria-label="이전" disabled>{{ m.icon('arrow-left') }}</button>
+          <button type="button" aria-label="다음" disabled>{{ m.icon('arrow-right') }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hp-section hp-start" id="start">
+  <div class="hp-wrap hp-wrap--narrow">
+    <div class="hp-center hp-start-head">
+      {{ m.section_label(p.start.label) }}
+      <h2 class="hp-headline-lg hp-two-tone">
+        <span class="hp-ink">{{ p.start.headline_ink }}</span><span class="hp-green">{{ p.start.headline_green }}</span>
+      </h2>
+    </div>
+    <div class="hp-start-list">
+      {% for step in p.start.steps %}
+      <div class="hp-start-row">
+        <span class="hp-start-text">{{ step.text }}</span>
+        <span class="hp-mono-muted hp-strong">{{ step.num }}</span>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="hp-center">
+      <p class="hp-start-note">{{ p.start.note }}</p>
+      {{ m.pill(p.start.cta, '#contact', 'primary') }}
+    </div>
+  </div>
+</section>
+
+<section class="hp-section hp-trust" id="trust">
+  <div class="hp-wrap">
+    {{ m.section_label(p.trust.label) }}
+    <h2 class="hp-headline-lg">{{ p.trust.headline }}</h2>
+    <p class="hp-body-xl hp-trust-body">{{ p.trust.body }}</p>
+    <div class="hp-trust-badges">
+      {% for b in p.trust.badges %}
+      <div class="hp-badge">
+        {{ m.icon(b.icon) }}
+        <div>
+          <h4>{{ b.name }}</h4>
+          <p>{{ b.note }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="hp-section hp-carriers" id="carriers">
+  <div class="hp-wrap">
+    <div class="hp-carriers-label">{{ m.section_label(p.carriers.label) }}</div>
+    <div class="hp-carriers-names">
+      {% for n in p.carriers.names %}<div>{{ n }}</div>{% endfor %}
+    </div>
+    <p class="hp-body-lg hp-carriers-body">{{ p.carriers.body }}</p>
+    {{ m.pill(p.carriers.cta, p.carriers.cta_slug ~ '.html', 'inverted') }}
+  </div>
+</section>
+
+<section class="hp-section hp-closing" id="contact">
+  <div class="hp-wrap hp-center">
+    <h2 class="hp-display-lg hp-two-tone-block">
+      <span class="hp-ink">{{ p.closing.headline_ink }}</span>
+      <span class="hp-green">{{ p.closing.headline_green }}</span>
+    </h2>
+    <div class="hp-closing-ctas">
+      {{ m.pill(p.closing.cta_kakao, '#', 'primary', True) }}
+      {{ m.pill(p.closing.cta_tel, 'tel:' ~ site.phone, 'secondary') }}
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block footer %}
+{% set p = page.poetic %}
+<footer class="hp-footer">
+  <div class="hp-wrap">
+    <div class="hp-footer-top">
+      <div class="hp-footer-brand">
+        <span class="hp-brand">ENTER</span>
+        <p>{{ p.footer.tagline }}</p>
+      </div>
+      <div class="hp-footer-cols">
+        {% for col in p.footer.columns %}
+        <div class="hp-footer-col">
+          <span class="hp-footer-heading">{{ col.heading }}</span>
+          {% for link in col.links %}<a href="{{ link.slug }}.html">{{ link.label }}</a>{% endfor %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="hp-footer-bottom">{{ legal_text }}</div>
+  </div>
+</footer>
 {% endblock %}
