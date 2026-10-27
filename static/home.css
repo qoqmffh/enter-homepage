@@ -23,8 +23,8 @@ nav.site a.active::after{ background:var(--h-green); height:2px; }
 /* ---------- 공통: §라벨 + /slug 행 ---------- */
 .h-eyebrow-row{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding-bottom:12px; margin-bottom:24px; border-bottom:1px solid var(--h-line); position:relative; }
 .h-eyebrow{ font-family:var(--h-mono); font-size:11px; font-weight:700; letter-spacing:.08em; color:var(--h-ink); text-transform:uppercase; white-space:nowrap; }
-.h-eyebrow .h-rule{ display:inline-block; height:1px; background:var(--h-ink); margin-left:10px; width:0; transition:width .6s ease; vertical-align:middle; }
-.reveal.in-view .h-eyebrow .h-rule{ width:40px; }
+.h-eyebrow .h-rule{ display:inline-block; height:1px; width:40px; background:var(--h-ink); margin-left:10px; vertical-align:middle; transform:scaleX(0); transform-origin:left; transition:transform .6s ease; }
+.reveal.in-view .h-eyebrow .h-rule, .h-hero .h-eyebrow .h-rule{ transform:scaleX(1); }
 .h-slug{ font-family:var(--h-mono); font-size:11px; color:var(--h-muted); letter-spacing:.04em; white-space:nowrap; }
 
 .h-h2{ font-size:clamp(24px,4vw,34px); font-weight:700; line-height:1.3; margin:0 0 14px; letter-spacing:-.01em; word-break:keep-all; overflow-wrap:break-word; }
