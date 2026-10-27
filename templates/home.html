@@ -26,13 +26,15 @@
   </div>
 </section>
 
-<div class="h-stat-row" id="stats">
+<div class="wrap h-stat-wrap" id="stats">
+<div class="h-stat-row">
   {% for s in page.stat_bar_v2 %}
   <div class="h-stat">
     <div class="h-stat-num" data-countup style="color:{{ s.color }}">{{ s.num }}</div>
     <div class="h-stat-label">{{ s.sub }}</div>
   </div>
   {% endfor %}
+</div>
 </div>
 
 <!-- §01 왜 ENTER -->
