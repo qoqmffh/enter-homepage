@@ -1226,6 +1226,10 @@
             ]
           }
         ]
+      },
+      "intro": {
+        "wordmark": "ENTER",
+        "skip_label": "건너뛰기 →"
       }
     }
   },

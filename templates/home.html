@@ -2,7 +2,30 @@
 {% import "_poetic_macros.html" as m %}
 
 {% block extra_head %}
+<script>
+(function () {
+  try {
+    var params = new URLSearchParams(location.search);
+    var forced = params.get('intro'); // 'a' | 'b' | '1' | null
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var skip = false;
+    if (!forced) {
+      try {
+        var last = localStorage.getItem('enter_intro_seen');
+        if (last && (Date.now() - parseInt(last, 10)) < 24 * 60 * 60 * 1000) skip = true;
+      } catch (e) {}
+    }
+    if (!reduce && !skip) {
+      document.documentElement.classList.add('intro-pending');
+      window.__introVariant = (forced === 'a' || forced === 'b') ? forced : 'a';
+    }
+  } catch (e) {}
+})();
+</script>
 <link rel="stylesheet" href="static/home-poetic.css">
+<script src="static/vendor/gsap.min.js" defer></script>
+<script src="static/letter-swap.js" defer></script>
+<script src="static/intro.js" defer></script>
 <script src="static/home-poetic.js" defer></script>
 <script src="static/home-poetic-trail.js" defer></script>
 {% endblock %}
