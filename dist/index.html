@@ -27,7 +27,11 @@
 
 <link rel="stylesheet" href="static/home.css">
 <script>document.documentElement.classList.add('js')</script>
-<script src="static/interactions.js" defer></script>
+<script src="static/vendor/gsap.min.js" defer></script>
+<script src="static/vendor/ScrollTrigger.min.js" defer></script>
+<script src="static/vendor/SplitText.min.js" defer></script>
+<script src="static/vendor/lenis.min.js" defer></script>
+<script src="static/scroll-scenes.js" defer></script>
 
 </head>
 <body>
@@ -168,40 +172,582 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   </div>
 </section>
 
-<!-- §02 AUDIT LEDGER -->
-<section class="h-section reveal" id="ledger">
+<!-- §02 AUDIT LEDGER — 장면 ②: 핀 고정 + 스크럽, 90행 전체가 인쇄되듯 지나감 -->
+<section class="h-section h-scene-ledger" id="ledger" data-scene="ledger">
   <div class="wrap">
     <div class="h-eyebrow-row"><span class="h-eyebrow">§02 · AUDIT LEDGER<span class="h-rule"></span></span><span class="h-slug">/ledger</span></div>
-    <div class="h-ledger-top">
+  </div>
+  <div class="wrap h-ledger-scene-grid">
+    <div class="h-ledger-scene-left">
       <h2 class="h-h2">말이 아니라 숫자로 증명합니다</h2>
       <span class="h-badge">실제 정산 기록 · 90일분</span>
+      <div class="h-ledger-counters">
+        <div class="h-ledger-counter">
+          <div class="h-ledger-counter-num" data-scene-rounds>0</div>
+          <div class="h-ledger-counter-label">정산 회차</div>
+        </div>
+        <div class="h-ledger-counter h-ledger-counter-zero">
+          <div class="h-ledger-counter-num">0회</div>
+          <div class="h-ledger-counter-label">지연</div>
+        </div>
+      </div>
+      <a class="h-arrow-link" href="settlement.html">정산 방식 자세히 보기 →</a>
     </div>
-    <div class="h-ledger-table-wrap">
-      <table class="h-ledger-table">
-        <thead><tr><th>정산일</th><th>요일</th><th>건수</th><th>상태</th><th class="num">정산 금액</th></tr></thead>
-        <tbody>
-          
-          <tr class="reveal"><td>2026.08.21</td><td>금요일</td><td>98건</td><td><span class="h-stamp">정산완료</span></td><td class="num">146,174,666원</td></tr>
-          
-          <tr class="reveal"><td>2026.08.28</td><td>금요일</td><td>106건</td><td><span class="h-stamp">정산완료</span></td><td class="num">205,739,144원</td></tr>
-          
-          <tr class="reveal"><td>2026.09.04</td><td>금요일</td><td>103건</td><td><span class="h-stamp">정산완료</span></td><td class="num">205,637,822원</td></tr>
-          
-          <tr class="reveal"><td>2026.09.11</td><td>금요일</td><td>100건</td><td><span class="h-stamp">정산완료</span></td><td class="num">194,254,201원</td></tr>
-          
-          <tr class="reveal"><td>2026.09.18</td><td>금요일</td><td>107건</td><td><span class="h-stamp">정산완료</span></td><td class="num">166,315,457원</td></tr>
-          
-          <tr class="reveal"><td>2026.09.23</td><td>수요일</td><td>96건</td><td><span class="h-stamp">정산완료</span></td><td class="num">131,244,831원</td></tr>
-          
-          <tr class="reveal"><td>2026.10.02</td><td>금요일</td><td>76건</td><td><span class="h-stamp">정산완료</span></td><td class="num">162,247,434원</td></tr>
-          
-          <tr class="reveal"><td>2026.10.08</td><td>목요일</td><td>95건</td><td><span class="h-stamp">정산완료</span></td><td class="num">126,457,909원</td></tr>
-          
-        </tbody>
-      </table>
-      <div class="h-ledger-fade"></div>
+    <div class="h-ledger-scene-right">
+      <div class="h-ledger-progress">
+        <span class="h-ledger-progress-start">2025.01.24</span>
+        <div class="h-ledger-progress-track"><div class="h-ledger-progress-fill" data-scene-progress-fill></div></div>
+        <span class="h-ledger-progress-end">2026.10.08</span>
+      </div>
+      <div class="h-ledger-viewport">
+        <table class="h-ledger-table-scene" data-scene-table>
+          <tbody>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.01.24</td><td>금요일</td><td>102건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">204,129,160원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.01.31</td><td>금요일</td><td>14건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">9,616,260원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.02.07</td><td>금요일</td><td>140건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">296,106,940원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.02.14</td><td>금요일</td><td>116건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">198,266,484원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.02.21</td><td>금요일</td><td>104건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">232,120,714원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.02.28</td><td>금요일</td><td>131건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">266,813,980원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.03.07</td><td>금요일</td><td>130건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">291,284,875원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.03.14</td><td>금요일</td><td>115건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">208,564,161원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.03.21</td><td>금요일</td><td>110건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">228,088,753원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.03.28</td><td>금요일</td><td>129건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">221,922,325원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.04.04</td><td>금요일</td><td>115건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">203,807,856원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.04.11</td><td>금요일</td><td>120건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">198,403,545원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.04.18</td><td>금요일</td><td>107건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">172,626,830원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.04.25</td><td>금요일</td><td>112건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">192,070,399원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.05.02</td><td>금요일</td><td>106건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">236,134,950원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.05.09</td><td>금요일</td><td>103건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">194,852,515원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.05.16</td><td>금요일</td><td>106건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">170,954,396원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.05.23</td><td>금요일</td><td>128건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">222,734,280원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.05.30</td><td>금요일</td><td>119건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">188,800,915원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.06.05</td><td>목요일</td><td>111건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">201,646,287원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.06.13</td><td>금요일</td><td>102건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">113,775,398원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.06.20</td><td>금요일</td><td>113건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">199,581,507원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.06.27</td><td>금요일</td><td>112건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">189,657,154원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.07.04</td><td>금요일</td><td>110건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">263,421,603원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.07.11</td><td>금요일</td><td>120건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">251,690,171원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.07.18</td><td>금요일</td><td>211건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">237,438,855원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.07.25</td><td>금요일</td><td>119건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">281,398,822원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.08.01</td><td>금요일</td><td>99건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">219,787,791원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.08.08</td><td>금요일</td><td>115건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">251,100,059원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.08.14</td><td>목요일</td><td>99건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">194,784,685원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.08.22</td><td>금요일</td><td>101건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">209,789,193원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.08.29</td><td>금요일</td><td>122건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">252,848,963원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.09.05</td><td>금요일</td><td>126건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">264,838,137원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.09.12</td><td>금요일</td><td>110건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">220,912,006원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.09.19</td><td>금요일</td><td>105건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">229,219,820원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.09.26</td><td>금요일</td><td>117건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">232,634,296원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.10.02</td><td>목요일</td><td>108건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">262,016,549원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.10.10</td><td>금요일</td><td>7건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">2,859,747원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.10.17</td><td>금요일</td><td>105건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">278,389,096원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.10.24</td><td>금요일</td><td>109건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">205,633,198원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.10.31</td><td>금요일</td><td>119건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">238,836,685원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.11.07</td><td>금요일</td><td>112건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">234,683,095원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.11.14</td><td>금요일</td><td>108건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">179,359,972원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.11.21</td><td>금요일</td><td>110건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">230,606,479원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.11.28</td><td>금요일</td><td>109건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">217,117,924원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.12.05</td><td>금요일</td><td>125건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">295,285,941원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.12.12</td><td>금요일</td><td>108건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">236,239,701원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.12.19</td><td>금요일</td><td>114건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">274,734,097원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2025.12.26</td><td>금요일</td><td>127건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">294,062,095원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.01.02</td><td>금요일</td><td>98건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">201,798,350원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.01.09</td><td>금요일</td><td>117건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">185,899,004원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.01.16</td><td>금요일</td><td>130건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">308,432,315원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.01.23</td><td>금요일</td><td>130건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">376,308,437원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.01.30</td><td>금요일</td><td>122건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">332,744,291원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.02.06</td><td>금요일</td><td>135건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">314,162,770원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.02.13</td><td>금요일</td><td>114건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">268,862,068원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.02.20</td><td>금요일</td><td>10건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">24,372,299원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.02.27</td><td>금요일</td><td>166건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">472,409,257원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.03.06</td><td>금요일</td><td>134건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">398,562,207원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.03.13</td><td>금요일</td><td>101건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">250,491,230원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.03.20</td><td>금요일</td><td>134건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">383,691,030원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.03.27</td><td>금요일</td><td>123건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">387,159,700원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.04.03</td><td>금요일</td><td>127건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">330,217,096원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.04.10</td><td>금요일</td><td>130건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">243,467,667원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.04.17</td><td>금요일</td><td>108건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">228,124,534원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.04.24</td><td>금요일</td><td>120건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">308,837,524원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.04.30</td><td>목요일</td><td>112건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">246,882,431원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.05.08</td><td>금요일</td><td>115건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">222,204,389원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.05.15</td><td>금요일</td><td>114건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">198,709,360원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.05.22</td><td>금요일</td><td>111건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">241,819,367원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.05.29</td><td>금요일</td><td>110건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">206,534,095원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.06.05</td><td>금요일</td><td>102건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">186,206,999원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.06.12</td><td>금요일</td><td>101건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">138,770,370원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.06.19</td><td>금요일</td><td>121건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">224,166,453원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.06.26</td><td>금요일</td><td>108건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">189,902,848원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.07.03</td><td>금요일</td><td>102건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">203,713,901원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.07.10</td><td>금요일</td><td>100건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">180,410,681원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.07.16</td><td>목요일</td><td>98건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">173,395,699원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.07.24</td><td>금요일</td><td>93건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">147,638,577원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.07.31</td><td>금요일</td><td>103건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">164,586,177원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.08.07</td><td>금요일</td><td>119건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">167,499,105원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.08.14</td><td>금요일</td><td>94건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">138,845,688원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.08.21</td><td>금요일</td><td>98건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">146,174,666원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.08.28</td><td>금요일</td><td>106건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">205,739,144원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.09.04</td><td>금요일</td><td>103건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">205,637,822원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.09.11</td><td>금요일</td><td>100건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">194,254,201원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.09.18</td><td>금요일</td><td>107건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">166,315,457원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.09.23</td><td>수요일</td><td>96건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">131,244,831원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.10.02</td><td>금요일</td><td>76건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">162,247,434원</td>
+            </tr>
+            
+            <tr class="h-ledger-scene-row">
+              <td>2026.10.08</td><td>목요일</td><td>95건</td>
+              <td><span class="h-stamp-scene">정산완료</span></td>
+              <td class="num">126,457,909원</td>
+            </tr>
+            
+          </tbody>
+        </table>
+        <div class="h-ledger-end-overlay" data-scene-end-overlay>90회 중 지연 0회</div>
+      </div>
     </div>
-    <a class="h-arrow-link" href="settlement.html">정산 방식 자세히 보기 →</a>
   </div>
 </section>
 

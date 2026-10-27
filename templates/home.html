@@ -2,7 +2,11 @@
 {% block extra_head %}
 <link rel="stylesheet" href="static/home.css">
 <script>document.documentElement.classList.add('js')</script>
-<script src="static/interactions.js" defer></script>
+<script src="static/vendor/gsap.min.js" defer></script>
+<script src="static/vendor/ScrollTrigger.min.js" defer></script>
+<script src="static/vendor/SplitText.min.js" defer></script>
+<script src="static/vendor/lenis.min.js" defer></script>
+<script src="static/scroll-scenes.js" defer></script>
 {% endblock %}
 {% block content %}
 
@@ -57,26 +61,48 @@
   </div>
 </section>
 
-<!-- §02 AUDIT LEDGER -->
-<section class="h-section reveal" id="ledger">
+<!-- §02 AUDIT LEDGER — 장면 ②: 핀 고정 + 스크럽, 90행 전체가 인쇄되듯 지나감 -->
+<section class="h-section h-scene-ledger" id="ledger" data-scene="ledger">
   <div class="wrap">
     <div class="h-eyebrow-row"><span class="h-eyebrow">{{ page.evidence_summary.eyebrow }}<span class="h-rule"></span></span><span class="h-slug">{{ page.evidence_summary.slug_label }}</span></div>
-    <div class="h-ledger-top">
+  </div>
+  <div class="wrap h-ledger-scene-grid">
+    <div class="h-ledger-scene-left">
       <h2 class="h-h2">{{ page.evidence_summary.h2 }}</h2>
       <span class="h-badge">{{ page.evidence_summary.badge }}</span>
+      <div class="h-ledger-counters">
+        <div class="h-ledger-counter">
+          <div class="h-ledger-counter-num" data-scene-rounds>0</div>
+          <div class="h-ledger-counter-label">정산 회차</div>
+        </div>
+        <div class="h-ledger-counter h-ledger-counter-zero">
+          <div class="h-ledger-counter-num">0회</div>
+          <div class="h-ledger-counter-label">지연</div>
+        </div>
+      </div>
+      <a class="h-arrow-link" href="settlement.html">{{ page.evidence_summary.link_text }}</a>
     </div>
-    <div class="h-ledger-table-wrap">
-      <table class="h-ledger-table">
-        <thead><tr><th>정산일</th><th>요일</th><th>건수</th><th>상태</th><th class="num">정산 금액</th></tr></thead>
-        <tbody>
-          {% for row in page.evidence_summary.ticker_rows[-8:] %}
-          <tr class="reveal"><td>{{ row.date }}</td><td>{{ row.dow }}</td><td>{{ row.count }}건</td><td><span class="h-stamp">{{ page.evidence_summary.status_label }}</span></td><td class="num">{{ row.amount }}</td></tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      <div class="h-ledger-fade"></div>
+    <div class="h-ledger-scene-right">
+      <div class="h-ledger-progress">
+        <span class="h-ledger-progress-start">{{ page.evidence_summary.ticker_rows[0].date }}</span>
+        <div class="h-ledger-progress-track"><div class="h-ledger-progress-fill" data-scene-progress-fill></div></div>
+        <span class="h-ledger-progress-end">{{ page.evidence_summary.ticker_rows[-1].date }}</span>
+      </div>
+      <div class="h-ledger-viewport">
+        <table class="h-ledger-table-scene" data-scene-table>
+          <tbody>
+            {% for row in page.evidence_summary.ticker_rows %}
+            <tr class="h-ledger-scene-row">
+              <td>{{ row.date }}</td><td>{{ row.dow }}</td><td>{{ row.count }}건</td>
+              <td><span class="h-stamp-scene">{{ page.evidence_summary.status_label }}</span></td>
+              <td class="num">{{ row.amount }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <div class="h-ledger-end-overlay" data-scene-end-overlay>90회 중 지연 0회</div>
+      </div>
     </div>
-    <a class="h-arrow-link" href="settlement.html">{{ page.evidence_summary.link_text }}</a>
   </div>
 </section>
 
