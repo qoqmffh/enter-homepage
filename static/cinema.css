@@ -1,0 +1,88 @@
+/* ENTER 홈 — 시네마틱 리디자인 (1단계: 오프닝)
+   common.css/다른 페이지 템플릿은 건드리지 않는다. 이 파일은 home.html에서만 로드된다.
+   기본 철학: JS 없이도 하얀 홈(실제 h1·본문 텍스트 포함)이 그대로 보여야 한다.
+   오프닝 스테이지는 기본 display:none이고, <head>의 동기 인라인 스크립트가
+   html.cinema-pending을 붙였을 때만 보인다(헤더도 그때만 숨긴다) — 그래서 JS가
+   실패하면 스테이지는 영원히 안 보이고 헤더도 처음부터 정상 노출된다. */
+
+:root{
+  --c-stage-bg:#0B0D12;
+  --c-stage-fg:#FFFFFA;
+  --c-bg:#FFFFFA;
+  --c-ink:#10182B;
+  --c-muted:#B8BCC4;
+  --c-green:#1E6F50;
+  --c-gold:#B98A3D;
+}
+
+body{ background:var(--c-bg); color:var(--c-ink); }
+/* common.css의 공유 .wrap에는 다른 페이지가 쓰는 세로 그리드선 배경이 남아 있다.
+   common.css는 건드리지 않기로 했으므로, 홈에서만 이 파일(cinema.css)이 나중에
+   로드되는 걸 이용해 덮어쓴다 — 시네마틱 지시서가 명시적으로 금지한 배경선이다. */
+.wrap{ background-image:none; }
+
+/* ---------- 오프닝 중 헤더 숨김(동기 클래스 기준 — 깜빡임 없음) ---------- */
+html.cinema-pending header.site{ opacity:0; pointer-events:none; }
+html.cinema-pending{ overflow:hidden; } /* 스크롤 잠금 — Lenis.stop()과 이중 안전장치 */
+html.cinema-pending body{ overflow:hidden; }
+
+/* ---------- 오프닝 스테이지 ---------- */
+.h-cinema-stage{
+  display:none;
+  position:fixed; inset:0; z-index:999;
+  background:var(--c-stage-bg); color:var(--c-stage-fg);
+  align-items:center; justify-content:center;
+  will-change:transform;
+}
+html.cinema-pending .h-cinema-stage{ display:flex; }
+@media (prefers-reduced-motion: reduce){
+  /* reduced-motion이면 오프닝 자체를 건너뛰므로, 혹시라도 pending 클래스가 남아있어도
+     스테이지는 절대 보이지 않게 한다(2중 안전장치). */
+  .h-cinema-stage{ display:none !important; }
+  html.cinema-pending header.site{ opacity:1; pointer-events:auto; }
+  html.cinema-pending, html.cinema-pending body{ overflow:visible; }
+}
+
+.h-cinema-cuts{ position:relative; width:100%; text-align:center; padding:0 24px; }
+.h-cinema-cut{
+  position:absolute; left:0; right:0; top:50%; transform:translateY(-50%);
+  font-weight:700; font-size:40px; letter-spacing:-.01em; opacity:0;
+  word-break:keep-all;
+}
+.h-cinema-cut[data-tone="gold"]{ color:var(--c-gold); }
+@media (min-width:768px){ .h-cinema-cut{ font-size:72px; } }
+
+.h-cinema-wordmark{
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%) scale(0.92);
+  font-weight:700; font-size:32px; letter-spacing:-.01em; opacity:0; white-space:nowrap;
+}
+
+.h-cinema-skip{
+  position:fixed; right:20px; bottom:20px; z-index:1000;
+  background:none; border:none; cursor:pointer;
+  font-family:inherit; font-size:13px; color:rgba(255,255,250,.6);
+  padding:8px 10px; transition:color .15s ease;
+}
+.h-cinema-skip:hover{ color:rgba(255,255,250,1); }
+html.cinema-pending .h-cinema-skip{ display:inline-block; }
+.h-cinema-skip{ display:none; }
+
+/* ---------- 장면 1 · 헤드라인 (1단계에서는 정적 placeholder, 2단계에서 스크럽 연결) ---------- */
+.h-cinema-scene{ padding:120px 0 80px; }
+.h-cinema-scene .wrap{ max-width:1040px; margin:0 auto; padding:0 24px; }
+.h-cinema-scene-label{
+  font-family:ui-monospace, 'SFMono-Regular', Consolas, monospace;
+  font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--c-muted); margin-bottom:18px;
+}
+.h-cinema-line{
+  font-weight:700; font-size:clamp(32px,6.4vw,64px); line-height:1.2; letter-spacing:-.02em;
+  color:var(--c-ink); margin:0; word-break:keep-all; overflow-wrap:break-word;
+}
+
+/* ---------- 모바일 하단 연락바: 오프닝이 끝나면(또는 오프닝을 안 보여주기로 했으면) 등장 ----------
+   기본은 숨김이고 cinema-intro.js가 showFooterbarNow()에서 .h-bar-visible을 붙인다.
+   JS가 아예 죽으면 아래 noscript가 강제로 보이게 한다(홈.html에서만 추가, base.html은 그대로). */
+.footerbar{ transform:translateY(100%); transition:transform .35s ease; }
+.footerbar.h-bar-visible{ transform:translateY(0); }
+@media (prefers-reduced-motion: reduce){ .footerbar{ transform:none; transition:none; } }
