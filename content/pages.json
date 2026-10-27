@@ -1078,13 +1078,16 @@
       },
       "promise": {
         "label": "우리의 약속",
-        "quote": "“정산일을 미룬 적은 한 번도 없습니다. 앞으로도 그럴 겁니다.”",
         "photo_src": "static/photos/director.webp",
         "name": "방수현",
         "title": "총괄이사 · (유)위드컴퍼니",
         "cta": "정산 방식 자세히 보기 →",
         "cta_slug": "settlement",
-        "carousel_label": "약속 · 거래처 이야기 (준비 중)"
+        "carousel_label": "약속 · 거래처 이야기 (준비 중)",
+        "quote_lines": [
+          "정산일을 미룬 적은 한 번도 없습니다.",
+          "앞으로도 그럴 겁니다."
+        ]
       },
       "start": {
         "label": "HOW TO START",

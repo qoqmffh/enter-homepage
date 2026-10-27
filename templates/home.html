@@ -181,7 +181,7 @@
     </div>
     <div class="hp-promise-content">
       {{ m.section_label(p.promise.label) }}
-      <blockquote class="hp-quote">{{ p.promise.quote }}</blockquote>
+      <blockquote class="hp-quote">{% for line in p.promise.quote_lines %}<span>{% if loop.first %}“{% endif %}{{ line }}{% if loop.last %}”{% endif %}</span>{% endfor %}</blockquote>
       <div class="hp-promise-foot">
         <div class="hp-promise-person">
           <div>
