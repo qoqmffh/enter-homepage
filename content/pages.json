@@ -8,6 +8,80 @@
     "eyebrow": "ENTER · 유선 도매",
     "eyebrow_v2": "§00 · WHOLESALE SPECIFICATION",
     "slug_label": "/spec",
+    "cinema": {
+      "opening": {
+        "cuts": [
+          {"text": "2010년.", "tone": "ink"},
+          {"text": "거래처 3,000곳.", "tone": "ink"},
+          {"text": "매달 4,000건.", "tone": "ink"},
+          {"text": "정산 지연, 0회.", "tone": "gold"}
+        ],
+        "wordmark": "ENTER",
+        "skip_label": "건너뛰기 →"
+      },
+      "scenes": [
+        {
+          "id": "headline",
+          "label": "SCENE 01 · 헤드라인",
+          "lines": ["초대형 유선전문도매,", "정책이 얼마나 좋을까요?"]
+        },
+        {
+          "id": "policy",
+          "label": "SCENE 02 · 정책",
+          "lines": [
+            "정책은 물량이 정합니다.",
+            "ENTER는 매달 4,000건을 처리합니다.",
+            "전국 유선 순증의 5% 이상."
+          ],
+          "big_number": "4,000",
+          "source": "출처: KOSIS 유선통신 가입자 현황(2026.7)"
+        },
+        {
+          "id": "settlement",
+          "label": "SCENE 03 · 정산",
+          "lines_before": ["약속은 날짜로 지킵니다.", "수요일 정산서, 금요일 입금."],
+          "line_after": "90번의 금요일, 지연 0회."
+        },
+        {
+          "id": "db",
+          "label": "SCENE 04 · DB 보호",
+          "line1": "고객 정보는 남기지 않습니다.",
+          "sample_row": "홍길동 · 010-1234-5678 · 900101-1234567",
+          "caption": "개통 완료 → 자동 하드마킹",
+          "line2": "뚫려도, 가져갈 게 없습니다."
+        },
+        {
+          "id": "start",
+          "label": "SCENE 05 · 시작",
+          "line1": "시작은 연락 한 번이면 됩니다.",
+          "words": ["계약금", "월정료", "최소 실적"],
+          "line2": "서류는, 첫 정산 전에만."
+        },
+        {
+          "id": "closing",
+          "label": "SCENE 06 · 클로징",
+          "line1": "정책표는 매일 아침 10시 30분에 나갑니다.",
+          "line2": "내일 아침, 먼저 받아보세요.",
+          "cta_kakao": "카카오톡으로 정책 받기",
+          "cta_phone_prefix": "전화",
+          "cta_sms": "문자"
+        }
+      ],
+      "credits": {
+        "wordmark": "ENTER",
+        "tagline": "유선 전문 총판",
+        "links": [
+          {"label": "왜 ENTER", "slug": "why"},
+          {"label": "정산·DB보호", "slug": "settlement"},
+          {"label": "취급상품", "slug": "products"},
+          {"label": "창업자 가이드", "slug": "startup"},
+          {"label": "FAQ", "slug": "faq"},
+          {"label": "블로그", "slug": "blog"},
+          {"label": "거래처 이야기", "slug": "stories"},
+          {"label": "회사소개", "slug": "about"}
+        ]
+      }
+    },
     "cta_v2": "정책 받기",
     "h1": "초대형 유선전문도매,<br>정책이 얼마나 좋을까요?",
     "sub": "복잡한 서류 없이, 카톡 한 번으로 정책부터 접수까지",

@@ -1,216 +1,56 @@
 {% extends "base.html" %}
 {% block extra_head %}
-<link rel="stylesheet" href="static/home.css">
-<script>document.documentElement.classList.add('js')</script>
+<script>
+(function () {
+  try {
+    var params = new URLSearchParams(location.search);
+    var force = params.get('intro') === '1';
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var skip = false;
+    if (!force) {
+      try {
+        var last = localStorage.getItem('enter_intro_seen');
+        if (last && (Date.now() - parseInt(last, 10)) < 24 * 60 * 60 * 1000) skip = true;
+      } catch (e) {}
+    }
+    if (!reduce && !skip) {
+      document.documentElement.classList.add('cinema-pending');
+    }
+  } catch (e) {}
+})();
+</script>
+<link rel="stylesheet" href="static/cinema.css">
+<noscript><style>.footerbar{transform:none !important}</style></noscript>
 <script src="static/vendor/gsap.min.js" defer></script>
 <script src="static/vendor/ScrollTrigger.min.js" defer></script>
 <script src="static/vendor/SplitText.min.js" defer></script>
+<script src="static/vendor/Flip.min.js" defer></script>
 <script src="static/vendor/lenis.min.js" defer></script>
-<script src="static/scroll-scenes.js" defer></script>
+<script src="static/cinema-intro.js" defer></script>
 {% endblock %}
 {% block content %}
 
-<section class="h-hero h-section" id="hero" style="border-bottom:1px solid var(--h-line)">
-  <div class="wrap">
-    <div class="h-eyebrow-row"><span class="h-eyebrow">{{ page.eyebrow_v2 }}<span class="h-rule"></span></span><span class="h-slug">{{ page.slug_label }}</span></div>
-    <h1 class="h-h1">{{ page.h1 | safe }}</h1>
-    <div class="h-hero-split">
-      <div class="h-hero-left">
-        <p class="h-sub">{{ page.sub }}</p>
-        <div class="h-hero-cta-row">
-          <a class="h-btn-primary" href="#">{{ page.cta_primary }}<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-          <a class="h-phone-link" href="tel:{{ site.phone }}">전화 {{ site.phone }}</a>
-        </div>
-      </div>
-      <div class="h-abstract-box">
-        <div class="h-abstract-label">[ {{ page.abstract_box.label }} ]</div>
-        <p>{{ page.abstract_box.text }}</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="wrap h-stat-wrap" id="stats">
-<div class="h-stat-row">
-  {% for s in page.stat_bar_v2 %}
-  <div class="h-stat">
-    <div class="h-stat-num" data-countup style="color:{{ s.color }}">{{ s.num }}</div>
-    <div class="h-stat-label">{{ s.sub }}</div>
-  </div>
-  {% endfor %}
-</div>
-</div>
-
-<!-- §01 왜 ENTER -->
-<section class="h-section reveal" id="why">
-  <div class="wrap">
-    <div class="h-eyebrow-row"><span class="h-eyebrow">{{ page.why_summary.eyebrow }}<span class="h-rule"></span></span><span class="h-slug">{{ page.why_summary.slug_label }}</span></div>
-    <h2 class="h-h2">{{ page.why_summary.h2 }}</h2>
-    <div class="h-reason-list">
-      {% for c in page.why_summary.cards %}
-      <div class="h-reason-row">
-        <div class="h-rn">{{ "%02d"|format(c.num) }}</div>
-        <div class="h-rn-body">
-          <h3>{{ c.title }}</h3>
-          <p>{{ c.text }}</p>
-          <a class="h-arrow-link" href="why.html">자세히 보기 →</a>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-
-<!-- §02 AUDIT LEDGER — 장면 ②: 핀 고정 + 스크럽, 90행 전체가 인쇄되듯 지나감 -->
-<section class="h-section h-scene-ledger" id="ledger" data-scene="ledger">
-  <div class="wrap">
-    <div class="h-eyebrow-row"><span class="h-eyebrow">{{ page.evidence_summary.eyebrow }}<span class="h-rule"></span></span><span class="h-slug">{{ page.evidence_summary.slug_label }}</span></div>
-  </div>
-  <div class="wrap h-ledger-scene-grid">
-    <div class="h-ledger-scene-left">
-      <h2 class="h-h2">{{ page.evidence_summary.h2 }}</h2>
-      <span class="h-badge">{{ page.evidence_summary.badge }}</span>
-      <div class="h-ledger-counters">
-        <div class="h-ledger-counter">
-          <div class="h-ledger-counter-num" data-scene-rounds>0</div>
-          <div class="h-ledger-counter-label">정산 회차</div>
-        </div>
-        <div class="h-ledger-counter h-ledger-counter-zero">
-          <div class="h-ledger-counter-num">0회</div>
-          <div class="h-ledger-counter-label">지연</div>
-        </div>
-      </div>
-      <a class="h-arrow-link" href="settlement.html">{{ page.evidence_summary.link_text }}</a>
-    </div>
-    <div class="h-ledger-scene-right">
-      <div class="h-ledger-progress">
-        <span class="h-ledger-progress-start">{{ page.evidence_summary.ticker_rows[0].date }}</span>
-        <div class="h-ledger-progress-track"><div class="h-ledger-progress-fill" data-scene-progress-fill></div></div>
-        <span class="h-ledger-progress-end">{{ page.evidence_summary.ticker_rows[-1].date }}</span>
-      </div>
-      <div class="h-ledger-viewport">
-        <table class="h-ledger-table-scene" data-scene-table>
-          <tbody>
-            {% for row in page.evidence_summary.ticker_rows %}
-            <tr class="h-ledger-scene-row">
-              <td>{{ row.date }}</td><td>{{ row.dow }}</td><td>{{ row.count }}건</td>
-              <td><span class="h-stamp-scene">{{ page.evidence_summary.status_label }}</span></td>
-              <td class="num">{{ row.amount }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        <div class="h-ledger-end-overlay" data-scene-end-overlay>90회 중 지연 0회</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- §03 START HERE -->
-<section class="h-section reveal" id="start">
-  <div class="wrap">
-    <div class="h-eyebrow-row"><span class="h-eyebrow">{{ page.start_summary.eyebrow }}<span class="h-rule"></span></span><span class="h-slug">{{ page.start_summary.slug_label }}</span></div>
-    <h2 class="h-h2">{{ page.start_summary.h2 }}</h2>
-    <p class="h-sub" style="margin-bottom:0">{{ page.start_summary.lead }}</p>
-    <div class="h-journey-wrap">
-      <table class="h-journey-table">
-        <thead><tr><th></th>{% for h in page.start_summary.headers %}<th>{{ h }}</th>{% endfor %}</tr></thead>
-        <tbody>
-          {% for r in page.start_summary.rows %}
-          <tr class="reveal">
-            <td class="h-jt-n">{{ r.n }}</td>
-            <td data-label="{{ page.start_summary.headers[0] }}">{{ r.have }}</td>
-            <td data-label="{{ page.start_summary.headers[1] }}">{{ r.start }}</td>
-            <td data-label="{{ page.start_summary.headers[2] }}">{{ r.benefit }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-    <p style="margin-top:24px"><a class="h-btn-primary" href="#">{{ page.start_summary.cta_text }}</a></p>
-  </div>
-</section>
-
-<!-- §04 FOR STARTERS -->
-<section class="h-section reveal" id="startup">
-  <div class="wrap h-startup-split">
-    <div>
-      <div class="h-eyebrow-row"><span class="h-eyebrow">{{ page.startup_summary.eyebrow }}<span class="h-rule"></span></span><span class="h-slug">{{ page.startup_summary.slug_label }}</span></div>
-      <h2 class="h-h2">{{ page.startup_summary.h2 }}</h2>
-    </div>
-    <div class="h-startup-stat reveal">
-      <div class="h-startup-stat-cap">{{ page.startup_summary.diff_caption }}</div>
-      <div class="h-startup-stat-num" data-countup>{{ page.startup_summary.diff_amount }}</div>
-      <a class="h-btn-primary" href="{{ page.startup_summary.link_slug }}.html">{{ page.startup_summary.cta_text }}<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-    </div>
-  </div>
-</section>
-
-<!-- §05 PRODUCTS -->
-<section class="h-section reveal" id="products">
-  <div class="wrap">
-    <div class="h-eyebrow-row"><span class="h-eyebrow">{{ page.products_summary.eyebrow }}<span class="h-rule"></span></span><span class="h-slug">{{ page.products_summary.slug_label }}</span></div>
-    <h2 class="h-h2">{{ page.products_summary.h2 }}</h2>
-    <div class="h-products-row">
-      {% for c in page.products_summary.cards %}<span class="h-product-item"><b>{{ c.n }}</b>{{ c.name }}</span>{% endfor %}
-    </div>
-    <a class="h-arrow-link" href="{{ page.products_summary.link_slug }}.html">{{ page.products_summary.link_text }}</a>
-  </div>
-</section>
-
-<!-- §06 ABOUT -->
-<section class="h-section reveal" id="about">
-  <div class="wrap">
-    <div class="h-eyebrow-row"><span class="h-eyebrow">{{ page.about_summary.eyebrow }}<span class="h-rule"></span></span><span class="h-slug">{{ page.about_summary.slug_label }}</span></div>
-    <h2 class="h-h2">{{ page.about_summary.h2 }}</h2>
-    <div class="h-tag-row">
-      {% for b in page.about_summary.badges %}<span class="h-tag">{{ b }}</span>{% endfor %}
-    </div>
-    <a class="h-arrow-link" href="{{ page.about_summary.link_slug }}.html">{{ page.about_summary.link_text }}</a>
-  </div>
-</section>
-
-<!-- §07 FAQ -->
-<section class="h-section reveal" id="faq">
-  <div class="wrap">
-    <div class="h-eyebrow-row"><span class="h-eyebrow">{{ page.faq_summary.eyebrow }}<span class="h-rule"></span></span><span class="h-slug">{{ page.faq_summary.slug_label }}</span></div>
-    <h2 class="h-h2">{{ page.faq_summary.h2 }}</h2>
-    {% for item in page.faq_summary.list %}
-    <div class="h-faq-item">
-      <p class="h-faq-q"><span class="h-q-tag">Q{{ "%02d"|format(loop.index) }}.</span>{{ item.q }}</p>
-      <p class="h-faq-a"><span class="h-a-tag">A.</span>{{ item.a }}</p>
-    </div>
+<!-- 오프닝 스테이지 — 기본 display:none, html.cinema-pending일 때만 보임(cinema.css) -->
+<div class="h-cinema-stage" id="cinemaStage" aria-hidden="true">
+  <div class="h-cinema-cuts">
+    {% for cut in page.cinema.opening.cuts %}
+    <div class="h-cinema-cut" data-tone="{{ cut.tone }}">{{ cut.text }}</div>
     {% endfor %}
-    <a class="h-arrow-link" href="{{ page.faq_summary.link_slug }}.html">{{ page.faq_summary.link_text }}</a>
+  </div>
+  <div class="h-cinema-wordmark" id="cinemaWordmark">{{ page.cinema.opening.wordmark }}</div>
+</div>
+<button class="h-cinema-skip" id="cinemaSkip" type="button">{{ page.cinema.opening.skip_label }}</button>
+
+<!-- 장면 1 · 헤드라인 (1단계: 정적 placeholder. 2단계에서 cinema-scenes.js가 핀+스크럽 연결) -->
+<section class="h-cinema-scene" id="scene-headline" data-scene-id="headline">
+  <div class="wrap">
+    <div class="h-cinema-scene-label">{{ page.cinema.scenes[0].label }}</div>
+    {% for line in page.cinema.scenes[0].lines %}
+    <h1 class="h-cinema-line" data-line>{{ line }}</h1>
+    {% endfor %}
   </div>
 </section>
 
-<!-- §08 BLOG -->
-<section class="h-section reveal" id="blog">
-  <div class="wrap">
-    <div class="h-eyebrow-row"><span class="h-eyebrow">{{ page.blog_summary.eyebrow }}<span class="h-rule"></span></span><span class="h-slug">{{ page.blog_summary.slug_label }}</span></div>
-    <h2 class="h-h2">{{ page.blog_summary.h2 }}</h2>
-    <ul class="h-blog-list">
-      {% for p in page.blog_summary.list %}
-      <li><a href="{{ p.slug }}.html">{{ p.title }}</a><span class="h-blog-tag">{{ p.tag }}</span></li>
-      {% endfor %}
-    </ul>
-    <a class="h-arrow-link" href="{{ page.blog_summary.link_slug }}.html">{{ page.blog_summary.link_text }}</a>
-  </div>
-</section>
-
-<!-- §09 CONTACT -->
-<section class="h-section reveal" id="contact">
-  <div class="wrap">
-    <div class="h-eyebrow-row"><span class="h-eyebrow">{{ page.final_cta.eyebrow }}<span class="h-rule"></span></span><span class="h-slug">{{ page.final_cta.slug_label }}</span></div>
-    <h2 class="h-h2">{{ page.final_cta.text }}</h2>
-    <p class="h-sub">{{ page.final_cta.sub }}</p>
-    <div class="h-contact-grid">
-      <a class="h-contact-item" href="tel:{{ site.phone }}">전화 {{ site.phone }}</a>
-      <a class="h-contact-item" href="sms:{{ site.phone }}">문자 {{ site.phone }}</a>
-      <a class="h-contact-item h-contact-primary" href="#">카카오톡 {{ page.cta_v2 }}</a>
-    </div>
-  </div>
-</section>
+<!-- 장면 2~6 + 엔딩 크레딧은 2·3단계에서 추가됩니다. -->
 
 {% endblock %}
