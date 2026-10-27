@@ -10,7 +10,7 @@
 body{ background:var(--h-bg); color:var(--h-ink); }
 
 /* 그리드 레일 — 홈 전용 색/간격 (4컬럼 느낌) */
-.wrap{ background-image:repeating-linear-gradient(to right, transparent, transparent 247px, var(--h-line) 247px, var(--h-line) 248px); }
+.wrap{ background-image:none; } /* 세로 그리드선 제거 (2026-10-27 팀장 요청) */
 
 /* ---------- 헤더 오버라이드 ---------- */
 header.site{ border-bottom-color:var(--h-line); }
@@ -187,3 +187,9 @@ tr.in-view .h-stamp{ transform:scale(1) rotate(-4deg); opacity:1; }
 html.js .footerbar{ transform:translateY(100%); transition:transform .35s ease; }
 html.js .footerbar.h-bar-visible{ transform:translateY(0); }
 @media (prefers-reduced-motion: reduce){ html.js .footerbar{ transform:none; transition:none; } }
+
+/* 통계 줄을 위 콘텐츠와 같은 폭(.wrap)에 맞춤 — 첫 칸 숫자가 헤드라인 왼쪽 선과 일치 */
+.h-stat-wrap{ background-image:none; }
+.h-stat-row{ border-top:none; }
+.h-stat:first-child{ padding-left:0; }
+@media (max-width: 767px){ .h-stat:nth-child(odd){ padding-left:0; } }
