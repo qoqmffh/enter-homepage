@@ -1,88 +1,96 @@
 {% extends "base.html" %}
+{% block extra_head %}
+<link rel="stylesheet" href="static/home.css">
+<script>document.documentElement.classList.add('js')</script>
+<script src="static/interactions.js" defer></script>
+{% endblock %}
 {% block content %}
-<section class="hero-v2">
-  <div class="wrap hero-v2-grid">
-    <div class="hero-v2-layout">
-      <div class="hero-v2-main">
-        <div class="eyebrow-v2">{{ page.eyebrow_v2 }}</div>
-        <h1>{{ page.h1 | safe }}</h1>
-        <p class="sub-v2">{{ page.sub }}</p>
-        <a class="hero-v2-cta" href="#">
-          <span class="cta-label">{{ page.cta_v2 }}</span>
-          <span class="cta-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-        </a>
+
+<section class="h-hero h-section" id="hero" style="border-bottom:1px solid var(--h-line)">
+  <div class="wrap">
+    <div class="h-eyebrow-row"><span class="h-eyebrow">{{ page.eyebrow_v2 }}<span class="h-rule"></span></span><span class="h-slug">{{ page.slug_label }}</span></div>
+    <h1 class="h-h1">{{ page.h1 | safe }}</h1>
+    <div class="h-hero-split">
+      <div class="h-hero-left">
+        <p class="h-sub">{{ page.sub }}</p>
+        <div class="h-hero-cta-row">
+          <a class="h-btn-primary" href="#">{{ page.cta_primary }}<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="h-phone-link" href="tel:{{ site.phone }}">전화 {{ site.phone }}</a>
+        </div>
       </div>
-      <div class="abstract-box">
-        <div class="abstract-label">{{ page.abstract_box.label }}</div>
+      <div class="h-abstract-box">
+        <div class="h-abstract-label">[ {{ page.abstract_box.label }} ]</div>
         <p>{{ page.abstract_box.text }}</p>
       </div>
     </div>
   </div>
 </section>
 
-<div class="stat-bar-v2">
+<div class="h-stat-row" id="stats">
   {% for s in page.stat_bar_v2 %}
-  <div class="stat-v2">
-    <div class="stat-v2-label">{{ s.label }}</div>
-    <div class="stat-v2-num" style="color:{{ s.color }}">{{ s.num }}</div>
-    <div class="stat-v2-sub">{{ s.sub }}</div>
+  <div class="h-stat">
+    <div class="h-stat-num" data-countup style="color:{{ s.color }}">{{ s.num }}</div>
+    <div class="h-stat-label">{{ s.sub }}</div>
   </div>
   {% endfor %}
 </div>
 
 <!-- §01 왜 ENTER -->
-<section>
+<section class="h-section reveal" id="why">
   <div class="wrap">
-    <div class="section-head"><span class="idx">{{ page.why_summary.eyebrow }}</span><span class="label">{{ page.why_summary.slug_label }}</span></div>
-    <h2 class="h2-xl">{{ page.why_summary.h2 }}</h2>
-    <div class="reason-list">
+    <div class="h-eyebrow-row"><span class="h-eyebrow">{{ page.why_summary.eyebrow }}<span class="h-rule"></span></span><span class="h-slug">{{ page.why_summary.slug_label }}</span></div>
+    <h2 class="h-h2">{{ page.why_summary.h2 }}</h2>
+    <div class="h-reason-list">
       {% for c in page.why_summary.cards %}
-      <div class="reason-row">
-        <div class="rn">{{ "%02d"|format(c.num) }}</div>
-        <div><h3>{{ c.title }}</h3><p>{{ c.text }}</p></div>
+      <div class="h-reason-row">
+        <div class="h-rn">{{ "%02d"|format(c.num) }}</div>
+        <div class="h-rn-body">
+          <h3>{{ c.title }}</h3>
+          <p>{{ c.text }}</p>
+          <a class="h-arrow-link" href="why.html">자세히 보기 →</a>
+        </div>
       </div>
       {% endfor %}
     </div>
-    <p style="margin-top:16px"><a class="more-link" href="why.html">{{ page.why_summary.link_text }}</a></p>
   </div>
 </section>
 
-<!-- §02 정산 원장(AUDIT LEDGER) -->
-<section>
+<!-- §02 AUDIT LEDGER -->
+<section class="h-section reveal" id="ledger">
   <div class="wrap">
-    <div class="section-head"><span class="idx">{{ page.evidence_summary.eyebrow }}</span><span class="label">{{ page.evidence_summary.slug_label }}</span></div>
-    <div class="ledger-top">
-      <h2 class="h2-xl">{{ page.evidence_summary.h2 }}</h2>
-      <span class="ledger-badge">{{ page.evidence_summary.badge }}</span>
+    <div class="h-eyebrow-row"><span class="h-eyebrow">{{ page.evidence_summary.eyebrow }}<span class="h-rule"></span></span><span class="h-slug">{{ page.evidence_summary.slug_label }}</span></div>
+    <div class="h-ledger-top">
+      <h2 class="h-h2">{{ page.evidence_summary.h2 }}</h2>
+      <span class="h-badge">{{ page.evidence_summary.badge }}</span>
     </div>
-    <div class="ticker-head"><span class="h-date">날짜</span><span class="h-count">건수</span><span class="h-amount">정산금액</span><span class="h-status">상태</span></div>
-    <div class="ticker-wrap">
-      <div class="ticker-list">
-        {% for row in page.evidence_summary.ticker_rows %}
-        <div class="ticker-row"><span class="t-date">{{ row.date }} ({{ row.dow[:1] }})</span><span class="t-count">{{ row.count }}건</span><span class="t-amount">{{ row.amount }}</span><span class="t-status">{{ page.evidence_summary.status_label }}</span></div>
-        {% endfor %}
-        {% for row in page.evidence_summary.ticker_rows %}
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">{{ row.date }} ({{ row.dow[:1] }})</span><span class="t-count">{{ row.count }}건</span><span class="t-amount">{{ row.amount }}</span><span class="t-status">{{ page.evidence_summary.status_label }}</span></div>
-        {% endfor %}
-      </div>
+    <div class="h-ledger-table-wrap">
+      <table class="h-ledger-table">
+        <thead><tr><th>정산일</th><th>요일</th><th>건수</th><th>상태</th><th class="num">정산 금액</th></tr></thead>
+        <tbody>
+          {% for row in page.evidence_summary.ticker_rows[-8:] %}
+          <tr class="reveal"><td>{{ row.date }}</td><td>{{ row.dow }}</td><td>{{ row.count }}건</td><td><span class="h-stamp">{{ page.evidence_summary.status_label }}</span></td><td class="num">{{ row.amount }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="h-ledger-fade"></div>
     </div>
-    <p style="margin-top:16px"><a class="more-link" href="settlement.html">{{ page.evidence_summary.link_text }}</a></p>
+    <a class="h-arrow-link" href="settlement.html">{{ page.evidence_summary.link_text }}</a>
   </div>
 </section>
 
-<!-- §03 거래 시작하기 (여정표) -->
-<section>
+<!-- §03 START HERE -->
+<section class="h-section reveal" id="start">
   <div class="wrap">
-    <div class="section-head"><span class="idx">{{ page.start_summary.eyebrow }}</span><span class="label">{{ page.start_summary.slug_label }}</span></div>
-    <h2 class="h2-xl">{{ page.start_summary.h2 }}</h2>
-    <p class="lead">{{ page.start_summary.lead }}</p>
-    <div class="journey-table-wrap">
-      <table class="journey-table">
+    <div class="h-eyebrow-row"><span class="h-eyebrow">{{ page.start_summary.eyebrow }}<span class="h-rule"></span></span><span class="h-slug">{{ page.start_summary.slug_label }}</span></div>
+    <h2 class="h-h2">{{ page.start_summary.h2 }}</h2>
+    <p class="h-sub" style="margin-bottom:0">{{ page.start_summary.lead }}</p>
+    <div class="h-journey-wrap">
+      <table class="h-journey-table">
         <thead><tr><th></th>{% for h in page.start_summary.headers %}<th>{{ h }}</th>{% endfor %}</tr></thead>
         <tbody>
           {% for r in page.start_summary.rows %}
-          <tr>
-            <td class="jt-n">{{ r.n }}</td>
+          <tr class="reveal">
+            <td class="h-jt-n">{{ r.n }}</td>
             <td data-label="{{ page.start_summary.headers[0] }}">{{ r.have }}</td>
             <td data-label="{{ page.start_summary.headers[1] }}">{{ r.start }}</td>
             <td data-label="{{ page.start_summary.headers[2] }}">{{ r.benefit }}</td>
@@ -91,107 +99,90 @@
         </tbody>
       </table>
     </div>
-    <p style="margin-top:16px"><a class="btn btn-primary" href="#">{{ page.start_summary.cta_text }}</a></p>
-    <p style="margin-top:10px"><a class="more-link" href="start.html">{{ page.start_summary.link_text }}</a></p>
+    <p style="margin-top:24px"><a class="h-btn-primary" href="#">{{ page.start_summary.cta_text }}</a></p>
   </div>
 </section>
 
-<!-- §04 창업 준비 중이시라면 -->
-<section>
-  <div class="wrap">
-    <div class="section-head"><span class="idx">{{ page.startup_summary.eyebrow }}</span><span class="label">{{ page.startup_summary.slug_label }}</span></div>
-    <div class="lead-row">
-      <div class="lead-row-main">
-        <h2 class="h2-xl">{{ page.startup_summary.h2 }}</h2>
-        <p class="lead">{{ page.startup_summary.lead }}</p>
-      </div>
-      <div>
-        <p style="margin-top:14px"><a class="btn btn-primary" href="#">{{ page.startup_summary.cta_text }}</a></p>
-      </div>
+<!-- §04 FOR STARTERS -->
+<section class="h-section reveal" id="startup">
+  <div class="wrap h-startup-split">
+    <div>
+      <div class="h-eyebrow-row"><span class="h-eyebrow">{{ page.startup_summary.eyebrow }}<span class="h-rule"></span></span><span class="h-slug">{{ page.startup_summary.slug_label }}</span></div>
+      <h2 class="h-h2">{{ page.startup_summary.h2 }}</h2>
     </div>
-    <p style="margin-top:10px"><a class="more-link" href="{{ page.startup_summary.link_slug }}.html">자세히 보기 →</a></p>
-  </div>
-</section>
-
-<!-- §05 취급상품 -->
-<section>
-  <div class="wrap">
-    <div class="section-head"><span class="idx">{{ page.products_summary.eyebrow }}</span><span class="label">{{ page.products_summary.slug_label }}</span></div>
-    <h2 class="h2-xl">{{ page.products_summary.h2 }}</h2>
-    <div class="category-grid">
-      {% for c in page.products_summary.cards %}
-      <div class="category-card">
-        <div class="cc-n">{{ c.n }}</div>
-        <div class="cc-name">{{ c.name }}</div>
-        <div class="cc-desc">{{ c.desc }}</div>
-      </div>
-      {% endfor %}
+    <div class="h-startup-stat reveal">
+      <div class="h-startup-stat-cap">{{ page.startup_summary.diff_caption }}</div>
+      <div class="h-startup-stat-num" data-countup>{{ page.startup_summary.diff_amount }}</div>
+      <a class="h-btn-primary" href="{{ page.startup_summary.link_slug }}.html">{{ page.startup_summary.cta_text }}<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
-    <p style="margin-top:16px"><a class="more-link" href="{{ page.products_summary.link_slug }}.html">{{ page.products_summary.link_text }}</a></p>
   </div>
 </section>
 
-<!-- §06 회사소개 압축 -->
-<section>
+<!-- §05 PRODUCTS -->
+<section class="h-section reveal" id="products">
   <div class="wrap">
-    <div class="section-head"><span class="idx">{{ page.about_summary.eyebrow }}</span><span class="label">{{ page.about_summary.slug_label }}</span></div>
-    <h2 class="h2-xl">{{ page.about_summary.h2 }}</h2>
-    <div class="inline-divided" style="margin-top:14px">
-      {% for b in page.about_summary.badges %}<span>{{ b }}</span>{% endfor %}
+    <div class="h-eyebrow-row"><span class="h-eyebrow">{{ page.products_summary.eyebrow }}<span class="h-rule"></span></span><span class="h-slug">{{ page.products_summary.slug_label }}</span></div>
+    <h2 class="h-h2">{{ page.products_summary.h2 }}</h2>
+    <div class="h-products-row">
+      {% for c in page.products_summary.cards %}<span class="h-product-item"><b>{{ c.n }}</b>{{ c.name }}</span>{% endfor %}
     </div>
-    <p style="margin-top:16px"><a class="more-link" href="{{ page.about_summary.link_slug }}.html">{{ page.about_summary.link_text }}</a></p>
+    <a class="h-arrow-link" href="{{ page.products_summary.link_slug }}.html">{{ page.products_summary.link_text }}</a>
   </div>
 </section>
 
-<!-- §07 FAQ 미리보기 -->
-<section>
+<!-- §06 ABOUT -->
+<section class="h-section reveal" id="about">
   <div class="wrap">
-    <div class="section-head"><span class="idx">{{ page.faq_summary.eyebrow }}</span><span class="label">{{ page.faq_summary.slug_label }}</span></div>
-    <h2 class="h2-xl">{{ page.faq_summary.h2 }}</h2>
+    <div class="h-eyebrow-row"><span class="h-eyebrow">{{ page.about_summary.eyebrow }}<span class="h-rule"></span></span><span class="h-slug">{{ page.about_summary.slug_label }}</span></div>
+    <h2 class="h-h2">{{ page.about_summary.h2 }}</h2>
+    <div class="h-tag-row">
+      {% for b in page.about_summary.badges %}<span class="h-tag">{{ b }}</span>{% endfor %}
+    </div>
+    <a class="h-arrow-link" href="{{ page.about_summary.link_slug }}.html">{{ page.about_summary.link_text }}</a>
+  </div>
+</section>
+
+<!-- §07 FAQ -->
+<section class="h-section reveal" id="faq">
+  <div class="wrap">
+    <div class="h-eyebrow-row"><span class="h-eyebrow">{{ page.faq_summary.eyebrow }}<span class="h-rule"></span></span><span class="h-slug">{{ page.faq_summary.slug_label }}</span></div>
+    <h2 class="h-h2">{{ page.faq_summary.h2 }}</h2>
     {% for item in page.faq_summary.list %}
-    <div class="faq-item">
-      <div class="faq-q">{{ item.q }}</div>
-      <div class="faq-a">{{ item.a }}</div>
+    <div class="h-faq-item">
+      <p class="h-faq-q"><span class="h-q-tag">Q{{ "%02d"|format(loop.index) }}.</span>{{ item.q }}</p>
+      <p class="h-faq-a"><span class="h-a-tag">A.</span>{{ item.a }}</p>
     </div>
     {% endfor %}
-    <p style="margin-top:16px"><a class="more-link" href="{{ page.faq_summary.link_slug }}.html">{{ page.faq_summary.link_text }}</a></p>
+    <a class="h-arrow-link" href="{{ page.faq_summary.link_slug }}.html">{{ page.faq_summary.link_text }}</a>
   </div>
 </section>
 
-<!-- §08 블로그 최신글 -->
-<section>
+<!-- §08 BLOG -->
+<section class="h-section reveal" id="blog">
   <div class="wrap">
-    <div class="section-head"><span class="idx">{{ page.blog_summary.eyebrow }}</span><span class="label">{{ page.blog_summary.slug_label }}</span></div>
-    <h2 class="h2-xl">{{ page.blog_summary.h2 }}</h2>
-    <ul class="blog-row-list">
+    <div class="h-eyebrow-row"><span class="h-eyebrow">{{ page.blog_summary.eyebrow }}<span class="h-rule"></span></span><span class="h-slug">{{ page.blog_summary.slug_label }}</span></div>
+    <h2 class="h-h2">{{ page.blog_summary.h2 }}</h2>
+    <ul class="h-blog-list">
       {% for p in page.blog_summary.list %}
-      <li><a href="{{ p.slug }}.html">{{ p.title }}</a> <span class="tag">{{ p.tag }}</span></li>
+      <li><a href="{{ p.slug }}.html">{{ p.title }}</a><span class="h-blog-tag">{{ p.tag }}</span></li>
       {% endfor %}
     </ul>
-    <p style="margin-top:16px"><a class="more-link" href="{{ page.blog_summary.link_slug }}.html">{{ page.blog_summary.link_text }}</a></p>
+    <a class="h-arrow-link" href="{{ page.blog_summary.link_slug }}.html">{{ page.blog_summary.link_text }}</a>
   </div>
 </section>
 
-<!-- §09 최종 CTA / 연락 카드 -->
-<section>
-  <div class="wrap final-cta-block">
-    <div class="section-head"><span class="idx">{{ page.final_cta.eyebrow }}</span><span class="label">{{ page.final_cta.slug_label }}</span></div>
-    <p class="tagline">{{ page.final_cta.text }}</p>
-    <p class="lead" style="margin-top:8px">{{ page.final_cta.sub }}</p>
-    <div class="contact-cards">
-      <a class="contact-card" href="tel:{{ site.phone }}">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.3 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.5 21 3 13.5 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.3 1l-2.2 2.2Z"/></svg>
-        <span>전화</span>
-      </a>
-      <a class="contact-card" href="sms:{{ site.phone }}">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.3c-1.2 0-2.3-.2-3.4-.7L3 20l1-5.9a8.3 8.3 0 0 1-.8-3.6A8.4 8.4 0 0 1 12 2a8.4 8.4 0 0 1 9 8.5v1Z"/></svg>
-        <span>문자</span>
-      </a>
-      <a class="contact-card" href="#">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3C6.9 3 3 6.3 3 10.4c0 2.6 1.6 4.9 4 6.3l-1 3.6 4-2.1c.6.1 1.3.2 2 .2 5.1 0 9-3.3 9-7.4S17.1 3 12 3Z"/></svg>
-        <span>카카오톡</span>
-      </a>
+<!-- §09 CONTACT -->
+<section class="h-section reveal" id="contact">
+  <div class="wrap">
+    <div class="h-eyebrow-row"><span class="h-eyebrow">{{ page.final_cta.eyebrow }}<span class="h-rule"></span></span><span class="h-slug">{{ page.final_cta.slug_label }}</span></div>
+    <h2 class="h-h2">{{ page.final_cta.text }}</h2>
+    <p class="h-sub">{{ page.final_cta.sub }}</p>
+    <div class="h-contact-grid">
+      <a class="h-contact-item" href="tel:{{ site.phone }}">전화 {{ site.phone }}</a>
+      <a class="h-contact-item" href="sms:{{ site.phone }}">문자 {{ site.phone }}</a>
+      <a class="h-contact-item h-contact-primary" href="#">카카오톡 {{ page.cta_v2 }}</a>
     </div>
   </div>
 </section>
+
 {% endblock %}
