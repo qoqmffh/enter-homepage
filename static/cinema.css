@@ -80,6 +80,21 @@ html.cinema-pending .h-cinema-skip{ display:inline-block; }
   color:var(--c-ink); margin:0; word-break:keep-all; overflow-wrap:break-word;
 }
 
+/* ---------- Letter Swap (static/letter-swap.js) ----------
+   글자마다 칸(.ls-cell, overflow:hidden)에 primary/secondary 두 겹을 쌓아
+   롤 전환한다. .ls-sr-only는 스크린리더용 원문, .ls-cells는 실제 보이는 글자들
+   (aria-hidden) — 레퍼런스 참고_LetterSwap.tsx의 sr-only 패턴과 동일. */
+.ls-root{ position:relative; display:inline-flex; align-items:center; }
+.ls-sr-only{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+}
+.ls-cells{ display:inline-flex; }
+.ls-cell{ position:relative; display:inline-block; overflow:hidden; white-space:pre; }
+.ls-cell.ls-space{ overflow:visible; }
+.ls-primary{ position:relative; display:inline-block; top:0; }
+.ls-secondary{ position:absolute; left:0; right:0; top:100%; display:inline-block; }
+
 /* ---------- 모바일 하단 연락바: 오프닝이 끝나면(또는 오프닝을 안 보여주기로 했으면) 등장 ----------
    기본은 숨김이고 cinema-intro.js가 showFooterbarNow()에서 .h-bar-visible을 붙인다.
    JS가 아예 죽으면 아래 noscript가 강제로 보이게 한다(홈.html에서만 추가, base.html은 그대로). */

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Letter Swap 테스트</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="static/cinema.css">
+<style>
+  body{ background:#0B0D12; color:#FFFFFA; font-family:'ONE Mobile','Pretendard',system-ui,sans-serif; margin:0; }
+  .case{ min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:28px; border-bottom:1px solid rgba(255,255,250,.12); padding:40px 24px; }
+  .case h2{ font-size:14px; letter-spacing:.08em; text-transform:uppercase; color:#B8BCC4; margin:0; font-weight:600; }
+  .stage{ font-size:64px; font-weight:700; letter-spacing:-.01em; min-height:1.3em; display:flex; align-items:center; }
+  .stage.small{ font-size:40px; }
+  .stage.gold{ color:#B98A3D; }
+  .btn{ background:#FFFFFA; color:#10182B; border:none; border-radius:999px; padding:10px 22px; font-size:14px; font-weight:600; cursor:pointer; }
+  .hint{ color:#B8BCC4; font-size:13px; }
+  .hover-target{ cursor:pointer; padding:8px 4px; }
+  .step-label{ position:fixed; top:16px; left:20px; font-size:13px; color:#B8BCC4; letter-spacing:.04em; }
+</style>
+</head>
+<body>
+<div class="step-label">Letter Swap 테스트 — static/letter-swap.js (GSAP, React 미사용)</div>
+
+<section class="case">
+  <h2>1. ENTER 등장 (entrance)</h2>
+  <div id="c1" class="stage"></div>
+  <button class="btn" id="b1" type="button">다시 재생</button>
+  <div class="hint">빈 상태 → "ENTER" 글자가 아래에서 랜덤 순서로 올라옴 (stagger 0.08s)</div>
+</section>
+
+<section class="case">
+  <h2>2. 한 바퀴 스왑 (roll, 제자리 복귀)</h2>
+  <div id="c2" class="stage">ENTER</div>
+  <button class="btn" id="b2" type="button">한 바퀴 굴리기</button>
+  <div class="hint">같은 글자가 랜덤 순서로 한 바퀴 굴러 제자리로 복귀 — 로고가 "살아있는" 느낌용</div>
+</section>
+
+<section class="case">
+  <h2>3. 텍스트 교체 ("2010년." → "거래처 3,000곳.")</h2>
+  <div id="c3" class="stage small gold">2010년.</div>
+  <button class="btn" id="b3" type="button">교체 재생</button>
+  <div class="hint">A 문구 글자가 랜덤 순서로 위로 빠지고, 같은 칸에서 B 문구 글자가 아래서 올라옴. 글자 수가 달라도 칸이 늘어남.</div>
+</section>
+
+<section class="case">
+  <h2>4. 호버 핑퐁 (pingpong)</h2>
+  <div id="c4" class="stage hover-target">ENTER</div>
+  <div class="hint">마우스를 올리면(hover-in) 스왑 아웃, 내리면(hover-out) 역방향으로 복귀. 100ms 디바운스.</div>
+</section>
+
+<script src="static/vendor/gsap.min.js"></script>
+<script src="static/letter-swap.js"></script>
+<script>
+(function(){
+  // 1. 등장
+  var c1 = document.getElementById('c1');
+  var ls1 = LetterSwap.mount(c1, '', { stagger: 0.08, duration: 0.8, ease: 'back.out(1.4)' });
+  document.getElementById('b1').addEventListener('click', function(){
+    ls1 = LetterSwap.mount(c1, '', { stagger: 0.08, duration: 0.8, ease: 'back.out(1.4)' });
+    ls1.replaceText('ENTER', { stagger: 0.08 });
+  });
+
+  // 2. 한 바퀴 롤
+  var c2 = document.getElementById('c2');
+  var ls2 = LetterSwap.mount(c2, 'ENTER', { stagger: 0.08, duration: 0.8, ease: 'back.out(1.4)' });
+  document.getElementById('b2').addEventListener('click', function(){ ls2.rollOnce(); });
+
+  // 3. 텍스트 교체
+  var c3 = document.getElementById('c3');
+  var texts = ['2010년.', '거래처 3,000곳.'];
+  var idx = 0;
+  var ls3 = LetterSwap.mount(c3, texts[0], { stagger: 0.07, duration: 0.75, ease: 'back.out(1.4)' });
+  document.getElementById('b3').addEventListener('click', function(){
+    idx = (idx + 1) % texts.length;
+    ls3.replaceText(texts[idx], { stagger: 0.07 });
+  });
+
+  // 4. 호버 핑퐁
+  var c4 = document.getElementById('c4');
+  var ls4 = LetterSwap.mount(c4, 'ENTER', { stagger: 0.06, duration: 0.6, ease: 'back.out(1.4)' });
+  ls4.attachHoverPingpong();
+})();
+</script>
+</body>
+</html>

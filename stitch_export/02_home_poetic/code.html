@@ -1,0 +1,454 @@
+<!DOCTYPE html><html lang="ko" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_standard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;family=Space+Mono:wght@700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;word-break:keep-all;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-tertiary": "#ffffff", "primary": "#000000", "primary-fixed": "#e2e2e9", "accent-green-tint": "#DCEBE3", "inverse-surface": "#2f312e", "error-container": "#ffdad6", "border-hairline-dark": "#1E222B", "error": "#ba1a1a", "secondary-fixed-dim": "#89d6b1", "background": "#fafaf5", "on-primary-fixed-variant": "#45474d", "on-surface-variant": "#46464b", "surface-container-highest": "#e2e3de", "surface-tint": "#5d5e64", "on-secondary-fixed": "#002114", "tertiary-container": "#111e19", "surface-container-low": "#f4f4ef", "text-muted": "#6E7178", "tertiary": "#000000", "surface": "#fafaf5", "surface-container-high": "#e8e8e4", "tertiary-fixed": "#d7e6de", "inverse-primary": "#c6c6cd", "on-error-container": "#93000a", "on-primary-fixed": "#1a1b21", "text-muted-dark": "#8A8F99", "secondary": "#186b4c", "inverse-on-surface": "#f1f1ec", "on-background": "#1a1c19", "surface-container-lowest": "#ffffff", "primary-container": "#1a1b21", "outline-variant": "#c7c6cb", "surface-dim": "#dadad6", "on-tertiary-fixed-variant": "#3c4a44", "on-secondary-container": "#1f6f50", "primary-fixed-dim": "#c6c6cd", "on-surface": "#1a1c19", "accent-green": "#1E6F50", "on-secondary-fixed-variant": "#005137", "secondary-container": "#a2f0c9", "on-tertiary-fixed": "#111e19", "on-error": "#ffffff", "secondary-fixed": "#a5f3cc", "on-primary": "#ffffff", "canvas-warm-white": "#FFFFFA", "surface-variant": "#e2e3de", "surface-deep-black": "#0B0D12", "on-primary-container": "#82838a", "outline": "#76777b", "surface-bright": "#fafaf5", "on-tertiary-container": "#798780", "tertiary-fixed-dim": "#bbcac2", "border-hairline": "#E5E5DF", "on-secondary": "#ffffff", "surface-container": "#eeeee9" }, "borderRadius": { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" }, "spacing": { "margin-md": "3rem", "gutter-lg": "2rem", "margin": "1.5rem", "space-xl": "2.5rem", "gutter": "1.5rem", "section-gap": "10rem", "space-lg": "1.5rem", "space-xs": "0.25rem", "space-sm": "0.5rem", "margin-lg": "5rem", "space-md": "1rem" }, "fontFamily": { "body-lg": ["Hanken Grotesk"], "label-caps": ["Hanken Grotesk"], "display-xl": ["Hanken Grotesk"], "body-xl": ["Hanken Grotesk"], "label-code": ["Space Mono"], "headline-sm": ["Hanken Grotesk"], "headline-lg": ["Hanken Grotesk"], "headline-md": ["Hanken Grotesk"], "display-lg-mobile": ["Hanken Grotesk"], "display-lg": ["Hanken Grotesk"], "body-md": ["Hanken Grotesk"], "display-xl-mobile": ["Hanken Grotesk"], "headline-lg-mobile": ["Hanken Grotesk"] }, "fontSize": { "body-lg": ["16px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "400" }], "label-caps": ["11px", { "lineHeight": "14px", "letterSpacing": "0.08em", "fontWeight": "700" }], "display-xl": ["84px", { "lineHeight": "92px", "letterSpacing": "-0.04em", "fontWeight": "700" }], "body-xl": ["19px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "400" }], "label-code": ["12px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }], "headline-sm": ["22px", { "lineHeight": "30px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "headline-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.025em", "fontWeight": "600" }], "headline-md": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "display-lg-mobile": ["36px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "display-lg": ["60px", { "lineHeight": "68px", "letterSpacing": "-0.03em", "fontWeight": "700" }], "body-md": ["14px", { "lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400" }], "display-xl-mobile": ["44px", { "lineHeight": "50px", "letterSpacing": "-0.03em", "fontWeight": "700" }], "headline-lg-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600" }] } } } };</script></head><body class="bg-canvas-warm-white font-body-md text-on-surface antialiased"><header class="sticky top-0 z-50 w-full bg-canvas-warm-white/90 backdrop-blur-md border-b border-border-hairline"><div class="h-20 max-w-[1200px] mx-auto px-6 flex items-center justify-between"><a class="flex items-center gap-2 group" data-path="home" href="#"><span class="font-headline-md text-headline-md tracking-tight text-on-surface">ENTER</span></a><nav class="hidden lg:flex items-center gap-8" data-active-classes="text-on-surface font-headline-sm"><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="why-enter" href="#">왜 ENTER</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="settlement-db-protection" href="#">정산·DB보호</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="products" href="#">취급상품</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="founder-guide" href="#">창업자 가이드</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="company" href="#">회사소개</a></nav><div class="flex items-center gap-4"><a class="hidden sm:inline-flex items-center justify-center bg-surface-deep-black text-canvas-warm-white px-6 py-2.5 rounded-full font-body-md text-body-md font-semibold hover:bg-accent-green hover:text-canvas-warm-white transition-colors" data-path="policy-request" href="#">정책 받기</a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-20 bg-canvas-warm-white"><div class="flex flex-col w-full">
+<!-- SECTION id="hero" -->
+<section class="w-full bg-canvas-warm-white pt-20 pb-20 border-b border-border-hairline" id="hero">
+<div class="max-w-[1200px] mx-auto px-6">
+<div class="max-w-4xl">
+<h1 class="font-display-xl text-display-xl text-primary tracking-tight leading-[1.05] flex flex-col">
+<span class="">초대형 유선전문도매,</span>
+<span class="">정책이 얼마나 좋을까요?</span>
+</h1>
+<p class="font-headline-sm text-headline-sm text-on-surface-variant font-medium mt-16 max-w-3xl leading-relaxed">
+          매달 4,000건을 처리하는 유선 전문 총판. 정책부터 정산까지, 숫자로 보여드립니다.
+        </p><div class="mt-8 mb-10 flex flex-wrap items-center gap-4"><a href="#" class="inline-flex items-center justify-center bg-surface-deep-black text-canvas-warm-white px-7 py-3 rounded-full font-body-md text-body-md font-semibold hover:bg-accent-green transition-colors gap-2"><span class="w-2 h-2 rounded-full bg-accent-green"></span>카카오톡으로 정책 받기</a><a href="tel:010-2222-4183" class="inline-flex items-center justify-center bg-surface-container-low text-primary px-7 py-3 rounded-full font-body-md text-body-md font-semibold border border-border-hairline hover:bg-surface-container transition-colors">전화 010-2222-4183</a></div>
+</div>
+<!-- Stats Module -->
+<div class="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="stats">
+<!-- Card 1 -->
+<div class="bg-surface-deep-black text-canvas-warm-white p-8 rounded-2xl relative flex flex-col justify-between h-[240px] border border-border-hairline-dark overflow-hidden group">
+<div class="flex items-start justify-between w-full relative z-10">
+<span class="font-display-lg text-display-lg text-canvas-warm-white font-bold tracking-tighter leading-none">16년</span>
+
+</div>
+<div class="relative z-10">
+<p class="font-body-md text-body-md text-canvas-warm-white/90 font-medium">2010년부터 유선 한 길</p>
+</div>
+<!-- Subtle Blueprint Graphic Overlay -->
+
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-deep-black text-canvas-warm-white p-8 rounded-2xl relative flex flex-col justify-between h-[240px] border border-border-hairline-dark overflow-hidden group">
+<div class="flex items-start justify-between w-full relative z-10">
+<span class="font-display-lg text-display-lg text-canvas-warm-white font-bold tracking-tighter leading-none">3,000곳</span>
+
+</div>
+<div class="relative z-10">
+<p class="font-body-md text-body-md text-canvas-warm-white/90 font-medium">전국 거래처</p>
+</div>
+
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-deep-black text-canvas-warm-white p-8 rounded-2xl relative flex flex-col justify-between h-[240px] border border-border-hairline-dark overflow-hidden group">
+<div class="flex items-start justify-between w-full relative z-10">
+<span class="font-display-lg text-display-lg text-canvas-warm-white font-bold tracking-tighter leading-none">4,000건</span>
+
+</div>
+<div class="relative z-10">
+<p class="font-body-md text-body-md text-canvas-warm-white/90 font-medium">월 평균 개통</p>
+</div>
+
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-deep-black text-canvas-warm-white p-8 rounded-2xl relative flex flex-col justify-between h-[240px] border border-border-hairline-dark overflow-hidden group">
+<div class="flex items-start justify-between w-full relative z-10">
+<span class="font-display-lg text-display-lg text-canvas-warm-white font-bold tracking-tighter leading-none">0회</span>
+
+</div>
+<div class="relative z-10">
+<p class="font-body-md text-body-md text-canvas-warm-white/90 font-medium">최근 90번의 정산, 지연 횟수</p>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION id="statement" -->
+<section class="w-full bg-canvas-warm-white py-36" id="statement">
+<div class="max-w-[1200px] mx-auto px-6 text-center">
+<h2 class="font-headline-lg text-headline-lg font-bold text-primary tracking-tight mb-6">
+        정책은 물량이 정합니다.
+      </h2>
+<p class="font-headline-md text-headline-md font-medium tracking-tight mb-16">
+<span class="text-primary">ENTER의 월 4,000건이 </span>
+<span class="text-accent-green">상부에서 받는 정책의 근거입니다.</span>
+</p>
+<!-- Architectural Monolith Block -->
+<div class="w-full h-[480px] bg-surface-deep-black rounded-none flex items-center justify-center relative overflow-hidden border border-border-hairline">
+<div class="w-full h-full absolute inset-0 opacity-40 mix-blend-luminosity bg-cover bg-center" data-alt="High-end Korean telecommunications distribution headquarters operations floor in Seoul. Minimalist interior, dual high-resolution trading terminals displaying real-time wholesale allocation ledgers, ultra-clean industrial concrete columns, muted green and stark black accents, cinematic editorial architectural photography." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAIcZct7hO4JfAKhj_txzGl2O3Hb6CCbHqoCkAyjeUnWqykn5-vbBe5HouCRS7bPLbomg_VAdWDuA34K4KQBYttTQ0cgw-BHTZjU5vTVxVgBdIybbVj5pkWoOTK745uBmhBUFMAAfx6LJ_ppHDPxXKu_9mhuouFKZjTRquDFIczSlQeh-CzkMbsFH11SsB5F5kgHx6WovI5_ATEd71DhGWTNYWCJWLz5bGi6H6KZsxpIpLpltiK5dVT')"></div>
+<div class="absolute inset-0 bg-surface-deep-black/60 pointer-events-none"></div>
+<div class="relative z-10 text-center px-6">
+<div class="inline-flex items-center gap-2 mb-4 px-3 py-1 rounded-full bg-canvas-warm-white/10 border border-white/10">
+<span class="w-2 h-2 rounded-full bg-accent-green animate-pulse"></span>
+<span class="font-label-code text-label-code text-canvas-warm-white tracking-widest uppercase">HEADQUARTERS CENTER</span>
+</div>
+<p class="font-label-caps text-label-caps text-canvas-warm-white tracking-widest uppercase text-xs mb-2">실제 업무 현장</p>
+<p class="font-headline-sm text-headline-sm font-semibold text-canvas-warm-white tracking-tight">서울 본사 도매정산·개통운영센터</p>
+</div>
+<!-- Corner Tectonic Indicators -->
+<div class="absolute top-6 left-6 font-label-code text-label-code text-canvas-warm-white/40">SYS // OPERATIONAL_HUB</div>
+<div class="absolute top-6 right-6 w-[18px] h-[18px] bg-accent-green"></div>
+<div class="absolute bottom-6 left-6 font-label-code text-label-code text-canvas-warm-white/40">SEOUL 37.5665° N, 126.9780° E</div>
+<div class="absolute bottom-6 right-6 font-label-code text-label-code text-accent-green tracking-widest">ENTER NETWORK</div>
+</div>
+</div>
+</section>
+<!-- SECTION id="features" -->
+<section class="w-full bg-canvas-warm-white py-36 border-t border-border-hairline" id="features">
+<div class="max-w-[1200px] mx-auto px-6">
+<div class="text-center mb-20">
+<span class="font-label-caps text-label-caps tracking-widest uppercase text-text-muted flex items-center justify-center gap-2">
+<span class="text-accent-green font-bold">●</span> HOW WE WORK
+        </span>
+<h2 class="font-headline-lg text-headline-lg font-bold tracking-tight text-center mt-4 max-w-4xl mx-auto leading-tight">
+<span class="text-primary">정해진 날 정산합니다. 고객 정보는 남기지 않습니다. </span>
+<span class="text-accent-green">정책은 매일 아침 보냅니다.</span>
+</h2>
+</div>
+<div class="flex flex-col gap-10">
+<!-- Card 1 -->
+<div class="bg-surface-deep-black text-canvas-warm-white p-10 lg:p-14 rounded-3xl relative border border-border-hairline-dark min-h-[600px] flex flex-col justify-between overflow-hidden">
+<div class="flex justify-between items-start w-full relative z-10">
+<h3 class="font-headline-lg text-headline-lg font-bold text-canvas-warm-white tracking-tight">약속은 날짜로 지킵니다.</h3>
+<div class="flex items-center gap-4">
+<span class="font-label-code text-headline-md text-canvas-warm-white/40 font-mono tracking-tighter">/ 1</span>
+
+</div>
+</div>
+<!-- Mini UI Mockup 1 -->
+<div class="bg-canvas-warm-white text-primary rounded-2xl p-6 lg:p-8 max-w-3xl mx-auto w-full border border-border-hairline my-12 relative z-10">
+<div class="flex items-center justify-between pb-4 mb-4 border-b border-border-hairline">
+<div class="flex items-center gap-3">
+<span class="font-headline-sm text-headline-sm font-semibold tracking-tight text-primary">정산 집행 장부</span>
+<span class="font-label-code text-label-code bg-accent-green-tint text-accent-green px-2 py-0.5 rounded">실시간 자동집계</span>
+</div>
+<span class="font-label-code text-label-code text-text-muted">TERM: WEEKLY FRI</span>
+</div>
+<div class="w-full overflow-x-auto">
+<table class="w-full text-left font-body-md text-body-md">
+<thead>
+<tr class="border-b border-border-hairline text-text-muted font-label-caps text-label-caps uppercase">
+<th class="py-3 px-2">정산일</th>
+<th class="py-3 px-2">요일</th>
+<th class="py-3 px-2 text-right">개통건수</th>
+<th class="py-3 px-2 text-right">입금액</th>
+<th class="py-3 px-2 text-right">상태</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-hairline font-label-code text-label-code">
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-2 font-medium">2026.10.16</td>
+<td class="py-3 px-2 text-text-muted font-body-md">금</td>
+<td class="py-3 px-2 text-right">112건</td>
+<td class="py-3 px-2 text-right font-bold">34,720,000원</td>
+<td class="py-3 px-2 text-right"><span class="bg-accent-green-tint text-accent-green px-2.5 py-0.5 rounded-full text-xs font-bold inline-block">● 정산완료</span></td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-2 font-medium">2026.10.09</td>
+<td class="py-3 px-2 text-text-muted font-body-md">금</td>
+<td class="py-3 px-2 text-right">98건</td>
+<td class="py-3 px-2 text-right font-bold">30,380,000원</td>
+<td class="py-3 px-2 text-right"><span class="bg-accent-green-tint text-accent-green px-2.5 py-0.5 rounded-full text-xs font-bold inline-block">● 정산완료</span></td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-2 font-medium">2026.10.02</td>
+<td class="py-3 px-2 text-text-muted font-body-md">금</td>
+<td class="py-3 px-2 text-right">104건</td>
+<td class="py-3 px-2 text-right font-bold">32,240,000원</td>
+<td class="py-3 px-2 text-right"><span class="bg-accent-green-tint text-accent-green px-2.5 py-0.5 rounded-full text-xs font-bold inline-block">● 정산완료</span></td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-2 font-medium">2026.09.25</td>
+<td class="py-3 px-2 text-text-muted font-body-md">금</td>
+<td class="py-3 px-2 text-right">115건</td>
+<td class="py-3 px-2 text-right font-bold">35,650,000원</td>
+<td class="py-3 px-2 text-right"><span class="bg-accent-green-tint text-accent-green px-2.5 py-0.5 rounded-full text-xs font-bold inline-block">● 정산완료</span></td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-2 font-medium">2026.09.18</td>
+<td class="py-3 px-2 text-text-muted font-body-md">금</td>
+<td class="py-3 px-2 text-right">89건</td>
+<td class="py-3 px-2 text-right font-bold">27,590,000원</td>
+<td class="py-3 px-2 text-right"><span class="bg-accent-green-tint text-accent-green px-2.5 py-0.5 rounded-full text-xs font-bold inline-block">● 정산완료</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="relative z-10 border-t border-white/10 pt-6">
+<p class="font-body-lg text-body-lg text-canvas-warm-white/80">매주 수요일 정산서, 금요일 입금. 최근 90번의 금요일, 지연 0회.</p>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-deep-black text-canvas-warm-white p-10 lg:p-14 rounded-3xl relative border border-border-hairline-dark min-h-[600px] flex flex-col justify-between overflow-hidden">
+<div class="flex justify-between items-start w-full relative z-10">
+<h3 class="font-headline-lg text-headline-lg font-bold text-canvas-warm-white tracking-tight">뚫려도, 가져갈 게 없습니다.</h3>
+<div class="flex items-center gap-4">
+<span class="font-label-code text-headline-md text-canvas-warm-white/40 font-mono tracking-tighter">/ 2</span>
+
+</div>
+</div>
+<!-- Mini UI Mockup 2 -->
+<div class="bg-canvas-warm-white text-primary rounded-2xl p-6 lg:p-8 max-w-3xl mx-auto w-full border border-border-hairline my-12 relative z-10">
+<div class="flex items-center justify-between pb-4 mb-6 border-b border-border-hairline">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm font-semibold tracking-tight text-primary">고객 데이터 안전 폐기</span>
+</div>
+<span class="bg-accent-green-tint text-accent-green px-3 py-1 rounded-full text-xs font-bold">개통완료 · 자동 하드마킹 (복구불가)</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 font-body-md text-body-md">
+<div class="bg-surface-container-low p-4 rounded-xl border border-border-hairline">
+<span class="font-label-caps text-label-caps text-text-muted uppercase block mb-1">고객명</span>
+<span class="font-label-code text-headline-sm font-bold text-primary tracking-wider">홍●동</span>
+</div>
+<div class="bg-surface-container-low p-4 rounded-xl border border-border-hairline">
+<span class="font-label-caps text-label-caps text-text-muted uppercase block mb-1">연락처</span>
+<span class="font-label-code text-headline-sm font-bold text-primary tracking-wider">010-●●●●-5678</span>
+</div>
+<div class="bg-surface-container-low p-4 rounded-xl border border-border-hairline">
+<span class="font-label-caps text-label-caps text-text-muted uppercase block mb-1">주민등록번호</span>
+<span class="font-label-code text-headline-sm font-bold text-primary tracking-wider">900101-●●●●●●●</span>
+</div>
+<div class="bg-surface-container-low p-4 rounded-xl border border-border-hairline">
+<span class="font-label-caps text-label-caps text-text-muted uppercase block mb-1">설치주소</span>
+<span class="font-label-code text-body-lg font-bold text-primary tracking-tight">서울시 강남구 테헤란로 ●●● (상세 암호화)</span>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-border-hairline flex items-center justify-between text-text-muted font-label-code text-label-code">
+<span class="">SECURITY PROTOCOL: SHA-256 SALT &amp; DESTROY</span>
+<span class="text-accent-green">ENCRYPTION ACTIVE</span>
+</div>
+</div>
+<div class="relative z-10 border-t border-white/10 pt-6">
+<p class="font-body-lg text-body-lg text-canvas-warm-white/80">개통이 완료되면 고객 핵심정보는 자동으로 가려집니다. 내부 직원도 볼 수 없습니다.</p>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-deep-black text-canvas-warm-white p-10 lg:p-14 rounded-3xl relative border border-border-hairline-dark min-h-[600px] flex flex-col justify-between overflow-hidden">
+<div class="flex justify-between items-start w-full relative z-10">
+<h3 class="font-headline-lg text-headline-lg font-bold text-canvas-warm-white tracking-tight">정책은 매일 아침 10시 30분.</h3>
+<div class="flex items-center gap-4">
+<span class="font-label-code text-headline-md text-canvas-warm-white/40 font-mono tracking-tighter">/ 3</span>
+
+</div>
+</div>
+<!-- Mini UI Mockup 3 -->
+<div class="bg-canvas-warm-white text-primary rounded-2xl p-6 lg:p-8 max-w-3xl mx-auto w-full border border-border-hairline my-12 relative z-10">
+<div class="flex items-center justify-between pb-4 mb-6 border-b border-border-hairline">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 bg-accent-green rounded-full"></span>
+<span class="font-headline-sm text-headline-sm font-semibold tracking-tight text-primary">ENTER 본사 공식 정책방 (도매회원 전용)</span>
+</div>
+<span class="font-label-code text-label-code text-text-muted font-mono">BROADCAST ACTIVE</span>
+</div>
+<div class="flex flex-col gap-4 font-body-md text-body-md">
+<!-- Message 1 -->
+<div class="bg-surface-container-low p-4 rounded-2xl rounded-tl-sm border border-border-hairline max-w-xl">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-caps text-label-caps text-accent-green font-bold">[10/28 유선 정책 공지]</span>
+<span class="font-label-code text-label-code text-text-muted">10:30 AM</span>
+</div>
+<p class="text-primary font-medium leading-relaxed">오늘 통신 3사 및 알뜰유선 일일 정책표 보내드립니다. 통신사별 건당 최고단가 업데이트 완료되었습니다.</p>
+</div>
+<!-- Message 2 -->
+<div class="bg-accent-green-tint/50 p-4 rounded-2xl rounded-tl-sm border border-accent-green/20 max-w-xl">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-caps text-label-caps text-accent-green font-bold">변경 공지 · 속보</span>
+<span class="font-label-code text-label-code text-text-muted">14:20 PM</span>
+</div>
+<p class="text-primary font-medium leading-relaxed">KT 기가인터넷 + 지니TV 결합 추가단가 +3만 상향 조정되었습니다. 실시간 정책표 반영 확인 부탁드립니다.</p>
+</div>
+</div>
+</div>
+<div class="relative z-10 border-t border-white/10 pt-6">
+<p class="font-body-lg text-body-lg text-canvas-warm-white/80">변경되면 바로 다시 공지합니다. 정책방 입장은 연락 한 번이면 됩니다.</p>
+</div>
+</div>
+<div class="text-center mt-16 lg:mt-20 pt-8"><h3 class="font-headline-md text-headline-md font-bold text-primary tracking-tight">정책표, 직접 받아보고 판단하세요.</h3><div class="mt-5 flex justify-center"><a href="#" class="inline-flex items-center justify-center bg-surface-deep-black text-canvas-warm-white px-8 py-3.5 rounded-full font-body-md text-body-md font-semibold hover:bg-accent-green transition-colors gap-2"><span class="w-2 h-2 rounded-full bg-accent-green"></span>카카오톡으로 정책 받기</a></div></div></div>
+</div>
+</section>
+<!-- SECTION id="promise" -->
+<section class="w-full bg-surface-deep-black text-canvas-warm-white py-36" id="promise">
+<div class="max-w-[1200px] mx-auto px-6">
+<div class="flex items-center gap-2 mb-8">
+<span class="w-2.5 h-2.5 bg-accent-green"></span>
+<span class="font-label-code text-label-code text-accent-green tracking-wider uppercase">우리의 약속</span>
+</div>
+<blockquote class="font-headline-lg text-headline-lg lg:text-[44px] font-bold text-canvas-warm-white leading-tight max-w-4xl tracking-tight mb-20">
+        “정산일을 미룬 적은 한 번도 없습니다. 앞으로도 그럴 겁니다.”
+      </blockquote>
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-end border-t border-white/10 pt-10 gap-8">
+<div class="flex items-center gap-6">
+<div class="w-24 h-24 rounded-xl grayscale bg-white/10 border border-white/10 flex items-center justify-center shrink-0 overflow-hidden relative">
+<div class="w-full h-full bg-cover bg-center" data-alt="Black and white minimalist corporate portrait of a seasoned Korean executive director in an executive suit. Subtle high-contrast architectural shadows, intense calm expression, clean studio backdrop." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBX5S1tr2szoGPYO2YztLIal194wvPNlrZshWqMDiMesE1f4SiT20I_FQCu83ulm9beM6gFoHIP_hmrKXR_l-kUR4aSf6_c2p5xqrdjYdif7M3CWjQKTASiyK1oG87fGYCuOxlF8quyB9Ry_iHmkVd3idwTerzaMzpFpacYs1h4CavXCujyYe8YJUzm2Pd9mJOy5pOioptnyomuh8QHWgthYRpKBIylmJNqxqV7kRajrWKdI-UKWFIP')"></div>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm font-semibold text-canvas-warm-white">위드컴퍼니 총괄이사</span>
+<span class="font-body-md text-body-md text-text-muted-dark mt-1">총괄이사 · (유)위드컴퍼니 유선도매사업본부</span>
+<div class="mt-6"><a href="#" data-path="settlement-db-protection" class="inline-flex items-center justify-center bg-canvas-warm-white text-surface-deep-black px-6 py-2.5 rounded-full font-body-md text-body-md font-medium hover:bg-surface-container-low transition-colors">정산 방식 자세히 보기 →</a></div></div>
+</div>
+<div class="flex items-center gap-6">
+<span class="font-label-caps text-label-caps text-text-muted-dark uppercase tracking-wider">약속 · 거래처 이야기 (준비 중)</span>
+<div class="flex items-center gap-2">
+<button aria-label="Previous" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white text-canvas-warm-white hover:text-surface-deep-black transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+</button>
+<button aria-label="Next" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white text-canvas-warm-white hover:text-surface-deep-black transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION id="start" -->
+<section class="w-full bg-canvas-warm-white py-36 border-b border-border-hairline" id="start">
+<div class="max-w-[1200px] mx-auto px-6">
+<div class="text-center mb-16">
+<span class="font-label-caps text-label-caps tracking-widest uppercase text-text-muted flex items-center justify-center gap-2">
+<span class="text-accent-green font-bold">●</span> HOW TO START
+        </span>
+<h2 class="font-headline-lg text-headline-lg font-bold tracking-tight mt-3">
+<span class="text-primary">시작은 </span>
+<span class="text-accent-green">연락 한 번이면 됩니다.</span>
+</h2>
+</div>
+<!-- Job-listing Style Sequence Table -->
+<div class="w-full max-w-4xl mx-auto divide-y divide-border-hairline border-y border-border-hairline mb-14">
+<div class="flex justify-between items-center py-7 group hover:bg-surface-container-low px-4 transition-colors">
+<span class="font-headline-sm text-headline-sm font-bold text-primary group-hover:text-accent-green transition-colors">
+            연락하기 — 전화 · 문자 · 카카오톡
+          </span>
+<span class="font-label-code text-headline-sm text-text-muted font-bold">01</span>
+</div>
+<div class="flex justify-between items-center py-7 group hover:bg-surface-container-low px-4 transition-colors">
+<span class="font-headline-sm text-headline-sm font-bold text-primary group-hover:text-accent-green transition-colors">
+            정책방 입장 — 매일 아침 정책표 수신
+          </span>
+<span class="font-label-code text-headline-sm text-text-muted font-bold">02</span>
+</div>
+<div class="flex justify-between items-center py-7 group hover:bg-surface-container-low px-4 transition-colors">
+<span class="font-headline-sm text-headline-sm font-bold text-primary group-hover:text-accent-green transition-colors">
+            서류 없이 접수 · 개통
+          </span>
+<span class="font-label-code text-headline-sm text-text-muted font-bold">03</span>
+</div>
+<div class="flex justify-between items-center py-7 group hover:bg-surface-container-low px-4 transition-colors">
+<span class="font-headline-sm text-headline-sm font-bold text-primary group-hover:text-accent-green transition-colors">
+            첫 정산 전, 서류 4종 제출
+          </span>
+<span class="font-label-code text-headline-sm text-text-muted font-bold">04</span>
+</div>
+</div>
+<div class="text-center">
+<p class="font-body-md text-body-md font-medium text-text-muted mb-8 tracking-tight">
+          계약금 0원 · 월정료 0원 · 최소 실적 의무 없음
+        </p>
+<a class="bg-surface-deep-black text-canvas-warm-white px-10 py-4 rounded-full font-body-md text-body-md font-semibold hover:bg-accent-green transition-colors inline-block" href="#contact">
+          거래 시작하기
+        </a>
+</div>
+</div>
+</section>
+<!-- SECTION id="trust" -->
+<section class="w-full bg-canvas-warm-white py-36 border-b border-border-hairline" id="trust">
+<div class="max-w-[1200px] mx-auto px-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-accent-green font-bold">●</span>
+<span class="font-label-caps text-label-caps tracking-widest uppercase text-text-muted">TRUST</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg font-bold text-primary tracking-tight mb-4">
+        16년, 숫자와 인증으로 말합니다.
+      </h2>
+<p class="font-body-xl text-body-xl text-text-muted max-w-3xl mb-14 leading-relaxed">
+        2024년 매출 310억 원. 메인비즈·ISO 9001 인증, 기업부설연구소 운영. LG U+ 공식 대리점 화승과 함께 2025 Honor Club에 선정되었습니다.
+      </p>
+<!-- 6 Monochrome Line-Icon Certification Badges -->
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 pt-10 border-t border-border-hairline">
+<div class="flex flex-col p-4 bg-surface-container-low rounded-xl border border-border-hairline justify-between h-[150px]">
+<span class="material-symbols-outlined text-primary text-[28px]">verified</span>
+<div>
+<h4 class="font-body-lg text-body-lg font-bold text-primary">메인비즈</h4>
+<p class="font-label-caps text-label-caps text-text-muted mt-1">경영혁신형 중소기업</p>
+</div>
+</div>
+<div class="flex flex-col p-4 bg-surface-container-low rounded-xl border border-border-hairline justify-between h-[150px]">
+<span class="material-symbols-outlined text-primary text-[28px]">workspace_premium</span>
+<div>
+<h4 class="font-body-lg text-body-lg font-bold text-primary">ISO 9001</h4>
+<p class="font-label-caps text-label-caps text-text-muted mt-1">품질경영시스템 국제인증</p>
+</div>
+</div>
+<div class="flex flex-col p-4 bg-surface-container-low rounded-xl border border-border-hairline justify-between h-[150px]">
+<span class="material-symbols-outlined text-primary text-[28px]">science</span>
+<div>
+<h4 class="font-body-lg text-body-lg font-bold text-primary">기업부설연구소</h4>
+<p class="font-label-caps text-label-caps text-text-muted mt-1">과기정통부 인가 R&amp;D 센터</p>
+</div>
+</div>
+<div class="flex flex-col p-4 bg-surface-container-low rounded-xl border border-border-hairline justify-between h-[150px]">
+<span class="material-symbols-outlined text-primary text-[28px]">military_tech</span>
+<div>
+<h4 class="font-body-lg text-body-lg font-bold text-primary">한국브랜드대상</h4>
+<p class="font-label-caps text-label-caps text-text-muted mt-1">통신유통 B2B 부문 대상</p>
+</div>
+</div>
+<div class="flex flex-col p-4 bg-surface-container-low rounded-xl border border-border-hairline justify-between h-[150px]">
+<span class="material-symbols-outlined text-primary text-[28px]">stars</span>
+<div>
+<h4 class="font-body-lg text-body-lg font-bold text-primary">LG U+ Honor Club</h4>
+<p class="font-label-caps text-label-caps text-text-muted mt-1">2025 최우수 파트너 선정</p>
+</div>
+</div>
+<div class="flex flex-col p-4 bg-surface-container-low rounded-xl border border-border-hairline justify-between h-[150px]">
+<span class="material-symbols-outlined text-primary text-[28px]">account_balance</span>
+<div>
+<h4 class="font-body-lg text-body-lg font-bold text-primary">매출 310억</h4>
+<p class="font-label-caps text-label-caps text-text-muted mt-1">2024년 결산 기준</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION id="carriers" -->
+<section class="w-full bg-surface-deep-black text-canvas-warm-white py-36" id="carriers">
+<div class="max-w-[1200px] mx-auto px-6">
+<div class="flex items-center gap-2 mb-10">
+<span class="w-2.5 h-2.5 bg-accent-green"></span>
+<span class="font-label-code text-label-code tracking-widest text-canvas-warm-white/60 uppercase">함께 일하는 통신사</span>
+</div>
+<div class="font-display-xl text-display-xl lg:text-[72px] font-black tracking-tight leading-[1.08] text-canvas-warm-white">
+<div class="">SKT</div>
+<div class="">SK브로드밴드</div>
+<div class="">KT</div>
+<div class="">LG U+</div>
+<div class="">스카이라이프</div>
+<div class="">헬로비전</div>
+</div>
+<p class="font-body-lg text-body-lg text-canvas-warm-white/80 mt-12 max-w-xl leading-relaxed">
+        인터넷 · IPTV · CCTV · 가전렌탈 · 유심까지, 유선은 한 곳에서 접수합니다.
+      </p><div class="mt-6"><a href="#" data-path="products" class="inline-flex items-center justify-center bg-canvas-warm-white text-surface-deep-black px-6 py-2.5 rounded-full font-body-md text-body-md font-medium hover:bg-surface-container-low transition-colors">취급 상품 보기 →</a></div>
+</div>
+</section>
+<!-- SECTION id="contact" -->
+<section class="w-full bg-canvas-warm-white py-40 text-center" id="contact">
+<div class="max-w-[1200px] mx-auto px-6">
+<h2 class="font-display-lg text-display-lg font-black tracking-tight leading-tight mb-12">
+<span class="block text-primary">내일 아침, 정책표를</span>
+<span class="block text-accent-green mt-2">
+먼저 받아보세요.
+</span>
+</h2>
+<div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+<a class="w-full sm:w-auto bg-surface-deep-black text-canvas-warm-white px-9 py-4 rounded-full font-body-md text-body-md font-semibold hover:bg-accent-green transition-colors inline-flex items-center justify-center gap-2" href="#">
+<span class="w-2 h-2 rounded-full bg-accent-green"></span>
+          카카오톡으로 정책 받기
+        </a>
+<a class="w-full sm:w-auto bg-surface-container text-primary px-9 py-4 rounded-full font-body-md text-body-md font-semibold border border-border-hairline hover:bg-surface-container-high transition-colors inline-flex items-center justify-center" href="tel:010-2222-4183">
+          010-2222-4183 전화하기
+        </a>
+</div>
+</div>
+</section>
+</div></main><footer class="w-full bg-canvas-warm-white pt-20 pb-16 border-t border-border-hairline"><div class="max-w-[1200px] mx-auto px-6"><div class="flex flex-col lg:flex-row justify-between gap-12 mb-16"><div class="max-w-md"><div class="flex items-center gap-2 mb-4"><span class="font-headline-md text-headline-md tracking-tight text-on-surface">ENTER</span></div><p class="font-body-md text-body-md text-text-muted leading-relaxed">(유)위드컴퍼니 도매영업팀이 운영하는 유선 전문 브랜드</p></div><div class="grid grid-cols-2 md:grid-cols-3 gap-10 lg:gap-16"><div class="flex flex-col gap-3"><span class="font-label-caps text-label-caps text-on-surface tracking-wider uppercase">회사</span><a class="font-body-md text-body-md text-text-muted hover:text-on-surface transition-colors" data-path="why-enter" href="#">왜 ENTER</a><a class="font-body-md text-body-md text-text-muted hover:text-on-surface transition-colors" data-path="company" href="#">회사소개</a><a class="font-body-md text-body-md text-text-muted hover:text-on-surface transition-colors" data-path="partner-stories" href="#">거래처 이야기</a></div><div class="flex flex-col gap-3"><span class="font-label-caps text-label-caps text-on-surface tracking-wider uppercase">거래</span><a class="font-body-md text-body-md text-text-muted hover:text-on-surface transition-colors" data-path="start-partnership" href="#">거래 시작하기</a><a class="font-body-md text-body-md text-text-muted hover:text-on-surface transition-colors" data-path="settlement-db-protection" href="#">정산·DB보호</a><a class="font-body-md text-body-md text-text-muted hover:text-on-surface transition-colors" data-path="products" href="#">취급상품</a></div><div class="flex flex-col gap-3"><span class="font-label-caps text-label-caps text-on-surface tracking-wider uppercase">정보</span><a class="font-body-md text-body-md text-text-muted hover:text-on-surface transition-colors" data-path="founder-guide" href="#">창업자 가이드</a><a class="font-body-md text-body-md text-text-muted hover:text-on-surface transition-colors" data-path="faq" href="#">FAQ</a><a class="font-body-md text-body-md text-text-muted hover:text-on-surface transition-colors" data-path="blog" href="#">블로그</a></div></div></div><div class="pt-8 border-t border-border-hairline"><p class="font-label-code text-label-code text-text-muted leading-relaxed">대표자 홍길동 · 사업자등록번호 123-45-67890 · 통신판매업신고 제2024-서울강남-0000호 · 고객센터 010-2222-4183 · © 2026 ENTER. All rights reserved.</p></div></div></footer>
+
+</body></html>
