@@ -3,6 +3,7 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="static/home-poetic.css">
+<script src="static/home-poetic.js" defer></script>
 {% endblock %}
 
 {% block header %}
@@ -89,6 +90,7 @@
       </div>
 
       {% if card.mockup == 'ledger' %}
+      {% set ticker_rows = (page.evidence_summary.ticker_rows | reverse | list) %}
       <div class="hp-mockup hp-mockup--ledger">
         <div class="hp-mockup-head">
           <div class="hp-mockup-head-left">
@@ -97,22 +99,25 @@
           </div>
           <span class="hp-mono-muted">{{ p.ledger.term }}</span>
         </div>
-        <div class="hp-table-scroll">
-          <table class="hp-ledger-table">
-            <thead><tr>{% for c in p.ledger.columns %}<th>{{ c }}</th>{% endfor %}</tr></thead>
-            <tbody>
-              {% for row in p.ledger.rows %}
-              <tr>
-                <td class="hp-strong">{{ row[0] }}</td>
-                <td class="hp-muted">{{ row[1] }}</td>
-                <td class="hp-num">{{ row[2] }}</td>
-                <td class="hp-num hp-strong">{{ row[3] }}</td>
-                <td class="hp-num"><span class="hp-chip hp-chip--tint">● {{ row[4] }}</span></td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+        <div class="hp-ledger-head">
+          {% for c in p.ledger.columns %}<span>{{ c }}</span>{% endfor %}
         </div>
+        <div class="hp-ledger-viewport">
+          <div class="hp-ledger-track" style="--hp-ledger-dur:{{ (ticker_rows|length) * 1.6 }}s">
+            {% for _ in range(2) %}
+            {% for row in ticker_rows %}
+            <div class="hp-ledger-row">
+              <span class="hp-strong">{{ row.date }}</span>
+              <span class="hp-muted">{{ row.dow[:1] }}</span>
+              <span class="hp-num">{{ row.count }}건</span>
+              <span class="hp-num hp-strong">{{ row.amount }}</span>
+              <span class="hp-num"><span class="hp-chip hp-chip--tint">● <span class="hp-chip-label">정산완료</span></span></span>
+            </div>
+            {% endfor %}
+            {% endfor %}
+          </div>
+        </div>
+        <p class="hp-ledger-reduced-note">최근 5건 표시 · 전체 {{ ticker_rows|length }}건</p>
       </div>
       {% elif card.mockup == 'crm' %}
       <div class="hp-mockup hp-mockup--crm">
