@@ -4,7 +4,7 @@
 {% block extra_head %}
 <link rel="stylesheet" href="static/home-poetic.css">
 <script src="static/home-poetic.js" defer></script>
-<script src="static/home-poetic-glow.js" defer></script>
+<script src="static/home-poetic-trail.js" defer></script>
 {% endblock %}
 
 {% block header %}
@@ -60,7 +60,8 @@
     </p>
   </div>
   <div class="hp-wrap">
-    <div class="hp-photo-block" style="background-image:url('{{ p.statement.photo_src }}')">
+    <div class="hp-photo-block hp-trail-host" style="background-image:url('{{ p.statement.photo_src }}')">
+      <div class="hp-trail" aria-hidden="true"></div>
       <div class="hp-photo-overlay"></div>
       <div class="hp-photo-corner hp-photo-corner--tl">{{ p.statement.photo_top_left }}</div>
       <div class="hp-photo-corner hp-photo-corner--bl">{{ p.statement.photo_geo }}</div>
@@ -84,8 +85,8 @@
     </div>
 
     {% for card in p.features.cards %}
-    <div class="hp-feature-card hp-glow-host">
-      <div class="hp-glow" aria-hidden="true"></div>
+    <div class="hp-feature-card hp-trail-host">
+      <div class="hp-trail" aria-hidden="true"></div>
       <div class="hp-feature-card-head">
         <h3 class="hp-headline-lg">{{ card.title }}</h3>
         <span class="hp-feature-index">/ {{ card.index }}</span>
@@ -176,8 +177,8 @@
   </div>
 </section>
 
-<section class="hp-section hp-promise hp-glow-host" id="promise">
-  <div class="hp-glow" aria-hidden="true"></div>
+<section class="hp-section hp-promise hp-trail-host" id="promise">
+  <div class="hp-trail" aria-hidden="true"></div>
   <div class="hp-wrap hp-promise-grid">
     <div class="hp-promise-photo-col">
       <div class="hp-promise-photo-lg" style="background-image:url('{{ p.promise.photo_src }}')"></div>
@@ -247,8 +248,8 @@
   </div>
 </section>
 
-<section class="hp-section hp-carriers hp-glow-host" id="carriers">
-  <div class="hp-glow" aria-hidden="true"></div>
+<section class="hp-section hp-carriers hp-trail-host" id="carriers">
+  <div class="hp-trail" aria-hidden="true"></div>
   <div class="hp-wrap">
     <div class="hp-carriers-label">{{ m.section_label(p.carriers.label) }}</div>
     <div class="hp-carriers-names">
