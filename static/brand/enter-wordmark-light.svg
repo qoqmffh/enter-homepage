@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="495" height="116" viewBox="32 18 495 116" role="img"><title>ENTER wordmark light</title><g transform="translate(32 18)"><g id="ENTER-wordmark" fill="#10182B">
+ <path id="E-first" d="M0 6H90V31H29V47H78V71H29V87H90V112H15L0 98Z"/>
+ <g id="doorway-N" transform="translate(101 0)"><path d="M0 6L32 0V116L0 110Z M65 24L98 14V110L65 102Z"/><path fill="#1E6F50" d="M32 12L82 29V102L51 102L58 98V34L32 25Z"/></g>
+ <path id="T" d="M213 6H304V31H274V112H244V31H213Z"/>
+ <path id="E-second" d="M312 6H391V31H341V47H383V71H341V87H391V112H312Z"/>
+ <path id="R" fill-rule="evenodd" d="M401 6H454C478 6 491 20 491 40C491 55 484 66 469 72L495 112H461L438 76H431V112H401Z M431 31V51H450C458 51 462 47 462 41C462 35 458 31 450 31Z"/></g></g></svg>

@@ -59,7 +59,11 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
 /* ---------- 헤더 ---------- */
 .hp-header{ position:sticky; top:0; z-index:40; background:rgba(255,255,250,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--hp-line); }
 .hp-header-inner{ max-width:1200px; margin:0 auto; padding:0 20px; height:68px; display:flex; align-items:center; justify-content:space-between; }
-.hp-brand{ font-weight:700; font-size:20px; letter-spacing:-.01em; color:var(--hp-ink); }
+.hp-brand{ display:inline-flex; align-items:center; }
+.hp-brand-svg{ height:26px; width:auto; display:block; }
+.hp-brand-door-leaf{ transition:transform .3s ease; transform-box:fill-box; transform-origin:0% 50%; }
+.hp-brand:hover .hp-brand-door-leaf{ transform:scaleX(1.3) skewY(-6deg); }
+@media (prefers-reduced-motion:reduce){ .hp-brand-door-leaf{ transition:none; } }
 .hp-nav{ display:none; }
 .hp-nav a{ font-size:14px; color:var(--hp-grey); padding:8px 14px; transition:color .15s ease; }
 .hp-nav a:hover, .hp-nav a.active{ color:var(--hp-ink); }
@@ -255,6 +259,7 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
 /* ---------- 푸터 ---------- */
 .hp-footer{ padding:64px 0 32px; border-top:1px solid var(--hp-line); }
 .hp-footer-top{ display:flex; flex-direction:column; gap:40px; margin-bottom:48px; }
+.hp-footer-logo{ height:40px; width:auto; display:block; }
 .hp-footer-brand p{ color:var(--hp-grey); font-size:13px; margin-top:10px; max-width:320px; }
 .hp-footer-cols{ display:grid; grid-template-columns:repeat(2,1fr); gap:28px; }
 .hp-footer-col{ display:flex; flex-direction:column; gap:10px; }
@@ -345,9 +350,13 @@ html.intro-pending .hp-hero .hp-display-xl span{ opacity:0; transform:translateY
 .intro-black{ position:fixed; inset:0; z-index:104; background:var(--hp-black); display:flex; align-items:center; justify-content:center; }
 
 .intro-stack{ display:flex; flex-direction:column; align-items:center; }
-.intro-logo-outer{ position:relative; width:312px; height:56px; overflow:hidden; }
-.intro-logo-box{ position:absolute; left:56px; top:0; width:256px; height:56px; display:flex; align-items:center; justify-content:center; }
-.intro-logo-text{ color:var(--hp-white); font-weight:700; font-size:52px; letter-spacing:-.02em; white-space:nowrap; opacity:0; }
+/* 워드마크 SVG(enter-wordmark-dark.svg) 비율 495:116(글자 경계만 꽉 채운 crop
+   기준) 기준, 높이 56px -> 폭 약 239px. 커서 바 높이(56px)는 이 워드마크 높이와
+   같게 맞춘 것 — 폭이 239px로 바뀌었으니 커서 이동 거리(intro.js의 x:239)도
+   같이 맞춰야 한다. */
+.intro-logo-outer{ position:relative; width:295px; height:56px; overflow:hidden; }
+.intro-logo-box{ position:absolute; left:56px; top:0; width:239px; height:56px; display:flex; align-items:center; justify-content:center; }
+.intro-logo-svg{ height:56px; width:auto; opacity:0; display:block; }
 .intro-cursor{ position:absolute; left:0; top:0; width:56px; height:56px; background:#1E6F50; opacity:0; will-change:transform; }
 .intro-subtitle{
   margin-top:14px; font-size:16px; color:rgba(255,255,250,.6); letter-spacing:.08em;
