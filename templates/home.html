@@ -30,11 +30,13 @@ window.__introConfig = {
 </script>
 <link rel="stylesheet" href="static/home-poetic.css">
 <script src="static/vendor/gsap.min.js" defer></script>
+<script src="static/vendor/ScrollTrigger.min.js" defer></script>
 <script src="static/letter-swap.js" defer></script>
 <script src="static/intro.js" defer></script>
 <script src="static/home-poetic.js" defer></script>
 <script src="static/home-poetic-trail.js" defer></script>
 <script src="static/home-poetic-cards.js" defer></script>
+<script src="static/home-poetic-scroll.js" defer></script>
 {% endblock %}
 
 {% block header %}
@@ -77,8 +79,8 @@ window.__introConfig = {
   <div class="hp-trail" aria-hidden="true"></div>
   <div class="hp-wrap">
     <div class="hp-hero-top">
-      <h1 class="hp-display-xl">
-        {% for line in p.hero.headline %}<span>{{ line }}</span>{% endfor %}
+      <h1 class="hp-display-xl" data-scroll-headline>
+        {% for line in p.hero.headline %}<span class="hp-headline-line">{% for word in line.split(' ') %}<span class="hp-word">{{ word }}</span>{{ ' ' if not loop.last else '' }}{% endfor %}</span>{% endfor %}
       </h1>
       <p class="hp-hero-subhead">{{ p.hero.subhead }}</p>
     </div>
@@ -346,7 +348,7 @@ window.__introConfig = {
 <section class="hp-section hp-closing hp-trail-host" id="contact" data-trail="gray">
   <div class="hp-trail" aria-hidden="true"></div>
   <div class="hp-wrap hp-center">
-    <h2 class="hp-display-lg hp-two-tone-block">
+    <h2 class="hp-display-lg hp-two-tone-block" data-scroll-fill>
       <span class="hp-ink">{{ p.closing.headline_ink }}</span>
       <span class="hp-green">{{ p.closing.headline_green }}</span>
     </h2>
