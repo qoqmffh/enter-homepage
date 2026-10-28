@@ -17,7 +17,7 @@
 
   var PITCH = 26;
   var CELL_PER_MOVE = 1; // 1차 수정: mousemove당 2개 -> 1개
-  var MAX_CELLS = 20;    // 1차 수정: 동시 최대 40 -> 20
+  var MAX_CELLS = 4;     // 2차 수정: 마우스가 지나갈 때 동시에 3~4개 정도만 보이게
   var NEIGHBORHOOD = 1; // 커서 중심 반경 절반으로(±2칸 -> ±1칸)
   var COLOR_GREEN = '#1E6F50';
   var COLOR_GRAY = '#E5E5DF';
