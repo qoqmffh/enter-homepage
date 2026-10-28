@@ -221,21 +221,30 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
   .hp-carriers-names > div:hover{ opacity:1; color:#3FA176; transform:translateX(8px); }
 }
 
-/* ---------- 픽셀 잔상(hover trail, poetic.com 레퍼런스) — 검은 영역 전용 ----------
-   호스트(.hp-trail-host)는 position:relative(+overflow:hidden)이어야 하고,
-   본문 콘텐츠는 z-index:1로 trail 레이어 위에 뜬다. static/home-poetic-glow.js가
+/* ---------- 픽셀 잔상(hover trail, poetic.com 레퍼런스) ----------
+   호스트(.hp-trail-host)는 position:relative+overflow:hidden이어야 하고,
+   본문 콘텐츠는 z-index:1로 trail 레이어 위에 뜬다. static/home-poetic-trail.js가
    hover:hover+pointer:fine+!prefers-reduced-motion일 때만 칸을 생성한다 — 조건이
-   안 맞으면 JS가 아예 리스너를 안 걸어서 평소엔 빈 레이어로 아무 영향 없다. */
-.hp-trail-host{ position:relative; }
+   안 맞으면 JS가 아예 리스너를 안 걸어서 평소엔 빈 레이어로 아무 영향 없다.
+   색은 호스트의 data-trail="green"|"gray" 값으로 JS가 셀마다 인라인으로 정한다
+   (검은 카드 호스트가 흰 섹션 호스트 안에 중첩돼 있어도 closest()로 가장 안쪽
+   호스트만 선택되므로 겹치는 곳에서 색이 섞이지 않는다). */
+.hp-trail-host{ position:relative; overflow:hidden; }
 .hp-trail{ position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:0; }
 /* statement 사진 블록은 자식이 이미 position:absolute/relative라 DOM 순서(trail이 첫 자식)만으로
    충분히 위에 쌓인다 — 아래 규칙은 일반 flow 콘텐츠를 쓰는 다른 호스트에만 필요하다. */
 .hp-stat-card > :not(.hp-trail),
 .hp-feature-card > :not(.hp-trail),
 .hp-promise > :not(.hp-trail),
-.hp-carriers > :not(.hp-trail){ position:relative; z-index:1; }
+.hp-carriers > :not(.hp-trail),
+.hp-hero > :not(.hp-trail),
+.hp-statement > :not(.hp-trail),
+.hp-features > :not(.hp-trail),
+.hp-start > :not(.hp-trail),
+.hp-trust > :not(.hp-trail),
+.hp-closing > :not(.hp-trail){ position:relative; z-index:1; }
 .hp-trail-cell{
-  position:absolute; width:20px; height:20px; background:var(--hp-green);
+  position:absolute; width:20px; height:20px;
   animation:hp-trail-pop .16s cubic-bezier(0.34,1.56,0.64,1) forwards;
 }
 @keyframes hp-trail-pop{ from{ transform:scale(0); } to{ transform:scale(1); } }
