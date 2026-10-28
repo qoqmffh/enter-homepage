@@ -60,6 +60,7 @@ window.__introConfig = {
 <script src="static/intro.js" defer></script>
 <script src="static/home-poetic.js" defer></script>
 <script src="static/home-poetic-trail.js" defer></script>
+<script src="static/home-poetic-cards.js" defer></script>
 
 </head>
 <body>
@@ -1707,33 +1708,36 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       </div>
 
       
-      <div class="hp-mockup hp-mockup--crm">
+      
+      <div class="hp-mockup hp-mockup--crm" data-crm-scene
+           data-crm-name-unmasked="홍길동" data-crm-name-masked="홍●동"
+           data-crm-phone-unmasked="010-1234-5678" data-crm-phone-masked="010-●●●●-5678"
+           data-crm-rrn-unmasked="900101-1234567" data-crm-rrn-masked="900101-●●●●●●●"
+           data-crm-status-start="접수" data-crm-status-mid="청약" data-crm-status-end="개통완료">
         <div class="hp-mockup-head">
           <span class="hp-mockup-title">고객 데이터 안전 폐기</span>
-          <span class="hp-chip hp-chip--tint">개통완료 · 자동 하드마킹 (복구불가)</span>
+          <span class="hp-crm-badges">
+            <span class="hp-chip hp-chip--tint" data-crm-status>개통완료</span>
+            <span class="hp-chip hp-chip--solid" data-crm-hardmark>자동 하드마킹</span>
+          </span>
         </div>
         <div class="hp-crm-grid">
-          
           <div class="hp-crm-field">
             <span class="hp-field-label">고객명</span>
-            <span class="hp-field-value">홍●동</span>
+            <span class="hp-field-value" data-crm-field="name">홍●동</span>
           </div>
-          
           <div class="hp-crm-field">
             <span class="hp-field-label">연락처</span>
-            <span class="hp-field-value">010-●●●●-5678</span>
+            <span class="hp-field-value" data-crm-field="phone">010-●●●●-5678</span>
           </div>
-          
           <div class="hp-crm-field">
             <span class="hp-field-label">주민등록번호</span>
-            <span class="hp-field-value">900101-●●●●●●●</span>
+            <span class="hp-field-value" data-crm-field="rrn">900101-●●●●●●●</span>
           </div>
-          
           <div class="hp-crm-field">
             <span class="hp-field-label">설치주소</span>
             <span class="hp-field-value">서울시 강남구 테헤란로 ●●● (상세 암호화)</span>
           </div>
-          
         </div>
         <div class="hp-mockup-foot">
           <span class="hp-mono-muted">SECURITY PROTOCOL: SHA-256 SALT & DESTROY</span>
@@ -1755,31 +1759,59 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       </div>
 
       
-      <div class="hp-mockup hp-mockup--chat">
+      <div class="hp-mockup hp-mockup--chat" data-chat-scene>
         <div class="hp-mockup-head">
           <div class="hp-mockup-head-left">
             <span class="hp-chat-dot"></span>
-            <span class="hp-mockup-title">ENTER 본사 공식 정책방 (도매회원 전용)</span>
+            <span class="hp-mockup-title">ENTER 유선 정책방</span>
           </div>
-          <span class="hp-mono-muted">BROADCAST ACTIVE</span>
+          <span class="hp-mono-muted">128명 참여 중</span>
         </div>
-        <div class="hp-chat-list">
+        <div class="hp-chat-list" data-chat-list>
           
-          <div class="hp-chat-bubble">
-            <div class="hp-chat-bubble-head">
-              <span class="hp-chat-label">[10/28 유선 정책 공지]</span>
-              <span class="hp-mono-muted">오전</span>
-            </div>
-            <p class="hp-chat-text">오늘 통신 3사 및 알뜰유선 일일 정책표 보내드립니다. 통신사별 건당 최고단가 업데이트 완료되었습니다.</p>
+          
+          <div class="hp-chat-bubble" data-chat-msg>
+            <span class="hp-chat-label">유선 정책 공지</span>
+            <p class="hp-chat-text">오늘 정책표 보내드립니다.</p>
           </div>
           
-          <div class="hp-chat-bubble hp-chat-bubble--accent">
-            <div class="hp-chat-bubble-head">
-              <span class="hp-chat-label">변경 공지 · 속보</span>
-              <span class="hp-mono-muted">14:20 PM</span>
+          
+          
+          <div class="hp-chat-bubble hp-chat-bubble--sheet" data-chat-msg>
+            <div class="hp-policy-sheet">
+              <div class="hp-policy-sheet-head">
+                <span>유선 정책표</span>
+                <span class="hp-mono-muted">오전</span>
+              </div>
+              
+              <div class="hp-policy-sheet-row">
+                <span>SKT</span>
+                <span>기가인터넷 500M</span>
+                <span class="hp-policy-sheet-price">187,000원</span>
+              </div>
+              
+              <div class="hp-policy-sheet-row">
+                <span>KT</span>
+                <span>기가인터넷 + 지니TV</span>
+                <span class="hp-policy-sheet-price">212,000원</span>
+              </div>
+              
+              <div class="hp-policy-sheet-row">
+                <span>LG U+</span>
+                <span>인터넷 + IPTV 결합</span>
+                <span class="hp-policy-sheet-price">165,000원</span>
+              </div>
+              
             </div>
-            <p class="hp-chat-text">KT 기가인터넷 + 지니TV 결합 추가단가 +3만 상향 조정되었습니다. 실시간 정책표 반영 확인 부탁드립니다.</p>
           </div>
+          
+          
+          
+          <div class="hp-chat-bubble hp-chat-bubble--accent" data-chat-msg>
+            <span class="hp-chat-label">변경 공지</span>
+            <p class="hp-chat-text">KT 기가인터넷 + 지니TV 결합 추가단가가 상향 조정되었습니다. 정책표 반영 확인 부탁드립니다.</p>
+          </div>
+          
           
         </div>
       </div>

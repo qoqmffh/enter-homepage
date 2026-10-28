@@ -34,6 +34,7 @@ window.__introConfig = {
 <script src="static/intro.js" defer></script>
 <script src="static/home-poetic.js" defer></script>
 <script src="static/home-poetic-trail.js" defer></script>
+<script src="static/home-poetic-cards.js" defer></script>
 {% endblock %}
 
 {% block header %}
@@ -168,18 +169,38 @@ window.__introConfig = {
         <p class="hp-ledger-reduced-note">최근 5건 표시 · 전체 {{ ticker_rows|length }}건</p>
       </div>
       {% elif card.mockup == 'crm' %}
-      <div class="hp-mockup hp-mockup--crm">
+      {# 기본(JS 꺼졌을 때) 상태는 이미 마스킹 완료된 안전한 화면이다. JS가 돌 때만
+         data-crm-unmasked/data-crm-name 등 원문값을 읽어서 "접수 -> 마스킹" 사이클을
+         재생한다 — 안전장치는 항상 "더 가려진 쪽"이 기본값이어야 하므로. #}
+      <div class="hp-mockup hp-mockup--crm" data-crm-scene
+           data-crm-name-unmasked="{{ p.crm.customer.name_unmasked }}" data-crm-name-masked="{{ p.crm.customer.name_masked }}"
+           data-crm-phone-unmasked="{{ p.crm.customer.phone_unmasked }}" data-crm-phone-masked="{{ p.crm.customer.phone_masked }}"
+           data-crm-rrn-unmasked="{{ p.crm.customer.rrn_unmasked }}" data-crm-rrn-masked="{{ p.crm.customer.rrn_masked }}"
+           data-crm-status-start="{{ p.crm.statuses[0] }}" data-crm-status-mid="{{ p.crm.statuses[1] }}" data-crm-status-end="{{ p.crm.statuses[2] }}">
         <div class="hp-mockup-head">
           <span class="hp-mockup-title">{{ p.crm.title }}</span>
-          <span class="hp-chip hp-chip--tint">{{ p.crm.tag }}</span>
+          <span class="hp-crm-badges">
+            <span class="hp-chip hp-chip--tint" data-crm-status>{{ p.crm.statuses[-1] }}</span>
+            <span class="hp-chip hp-chip--solid" data-crm-hardmark>{{ p.crm.hardmark_tag }}</span>
+          </span>
         </div>
         <div class="hp-crm-grid">
-          {% for f in p.crm.fields %}
           <div class="hp-crm-field">
-            <span class="hp-field-label">{{ f.label }}</span>
-            <span class="hp-field-value">{{ f.value }}</span>
+            <span class="hp-field-label">고객명</span>
+            <span class="hp-field-value" data-crm-field="name">{{ p.crm.customer.name_masked }}</span>
           </div>
-          {% endfor %}
+          <div class="hp-crm-field">
+            <span class="hp-field-label">연락처</span>
+            <span class="hp-field-value" data-crm-field="phone">{{ p.crm.customer.phone_masked }}</span>
+          </div>
+          <div class="hp-crm-field">
+            <span class="hp-field-label">주민등록번호</span>
+            <span class="hp-field-value" data-crm-field="rrn">{{ p.crm.customer.rrn_masked }}</span>
+          </div>
+          <div class="hp-crm-field">
+            <span class="hp-field-label">설치주소</span>
+            <span class="hp-field-value">{{ p.crm.address }}</span>
+          </div>
         </div>
         <div class="hp-mockup-foot">
           <span class="hp-mono-muted">{{ p.crm.footer_left }}</span>
@@ -187,23 +208,38 @@ window.__introConfig = {
         </div>
       </div>
       {% elif card.mockup == 'chat' %}
-      <div class="hp-mockup hp-mockup--chat">
+      <div class="hp-mockup hp-mockup--chat" data-chat-scene>
         <div class="hp-mockup-head">
           <div class="hp-mockup-head-left">
             <span class="hp-chat-dot"></span>
             <span class="hp-mockup-title">{{ p.chat.title }}</span>
           </div>
-          <span class="hp-mono-muted">{{ p.chat.tag }}</span>
+          <span class="hp-mono-muted">{{ p.chat.members }}</span>
         </div>
-        <div class="hp-chat-list">
+        <div class="hp-chat-list" data-chat-list>
           {% for msg in p.chat.messages %}
-          <div class="hp-chat-bubble{% if msg.accent %} hp-chat-bubble--accent{% endif %}">
-            <div class="hp-chat-bubble-head">
-              <span class="hp-chat-label">{{ msg.label }}</span>
-              <span class="hp-mono-muted">{{ msg.time }}</span>
+          {% if msg.kind == 'sheet' %}
+          <div class="hp-chat-bubble hp-chat-bubble--sheet" data-chat-msg>
+            <div class="hp-policy-sheet">
+              <div class="hp-policy-sheet-head">
+                <span>{{ p.chat.sheet.title }}</span>
+                <span class="hp-mono-muted">{{ p.chat.sheet.time }}</span>
+              </div>
+              {% for row in p.chat.sheet.rows %}
+              <div class="hp-policy-sheet-row">
+                <span>{{ row[0] }}</span>
+                <span>{{ row[1] }}</span>
+                <span class="hp-policy-sheet-price">{{ row[2] }}</span>
+              </div>
+              {% endfor %}
             </div>
+          </div>
+          {% else %}
+          <div class="hp-chat-bubble{% if msg.accent %} hp-chat-bubble--accent{% endif %}" data-chat-msg>
+            <span class="hp-chat-label">{{ msg.label }}</span>
             <p class="hp-chat-text">{{ msg.text }}</p>
           </div>
+          {% endif %}
           {% endfor %}
         </div>
       </div>
