@@ -163,14 +163,30 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
 .hp-field-label{ font-size:10px; letter-spacing:.04em; text-transform:uppercase; color:var(--hp-grey); }
 .hp-field-value{ font-size:14px; font-weight:700; letter-spacing:.02em; }
 .hp-mockup-foot{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px; border-top:1px solid var(--hp-line); padding-top:12px; margin-top:14px; }
+.hp-crm-badges{ display:flex; align-items:center; gap:6px; }
+.hp-chip--solid{ background:var(--hp-green); color:var(--hp-white); transition:opacity .25s ease, transform .25s ease; }
 
 .hp-chat-dot{ width:10px; height:10px; border-radius:50%; background:var(--hp-green); }
 .hp-chat-list{ display:flex; flex-direction:column; gap:12px; }
-.hp-chat-bubble{ background:#F6F6F1; border:1px solid var(--hp-line); border-radius:14px; border-top-left-radius:4px; padding:12px 14px; max-width:100%; }
+.hp-chat-bubble{ background:#F6F6F1; border:1px solid var(--hp-line); border-radius:14px; border-top-left-radius:4px; padding:12px 14px; max-width:100%; transition:opacity .4s ease, transform .4s ease; }
 .hp-chat-bubble--accent{ background:rgba(220,235,227,.5); border-color:rgba(30,111,80,.2); }
-.hp-chat-bubble-head{ display:flex; justify-content:space-between; gap:8px; margin-bottom:6px; flex-wrap:wrap; }
-.hp-chat-label{ font-size:11px; font-weight:700; color:var(--hp-green); }
+.hp-chat-bubble--sheet{ padding:0; overflow:hidden; background:var(--hp-white); }
+.hp-chat-label{ display:block; font-size:11px; font-weight:700; color:var(--hp-green); margin-bottom:4px; }
 .hp-chat-text{ font-size:13px; line-height:1.55; margin:0; font-weight:600; }
+
+.hp-policy-sheet{ padding:12px 14px; }
+.hp-policy-sheet-head{ display:flex; justify-content:space-between; align-items:center; font-size:12px; font-weight:700; padding-bottom:8px; margin-bottom:8px; border-bottom:1px solid var(--hp-line); }
+.hp-policy-sheet-row{ display:grid; grid-template-columns:54px 1fr auto; gap:8px; align-items:center; font-size:11px; padding:5px 0; }
+.hp-policy-sheet-row span:first-child{ font-weight:700; }
+.hp-policy-sheet-price{ font-weight:700; filter:blur(4px); -webkit-filter:blur(4px); user-select:none; }
+
+/* 메시지 등장 애니메이션: 기본은 전부 보이는 안전한 상태(JS 꺼지면 이대로 멈춤).
+   static/home-poetic-cards.js가 로드를 확인한 뒤에만 이 클래스를 붙여서 숨겼다가
+   순서대로 뗀다 — "JS는 자기가 되돌릴 수 있는 것만 가린다" 원칙. */
+.hp-chat-msg--pending{ opacity:0; transform:translateY(8px); }
+@media (prefers-reduced-motion:reduce){
+  .hp-chat-bubble, .hp-chip--solid{ transition:none; }
+}
 
 /* ---------- 약속 섹션 ---------- */
 .hp-promise{ position:relative; overflow:hidden; background:var(--hp-black); color:var(--hp-white); }
