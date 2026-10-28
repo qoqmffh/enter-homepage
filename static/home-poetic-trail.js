@@ -16,9 +16,11 @@
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   var PITCH = 26;
-  var CELL_PER_MOVE = 1; // 1차 수정: mousemove당 2개 -> 1개
-  var MAX_CELLS = 4;     // 2차 수정: 마우스가 지나갈 때 동시에 3~4개 정도만 보이게
-  var NEIGHBORHOOD = 1; // 커서 중심 반경 절반으로(±2칸 -> ±1칸)
+  var CELL_PER_MOVE = 1;
+  var MAX_CELLS = 10;      // 안전장치용 상한일 뿐, 실제 밀도는 아래 간격으로 정한다
+  var NEIGHBORHOOD = 1;    // 커서 중심 반경(±1칸)
+  var MIN_SPAWN_INTERVAL = 130; // 칸 사이에 두는 최소 시간차(ms) — 개수를 갑자기
+  // 막아서 끊기는 느낌 대신, 일정한 간격으로 "다다다닥" 찍히게 하는 게 핵심이다.
   var COLOR_GREEN = '#1E6F50';
   var COLOR_GRAY = '#E5E5DF';
 
@@ -27,7 +29,7 @@
   function getState(host) {
     var state = hostStates.get(host);
     if (!state) {
-      state = { active: new Map(), layer: host.querySelector('.hp-trail') };
+      state = { active: new Map(), layer: host.querySelector('.hp-trail'), lastSpawn: 0 };
       hostStates.set(host, state);
     }
     return state;
@@ -75,8 +77,12 @@
     var host = e.target.closest ? e.target.closest('.hp-trail-host') : null;
     if (!host) return;
 
-    var color = host.getAttribute('data-trail') === 'gray' ? COLOR_GRAY : COLOR_GREEN;
     var state = getState(host);
+    var now = Date.now();
+    if (now - state.lastSpawn < MIN_SPAWN_INTERVAL) return;
+    state.lastSpawn = now;
+
+    var color = host.getAttribute('data-trail') === 'gray' ? COLOR_GRAY : COLOR_GREEN;
     var rect = host.getBoundingClientRect();
     var x = e.clientX - rect.left;
     var y = e.clientY - rect.top;
