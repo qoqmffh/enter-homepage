@@ -24,7 +24,7 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
 /* word-break:keep-all은 body에서 상속되므로 전 요소에 적용됨(blockquote 포함) — 한글이 글자 단위로 끊기지 않게 */
 
 /* ---------- 타이포 스케일 ---------- */
-.hp-display-xl{ font-weight:700; font-size:44px; line-height:1.14; letter-spacing:-.03em; margin:0 0 20px; display:flex; flex-direction:column; text-wrap:balance; }
+.hp-display-xl{ font-weight:700; font-size:44px; line-height:1.04; letter-spacing:-.04em; margin:0; display:flex; flex-direction:column; text-wrap:balance; }
 .hp-display-xl span{ display:block; }
 .hp-display-lg{ font-weight:700; font-size:36px; line-height:1.17; letter-spacing:-.02em; margin:0 0 32px; text-wrap:balance; }
 .hp-headline-lg{ font-weight:700; font-size:28px; line-height:1.3; letter-spacing:-.02em; margin:0; text-wrap:balance; }
@@ -73,11 +73,13 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
 #hpNavToggle:checked ~ .hp-nav-mobile{ display:flex; }
 
 /* ---------- 히어로 ---------- */
-.hp-hero{ padding-top:40px; }
-/* poetic.com 실제 값: 헤드라인과 아래 블록(문단·버튼·선·카드) 사이를 크게 벌려서
-   헤드라인은 첫 화면에서 여유 있게 자리 잡고, 카드는 스크롤해야 보이게 한다. */
-.hp-hero-stack{ display:flex; flex-direction:column; gap:80px; }
-.hp-hero-sub{ font-size:16px; line-height:1.6; color:var(--hp-grey); font-weight:600; margin:0 0 20px; max-width:560px; }
+.hp-hero{ padding-top:48px; }
+/* poetic.com 실제 비율: 헤더-헤드라인 위 여백 + hp-hero-top의 min-height로
+   헤드라인+부제가 첫 화면 가운데쯤 오고, 문단(hp-hero-below)이 화면 아래쪽에
+   살짝 걸쳐 보이게(스크롤 유도) 한다. 고정 gap 대신 뷰포트 기준으로 맞춘다. */
+.hp-hero-top{ display:flex; flex-direction:column; justify-content:center; min-height:calc(100vh - 156px); }
+.hp-hero-subhead{ margin:28px 0 0; font-size:22px; line-height:1.4; color:var(--hp-grey); font-weight:400; }
+.hp-hero-sub{ font-size:20px; line-height:1.5; color:var(--hp-ink); font-weight:700; margin:0 0 20px; max-width:620px; }
 .hp-hero-ctas{ display:flex; flex-wrap:wrap; gap:12px; margin-bottom:28px; }
 .hp-hairline{ height:1px; background:var(--hp-line); margin:0 0 28px; }
 .hp-stats{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
@@ -259,13 +261,13 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
   .hp-wrap{ padding:0 40px; }
   .hp-section{ padding:120px 0; }
 
-  .hp-display-xl{ font-size:72px; line-height:1.08; letter-spacing:-.035em; }
+  .hp-display-xl{ font-size:72px; }
   .hp-display-lg{ font-size:56px; line-height:1.1; }
   .hp-headline-lg{ font-size:40px; line-height:1.2; }
   .hp-headline-md{ font-size:28px; line-height:1.3; }
   .hp-body-xl{ font-size:19px; }
-  .hp-hero-sub{ font-size:19px; max-width:620px; }
-  .hp-hero-stack{ gap:160px; }
+  .hp-hero{ padding-top:96px; }
+  .hp-hero-top{ min-height:calc(100vh - 226px); }
 
   .hp-header-inner{ height:80px; padding:0 40px; }
   .hp-nav{ display:flex; gap:4px; }
@@ -307,12 +309,13 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
 }
 
 @media (min-width:1024px){
-  .hp-display-xl{ font-size:84px; line-height:1.095; }
+  .hp-display-xl{ font-size:84px; }
   .hp-hero-sub{ max-width:none; white-space:nowrap; }
 }
 
 @media (min-width:1281px){
-  .hp-hero-stack{ gap:272px; }
+  .hp-hero{ padding-top:128px; }
+  .hp-hero-top{ min-height:calc(100vh - 268px); }
 }
 
 /* ---------- 인트로 (poetic.com 실제 구현 분석값 기준, 2026-10-27 확정) ----------

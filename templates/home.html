@@ -63,10 +63,13 @@ window.__introConfig = {
 {% set p = page.poetic %}
 
 <section class="hp-section hp-hero" id="hero">
-  <div class="hp-wrap hp-hero-stack">
-    <h1 class="hp-display-xl">
-      {% for line in p.hero.headline %}<span>{{ line }}</span>{% endfor %}
-    </h1>
+  <div class="hp-wrap">
+    <div class="hp-hero-top">
+      <h1 class="hp-display-xl">
+        {% for line in p.hero.headline %}<span>{{ line }}</span>{% endfor %}
+      </h1>
+      <p class="hp-hero-subhead">{{ p.hero.subhead }}</p>
+    </div>
     <div class="hp-hero-below">
       <p class="hp-hero-sub">{{ p.hero.sub }}</p>
       <div class="hp-hero-ctas">
