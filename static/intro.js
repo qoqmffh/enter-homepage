@@ -20,7 +20,10 @@
   }
 
   try {
-    var WORD = 'ENTER';
+    var cfg = window.__introConfig || {};
+    var WORD = cfg.wordmark || 'ENTER';
+    var SUBTITLE = cfg.subtitle || '';
+    var SKIP_LABEL = cfg.skipLabel || '건너뛰기 →';
 
     var root = document.createElement('div');
     root.id = 'introRoot';
@@ -30,12 +33,15 @@
       '<div class="intro-color intro-color--2"></div>' +
       '<div class="intro-color intro-color--1"></div>' +
       '<div class="intro-black">' +
-        '<div class="intro-logo-outer">' +
-          '<div class="intro-cursor"></div>' +
-          '<div class="intro-logo-box"><span class="intro-logo-text">' + WORD + '</span></div>' +
+        '<div class="intro-stack">' +
+          '<div class="intro-logo-outer">' +
+            '<div class="intro-cursor"></div>' +
+            '<div class="intro-logo-box"><span class="intro-logo-text">' + WORD + '</span></div>' +
+          '</div>' +
+          '<div class="intro-subtitle">' + SUBTITLE + '</div>' +
         '</div>' +
       '</div>' +
-      '<button type="button" class="intro-skip">건너뛰기 →</button>';
+      '<button type="button" class="intro-skip">' + SKIP_LABEL + '</button>';
     document.body.appendChild(root);
 
     var color3 = root.querySelector('.intro-color--3');
@@ -44,6 +50,7 @@
     var black = root.querySelector('.intro-black');
     var cursor = root.querySelector('.intro-cursor');
     var logoText = root.querySelector('.intro-logo-text');
+    var subtitle = root.querySelector('.intro-subtitle');
     var headlineSpans = document.querySelectorAll('.hp-hero .hp-display-xl span');
 
     // ---- 안전장치: 4초 강제 종료 / 완료 처리 ----
@@ -88,6 +95,11 @@
     tl.set(cursor, { x: 0, opacity: 0 }, 0.5);
     tl.to(cursor, { opacity: 1, duration: 0.5 * 0.12, ease: 'none' }, 0.5); // 시작 12% 지점까지 페이드인
     tl.to(cursor, { x: 256, duration: 0.5, ease: 'cubic-bezier(0.4,0,0.2,1)' }, 0.5);
+
+    // 부제: 커서가 로고 끝에 도착해 깜빡이기 시작할 때(1.0s) 아래에서 6px 올라오며 페이드인
+    if (subtitle && SUBTITLE) {
+      tl.fromTo(subtitle, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power1.out' }, 1.0);
+    }
 
     // 커서 깜빡임: 도착 후(1.0s) 남은 구간(~1.5s)에서 2~3회, 각 약 2.5% 구간
     var blinkDur = 1 * 0.025;

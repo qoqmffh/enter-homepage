@@ -44,6 +44,13 @@
   } catch (e) {}
 })();
 </script>
+<script>
+window.__introConfig = {
+  wordmark: "ENTER",
+  subtitle: "유선전문 도매센터",
+  skipLabel: "건너뛰기 →"
+};
+</script>
 <link rel="stylesheet" href="static/home-poetic.css">
 <script src="static/vendor/gsap.min.js" defer></script>
 <script src="static/letter-swap.js" defer></script>
@@ -112,11 +119,11 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 
 <section class="hp-section hp-hero" id="hero">
-  <div class="hp-wrap">
-    <div class="hp-hero-head">
-      <h1 class="hp-display-xl">
-        <span>초대형 유선전문도매,</span><span>정책이 얼마나 좋을까요?</span>
-      </h1>
+  <div class="hp-wrap hp-hero-stack">
+    <h1 class="hp-display-xl">
+      <span>초대형 유선전문도매,</span><span>정책이 얼마나 좋을까요?</span>
+    </h1>
+    <div class="hp-hero-below">
       <p class="hp-hero-sub">매달 4,000건을 처리하는 유선 전문 총판. 정책부터 정산까지, 숫자로 보여드립니다.</p>
       <div class="hp-hero-ctas">
         
@@ -126,10 +133,9 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 <a href="tel:010-2222-4183" class="hp-pill hp-pill--secondary">전화 010-2222-4183</a>
 
       </div>
-    </div>
-    <div class="hp-hairline"></div>
-    <div class="hp-stats" id="stats">
-      
+      <div class="hp-hairline"></div>
+      <div class="hp-stats" id="stats">
+        
 <div class="hp-stat-card hp-trail-host">
   <div class="hp-trail" aria-hidden="true"></div>
   <span class="hp-stat-num">16년</span>
@@ -154,6 +160,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   <span class="hp-stat-label">최근 90번의 정산, 지연 횟수</span>
 </div>
 
+      </div>
     </div>
   </div>
 </section>
