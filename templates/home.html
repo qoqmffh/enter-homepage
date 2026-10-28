@@ -21,6 +21,13 @@
   } catch (e) {}
 })();
 </script>
+<script>
+window.__introConfig = {
+  wordmark: "{{ page.poetic.intro.wordmark }}",
+  subtitle: "{{ page.poetic.intro.subtitle }}",
+  skipLabel: "{{ page.poetic.intro.skip_label }}"
+};
+</script>
 <link rel="stylesheet" href="static/home-poetic.css">
 <script src="static/vendor/gsap.min.js" defer></script>
 <script src="static/letter-swap.js" defer></script>
@@ -56,20 +63,20 @@
 {% set p = page.poetic %}
 
 <section class="hp-section hp-hero" id="hero">
-  <div class="hp-wrap">
-    <div class="hp-hero-head">
-      <h1 class="hp-display-xl">
-        {% for line in p.hero.headline %}<span>{{ line }}</span>{% endfor %}
-      </h1>
+  <div class="hp-wrap hp-hero-stack">
+    <h1 class="hp-display-xl">
+      {% for line in p.hero.headline %}<span>{{ line }}</span>{% endfor %}
+    </h1>
+    <div class="hp-hero-below">
       <p class="hp-hero-sub">{{ p.hero.sub }}</p>
       <div class="hp-hero-ctas">
         {{ m.pill(p.hero.cta_kakao, '#', 'primary', True) }}
         {{ m.pill(p.hero.cta_tel, 'tel:' ~ site.phone, 'secondary') }}
       </div>
-    </div>
-    <div class="hp-hairline"></div>
-    <div class="hp-stats" id="stats">
-      {% for s in p.stats %}{{ m.stat_card(s.num, s.label) }}{% endfor %}
+      <div class="hp-hairline"></div>
+      <div class="hp-stats" id="stats">
+        {% for s in p.stats %}{{ m.stat_card(s.num, s.label) }}{% endfor %}
+      </div>
     </div>
   </div>
 </section>
