@@ -62,7 +62,8 @@ window.__introConfig = {
 {% block content %}
 {% set p = page.poetic %}
 
-<section class="hp-section hp-hero" id="hero">
+<section class="hp-section hp-hero hp-trail-host" id="hero" data-trail="gray">
+  <div class="hp-trail" aria-hidden="true"></div>
   <div class="hp-wrap">
     <div class="hp-hero-top">
       <h1 class="hp-display-xl">
@@ -84,7 +85,8 @@ window.__introConfig = {
   </div>
 </section>
 
-<section class="hp-section hp-statement" id="statement">
+<section class="hp-section hp-statement hp-trail-host" id="statement" data-trail="gray">
+  <div class="hp-trail" aria-hidden="true"></div>
   <div class="hp-wrap hp-wrap--narrow">
     <h2 class="hp-headline-lg hp-center">{{ p.statement.headline }}</h2>
     <p class="hp-headline-md hp-center hp-two-tone">
@@ -92,7 +94,7 @@ window.__introConfig = {
     </p>
   </div>
   <div class="hp-wrap">
-    <div class="hp-photo-block hp-trail-host" style="background-image:url('{{ p.statement.photo_src }}')">
+    <div class="hp-photo-block hp-trail-host" data-trail="green" style="background-image:url('{{ p.statement.photo_src }}')">
       <div class="hp-trail" aria-hidden="true"></div>
       <div class="hp-photo-overlay"></div>
       <div class="hp-photo-corner hp-photo-corner--tl">{{ p.statement.photo_top_left }}</div>
@@ -107,7 +109,8 @@ window.__introConfig = {
   </div>
 </section>
 
-<section class="hp-section hp-features" id="features">
+<section class="hp-section hp-features hp-trail-host" id="features" data-trail="gray">
+  <div class="hp-trail" aria-hidden="true"></div>
   <div class="hp-wrap">
     <div class="hp-center hp-features-head">
       {{ m.section_label(p.features.label) }}
@@ -117,7 +120,7 @@ window.__introConfig = {
     </div>
 
     {% for card in p.features.cards %}
-    <div class="hp-feature-card hp-trail-host">
+    <div class="hp-feature-card hp-trail-host" data-trail="green">
       <div class="hp-trail" aria-hidden="true"></div>
       <div class="hp-feature-card-head">
         <h3 class="hp-headline-lg">{{ card.title }}</h3>
@@ -209,7 +212,7 @@ window.__introConfig = {
   </div>
 </section>
 
-<section class="hp-section hp-promise hp-trail-host" id="promise">
+<section class="hp-section hp-promise hp-trail-host" id="promise" data-trail="green">
   <div class="hp-trail" aria-hidden="true"></div>
   <div class="hp-wrap hp-promise-grid">
     <div class="hp-promise-photo-col">
@@ -238,7 +241,8 @@ window.__introConfig = {
   </div>
 </section>
 
-<section class="hp-section hp-start" id="start">
+<section class="hp-section hp-start hp-trail-host" id="start" data-trail="gray">
+  <div class="hp-trail" aria-hidden="true"></div>
   <div class="hp-wrap hp-wrap--narrow">
     <div class="hp-center hp-start-head">
       {{ m.section_label(p.start.label) }}
@@ -261,7 +265,8 @@ window.__introConfig = {
   </div>
 </section>
 
-<section class="hp-section hp-trust" id="trust">
+<section class="hp-section hp-trust hp-trail-host" id="trust" data-trail="gray">
+  <div class="hp-trail" aria-hidden="true"></div>
   <div class="hp-wrap">
     {{ m.section_label(p.trust.label) }}
     <h2 class="hp-headline-lg">{{ p.trust.headline }}</h2>
@@ -280,7 +285,7 @@ window.__introConfig = {
   </div>
 </section>
 
-<section class="hp-section hp-carriers hp-trail-host" id="carriers">
+<section class="hp-section hp-carriers hp-trail-host" id="carriers" data-trail="green">
   <div class="hp-trail" aria-hidden="true"></div>
   <div class="hp-wrap">
     <div class="hp-carriers-label">{{ m.section_label(p.carriers.label) }}</div>
@@ -292,7 +297,8 @@ window.__introConfig = {
   </div>
 </section>
 
-<section class="hp-section hp-closing" id="contact">
+<section class="hp-section hp-closing hp-trail-host" id="contact" data-trail="gray">
+  <div class="hp-trail" aria-hidden="true"></div>
   <div class="hp-wrap hp-center">
     <h2 class="hp-display-lg hp-two-tone-block">
       <span class="hp-ink">{{ p.closing.headline_ink }}</span>

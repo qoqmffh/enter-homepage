@@ -1,10 +1,13 @@
-/* ENTER 홈 POETIC — 검은 영역(숫자 카드/기능 카드/약속 섹션/통신사 섹션/
-   statement 사진 블록) 픽셀 잔상(hover trail). poetic.com 실제 구현 분석값을
-   그대로 따른다: 26px 격자(20x20 네모 + 6px 틈), 커서 칸 기준 ±2칸에서 매
-   mousemove(rAF로 묶음)마다 무작위 2칸 점등, 등장만 0.16s 스프링, 수명
-   300~600ms 후 페이드 없이 바로 제거, 동시 최대 40개, 같은 칸 중복 생성 금지.
+/* ENTER 홈 POETIC — 픽셀 잔상(hover trail). poetic.com 레퍼런스.
+   검은 영역(.hp-trail-host[data-trail="green"])과 흰 영역
+   (.hp-trail-host[data-trail="gray"])에 전부 적용된다. 흰 섹션 안에
+   검은 카드(초록 호스트)가 중첩돼 있을 수 있어서(예: 히어로 안 숫자 카드),
+   전역 pointermove 하나로 event.target.closest('.hp-trail-host')를 써서
+   "가장 안쪽 호스트" 하나만 찾아 그 호스트의 색으로만 칸을 생성한다 —
+   같은 지점에서 두 호스트가 동시에 반응하는 일이 없다.
+   헤더·버튼·링크 위에서는 생성하지 않는다.
    호버 가능 + 포인터 정밀(마우스) + reduced-motion 아님일 때만 동작 — 조건이
-   안 맞으면 아예 리스너를 안 걸어서 평소엔 빈 레이어로 아무 영향 없다. */
+   안 맞으면 리스너 자체를 안 걸어서 .hp-trail은 항상 빈 채로 남는다. */
 (function () {
   'use strict';
 
@@ -13,79 +16,89 @@
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   var PITCH = 26;
-  var CELL = 20;
-  var MAX_CELLS = 40;
-  var NEIGHBORHOOD = 2; // ±2칸
+  var CELL_PER_MOVE = 1; // 1차 수정: mousemove당 2개 -> 1개
+  var MAX_CELLS = 20;    // 1차 수정: 동시 최대 40 -> 20
+  var NEIGHBORHOOD = 2;
+  var COLOR_GREEN = '#1E6F50';
+  var COLOR_GRAY = '#E5E5DF';
 
-  var hosts = document.querySelectorAll('.hp-trail-host');
-  hosts.forEach(function (host) {
-    var layer = host.querySelector('.hp-trail');
-    if (!layer) return;
+  var hostStates = new WeakMap();
 
-    var active = new Map(); // key "ix,iy" -> element
-    var pendingX = 0, pendingY = 0, pending = false, rafId = null;
-
-    function cellKey(ix, iy) { return ix + ',' + iy; }
-
-    function spawnCell(ix, iy, maxIx, maxIy) {
-      if (ix < 0 || iy < 0 || ix > maxIx || iy > maxIy) return;
-      var key = cellKey(ix, iy);
-      if (active.has(key)) return;
-      if (active.size >= MAX_CELLS) return;
-
-      var el = document.createElement('span');
-      el.className = 'hp-trail-cell';
-      el.style.left = (ix * PITCH) + 'px';
-      el.style.top = (iy * PITCH) + 'px';
-      layer.appendChild(el);
-      active.set(key, el);
-
-      var life = 300 + Math.random() * 300;
-      setTimeout(function () {
-        active.delete(key);
-        if (el.parentNode) el.parentNode.removeChild(el);
-      }, life);
+  function getState(host) {
+    var state = hostStates.get(host);
+    if (!state) {
+      state = { active: new Map(), layer: host.querySelector('.hp-trail') };
+      hostStates.set(host, state);
     }
+    return state;
+  }
 
-    function processMove() {
-      pending = false;
-      rafId = null;
+  function spawnCell(host, state, color, ix, iy, maxIx, maxIy) {
+    if (!state.layer) return;
+    if (ix < 0 || iy < 0 || ix > maxIx || iy > maxIy) return;
+    var key = ix + ',' + iy;
+    if (state.active.has(key)) return;
+    if (state.active.size >= MAX_CELLS) return;
 
-      var rect = host.getBoundingClientRect();
-      var maxIx = Math.floor(rect.width / PITCH);
-      var maxIy = Math.floor(rect.height / PITCH);
-      var cx = Math.floor(pendingX / PITCH);
-      var cy = Math.floor(pendingY / PITCH);
+    var el = document.createElement('span');
+    el.className = 'hp-trail-cell';
+    el.style.left = (ix * PITCH) + 'px';
+    el.style.top = (iy * PITCH) + 'px';
+    el.style.background = color;
+    state.layer.appendChild(el);
+    state.active.set(key, el);
 
-      // ±2칸 범위(5x5=25칸) 후보를 만들고 그중 서로 다른 2칸을 무작위로 고른다
-      var candidates = [];
-      for (var dx = -NEIGHBORHOOD; dx <= NEIGHBORHOOD; dx++) {
-        for (var dy = -NEIGHBORHOOD; dy <= NEIGHBORHOOD; dy++) {
-          candidates.push([cx + dx, cy + dy]);
-        }
+    var life = 300 + Math.random() * 300;
+    setTimeout(function () {
+      state.active.delete(key);
+      if (el.parentNode) el.parentNode.removeChild(el);
+    }, life);
+  }
+
+  var pending = null;
+  var rafId = null;
+
+  function onMove(e) {
+    if (e.pointerType && e.pointerType !== 'mouse') return;
+    pending = e;
+    if (rafId == null) rafId = requestAnimationFrame(process);
+  }
+
+  function process() {
+    rafId = null;
+    var e = pending;
+    if (!e) return;
+
+    // 헤더·버튼·링크 위에서는 잔상 생성 안 함
+    if (e.target.closest && e.target.closest('a, button, .hp-header, input, label')) return;
+
+    var host = e.target.closest ? e.target.closest('.hp-trail-host') : null;
+    if (!host) return;
+
+    var color = host.getAttribute('data-trail') === 'gray' ? COLOR_GRAY : COLOR_GREEN;
+    var state = getState(host);
+    var rect = host.getBoundingClientRect();
+    var x = e.clientX - rect.left;
+    var y = e.clientY - rect.top;
+    var maxIx = Math.floor(rect.width / PITCH);
+    var maxIy = Math.floor(rect.height / PITCH);
+    var cx = Math.floor(x / PITCH);
+    var cy = Math.floor(y / PITCH);
+
+    // ±2칸(5x5=25칸) 후보 중 CELL_PER_MOVE개를 무작위로 뽑는다
+    var candidates = [];
+    for (var dx = -NEIGHBORHOOD; dx <= NEIGHBORHOOD; dx++) {
+      for (var dy = -NEIGHBORHOOD; dy <= NEIGHBORHOOD; dy++) {
+        candidates.push([cx + dx, cy + dy]);
       }
-      // Fisher-Yates 일부만 섞어 앞 2개만 쓴다
-      for (var i = candidates.length - 1; i > 0 && i > candidates.length - 3; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var t = candidates[i]; candidates[i] = candidates[j]; candidates[j] = t;
-      }
-      var picks = candidates.slice(candidates.length - 2);
-      picks.forEach(function (p) { spawnCell(p[0], p[1], maxIx, maxIy); });
     }
+    for (var i = candidates.length - 1; i > 0 && i > candidates.length - 1 - CELL_PER_MOVE; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = candidates[i]; candidates[i] = candidates[j]; candidates[j] = t;
+    }
+    var picks = candidates.slice(candidates.length - CELL_PER_MOVE);
+    picks.forEach(function (p) { spawnCell(host, state, color, p[0], p[1], maxIx, maxIy); });
+  }
 
-    host.addEventListener('pointermove', function (e) {
-      if (e.pointerType && e.pointerType !== 'mouse') return;
-      var rect = host.getBoundingClientRect();
-      pendingX = e.clientX - rect.left;
-      pendingY = e.clientY - rect.top;
-      if (!pending) {
-        pending = true;
-        rafId = requestAnimationFrame(processMove);
-      }
-    });
-
-    host.addEventListener('pointerleave', function () {
-      if (rafId != null) { cancelAnimationFrame(rafId); rafId = null; pending = false; }
-    });
-  });
+  document.addEventListener('pointermove', onMove);
 })();
