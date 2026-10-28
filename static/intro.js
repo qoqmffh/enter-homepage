@@ -36,7 +36,7 @@
         '<div class="intro-stack">' +
           '<div class="intro-logo-outer">' +
             '<div class="intro-cursor"></div>' +
-            '<div class="intro-logo-box"><span class="intro-logo-text">' + WORD + '</span></div>' +
+            '<div class="intro-logo-box"><img class="intro-logo-svg" src="static/brand/enter-wordmark-dark.svg" alt="' + WORD + '"></div>' +
           '</div>' +
           '<div class="intro-subtitle">' + SUBTITLE + '</div>' +
         '</div>' +
@@ -49,7 +49,7 @@
     var color1 = root.querySelector('.intro-color--1');
     var black = root.querySelector('.intro-black');
     var cursor = root.querySelector('.intro-cursor');
-    var logoText = root.querySelector('.intro-logo-text');
+    var logoSvg = root.querySelector('.intro-logo-svg');
     var subtitle = root.querySelector('.intro-subtitle');
     var headlineSpans = document.querySelectorAll('.hp-hero .hp-display-xl span');
 
@@ -89,12 +89,12 @@
     var tl = gsap.timeline({ onComplete: finishIntro });
 
     // 0.5s~1.2s 로고 등장: opacity 0->1, 1s 애니메이션의 70% 지점(=0.7s)에 완전히 보임
-    tl.fromTo(logoText, { opacity: 0 }, { opacity: 1, duration: 0.7, ease: 'none' }, 0.5);
+    tl.fromTo(logoSvg, { opacity: 0 }, { opacity: 1, duration: 0.7, ease: 'none' }, 0.5);
 
-    // 커서 바: 로고 왼쪽 밖(-56px)에서 로고 오른쪽 끝(로고폭)까지, 1s의 앞 50% 구간
+    // 커서 바: 로고 왼쪽 밖(-56px)에서 로고 오른쪽 끝(로고폭, SVG 비율 기준 239px)까지, 1s의 앞 50% 구간
     tl.set(cursor, { x: 0, opacity: 0 }, 0.5);
     tl.to(cursor, { opacity: 1, duration: 0.5 * 0.12, ease: 'none' }, 0.5); // 시작 12% 지점까지 페이드인
-    tl.to(cursor, { x: 256, duration: 0.5, ease: 'cubic-bezier(0.4,0,0.2,1)' }, 0.5);
+    tl.to(cursor, { x: 239, duration: 0.5, ease: 'cubic-bezier(0.4,0,0.2,1)' }, 0.5);
 
     // 부제: 커서가 로고 끝에 도착해 깜빡이기 시작할 때(1.0s) 아래에서 6px 올라오며 페이드인
     if (subtitle && SUBTITLE) {
@@ -124,14 +124,6 @@
   }
 })();
 
-/* ---- 헤더 로고 호버 Letter Swap(pingpong) — 인트로 재생 여부와 무관하게 항상 동작 ---- */
-(function () {
-  if (typeof LetterSwap === 'undefined') return;
-  var brand = document.querySelector('.hp-header .hp-brand');
-  if (!brand) return;
-  try {
-    var text = brand.textContent;
-    var inst = LetterSwap.mount(brand, text, { stagger: 0.05, duration: 0.5, ease: 'back.out(1.4)' });
-    inst.attachHoverPingpong();
-  } catch (e) {}
-})();
+/* 헤더 로고 호버: 이제 SVG 워드마크라 Letter Swap은 빼고, 초록 문짝이 살짝 더
+   열리는 효과(0.3s)를 CSS만으로 처리한다 — static/home-poetic.css의
+   .hp-brand:hover .hp-brand-door-leaf 참고. */

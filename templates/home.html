@@ -39,7 +39,17 @@ window.__introConfig = {
 {% block header %}
 <header class="hp-header">
   <div class="hp-header-inner">
-    <a class="hp-brand" href="index.html">ENTER</a>
+    <a class="hp-brand" href="index.html" aria-label="ENTER">
+      <svg viewBox="0 0 559 152" class="hp-brand-svg" aria-hidden="true">
+        <g transform="translate(32 18)"><g fill="#10182B">
+          <path d="M0 6H90V31H29V47H78V71H29V87H90V112H15L0 98Z"/>
+          <g class="hp-brand-door" transform="translate(101 0)"><path d="M0 6L32 0V116L0 110Z M65 24L98 14V110L65 102Z"/><path class="hp-brand-door-leaf" fill="#1E6F50" d="M32 12L82 29V102L51 102L58 98V34L32 25Z"/></g>
+          <path d="M213 6H304V31H274V112H244V31H213Z"/>
+          <path d="M312 6H391V31H341V47H383V71H341V87H391V112H312Z"/>
+          <path fill-rule="evenodd" d="M401 6H454C478 6 491 20 491 40C491 55 484 66 469 72L495 112H461L438 76H431V112H401Z M431 31V51H450C458 51 462 47 462 41C462 35 458 31 450 31Z"/>
+        </g></g>
+      </svg>
+    </a>
     <input type="checkbox" id="hpNavToggle" class="hp-nav-toggle-input">
     <nav class="hp-nav">
       {% for item in page.poetic.nav %}
@@ -318,7 +328,7 @@ window.__introConfig = {
   <div class="hp-wrap">
     <div class="hp-footer-top">
       <div class="hp-footer-brand">
-        <span class="hp-brand">ENTER</span>
+        <img src="static/brand/enter-horizontal-light.svg" alt="ENTER — 유선전문 도매센터" class="hp-footer-logo">
         <p>{{ p.footer.tagline }}</p>
       </div>
       <div class="hp-footer-cols">
