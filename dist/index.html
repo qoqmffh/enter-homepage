@@ -37,34 +37,30 @@
     var skip = false;
     if (!forced) {
       try {
-        var last = localStorage.getItem('enter_intro_seen');
-        if (last && (Date.now() - parseInt(last, 10)) < 24 * 60 * 60 * 1000) skip = true;
+        var last = localStorage.getItem('enter_ad_seen');
+        if (last && (Date.now() - parseInt(last, 10)) < 60 * 60 * 1000) skip = true;
       } catch (e) {}
     }
     if (!reduce && !skip) {
-      document.documentElement.classList.add('intro-pending');
+      document.documentElement.classList.add('ad-pending');
+      /* 모듈 로드·파싱 자체가 실패하는 경우(404, 문법 오류 등)의 최후 안전장치 —
+         static/home-ad.js가 정상 시작하면 즉시 clearTimeout으로 취소한다. */
+      window.__adHardTimeout = setTimeout(function () {
+        document.documentElement.classList.remove('ad-pending');
+      }, 8000);
     }
   } catch (e) {}
 })();
 </script>
-<script>
-window.__introConfig = {
-  wordmark: "ENTER",
-  subtitle: "유선전문 도매센터",
-  skipLabel: "건너뛰기 →"
-};
-</script>
 <link rel="stylesheet" href="static/home-poetic.css">
-<link rel="stylesheet" href="static/home-particles.css">
+<link rel="stylesheet" href="static/home-ad.css">
 <script src="static/vendor/gsap.min.js" defer></script>
 <script src="static/vendor/ScrollTrigger.min.js" defer></script>
-<script src="static/letter-swap.js" defer></script>
-<script src="static/intro.js" defer></script>
 <script src="static/home-poetic.js" defer></script>
 <script src="static/home-poetic-trail.js" defer></script>
 <script src="static/home-poetic-cards.js" defer></script>
 <script src="static/home-poetic-scroll.js" defer></script>
-<script type="module" src="static/home-particles.js"></script>
+<script type="module" src="static/home-ad.js"></script>
 
 </head>
 <body>
@@ -104,6 +100,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       
       <a href="about.html">회사소개</a>
       
+      <a href="?intro=1" class="hp-replay-link">광고 다시 보기</a>
     </nav>
     <div class="hp-header-right">
       
@@ -127,6 +124,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       
       <a href="about.html">회사소개</a>
       
+      <a href="?intro=1" class="hp-replay-link">광고 다시 보기</a>
     </nav>
   </div>
 </header>
@@ -136,31 +134,77 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 
 
-<section class="hp-particle-story" id="particle-story">
-  <div class="hp-particle-fallback" data-particle-fallback style="background-image:url('static/data/korea-points-preview.png')">
-    <div class="hp-particle-fallback-tint"></div>
+
+<div class="hp-ad-stage" data-ad-stage aria-hidden="true">
+  <div class="hp-ad-intro" data-ad-intro>
+    <img class="hp-ad-intro-logo" src="static/brand/enter-horizontal-dark.svg" alt="ENTER">
+    <p class="hp-ad-intro-sub">유선전문 도매센터</p>
   </div>
-  <canvas class="hp-particle-canvas" data-particle-canvas aria-hidden="true"></canvas>
 
-  <div class="hp-particle-overlay">
-    <h1 class="hp-particle-headline" data-particle-headline>
-      <span class="hp-particle-line hp-particle-line--1" data-particle-line>초대형 유선전문도매,</span>
-      <span class="hp-particle-line hp-particle-line--2" data-particle-line>정책이 얼마나 좋을까요?</span>
-    </h1>
-    <p class="hp-particle-sub" data-particle-sub>비교해 보시면 압니다. 매일 아침, 정책표를 먼저 받아보세요.</p>
+  <canvas class="hp-ad-canvas" data-ad-canvas></canvas>
 
-    <div class="hp-particle-stat" data-particle-stat>
-      <span class="hp-particle-stat-label">거래처</span>
-      <span class="hp-particle-stat-num">(<span data-particle-count>3,000</span>)</span>
-      <p class="hp-particle-stat-desc">2010년부터, 전국의 판매점과 함께.</p>
+  <div class="hp-ad-overlay">
+    <div class="hp-ad-scene" data-ad-scene="1">
+      <h1 class="hp-ad-line hp-ad-line--1" data-ad-s1-line1>초대형 유선전문도매,</h1>
+      <p class="hp-ad-line hp-ad-line--2" data-ad-s1-line2>정책이 얼마나 좋을까요?</p>
     </div>
 
-    <div class="hp-particle-scroll-hint" data-particle-hint aria-hidden="true">
-      <span>SCROLL</span>
-      <span class="hp-particle-progress-track"><span class="hp-particle-progress-fill" data-particle-progress></span></span>
+    <div class="hp-ad-scene" data-ad-scene="2">
+      <div class="hp-ad-s2-box" data-ad-s2-box>
+        <p class="hp-ad-s2-kpi">전국 거래처 <b data-ad-s2-num>0</b>곳</p>
+        <p class="hp-ad-s2-note" data-ad-s2-note>2010년부터, 전국의 판매점과 함께.</p>
+      </div>
+    </div>
+
+    <div class="hp-ad-scene" data-ad-scene="3">
+      <div class="hp-ad-center">
+        <p class="hp-ad-s3-label" data-ad-s3-label>매달 평균 개통</p>
+        <p class="hp-ad-s3-big" data-ad-s3-big><b data-ad-s3-num>0</b><i>건</i></p>
+      </div>
+    </div>
+
+    <div class="hp-ad-scene" data-ad-scene="4">
+      <div class="hp-ad-center">
+        <p class="hp-ad-s4-label" data-ad-s4-label>이번 주 정산 진행 중</p>
+        <p class="hp-ad-s4-big" data-ad-s4-big><b data-ad-s4-num>4,000</b><i data-ad-s4-unit>건</i></p>
+        <p class="hp-ad-s4-note" data-ad-s4-note>최근 90번의 정산, 단 한 번도 늦은 적 없습니다.</p>
+      </div>
+    </div>
+
+    <div class="hp-ad-scene" data-ad-scene="5">
+      <div class="hp-ad-carriers" data-ad-carriers>
+        <p class="hp-ad-carrier" data-ad-carrier>SKT</p><p class="hp-ad-carrier" data-ad-carrier>SK브로드밴드</p><p class="hp-ad-carrier" data-ad-carrier>LG U+</p><p class="hp-ad-carrier" data-ad-carrier>KT</p><p class="hp-ad-carrier" data-ad-carrier>스카이라이프</p><p class="hp-ad-carrier" data-ad-carrier>LG헬로비전</p>
+      </div>
+      <p class="hp-ad-slogan" data-ad-s5-slogan>유선은, 한 곳에서.</p>
+    </div>
+
+    <div class="hp-ad-scene" data-ad-scene="6">
+      <div class="hp-ad-center">
+        <h2 class="hp-ad-end-line1" data-ad-s6-line1>비교해 보시면 압니다.</h2>
+        <p class="hp-ad-end-line2" data-ad-s6-line2>매일 아침 단가를 받아보세요.</p>
+        <div class="hp-ad-end-btns" data-ad-end-btns>
+          <a href="#" class="hp-ad-btn hp-ad-btn--primary" data-cta="kakao">정책 받아보기</a>
+          <button type="button" class="hp-ad-btn hp-ad-btn--ghost" data-ad-enter-home>홈페이지 둘러보기 →</button>
+        </div>
+      </div>
     </div>
   </div>
-</section>
+
+  <div class="hp-ad-dots" data-ad-dots>
+    <span class="hp-ad-dot" data-ad-dot></span><span class="hp-ad-dot" data-ad-dot></span><span class="hp-ad-dot" data-ad-dot></span><span class="hp-ad-dot" data-ad-dot></span><span class="hp-ad-dot" data-ad-dot></span><span class="hp-ad-dot" data-ad-dot></span>
+  </div>
+  <div class="hp-ad-progress"><span class="hp-ad-progress-fill" data-ad-progress></span></div>
+
+  <button type="button" class="hp-ad-skip" data-ad-skip>건너뛰기 →</button>
+
+  <div class="hp-ad-wipe" data-ad-wipe>
+    <span class="hp-ad-wipe-layer hp-ad-wipe-layer--1"></span>
+    <span class="hp-ad-wipe-layer hp-ad-wipe-layer--2"></span>
+    <span class="hp-ad-wipe-layer hp-ad-wipe-layer--3"></span>
+  </div>
+</div>
+
+<div class="hp-white-home" data-white-home>
 
 <section class="hp-section hp-hero hp-trail-host" id="hero" data-trail="gray">
   <div class="hp-trail" aria-hidden="true"></div>
@@ -2065,6 +2109,8 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     </div>
   </div>
 </section>
+
+</div>
 
 </main>
 

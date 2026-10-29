@@ -1252,6 +1252,42 @@
         "wordmark": "ENTER",
         "skip_label": "건너뛰기 →",
         "subtitle": "유선전문 도매센터"
+      },
+      "ad": {
+        "skip_label": "건너뛰기 →",
+        "replay_label": "광고 다시 보기",
+        "scene1": {
+          "line1": "초대형 유선전문도매,",
+          "line2": "정책이 얼마나 좋을까요?"
+        },
+        "scene2": {
+          "prefix": "전국 거래처 ",
+          "count": 3000,
+          "suffix": "곳",
+          "note": "2010년부터, 전국의 판매점과 함께."
+        },
+        "scene3": {
+          "label": "매달 평균 개통",
+          "count": 4000,
+          "unit": "건"
+        },
+        "scene4": {
+          "label_counting": "이번 주 정산 진행 중",
+          "unit_counting": "건",
+          "label_done": "정산 누락",
+          "unit_done": "회",
+          "note": "최근 90번의 정산, 단 한 번도 늦은 적 없습니다."
+        },
+        "scene5": {
+          "carriers": ["SKT", "SK브로드밴드", "LG U+", "KT", "스카이라이프", "LG헬로비전"],
+          "slogan": "유선은, 한 곳에서."
+        },
+        "scene6": {
+          "line1": "비교해 보시면 압니다.",
+          "line2": "매일 아침 단가를 받아보세요.",
+          "cta_kakao": "정책 받아보기",
+          "cta_home": "홈페이지 둘러보기 →"
+        }
       }
     }
   },
