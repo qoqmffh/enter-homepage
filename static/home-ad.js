@@ -364,6 +364,7 @@ import * as THREE from './vendor/three.module.min.js';
 
   // 휠 입력은 한 칸(약 100px)씩 뚝뚝 들어오므로, 목표 진행도(latestProgress)를 바로 쓰지 않고
   // 매 프레임 부드럽게 따라가게 한다(관성 스무딩). 프레임레이트와 무관하게 같은 속도로 수렴.
+  var MIN_AD_SECONDS = 18; // 광고(장면1~엔딩) 최소 재생 시간. 줄이면 빨라지고 늘리면 느려짐
   var smoothProgress = 0, lastTickTime = performance.now();
   function tick() {
     raf = requestAnimationFrame(tick);
@@ -371,7 +372,11 @@ import * as THREE from './vendor/three.module.min.js';
     if (!isVisible) return;
     var diff = latestProgress - smoothProgress;
     if (Math.abs(diff) > 0.00002) {
-      smoothProgress += diff * (1 - Math.pow(1 - 0.085, dt * 60));
+      var step = diff * (1 - Math.pow(1 - 0.085, dt * 60));
+      // 재생 속도 상한: 아무리 빨리 휠을 돌려도 광고 전체가 최소 MIN_AD_SECONDS초에 걸쳐 재생된다(영상처럼 보이게).
+      var maxStep = dt / MIN_AD_SECONDS;
+      if (step > maxStep) step = maxStep; else if (step < -maxStep) step = -maxStep;
+      smoothProgress += step;
     } else {
       smoothProgress = latestProgress;
     }
