@@ -362,12 +362,22 @@ import * as THREE from './vendor/three.module.min.js';
   }
   window.addEventListener('resize', sizeRenderer);
 
+  // 휠 입력은 한 칸(약 100px)씩 뚝뚝 들어오므로, 목표 진행도(latestProgress)를 바로 쓰지 않고
+  // 매 프레임 부드럽게 따라가게 한다(관성 스무딩). 프레임레이트와 무관하게 같은 속도로 수렴.
+  var smoothProgress = 0, lastTickTime = performance.now();
   function tick() {
     raf = requestAnimationFrame(tick);
+    var now = performance.now(), dt = Math.min(0.05, (now - lastTickTime) / 1000); lastTickTime = now;
     if (!isVisible) return;
-    if (latestProgress !== lastApplied) {
-      applyProgress(latestProgress);
-      lastApplied = latestProgress;
+    var diff = latestProgress - smoothProgress;
+    if (Math.abs(diff) > 0.00002) {
+      smoothProgress += diff * (1 - Math.pow(1 - 0.085, dt * 60));
+    } else {
+      smoothProgress = latestProgress;
+    }
+    if (smoothProgress !== lastApplied) {
+      applyProgress(smoothProgress);
+      lastApplied = smoothProgress;
     }
     uniforms.uTime.value = clock.getElapsedTime();
     renderer.render(scene, camera);
@@ -436,7 +446,7 @@ import * as THREE from './vendor/three.module.min.js';
       var blur = cp < 0.25 ? (0.25 - cp) * 24 : 0;
       el.style.opacity = op;
       el.style.transform = 'translate(-50%,-50%) scale(' + sc + ')';
-      el.style.filter = blur > 0.01 ? 'blur(' + blur + 'px)' : 'none';
+      el.style.filter = 'none'; // 120px 글자에 매 프레임 blur는 무거워서 끊김 유발 -> 투명도·크기만 사용
     });
     var slogOp = seg(p, gAbs(24.6), gAbs(25.1)) * (1 - seg(p, gAbs(25.9), gAbs(26.2)));
     if (s5slogan) s5slogan.style.opacity = slogOp;
