@@ -29,6 +29,7 @@ window.__introConfig = {
 };
 </script>
 <link rel="stylesheet" href="static/home-poetic.css">
+<link rel="stylesheet" href="static/home-particles.css">
 <script src="static/vendor/gsap.min.js" defer></script>
 <script src="static/vendor/ScrollTrigger.min.js" defer></script>
 <script src="static/letter-swap.js" defer></script>
@@ -37,6 +38,7 @@ window.__introConfig = {
 <script src="static/home-poetic-trail.js" defer></script>
 <script src="static/home-poetic-cards.js" defer></script>
 <script src="static/home-poetic-scroll.js" defer></script>
+<script type="module" src="static/home-particles.js"></script>
 {% endblock %}
 
 {% block header %}
@@ -74,6 +76,32 @@ window.__introConfig = {
 
 {% block content %}
 {% set p = page.poetic %}
+
+<section class="hp-particle-story" id="particle-story">
+  <div class="hp-particle-fallback" data-particle-fallback style="background-image:url('static/data/korea-points-preview.png')">
+    <div class="hp-particle-fallback-tint"></div>
+  </div>
+  <canvas class="hp-particle-canvas" data-particle-canvas aria-hidden="true"></canvas>
+
+  <div class="hp-particle-overlay">
+    <h1 class="hp-particle-headline" data-particle-headline>
+      <span class="hp-particle-line hp-particle-line--1" data-particle-line>초대형 유선전문도매,</span>
+      <span class="hp-particle-line hp-particle-line--2" data-particle-line>정책이 얼마나 좋을까요?</span>
+    </h1>
+    <p class="hp-particle-sub" data-particle-sub>비교해 보시면 압니다. 매일 아침, 정책표를 먼저 받아보세요.</p>
+
+    <div class="hp-particle-stat" data-particle-stat>
+      <span class="hp-particle-stat-label">거래처</span>
+      <span class="hp-particle-stat-num">(<span data-particle-count>3,000</span>)</span>
+      <p class="hp-particle-stat-desc">2010년부터, 전국의 판매점과 함께.</p>
+    </div>
+
+    <div class="hp-particle-scroll-hint" data-particle-hint aria-hidden="true">
+      <span>SCROLL</span>
+      <span class="hp-particle-progress-track"><span class="hp-particle-progress-fill" data-particle-progress></span></span>
+    </div>
+  </div>
+</section>
 
 <section class="hp-section hp-hero hp-trail-host" id="hero" data-trail="gray">
   <div class="hp-trail" aria-hidden="true"></div>
