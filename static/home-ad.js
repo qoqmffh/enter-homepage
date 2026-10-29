@@ -472,6 +472,25 @@ import * as THREE from './vendor/three.module.min.js';
 
     if (progressFill) progressFill.style.transform = 'scaleX(' + p + ')';
     updateDots(p);
+    updateSelectable();
+  }
+
+  // 글자는 실제 HTML 텍스트다. 오버레이는 휠 입력을 위해 pointer-events:none이지만,
+  // "지금 화면에 보이는 글자"만 마우스 드래그로 선택할 수 있게 켠다(투명한 다른 장면 글자는 선택 안 됨).
+  var selectableEls = Array.prototype.slice.call(stage.querySelectorAll('.hp-ad-overlay h1, .hp-ad-overlay p'));
+  function effOpacity(el) {
+    var o = 1, n = el;
+    while (n && n !== stage) { var v = parseFloat(n.style.opacity); if (!isNaN(v)) o *= v; n = n.parentElement; }
+    return o;
+  }
+  function updateSelectable() {
+    for (var i = 0; i < selectableEls.length; i++) {
+      var el = selectableEls[i], on = effOpacity(el) > 0.6;
+      el.style.pointerEvents = on ? 'auto' : 'none';
+      el.style.userSelect = on ? 'text' : 'none';
+      el.style.webkitUserSelect = on ? 'text' : 'none';
+      el.style.cursor = on ? 'text' : '';
+    }
   }
 
   // ================= 입력: 스크롤(wheel/touch/키보드)을 가상 진행도로 =================
