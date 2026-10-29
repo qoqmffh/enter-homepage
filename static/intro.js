@@ -51,7 +51,7 @@
     var cursor = root.querySelector('.intro-cursor');
     var logoSvg = root.querySelector('.intro-logo-svg');
     var subtitle = root.querySelector('.intro-subtitle');
-    var headlineSpans = document.querySelectorAll('.hp-hero .hp-display-xl .hp-headline-line');
+    var headlineSpans = document.querySelectorAll('.hp-hero .hp-display-xl .hp-headline-line, .hp-particle-story .hp-particle-line');
 
     // ---- 안전장치: 4초 강제 종료 / 완료 처리 ----
     var finished = false;

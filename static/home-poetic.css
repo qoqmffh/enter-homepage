@@ -57,7 +57,19 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
 .hp-pill--inverted:hover{ background:var(--hp-green-tint); }
 
 /* ---------- 헤더 ---------- */
-.hp-header{ position:sticky; top:0; z-index:40; background:rgba(255,255,250,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--hp-line); }
+.hp-header{ position:sticky; top:0; z-index:40; background:rgba(255,255,250,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--hp-line); transition:background .3s ease, border-color .3s ease; }
+/* 입자 장면(검은 우주) 위에 떠 있는 동안: 투명 배경 + 흰 로고/메뉴.
+   static/home-particles.js가 IntersectionObserver로 #particle-story가
+   보이는 동안에만 .hp-header--on-dark를 붙인다 — JS 없으면 평소 헤더 그대로. */
+/* position:sticky 헤더는 일반 문서 흐름에 있어서 입자 장면과 "겹치는" 게
+   아니라 바로 위에 붙어 있을 뿐이다 — 진짜 투명으로 두면 그 뒤에 보이는 건
+   캔버스가 아니라 body의 흰 배경이다. 그래서 완전 투명 대신 장면과 같은
+   검정으로 맞춰서 이어진 것처럼 보이게 한다. */
+.hp-header--on-dark{ background:var(--hp-black); backdrop-filter:none; border-bottom-color:transparent; }
+.hp-header--on-dark .hp-brand-svg g{ fill:var(--hp-white); transition:fill .3s ease; }
+.hp-header--on-dark .hp-nav a{ color:rgba(255,255,250,.75); }
+.hp-header--on-dark .hp-nav a:hover, .hp-header--on-dark .hp-nav a.active{ color:var(--hp-white); }
+.hp-header--on-dark .hp-nav-toggle{ color:var(--hp-white); }
 .hp-header-inner{ max-width:1200px; margin:0 auto; padding:0 20px; height:68px; display:flex; align-items:center; justify-content:space-between; }
 .hp-brand{ display:inline-flex; align-items:center; }
 .hp-brand-svg{ height:26px; width:auto; display:block; }
@@ -357,6 +369,7 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
    않는 한) 기본 상태가 항상 "홈이 바로 보임"이다. */
 html.intro-pending body{ overflow:hidden; }
 html.intro-pending .hp-hero .hp-display-xl .hp-headline-line{ opacity:0; transform:translateY(24px); }
+html.intro-pending .hp-particle-story .hp-particle-line{ opacity:0; transform:translateY(24px); }
 
 #introRoot{ position:fixed; inset:0; z-index:100; pointer-events:none; }
 .intro-color{ position:fixed; inset:0; }
@@ -389,6 +402,7 @@ html.intro-pending .hp-hero .hp-display-xl .hp-headline-line{ opacity:0; transfo
 @media (prefers-reduced-motion:reduce){
   html.intro-pending body{ overflow:visible; }
   html.intro-pending .hp-hero .hp-display-xl .hp-headline-line{ opacity:1; transform:none; }
+  html.intro-pending .hp-particle-story .hp-particle-line{ opacity:1; transform:none; }
 }
 
 /* ---------- Letter Swap (static/letter-swap.js) ----------
