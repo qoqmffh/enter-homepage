@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ENTER — FAQ</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              bg: '#FFFFFA',
+              ink: '#10182B',
+              black: '#0B0D12',
+              grey: '#6B7280',
+              hairline: '#E5E5DF',
+              accent: '#1E6F50',
+            }
+          },
+          fontFamily: {
+            sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'Roboto', 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+<!-- Typography & Global Style Configuration -->
+<style data-purpose="typography">
+    body {
+      background-color: #FFFFFA;
+      color: #10182B;
+      word-break: keep-all;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+  </style>
+<!-- Layout Helper Styles -->
+<style data-purpose="layout">
+    .search-input:focus {
+      outline: none;
+      box-shadow: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans antialiased bg-[#FFFFFA]">
+<!-- BEGIN: MainHeader -->
+<header class="w-full h-[72px] bg-[#FFFFFA] border-b border-[#E5E5DF] sticky top-0 z-50 transition-colors" id="header">
+<div class="max-w-[1440px] h-full mx-auto px-8 flex items-center justify-between">
+<!-- Left: Logo & Main Navigation -->
+<div class="flex items-center gap-12">
+<a aria-label="ENTER 홈" class="text-2xl font-black tracking-tight text-[#0B0D12] select-none" href="#">
+          ENTER
+        </a>
+<!-- Center Main Navigation -->
+<nav aria-label="메인 내비게이션" class="hidden md:flex items-center space-x-8">
+<a class="text-[15px] font-medium text-[#10182B] hover:text-[#1E6F50] transition-colors" href="#">왜 ENTER</a>
+<a class="text-[15px] font-medium text-[#10182B] hover:text-[#1E6F50] transition-colors" href="#">정산·DB보호</a>
+<a class="text-[15px] font-medium text-[#10182B] hover:text-[#1E6F50] transition-colors" href="#">취급상품</a>
+<a class="text-[15px] font-medium text-[#10182B] hover:text-[#1E6F50] transition-colors" href="#">창업자 가이드</a>
+<a class="text-[15px] font-medium text-[#10182B] hover:text-[#1E6F50] transition-colors" href="#">회사소개</a>
+</nav>
+</div>
+<!-- Right: Sub Links & CTA -->
+<div class="flex items-center gap-6">
+<div class="hidden lg:flex items-center space-x-2 text-[13px] text-[#6B7280]"><a class="hover:text-[#10182B] transition-colors" href="#">거래 시작하기</a><span class="text-[#E5E5DF] select-none">·</span><a class="hover:text-[#10182B] transition-colors" href="#">블로그</a><span class="text-[#E5E5DF] select-none">·</span><a aria-current="page" class="text-[#10182B] font-bold" href="#">FAQ</a></div>
+<!-- Action Button -->
+<a class="inline-flex items-center justify-center bg-[#0B0D12] text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-neutral-800 transition-colors" href="#">
+          정책 받기
+        </a>
+</div>
+</div>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: MainContent -->
+<main class="flex-1 w-full">
+<!-- BEGIN: HeroSection -->
+<section class="pt-6" id="hero"><div class="max-w-[1440px] mx-auto px-6">
+<div class="relative w-full h-[360px] rounded-[20px] overflow-hidden">
+<img alt="차분하고 프로페셔널한 고객 지원 및 상담 데스크" class="absolute inset-0 w-full h-full object-cover object-center" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDu6v278n-8352T-nfDGhkkinUvj5XTqFmjWs3izXrg1oVz6l7glrfegUbBRTREARsMIUDvW4UvcvFXYSpreHIPUmc2AObDmTl0RuuNmQKvrbucKphBqIe4P5EucFjdCQtXHQcZVICBRaeU92OxyefuGl-7J1ZtlH44NtG2ipgIc1CZs8fShy1ZGYRvGIKOmZ-lkaCAnkQN8EQ9xQnt13KZv-x2QCLUsNpXyfZ5Szk"/>
+<div aria-hidden="true" class="absolute inset-0 bg-[#0B0D12]/55 pointer-events-none"></div>
+<div class="relative z-10 h-full flex flex-col justify-center px-16 py-12">
+<span class="text-xs uppercase tracking-widest text-white/70 mb-3 font-medium">● FAQ</span>
+<h1 class="text-[56px] font-bold text-white tracking-tight leading-tight mb-3">
+              묻기 전에, 답합니다.
+            </h1>
+<p class="text-[18px] text-white/80 max-w-[680px] mb-6 leading-relaxed font-normal">
+              거래처 사장님들이 가장 많이 묻는 질문을 모았습니다.
+            </p>
+<div>
+<a class="inline-block bg-white text-[#0B0D12] px-6 py-3 rounded-full font-semibold text-sm hover:bg-neutral-100 transition-colors" href="tel:010-2222-4183">
+                전화로 묻기
+              </a>
+</div>
+</div>
+</div>
+</div></section>
+<!-- END: HeroSection -->
+<!-- BEGIN: BoardToolbar -->
+<section class="pt-16 pb-0" id="toolbar"><div class="max-w-[1200px] mx-auto px-4">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4">
+<nav aria-label="카테고리 선택" class="flex items-center space-x-6 text-[15px]">
+<button class="text-[#10182B] font-bold border-b-2 border-[#1E6F50] pb-2 transition" type="button">
+              전체
+            </button>
+<button class="text-[#6B7280] font-normal pb-2 hover:text-[#10182B] transition" type="button">
+              거래 시작
+            </button>
+<button class="text-[#6B7280] font-normal pb-2 hover:text-[#10182B] transition" type="button">
+              정산
+            </button>
+<button class="text-[#6B7280] font-normal pb-2 hover:text-[#10182B] transition" type="button">
+              접수·개통
+            </button>
+</nav>
+<form class="w-full md:w-[320px] relative" onsubmit="event.preventDefault()" role="search">
+<label class="sr-only" for="board-search">질문 검색</label>
+<div class="relative w-full border border-[#E5E5DF] bg-white rounded-full px-4 py-2.5 flex items-center justify-between focus-within:border-[#10182B] transition-colors">
+<input class="search-input w-full bg-transparent border-none p-0 text-sm text-[#10182B] placeholder-[#6B7280] focus:ring-0" id="board-search" placeholder="질문을 검색하세요" type="text"/>
+<button aria-label="검색 실행" class="shrink-0 pl-2" type="submit">
+<svg aria-hidden="true" class="w-4 h-4 text-[#6B7280]" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+</form>
+</div>
+<div class="w-full border-b border-[#E5E5DF]"></div>
+</div></section>
+<!-- END: BoardToolbar -->
+<!-- BEGIN: BoardBody -->
+<section class="w-full" id="board-body"><div aria-label="자주 묻는 질문 목록" class="max-w-[1200px] mx-auto px-4">
+<!-- Row 1 (Open) -->
+<div class="py-8 border-b border-[#E5E5DF] cursor-pointer">
+<div class="flex items-center justify-between">
+<div>
+<span class="block text-[13px] font-medium text-[#6B7280] mb-1.5">[거래 시작]</span>
+<h2 class="text-[20px] font-semibold text-[#10182B]">
+                거래를 시작하려면 뭐가 필요한가요?
+              </h2>
+</div>
+<div class="shrink-0 text-[#10182B] flex items-center justify-center">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M5 12h14" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+<div class="pt-4 text-[16px] text-[#6B7280] leading-relaxed max-w-[960px]">
+            서류 없이 접수·개통까지 가능합니다. 첫 정산 전에만 서류 4종(사업자등록증·수수료통장 사본·대표자 신분증·대표자 명의 휴대폰)을 주시면 됩니다.
+          </div>
+</div>
+<!-- Row 2 -->
+<div class="py-8 border-b border-[#E5E5DF] flex items-center justify-between cursor-pointer hover:bg-black/[0.01] transition">
+<div>
+<span class="block text-[13px] font-medium text-[#6B7280] mb-1.5">[거래 시작]</span>
+<h2 class="text-[20px] font-medium text-[#10182B] hover:text-[#1E6F50] transition">
+              계약하면 책임이나 의무가 생기나요?
+            </h2>
+</div>
+<div class="shrink-0 text-[#6B7280] flex items-center justify-center">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M12 5v14m-7-7h14" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+<!-- Row 3 -->
+<div class="py-8 border-b border-[#E5E5DF] flex items-center justify-between cursor-pointer hover:bg-black/[0.01] transition">
+<div>
+<span class="block text-[13px] font-medium text-[#6B7280] mb-1.5">[접수·개통]</span>
+<h2 class="text-[20px] font-medium text-[#10182B] hover:text-[#1E6F50] transition">
+              정책은 홈페이지에서 볼 수 있나요?
+            </h2>
+</div>
+<div class="shrink-0 text-[#6B7280] flex items-center justify-center">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M12 5v14m-7-7h14" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+<!-- Row 4 -->
+<div class="py-8 border-b border-[#E5E5DF] flex items-center justify-between cursor-pointer hover:bg-black/[0.01] transition">
+<div>
+<span class="block text-[13px] font-medium text-[#6B7280] mb-1.5">[정산]</span>
+<h2 class="text-[20px] font-medium text-[#10182B] hover:text-[#1E6F50] transition">
+              정산은 언제 되나요?
+            </h2>
+</div>
+<div class="shrink-0 text-[#6B7280] flex items-center justify-center">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M12 5v14m-7-7h14" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+<!-- Row 5 -->
+<div class="py-8 border-b border-[#E5E5DF] flex items-center justify-between cursor-pointer hover:bg-black/[0.01] transition">
+<div>
+<span class="block text-[13px] font-medium text-[#6B7280] mb-1.5">[접수·개통]</span>
+<h2 class="text-[20px] font-medium text-[#10182B] hover:text-[#1E6F50] transition">
+              접수는 어떻게 넣나요?
+            </h2>
+</div>
+<div class="shrink-0 text-[#6B7280] flex items-center justify-center">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M12 5v14m-7-7h14" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+<!-- Row 6 -->
+<div class="py-8 border-b border-[#E5E5DF] flex items-center justify-between cursor-pointer hover:bg-black/[0.01] transition">
+<div>
+<span class="block text-[13px] font-medium text-[#6B7280] mb-1.5">[접수·개통]</span>
+<h2 class="text-[20px] font-medium text-[#10182B] hover:text-[#1E6F50] transition">
+              얼마나 빨리 처리되나요?
+            </h2>
+</div>
+<div class="shrink-0 text-[#6B7280] flex items-center justify-center">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M12 5v14m-7-7h14" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+<!-- Row 7 -->
+<div class="py-8 border-b border-[#E5E5DF] flex items-center justify-between cursor-pointer hover:bg-black/[0.01] transition">
+<div>
+<span class="block text-[13px] font-medium text-[#6B7280] mb-1.5">[정산]</span>
+<h2 class="text-[20px] font-medium text-[#10182B] hover:text-[#1E6F50] transition">
+              정산이 잘못되면요?
+            </h2>
+</div>
+<div class="shrink-0 text-[#6B7280] flex items-center justify-center">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M12 5v14m-7-7h14" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+</div></section>
+<!-- END: BoardBody -->
+<!-- BEGIN: BoardFooter -->
+<section class="w-full" id="board-footer"><div class="max-w-[720px] mx-auto my-16 px-6">
+<div class="border border-[#E5E5DF] rounded-[20px] p-8 md:p-10 text-center bg-white">
+<h3 class="text-[24px] font-bold text-[#10182B] mb-4">
+          찾는 답이 없나요?
+        </h3>
+<div class="flex justify-center items-center gap-8 text-[16px] font-medium">
+<a class="text-[#10182B] hover:text-[#1E6F50] transition-colors" href="tel:010-2222-4183">
+            전화 010-2222-4183 →
+          </a>
+<a class="text-[#1E6F50] hover:text-[#10182B] transition-colors" href="#">
+            카카오톡으로 묻기 →
+          </a>
+</div>
+</div>
+</div></section>
+<!-- END: BoardFooter -->
+<!-- BEGIN: CtaBand -->
+<section class="w-full bg-[#0B0D12] py-24" id="cta">
+<div class="max-w-[1200px] mx-auto px-4 text-center">
+<h2 class="text-[48px] font-bold text-white leading-tight mb-8">직접 물어보시는 게<br/>
+          가장 빠릅니다.</h2>
+<div class="flex flex-wrap justify-center items-center gap-4">
+<a class="bg-white text-[#0B0D12] px-8 py-3.5 rounded-full font-medium text-sm hover:bg-neutral-100 transition-colors" href="#">
+            카카오톡으로 정책 받기
+          </a>
+<a class="border border-white/30 text-white px-8 py-3.5 rounded-full font-medium text-sm hover:border-white transition-colors" href="tel:010-2222-4183">
+            전화 010-2222-4183
+          </a>
+</div>
+</div>
+</section>
+<!-- END: CtaBand -->
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: MainFooter -->
+<footer class="w-full bg-[#FFFFFA] border-t border-[#E5E5DF]" id="footer">
+<div class="max-w-[1440px] mx-auto px-8 py-16">
+<!-- Top Columns -->
+<div class="flex flex-col md:flex-row justify-between items-start gap-12 mb-16">
+<!-- Brand Info -->
+<div class="max-w-[360px]">
+<span class="text-2xl font-black tracking-tight text-[#0B0D12] block mb-3">ENTER</span>
+<p class="text-xs text-[#6B7280] leading-relaxed">
+            (유)위드컴퍼니 도매영업팀이 운영하는 유선 전문 브랜드
+          </p>
+</div>
+<!-- Links Columns -->
+<div class="grid grid-cols-3 gap-16 text-xs text-[#6B7280]">
+<!-- Col 1 -->
+<div>
+<h3 class="font-bold text-[#10182B] mb-4 text-[13px]">회사</h3>
+<ul class="space-y-2.5">
+<li><a class="hover:text-[#10182B] transition-colors" href="#">왜 ENTER</a></li>
+<li><a class="hover:text-[#10182B] transition-colors" href="#">회사소개</a></li>
+<li><a class="hover:text-[#10182B] transition-colors" href="#">거래처 이야기</a></li>
+</ul>
+</div>
+<!-- Col 2 -->
+<div>
+<h3 class="font-bold text-[#10182B] mb-4 text-[13px]">거래</h3>
+<ul class="space-y-2.5">
+<li><a class="hover:text-[#10182B] transition-colors" href="#">거래 시작하기</a></li>
+<li><a class="hover:text-[#10182B] transition-colors" href="#">정산·DB보호</a></li>
+<li><a class="hover:text-[#10182B] transition-colors" href="#">취급상품</a></li>
+</ul>
+</div>
+<!-- Col 3 -->
+<div>
+<h3 class="font-bold text-[#10182B] mb-4 text-[13px]">정보</h3>
+<ul class="space-y-2.5">
+<li><a class="hover:text-[#10182B] transition-colors" href="#">창업자 가이드</a></li>
+<li><a class="hover:text-[#10182B] transition-colors" href="#">FAQ</a></li>
+<li><a class="hover:text-[#10182B] transition-colors" href="#">블로그</a></li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Bottom Legal Information -->
+<div class="pt-8 border-t border-[#E5E5DF] flex flex-col md:flex-row justify-between items-start md:items-center text-xs text-[#6B7280] gap-4">
+<p class="leading-relaxed">
+          대표자 홍길동 · 사업자등록번호 123-45-67890 · 주소 서울특별시 강남구 테헤란로 000 · 고객센터 010-2222-4183
+        </p>
+<p class="shrink-0">
+          © 2026 ENTER. All rights reserved.
+        </p>
+</div>
+</div>
+</footer>
+<!-- END: MainFooter -->
+</body></html>

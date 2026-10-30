@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ENTER — 블로그</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              bg: '#FFFFFA',
+              ink: '#10182B',
+              black: '#0B0D12',
+              grey: '#6B7280',
+              hairline: '#E5E5DF',
+              accent: '#1E6F50',
+            }
+          },
+          fontFamily: {
+            sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'Roboto', 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+<!-- Typography & Global Style Configuration -->
+<style data-purpose="typography">
+    body {
+      background-color: #FFFFFA;
+      color: #10182B;
+      word-break: keep-all;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+  </style>
+<!-- Layout Helper Styles -->
+<style data-purpose="layout">
+    .search-input:focus {
+      outline: none;
+      box-shadow: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans antialiased bg-[#FFFFFA]">
+<!-- BEGIN: MainHeader -->
+<header class="w-full h-[72px] bg-[#FFFFFA] border-b border-[#E5E5DF] sticky top-0 z-50 transition-colors" id="header">
+<div class="max-w-[1440px] h-full mx-auto px-8 flex items-center justify-between">
+<!-- Left: Logo & Main Navigation -->
+<div class="flex items-center gap-12">
+<a aria-label="ENTER 홈" class="text-2xl font-black tracking-tight text-[#0B0D12] select-none" href="#">
+          ENTER
+        </a>
+<!-- Center Main Navigation -->
+<nav aria-label="메인 내비게이션" class="hidden md:flex items-center space-x-8">
+<a class="text-[15px] font-medium text-[#10182B] hover:text-[#1E6F50] transition-colors" href="#">왜 ENTER</a>
+<a class="text-[15px] font-medium text-[#10182B] hover:text-[#1E6F50] transition-colors" href="#">정산·DB보호</a>
+<a class="text-[15px] font-medium text-[#10182B] hover:text-[#1E6F50] transition-colors" href="#">취급상품</a>
+<a class="text-[15px] font-medium text-[#10182B] hover:text-[#1E6F50] transition-colors" href="#">창업자 가이드</a>
+<a class="text-[15px] font-medium text-[#10182B] hover:text-[#1E6F50] transition-colors" href="#">회사소개</a>
+</nav>
+</div>
+<!-- Right: Sub Links & CTA -->
+<div class="flex items-center gap-6">
+<div class="hidden lg:flex items-center space-x-2 text-[13px] text-[#6B7280]">
+<a class="hover:text-[#10182B] transition-colors" href="#">거래 시작하기</a>
+<span class="text-[#E5E5DF] select-none">·</span>
+<a aria-current="page" class="text-[#10182B] font-bold" href="#">블로그</a>
+<span class="text-[#E5E5DF] select-none">·</span>
+<a class="hover:text-[#10182B] transition-colors" href="#">FAQ</a>
+</div>
+<!-- Action Button -->
+<a class="inline-flex items-center justify-center bg-[#0B0D12] text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-neutral-800 transition-colors" href="#">
+          정책 받기
+        </a>
+</div>
+</div>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: MainContent -->
+<main class="flex-1 w-full">
+<!-- BEGIN: HeroSection -->
+<section class="pt-6" id="hero">
+<div class="max-w-[1440px] mx-auto px-6">
+<!-- Hero Card with Background Photo & Flat Dark Overlay -->
+<div class="relative w-full h-[360px] rounded-[20px] overflow-hidden">
+<!-- Background Image (No Gradients) -->
+<img alt="차분한 분위기의 사무실에서 노트북으로 글을 읽고 있는 모습" class="absolute inset-0 w-full h-full object-cover object-center" src="https://lh3.googleusercontent.com/aida/AEtjO1WZTdfPiGsWExMFZzloBjHahVQJlc5nKxV1us5QhgzKy-eVaR5yQVrsFoZrcGfLbYZ2gIsSBRrwi5jT1OYCRBp4M5RGvSj--zUzUoEiFdith48N6IK_c3mneSja7hy5xZEMhBzFE0-1p4NBdLPKsCsmYczeQdHaz6opgS7S97Ku70cVC9w1-yqgyhzKDliv6YsGVk5OPerP4VH5uoWbPgpA5O39Dx4gajcZvDBe0Lc"/>
+<!-- 55% Solid Black Flat Overlay -->
+<div aria-hidden="true" class="absolute inset-0 bg-[#0B0D12]/55 pointer-events-none"></div>
+<!-- Hero Text Content -->
+<div class="relative z-10 h-full flex flex-col justify-center px-16 py-12">
+<span class="text-xs uppercase tracking-widest text-white/70 mb-3 font-medium">● 블로그</span>
+<h1 class="text-[56px] font-bold text-white tracking-tight leading-tight mb-3">
+              판매점 사장님이 궁금한 것들.
+            </h1>
+<p class="text-[18px] text-white/80 max-w-[680px] mb-6 leading-relaxed font-normal">
+              창업, 온라인 셀러, 업계 질문까지. 현장에서 쓰는 답을 매주 한 편씩 올립니다.
+            </p>
+<div>
+<a class="inline-block bg-white text-[#0B0D12] px-6 py-3 rounded-full font-medium text-sm hover:bg-neutral-100 transition-colors" href="#">
+                정책 받아보기
+              </a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: HeroSection -->
+<!-- BEGIN: BoardToolbar -->
+<section class="pt-16 pb-0" id="toolbar">
+<div class="max-w-[1200px] mx-auto px-4">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4">
+<!-- Category Tabs -->
+<nav aria-label="카테고리 선택" class="flex items-center space-x-6 text-[15px]">
+<button class="text-[#10182B] font-bold border-b-2 border-[#1E6F50] pb-2 transition" type="button">
+              전체
+            </button>
+<button class="text-[#6B7280] font-normal pb-2 hover:text-[#10182B] transition" type="button">
+              창업
+            </button>
+<button class="text-[#6B7280] font-normal pb-2 hover:text-[#10182B] transition" type="button">
+              셀러
+            </button>
+<button class="text-[#6B7280] font-normal pb-2 hover:text-[#10182B] transition" type="button">
+              업계 질문
+            </button>
+</nav>
+<!-- Search Bar -->
+<form class="w-full md:w-[320px] relative" onsubmit="event.preventDefault()" role="search">
+<label class="sr-only" for="board-search">게시글 검색</label>
+<div class="relative w-full border border-[#E5E5DF] bg-white rounded-full px-4 py-2.5 flex items-center justify-between focus-within:border-[#10182B] transition-colors">
+<input class="search-input w-full bg-transparent border-none p-0 text-sm text-[#10182B] placeholder-[#6B7280] focus:ring-0" id="board-search" placeholder="궁금한 내용을 검색하세요" type="text"/>
+<button aria-label="검색 실행" class="shrink-0 pl-2" type="submit">
+<svg aria-hidden="true" class="w-4 h-4 text-[#6B7280]" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+</form>
+</div>
+<!-- Hairline Divider -->
+<div class="w-full border-b border-[#E5E5DF]"></div>
+</div>
+</section>
+<!-- END: BoardToolbar -->
+<!-- BEGIN: BoardBody -->
+<section class="w-full" id="board-body">
+<div aria-label="블로그 글 목록" class="max-w-[1200px] mx-auto px-4" role="feed">
+<!-- Post 1 -->
+<article class="group py-8 border-b border-[#E5E5DF] flex items-center justify-between cursor-pointer hover:bg-black/[0.01] transition">
+<div class="pr-6">
+<span class="block text-[13px] font-medium text-[#6B7280] mb-1.5">[창업]</span>
+<h2 class="text-[22px] font-bold text-[#10182B] group-hover:text-[#1E6F50] transition mb-2">
+              휴대폰판매점 창업, 정책 공급처부터 정하세요
+            </h2>
+<p class="text-[15px] text-[#6B7280] leading-normal font-normal">
+              창업 4단계 중 정책 공급처를 가장 먼저 정해야 하는 이유.
+            </p>
+</div>
+<div class="flex items-center gap-8 shrink-0">
+<time class="text-[13px] text-[#6B7280] tabular-nums" datetime="2026-10-22">2026.10.22</time>
+<div aria-hidden="true" class="w-[160px] h-[100px] rounded-[10px] bg-[#EBEBE6] border border-[#E0E0DA] flex items-center justify-center text-[#9CA3AF] text-xs font-mono select-none">
+              ARTICLE
+            </div>
+</div>
+</article>
+<!-- Post 2 -->
+<article class="group py-8 border-b border-[#E5E5DF] flex items-center justify-between cursor-pointer hover:bg-black/[0.01] transition">
+<div class="pr-6">
+<span class="block text-[13px] font-medium text-[#6B7280] mb-1.5">[셀러]</span>
+<h2 class="text-[22px] font-bold text-[#10182B] group-hover:text-[#1E6F50] transition mb-2">
+              통신판매업신고 방법 — 온라인 셀러가 처음 막히는 곳
+            </h2>
+<p class="text-[15px] text-[#6B7280] leading-normal font-normal">
+              사업자등록 다음, 구매안전서비스 이용확인증에서 막힙니다.
+            </p>
+</div>
+<div class="flex items-center gap-8 shrink-0">
+<time class="text-[13px] text-[#6B7280] tabular-nums" datetime="2026-10-22">2026.10.22</time>
+<div aria-hidden="true" class="w-[160px] h-[100px] rounded-[10px] bg-[#EBEBE6] border border-[#E0E0DA] flex items-center justify-center text-[#9CA3AF] text-xs font-mono select-none">
+              ARTICLE
+            </div>
+</div>
+</article>
+<!-- Post 3 -->
+<article class="group py-8 border-b border-[#E5E5DF] flex items-center justify-between cursor-pointer hover:bg-black/[0.01] transition">
+<div class="pr-6">
+<span class="block text-[13px] font-medium text-[#6B7280] mb-1.5">[업계 질문]</span>
+<h2 class="text-[22px] font-bold text-[#10182B] group-hover:text-[#1E6F50] transition mb-2">
+              유선 도매처 고를 때 정산 주기부터 봐야 하는 이유
+            </h2>
+<p class="text-[15px] text-[#6B7280] leading-normal font-normal">
+              단가만 보고 고르면 정산이 밀리는 곳을 고를 수 있습니다.
+            </p>
+</div>
+<div class="flex items-center gap-8 shrink-0">
+<time class="text-[13px] text-[#6B7280] tabular-nums" datetime="2026-10-21">2026.10.21</time>
+<div aria-hidden="true" class="w-[160px] h-[100px] rounded-[10px] bg-[#EBEBE6] border border-[#E0E0DA] flex items-center justify-center text-[#9CA3AF] text-xs font-mono select-none">
+              ARTICLE
+            </div>
+</div>
+</article>
+<!-- Post 4 -->
+<article class="group py-8 border-b border-[#E5E5DF] flex items-center justify-between cursor-pointer hover:bg-black/[0.01] transition">
+<div class="pr-6">
+<span class="block text-[13px] font-medium text-[#6B7280] mb-1.5">[창업]</span>
+<h2 class="text-[22px] font-bold text-[#10182B] group-hover:text-[#1E6F50] transition mb-2">
+              휴대폰 매장 창업 비용과 수익 구조
+            </h2>
+<p class="text-[15px] text-[#6B7280] leading-normal font-normal">
+              상권마다 비용은 달라도 수익 구조는 같습니다.
+            </p>
+</div>
+<div class="flex items-center gap-8 shrink-0">
+<time class="text-[13px] text-[#6B7280] tabular-nums" datetime="2026-10-21">2026.10.21</time>
+<div aria-hidden="true" class="w-[160px] h-[100px] rounded-[10px] bg-[#EBEBE6] border border-[#E0E0DA] flex items-center justify-center text-[#9CA3AF] text-xs font-mono select-none">
+              ARTICLE
+            </div>
+</div>
+</article>
+<!-- Post 5 -->
+<article class="group py-8 border-b border-[#E5E5DF] flex items-center justify-between cursor-pointer hover:bg-black/[0.01] transition">
+<div class="pr-6">
+<span class="block text-[13px] font-medium text-[#6B7280] mb-1.5">[창업]</span>
+<h2 class="text-[22px] font-bold text-[#10182B] group-hover:text-[#1E6F50] transition mb-2">
+              판매점이 인터넷·TV까지 하면 달라지는 것
+            </h2>
+<p class="text-[15px] text-[#6B7280] leading-normal font-normal">
+              같은 손님에게 유선까지 팔면 매출 구조가 바뀝니다.
+            </p>
+</div>
+<div class="flex items-center gap-8 shrink-0">
+<time class="text-[13px] text-[#6B7280] tabular-nums" datetime="2026-10-21">2026.10.21</time>
+<div aria-hidden="true" class="w-[160px] h-[100px] rounded-[10px] bg-[#EBEBE6] border border-[#E0E0DA] flex items-center justify-center text-[#9CA3AF] text-xs font-mono select-none">
+              ARTICLE
+            </div>
+</div>
+</article>
+<!-- Post 6 -->
+<article class="group py-8 border-b border-[#E5E5DF] flex items-center justify-between cursor-pointer hover:bg-black/[0.01] transition">
+<div class="pr-6">
+<span class="block text-[13px] font-medium text-[#6B7280] mb-1.5">[창업]</span>
+<h2 class="text-[22px] font-bold text-[#10182B] group-hover:text-[#1E6F50] transition mb-2">
+              대리점·판매점·총판, 차이 한 번에 정리
+            </h2>
+<p class="text-[15px] text-[#6B7280] leading-normal font-normal">
+              총판은 대리점과 판매점 사이에서 정책을 공급합니다.
+            </p>
+</div>
+<div class="flex items-center gap-8 shrink-0">
+<time class="text-[13px] text-[#6B7280] tabular-nums" datetime="2026-10-20">2026.10.20</time>
+<div aria-hidden="true" class="w-[160px] h-[100px] rounded-[10px] bg-[#EBEBE6] border border-[#E0E0DA] flex items-center justify-center text-[#9CA3AF] text-xs font-mono select-none">
+              ARTICLE
+            </div>
+</div>
+</article>
+<!-- Post 7 -->
+<article class="group py-8 border-b border-[#E5E5DF] flex items-center justify-between cursor-pointer hover:bg-black/[0.01] transition">
+<div class="pr-6">
+<span class="block text-[13px] font-medium text-[#6B7280] mb-1.5">[셀러]</span>
+<h2 class="text-[22px] font-bold text-[#10182B] group-hover:text-[#1E6F50] transition mb-2">
+              스마트스토어 셀러가 인터넷 상품을 같이 파는 법
+            </h2>
+<p class="text-[15px] text-[#6B7280] leading-normal font-normal">
+              매장 없이도 인터넷·IPTV 상품을 함께 취급할 수 있습니다.
+            </p>
+</div>
+<div class="flex items-center gap-8 shrink-0">
+<time class="text-[13px] text-[#6B7280] tabular-nums" datetime="2026-10-20">2026.10.20</time>
+<div aria-hidden="true" class="w-[160px] h-[100px] rounded-[10px] bg-[#EBEBE6] border border-[#E0E0DA] flex items-center justify-center text-[#9CA3AF] text-xs font-mono select-none">
+              ARTICLE
+            </div>
+</div>
+</article>
+<!-- Post 8 -->
+<article class="group py-8 border-b border-[#E5E5DF] flex items-center justify-between cursor-pointer hover:bg-black/[0.01] transition">
+<div class="pr-6">
+<span class="block text-[13px] font-medium text-[#6B7280] mb-1.5">[업계 질문]</span>
+<h2 class="text-[22px] font-bold text-[#10182B] group-hover:text-[#1E6F50] transition mb-2">
+              접수한 건이 사라졌다? 불법TM과 DB 보호
+            </h2>
+<p class="text-[15px] text-[#6B7280] leading-normal font-normal">
+              접수한 고객이 다른 곳에서 개통됐다면 의심해 보세요.
+            </p>
+</div>
+<div class="flex items-center gap-8 shrink-0">
+<time class="text-[13px] text-[#6B7280] tabular-nums" datetime="2026-10-19">2026.10.19</time>
+<div aria-hidden="true" class="w-[160px] h-[100px] rounded-[10px] bg-[#EBEBE6] border border-[#E0E0DA] flex items-center justify-center text-[#9CA3AF] text-xs font-mono select-none">
+              ARTICLE
+            </div>
+</div>
+</article>
+</div>
+</section>
+<!-- END: BoardBody -->
+<!-- BEGIN: BoardFooter -->
+<section class="w-full" id="board-footer">
+<nav aria-label="페이지 내비게이션" class="max-w-[1200px] mx-auto py-16 flex justify-center items-center gap-6 text-sm">
+<button aria-label="이전 페이지" class="text-[#6B7280] hover:text-black transition" type="button">←</button>
+<button aria-current="page" class="text-[#10182B] font-bold border-b border-black pb-0.5" type="button">1</button>
+<button class="text-[#6B7280] hover:text-black transition" type="button">2</button>
+<button aria-label="다음 페이지" class="text-[#6B7280] hover:text-black transition" type="button">→</button>
+</nav>
+</section>
+<!-- END: BoardFooter -->
+<!-- BEGIN: CtaBand -->
+<section class="w-full bg-[#0B0D12] py-24" id="cta">
+<div class="max-w-[1200px] mx-auto px-4 text-center">
+<h2 class="text-[48px] font-bold text-white leading-tight mb-8">
+          글로 다 못 한 이야기,<br/>
+          전화로 물어보세요.
+        </h2>
+<div class="flex flex-wrap justify-center items-center gap-4">
+<a class="bg-white text-[#0B0D12] px-8 py-3.5 rounded-full font-medium text-sm hover:bg-neutral-100 transition-colors" href="#">
+            카카오톡으로 정책 받기
+          </a>
+<a class="border border-white/30 text-white px-8 py-3.5 rounded-full font-medium text-sm hover:border-white transition-colors" href="tel:010-2222-4183">
+            전화 010-2222-4183
+          </a>
+</div>
+</div>
+</section>
+<!-- END: CtaBand -->
+</main>
+<!-- END: MainContent -->
+<!-- BEGIN: MainFooter -->
+<footer class="w-full bg-[#FFFFFA] border-t border-[#E5E5DF]" id="footer">
+<div class="max-w-[1440px] mx-auto px-8 py-16">
+<!-- Top Columns -->
+<div class="flex flex-col md:flex-row justify-between items-start gap-12 mb-16">
+<!-- Brand Info -->
+<div class="max-w-[360px]">
+<span class="text-2xl font-black tracking-tight text-[#0B0D12] block mb-3">ENTER</span>
+<p class="text-xs text-[#6B7280] leading-relaxed">
+            (유)위드컴퍼니 도매영업팀이 운영하는 유선 전문 브랜드
+          </p>
+</div>
+<!-- Links Columns -->
+<div class="grid grid-cols-3 gap-16 text-xs text-[#6B7280]">
+<!-- Col 1 -->
+<div>
+<h3 class="font-bold text-[#10182B] mb-4 text-[13px]">회사</h3>
+<ul class="space-y-2.5">
+<li><a class="hover:text-[#10182B] transition-colors" href="#">왜 ENTER</a></li>
+<li><a class="hover:text-[#10182B] transition-colors" href="#">회사소개</a></li>
+<li><a class="hover:text-[#10182B] transition-colors" href="#">거래처 이야기</a></li>
+</ul>
+</div>
+<!-- Col 2 -->
+<div>
+<h3 class="font-bold text-[#10182B] mb-4 text-[13px]">거래</h3>
+<ul class="space-y-2.5">
+<li><a class="hover:text-[#10182B] transition-colors" href="#">거래 시작하기</a></li>
+<li><a class="hover:text-[#10182B] transition-colors" href="#">정산·DB보호</a></li>
+<li><a class="hover:text-[#10182B] transition-colors" href="#">취급상품</a></li>
+</ul>
+</div>
+<!-- Col 3 -->
+<div>
+<h3 class="font-bold text-[#10182B] mb-4 text-[13px]">정보</h3>
+<ul class="space-y-2.5">
+<li><a class="hover:text-[#10182B] transition-colors" href="#">창업자 가이드</a></li>
+<li><a class="hover:text-[#10182B] transition-colors" href="#">FAQ</a></li>
+<li><a class="hover:text-[#10182B] transition-colors" href="#">블로그</a></li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Bottom Legal Information -->
+<div class="pt-8 border-t border-[#E5E5DF] flex flex-col md:flex-row justify-between items-start md:items-center text-xs text-[#6B7280] gap-4">
+<p class="leading-relaxed">
+          대표자 홍길동 · 사업자등록번호 123-45-67890 · 주소 서울특별시 강남구 테헤란로 000 · 고객센터 010-2222-4183
+        </p>
+<p class="shrink-0">
+          © 2026 ENTER. All rights reserved.
+        </p>
+</div>
+</div>
+</footer>
+<!-- END: MainFooter -->
+</body></html>

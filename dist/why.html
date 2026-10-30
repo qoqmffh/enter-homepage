@@ -16,6 +16,7 @@
 <link rel="icon" href="static/brand/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="static/brand/apple-touch-icon.png">
 <link rel="stylesheet" href="static/common.css">
+<link rel="stylesheet" href="static/site.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -40,19 +41,24 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 -->
 
 
-<header class="site">
-  <div class="wrap">
-    <div class="brand-group">
-      <a class="brand" href="index.html">ENTER<small>유선 전문 총판 · (유)위드컴퍼니</small></a>
-      
-    </div>
-    <nav class="site">
-      
-      <a href="index.html">홈</a>
+
+<header class="hp-header">
+  <div class="hp-header-inner">
+    <a class="hp-brand" href="index.html" aria-label="ENTER">
+      <svg viewBox="0 0 559 152" class="hp-brand-svg" aria-hidden="true">
+        <g transform="translate(32 18)"><g fill="#10182B">
+          <path d="M0 6H90V31H29V47H78V71H29V87H90V112H15L0 98Z"/>
+          <g class="hp-brand-door" transform="translate(101 0)"><path d="M0 6L32 0V116L0 110Z M65 24L98 14V110L65 102Z"/><path class="hp-brand-door-leaf" fill="#1E6F50" d="M32 12L82 29V102L51 102L58 98V34L32 25Z"/></g>
+          <path d="M213 6H304V31H274V112H244V31H213Z"/>
+          <path d="M312 6H391V31H341V47H383V71H341V87H391V112H312Z"/>
+          <path fill-rule="evenodd" d="M401 6H454C478 6 491 20 491 40C491 55 484 66 469 72L495 112H461L438 76H431V112H401Z M431 31V51H450C458 51 462 47 462 41C462 35 458 31 450 31Z"/>
+        </g></g>
+      </svg>
+    </a>
+    <input type="checkbox" id="hpNavToggle" class="hp-nav-toggle-input">
+    <nav class="hp-nav">
       
       <a href="why.html" class="active">왜 ENTER</a>
-      
-      <a href="start.html">거래 시작하기</a>
       
       <a href="settlement.html">정산·DB보호</a>
       
@@ -60,14 +66,49 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       
       <a href="startup.html">창업자 가이드</a>
       
-      <a href="faq.html">FAQ</a>
+      <a href="about.html">회사소개</a>
       
-      <a href="blog.html">블로그</a>
       
-      <a href="stories.html">거래처 이야기</a>
+    </nav>
+    <div class="hp-header-right">
+      <nav class="hp-subnav">
+        
+        
+        <a href="start.html">거래 시작하기</a>
+        
+        <span>·</span>
+        <a href="blog.html">블로그</a>
+        
+        <span>·</span>
+        <a href="faq.html">FAQ</a>
+        
+      </nav>
+      <a class="hp-pill hp-pill--primary" href="#">정책 받기</a>
+      <label for="hpNavToggle" class="hp-nav-toggle" aria-label="메뉴">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </label>
+    </div>
+    <nav class="hp-nav-mobile">
+      
+      <a href="why.html" class="active">왜 ENTER</a>
+      
+      <a href="settlement.html">정산·DB보호</a>
+      
+      <a href="products.html">취급상품</a>
+      
+      <a href="startup.html">창업자 가이드</a>
       
       <a href="about.html">회사소개</a>
       
+      
+      <a href="start.html" class="hp-nav-mobile-sub">거래 시작하기</a>
+      
+      <a href="blog.html" class="hp-nav-mobile-sub">블로그</a>
+      
+      <a href="faq.html" class="hp-nav-mobile-sub">FAQ</a>
+      
+      
+      <div class="hp-nav-mobile-cta"><a class="hp-pill hp-pill--primary" href="#">정책 받기</a></div>
     </nav>
   </div>
 </header>
@@ -190,7 +231,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     
 
     
-    <p class="lead" style="margin-top:14px">실제 정산일 전체 (90일, 샘플 아닌 전수)</p>
+    <p class="lead" style="margin-top:14px">실제 정산일 전체 (90회, 샘플 아닌 전수)</p>
     <div class="ticker-wrap">
       <div class="ticker-list">
         
@@ -666,8 +707,38 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 </main>
 
 
-<footer class="legal">
-  <div class="wrap">(유)위드컴퍼니 도매영업팀이 운영하는 유선 전문 브랜드 ENTER · 사업자정보/주소 추후 표기 · 010-2222-4183</div>
+
+<footer class="hp-footer">
+  <div class="hp-wrap">
+    <div class="hp-footer-top">
+      <div class="hp-footer-brand">
+        <img src="static/brand/enter-horizontal-light.svg" alt="ENTER — 유선전문 도매센터" class="hp-footer-logo">
+        <p>(유)위드컴퍼니 도매영업팀이 운영하는 유선 전문 브랜드</p>
+      </div>
+      <div class="hp-footer-cols">
+        
+        <div class="hp-footer-col">
+          <span class="hp-footer-heading">회사</span>
+          <a href="why.html">왜 ENTER</a><a href="about.html">회사소개</a><a href="stories.html">거래처 이야기</a>
+        </div>
+        
+        <div class="hp-footer-col">
+          <span class="hp-footer-heading">거래</span>
+          <a href="start.html">거래 시작하기</a><a href="settlement.html">정산·DB보호</a><a href="products.html">취급상품</a>
+        </div>
+        
+        <div class="hp-footer-col">
+          <span class="hp-footer-heading">정보</span>
+          <a href="startup.html">창업자 가이드</a><a href="faq.html">FAQ</a><a href="blog.html">블로그</a>
+        </div>
+        
+      </div>
+    </div>
+    <div class="hp-footer-bottom">
+      <span>(유)위드컴퍼니 도매영업팀이 운영하는 유선 전문 브랜드 ENTER · 사업자정보/주소 추후 표기 · 010-2222-4183</span>
+      <span>© 2026 ENTER. All rights reserved.</span>
+    </div>
+  </div>
 </footer>
 
 

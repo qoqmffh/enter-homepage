@@ -1,0 +1,23 @@
+{# 사이트 전체 공통 푸터(홈의 3열 푸터). base.html이 모든 페이지에서 include한다. #}
+<footer class="hp-footer">
+  <div class="hp-wrap">
+    <div class="hp-footer-top">
+      <div class="hp-footer-brand">
+        <img src="static/brand/enter-horizontal-light.svg" alt="ENTER — 유선전문 도매센터" class="hp-footer-logo">
+        <p>{{ site.footer.tagline }}</p>
+      </div>
+      <div class="hp-footer-cols">
+        {% for col in site.footer.columns %}
+        <div class="hp-footer-col">
+          <span class="hp-footer-heading">{{ col.heading }}</span>
+          {% for link in col.links %}<a href="{{ link.slug }}.html">{{ link.label }}</a>{% endfor %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="hp-footer-bottom">
+      <span>{{ legal_text }}</span>
+      <span>© 2026 ENTER. All rights reserved.</span>
+    </div>
+  </div>
+</footer>

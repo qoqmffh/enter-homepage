@@ -1,0 +1,137 @@
+/* ENTER 서브페이지 전용 — 기획서/클로드코드_서브페이지7_지시서.md 기준.
+   공통 토큰·헤더·푸터·알약은 static/site.css. 여기는 소개형/게시판형 템플릿이
+   공유하는 부품(이미지 히어로, 검은 카드 3장, 상세목록, FAQ 아코디언, CTA 띠)만. */
+
+.sp-section{ max-width:1200px; margin:160px auto 0; padding:0 24px; }
+.sp-section--center{ text-align:center; }
+
+/* ---------- 1. 이미지 히어로(tall/compact) ----------
+   Stitch가 넣은 구글 서버 이미지 URL은 쓰지 않는다 — 페이지별 static/photos/hero-<page>.jpg
+   경로를 배경으로 걸되, 파일이 없으면 CSS background-color(#2a2d33)만 그대로 보인다
+   (background-image 로드 실패는 broken-image 아이콘 없이 조용히 무시되는 표준 동작). */
+.sp-hero{
+  max-width:1200px; margin:24px auto 0; padding:0 24px;
+}
+.sp-hero-frame{
+  position:relative; border-radius:20px; overflow:hidden;
+  background-color:#2a2d33; background-size:cover; background-position:center;
+}
+.sp-hero--tall .sp-hero-frame{ height:420px; }
+.sp-hero--compact .sp-hero-frame{ height:260px; }
+.sp-hero-tint{ position:absolute; inset:0; background:rgba(11,13,18,.55); }
+.sp-hero-body{ position:relative; z-index:1; height:100%; padding:32px; display:flex; flex-direction:column; justify-content:space-between; color:var(--hp-white); }
+.sp-hero-label{ font-size:12px; color:rgba(255,255,250,.7); letter-spacing:.08em; margin:0 0 12px; font-weight:700; text-transform:uppercase; }
+.sp-hero-headline{ font-size:32px; font-weight:800; line-height:1.15; letter-spacing:-.03em; margin:0 0 16px; }
+.sp-hero-headline br{ content:''; }
+.sp-hero-sub{ font-size:15px; color:rgba(255,255,250,.8); max-width:560px; line-height:1.55; margin:0 0 20px; }
+.sp-hero-ctas{ display:flex; flex-wrap:wrap; gap:10px; }
+.sp-hero-facts{ display:grid; grid-auto-flow:column; grid-auto-columns:1fr; max-width:620px; width:100%; padding-top:20px; }
+.sp-hero-fact{ border-left:1px solid rgba(255,255,250,.2); padding:0 18px; }
+.sp-hero-fact:first-child{ border-left:none; padding-left:0; }
+.sp-hero-fact-value{ display:block; font-size:24px; font-weight:800; line-height:1; font-variant-numeric:tabular-nums; }
+.sp-hero-fact-label{ display:block; font-size:11px; color:rgba(255,255,250,.7); margin-top:6px; }
+.sp-hero-caption{ position:absolute; right:16px; bottom:12px; z-index:1; font-size:10px; color:rgba(255,255,250,.5); }
+
+/* ---------- 2. 선언(두 톤 제목) ---------- */
+.sp-statement h2{ font-size:28px; font-weight:800; letter-spacing:-.03em; line-height:1.25; margin:0 0 16px; }
+.sp-statement p{ font-size:15px; color:var(--hp-grey); max-width:560px; margin:0 auto; line-height:1.6; }
+
+/* ---------- 3. 검은 카드 3장 ---------- */
+.sp-cards{ display:grid; grid-template-columns:1fr; gap:16px; }
+.sp-card{ background:var(--hp-black); color:var(--hp-white); border-radius:16px; padding:28px 24px; min-height:320px; display:flex; flex-direction:column; justify-content:space-between; gap:20px; }
+.sp-card-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+.sp-card-head h3{ font-size:20px; font-weight:800; margin:0; }
+.sp-card-index{ font-size:15px; color:var(--hp-grey); font-variant-numeric:tabular-nums; }
+.sp-card-desc{ font-size:13px; color:rgba(255,255,250,.7); line-height:1.6; margin:0; }
+.sp-card-big{ font-size:48px; font-weight:800; letter-spacing:-.03em; line-height:1; }
+
+/* 카드 미니 UI — 주 스트립 */
+.sp-week{ background:#1A1C22; border:1px solid rgba(255,255,255,.05); border-radius:10px; padding:14px; font-family:inherit; }
+.sp-week-row{ display:flex; align-items:center; justify-content:space-between; font-size:10px; color:rgba(255,255,250,.6); margin-bottom:6px; }
+.sp-week-row + .sp-week-row{ margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,.05); }
+.sp-week-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:4px; }
+.sp-week-day{ text-align:center; padding:4px 0; border-radius:4px; font-size:10px; font-weight:700; color:rgba(255,255,250,.5); }
+.sp-week-day span{ display:block; font-size:8px; font-weight:700; margin-top:2px; }
+.sp-week-day--mid{ background:rgba(30,111,80,.18); border:1px solid rgba(30,111,80,.4); color:var(--hp-white); }
+.sp-week-day--out{ background:var(--hp-green); color:var(--hp-white); }
+
+/* 카드 미니 UI — 고객 레코드(하드마킹) */
+.sp-record{ background:var(--hp-white); color:var(--hp-ink); border-radius:10px; padding:14px; }
+.sp-record-tag{ font-size:10px; font-weight:700; color:var(--hp-green); display:block; margin-bottom:10px; }
+.sp-record-row{ display:flex; justify-content:space-between; font-size:11px; padding-bottom:6px; margin-bottom:6px; border-bottom:1px solid var(--hp-line); }
+.sp-record-row:last-child{ border-bottom:none; margin-bottom:0; padding-bottom:0; }
+.sp-record-row span:first-child{ color:var(--hp-grey); }
+.sp-record-row span:last-child{ font-weight:600; }
+
+/* ---------- 4. 상세 목록(원장형 행) ---------- */
+.sp-detail-head{ margin-bottom:28px; }
+.sp-detail-head h2{ font-size:28px; font-weight:800; letter-spacing:-.03em; margin:10px 0 0; }
+.sp-row{ border-top:1px solid var(--hp-line); padding:16px 0; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.sp-row:last-child{ border-bottom:1px solid var(--hp-line); }
+.sp-row-title{ font-size:16px; font-weight:700; color:var(--hp-ink); font-variant-numeric:tabular-nums; }
+.sp-row-desc{ font-size:13px; color:var(--hp-grey); }
+.sp-row-tag{ font-size:11px; font-weight:600; color:var(--hp-green); text-transform:uppercase; letter-spacing:.04em; }
+.sp-detail-more{ margin:0; padding:0; }
+.sp-detail-more > summary{ list-style:none; cursor:pointer; padding:14px 0 0; }
+.sp-detail-more > summary::-webkit-details-marker{ display:none; }
+.sp-detail-expand{ font-size:14px; font-weight:600; color:var(--hp-ink); }
+.sp-detail-more > summary:hover .sp-detail-expand{ color:var(--hp-green); }
+.sp-detail-more[open] .sp-detail-expand::after{ content:' ↑'; }
+.sp-detail-foot{ display:flex; width:100%; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-top:4px; }
+.sp-detail-source{ font-size:12px; color:var(--hp-grey); }
+
+/* ---------- 5. 질문 3개(FAQ 아코디언) ---------- */
+.sp-faq-item{ border-top:1px solid var(--hp-line); }
+.sp-faq-item:last-child{ border-bottom:1px solid var(--hp-line); }
+.sp-faq-item > summary{ list-style:none; cursor:pointer; padding:18px 0; display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:16px; font-weight:700; color:var(--hp-ink); }
+.sp-faq-item > summary::-webkit-details-marker{ display:none; }
+.sp-faq-item > summary::after{ content:'+'; font-size:18px; color:var(--hp-grey); flex:0 0 auto; }
+.sp-faq-item[open] > summary::after{ content:'−'; color:var(--hp-ink); }
+.sp-faq-body{ padding:0 0 18px; font-size:14px; color:var(--hp-grey); line-height:1.6; max-width:760px; }
+
+/* ---------- 6. CTA 띠(검은 통 섹션) ---------- */
+.sp-cta{ margin-top:160px; background:var(--hp-black); padding:72px 24px; text-align:center; color:var(--hp-white); }
+.sp-cta-inner{ max-width:1200px; margin:0 auto; }
+.sp-cta h2{ font-size:28px; font-weight:800; letter-spacing:-.03em; line-height:1.3; margin:0 0 24px; }
+.sp-cta-ctas{ display:flex; flex-wrap:wrap; justify-content:center; gap:12px; }
+
+/* ---------- 게시판형: 탭 + 검색 + 목록 ---------- */
+.sp-board-tabs{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+.sp-board-tab{ padding:9px 16px; border-radius:999px; font-size:13px; font-weight:600; color:var(--hp-grey); background:var(--hp-grey-bg); border:1px solid transparent; cursor:pointer; font-family:inherit; }
+.sp-board-tab.is-active{ background:var(--hp-black); color:var(--hp-white); }
+.sp-board-search{ width:100%; max-width:320px; padding:10px 14px; border-radius:999px; border:1px solid var(--hp-line); font-size:13px; font-family:inherit; margin-bottom:28px; }
+.sp-board-list{ display:flex; flex-direction:column; }
+.sp-board-row{ display:flex; gap:16px; align-items:center; border-top:1px solid var(--hp-line); padding:18px 0; text-decoration:none; color:inherit; }
+.sp-board-row:last-child{ border-bottom:1px solid var(--hp-line); }
+.sp-board-thumb{ width:88px; height:64px; flex:0 0 auto; border-radius:8px; background:var(--hp-grey-bg); background-size:cover; background-position:center; }
+.sp-board-row-body{ flex:1 1 auto; min-width:0; }
+.sp-board-tag{ font-size:11px; font-weight:700; color:var(--hp-green); text-transform:uppercase; letter-spacing:.04em; }
+.sp-board-title{ font-size:16px; font-weight:700; color:var(--hp-ink); margin:4px 0; }
+.sp-board-excerpt{ font-size:13px; color:var(--hp-grey); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.sp-board-date{ font-size:12px; color:var(--hp-grey); flex:0 0 auto; }
+.sp-board-foot{ display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; margin-top:28px; }
+.sp-board-pages{ display:flex; gap:6px; }
+.sp-board-page{ width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center; border-radius:999px; font-size:13px; color:var(--hp-grey); }
+.sp-board-page.is-active{ background:var(--hp-black); color:var(--hp-white); }
+.sp-board-contact{ background:var(--hp-grey-bg); border-radius:14px; padding:18px 20px; font-size:13px; color:var(--hp-ink); }
+
+@media (min-width:768px){
+  .sp-hero--tall .sp-hero-frame{ height:620px; }
+  .sp-hero--compact .sp-hero-frame{ height:360px; }
+  .sp-hero-body{ padding:64px; }
+  .sp-hero-label{ font-size:12px; }
+  .sp-hero-headline{ font-size:56px; margin-bottom:20px; }
+  .sp-hero-sub{ font-size:18px; max-width:620px; }
+  .sp-hero-fact-value{ font-size:32px; }
+  .sp-cards{ grid-template-columns:repeat(3,1fr); gap:24px; }
+  .sp-card{ min-height:420px; padding:36px 32px; }
+  .sp-card-head h3{ font-size:26px; }
+  .sp-detail-head h2{ font-size:36px; }
+  .sp-row-title{ font-size:20px; }
+  .sp-cta h2{ font-size:40px; }
+}
+
+@media (min-width:1280px){
+  .sp-hero-headline{ font-size:68px; }
+  .sp-card-big{ font-size:60px; }
+}

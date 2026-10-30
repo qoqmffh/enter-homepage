@@ -1,0 +1,47 @@
+{# 사이트 전체 공통 헤더. base.html이 모든 페이지에서 include한다.
+   클래스명(hp-header 등)은 static/site.css + static/home-ad.css(광고 무대 중
+   투명/흰 글자 처리)가 그대로 참조하므로 바꾸지 않는다. #}
+<header class="hp-header">
+  <div class="hp-header-inner">
+    <a class="hp-brand" href="index.html" aria-label="ENTER">
+      <svg viewBox="0 0 559 152" class="hp-brand-svg" aria-hidden="true">
+        <g transform="translate(32 18)"><g fill="#10182B">
+          <path d="M0 6H90V31H29V47H78V71H29V87H90V112H15L0 98Z"/>
+          <g class="hp-brand-door" transform="translate(101 0)"><path d="M0 6L32 0V116L0 110Z M65 24L98 14V110L65 102Z"/><path class="hp-brand-door-leaf" fill="#1E6F50" d="M32 12L82 29V102L51 102L58 98V34L32 25Z"/></g>
+          <path d="M213 6H304V31H274V112H244V31H213Z"/>
+          <path d="M312 6H391V31H341V47H383V71H341V87H391V112H312Z"/>
+          <path fill-rule="evenodd" d="M401 6H454C478 6 491 20 491 40C491 55 484 66 469 72L495 112H461L438 76H431V112H401Z M431 31V51H450C458 51 462 47 462 41C462 35 458 31 450 31Z"/>
+        </g></g>
+      </svg>
+    </a>
+    <input type="checkbox" id="hpNavToggle" class="hp-nav-toggle-input">
+    <nav class="hp-nav">
+      {% for item in site.header_nav_main %}
+      <a href="{{ item.slug }}.html"{% if item.slug == slug %} class="active"{% endif %}>{{ item.label }}</a>
+      {% endfor %}
+      {% if slug == 'index' %}<a href="?intro=1" class="hp-replay-link">{{ page.poetic.ad.replay_label }}</a>{% endif %}
+    </nav>
+    <div class="hp-header-right">
+      <nav class="hp-subnav">
+        {% for item in site.header_nav_sub %}
+        {% if not loop.first %}<span>·</span>{% endif %}
+        <a href="{{ item.slug }}.html"{% if item.slug == slug %} class="active"{% endif %}>{{ item.label }}</a>
+        {% endfor %}
+      </nav>
+      <a class="hp-pill hp-pill--primary" href="#">{{ site.header_cta }}</a>
+      <label for="hpNavToggle" class="hp-nav-toggle" aria-label="메뉴">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </label>
+    </div>
+    <nav class="hp-nav-mobile">
+      {% for item in site.header_nav_main %}
+      <a href="{{ item.slug }}.html"{% if item.slug == slug %} class="active"{% endif %}>{{ item.label }}</a>
+      {% endfor %}
+      {% for item in site.header_nav_sub %}
+      <a href="{{ item.slug }}.html" class="hp-nav-mobile-sub{% if item.slug == slug %} active{% endif %}">{{ item.label }}</a>
+      {% endfor %}
+      {% if slug == 'index' %}<a href="?intro=1" class="hp-nav-mobile-sub">{{ page.poetic.ad.replay_label }}</a>{% endif %}
+      <div class="hp-nav-mobile-cta"><a class="hp-pill hp-pill--primary" href="#">{{ site.header_cta }}</a></div>
+    </nav>
+  </div>
+</header>

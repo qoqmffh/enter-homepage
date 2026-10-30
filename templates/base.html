@@ -16,6 +16,7 @@
 <link rel="icon" href="static/brand/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="static/brand/apple-touch-icon.png">
 <link rel="stylesheet" href="static/common.css">
+<link rel="stylesheet" href="static/site.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -40,19 +41,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 -->
 
 {% block header %}
-<header class="site">
-  <div class="wrap">
-    <div class="brand-group">
-      <a class="brand" href="index.html">{{ site.site_name }}<small>{{ site.site_tagline }}</small></a>
-      {% if page.status_badge %}<span class="status-badge">{{ page.status_badge }}</span>{% endif %}
-    </div>
-    <nav class="site">
-      {% for item in site.nav %}
-      <a href="{{ item.slug }}.html"{% if item.slug == slug %} class="active"{% endif %}>{{ item.label }}</a>
-      {% endfor %}
-    </nav>
-  </div>
-</header>
+{% include "partials/site_header.html" %}
 {% endblock %}
 
 <main>
@@ -60,9 +49,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 </main>
 
 {% block footer %}
-<footer class="legal">
-  <div class="wrap">{{ legal_text }}</div>
-</footer>
+{% include "partials/site_footer.html" %}
 {% endblock %}
 
 <div class="footerbar">

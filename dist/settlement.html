@@ -16,6 +16,7 @@
 <link rel="icon" href="static/brand/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="static/brand/apple-touch-icon.png">
 <link rel="stylesheet" href="static/common.css">
+<link rel="stylesheet" href="static/site.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -27,6 +28,9 @@
   "foundingDate": "2010"
 }
 </script>
+
+<link rel="stylesheet" href="static/site.css">
+<link rel="stylesheet" href="static/sub.css">
 
 </head>
 <body>
@@ -40,19 +44,24 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 -->
 
 
-<header class="site">
-  <div class="wrap">
-    <div class="brand-group">
-      <a class="brand" href="index.html">ENTER<small>유선 전문 총판 · (유)위드컴퍼니</small></a>
-      
-    </div>
-    <nav class="site">
-      
-      <a href="index.html">홈</a>
+
+<header class="hp-header">
+  <div class="hp-header-inner">
+    <a class="hp-brand" href="index.html" aria-label="ENTER">
+      <svg viewBox="0 0 559 152" class="hp-brand-svg" aria-hidden="true">
+        <g transform="translate(32 18)"><g fill="#10182B">
+          <path d="M0 6H90V31H29V47H78V71H29V87H90V112H15L0 98Z"/>
+          <g class="hp-brand-door" transform="translate(101 0)"><path d="M0 6L32 0V116L0 110Z M65 24L98 14V110L65 102Z"/><path class="hp-brand-door-leaf" fill="#1E6F50" d="M32 12L82 29V102L51 102L58 98V34L32 25Z"/></g>
+          <path d="M213 6H304V31H274V112H244V31H213Z"/>
+          <path d="M312 6H391V31H341V47H383V71H341V87H391V112H312Z"/>
+          <path fill-rule="evenodd" d="M401 6H454C478 6 491 20 491 40C491 55 484 66 469 72L495 112H461L438 76H431V112H401Z M431 31V51H450C458 51 462 47 462 41C462 35 458 31 450 31Z"/>
+        </g></g>
+      </svg>
+    </a>
+    <input type="checkbox" id="hpNavToggle" class="hp-nav-toggle-input">
+    <nav class="hp-nav">
       
       <a href="why.html">왜 ENTER</a>
-      
-      <a href="start.html">거래 시작하기</a>
       
       <a href="settlement.html" class="active">정산·DB보호</a>
       
@@ -60,14 +69,49 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       
       <a href="startup.html">창업자 가이드</a>
       
-      <a href="faq.html">FAQ</a>
+      <a href="about.html">회사소개</a>
       
-      <a href="blog.html">블로그</a>
       
-      <a href="stories.html">거래처 이야기</a>
+    </nav>
+    <div class="hp-header-right">
+      <nav class="hp-subnav">
+        
+        
+        <a href="start.html">거래 시작하기</a>
+        
+        <span>·</span>
+        <a href="blog.html">블로그</a>
+        
+        <span>·</span>
+        <a href="faq.html">FAQ</a>
+        
+      </nav>
+      <a class="hp-pill hp-pill--primary" href="#">정책 받기</a>
+      <label for="hpNavToggle" class="hp-nav-toggle" aria-label="메뉴">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </label>
+    </div>
+    <nav class="hp-nav-mobile">
+      
+      <a href="why.html">왜 ENTER</a>
+      
+      <a href="settlement.html" class="active">정산·DB보호</a>
+      
+      <a href="products.html">취급상품</a>
+      
+      <a href="startup.html">창업자 가이드</a>
       
       <a href="about.html">회사소개</a>
       
+      
+      <a href="start.html" class="hp-nav-mobile-sub">거래 시작하기</a>
+      
+      <a href="blog.html" class="hp-nav-mobile-sub">블로그</a>
+      
+      <a href="faq.html" class="hp-nav-mobile-sub">FAQ</a>
+      
+      
+      <div class="hp-nav-mobile-cta"><a class="hp-pill hp-pill--primary" href="#">정책 받기</a></div>
     </nav>
   </div>
 </header>
@@ -75,509 +119,750 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 <main>
 
-<section style="padding-top:28px">
-  <div class="wrap">
-    <div class="eyebrow">정산 · DB 보호</div>
-    <h1>정해진 날 정산하고, 고객 정보는 남기지 않습니다</h1>
-    <p class="lead">매주 수요일 정산서 발송, 금요일 입금. 늦게 처리된 적은 0회입니다.</p>
 
+
+
+<div class="sp-hero sp-hero--tall">
+  <div class="sp-hero-frame" style="background-image:url('static/photos/hero-settlement.jpg')">
     
-    <p style="margin-top:18px"><a class="btn btn-primary" href="#">지금 연락하고 정산 방식 자세히 듣기</a></p>
+    <div class="sp-hero-tint"></div>
+    <div class="sp-hero-body">
+      <div>
+        <p class="sp-hero-label">● 정산·DB보호</p>
+        <h1 class="sp-hero-headline">정해진 날 정산하고,<br>고객 정보는 남기지 않습니다.</h1>
+        <p class="sp-hero-sub">매주 수요일 정산서, 금요일 입금.<br>개통이 끝나면 고객 핵심정보는 자동으로 가려집니다.</p>
+        <div class="sp-hero-ctas">
+          <a class="hp-pill hp-pill--inverted" href="#cta">정책 받아보기</a>
+          <a class="hp-pill hp-pill--outline" href="#faq">정산 방식 문의하기</a>
+        </div>
+      </div>
+      
+      <div class="sp-hero-facts">
+        
+        <div class="sp-hero-fact">
+          <span class="sp-hero-fact-value">금요일</span>
+          <span class="sp-hero-fact-label">매주 입금일</span>
+        </div>
+        
+        <div class="sp-hero-fact">
+          <span class="sp-hero-fact-value">0회</span>
+          <span class="sp-hero-fact-label">최근 90번의 정산, 지연</span>
+        </div>
+        
+        <div class="sp-hero-fact">
+          <span class="sp-hero-fact-value">0회</span>
+          <span class="sp-hero-fact-label">하드마킹 도입 이후 해킹 이슈</span>
+        </div>
+        
+      </div>
+      
+    </div>
+    <span class="sp-hero-caption">정산팀 업무 현장</span>
+  </div>
+</div>
+
+
+<section class="sp-section sp-section--center" id="statement">
+  <div class="sp-statement">
+    <h2><span class="hp-ink">약속은 말이 아니라</span><br><span class="hp-green">날짜로 지킵니다.</span></h2>
+    <p>정산 물량이 몰린 날에도, 지급일을 넘긴 적은 없습니다.</p>
+  </div>
+</section>
+
+<section class="sp-section" id="cards">
+  <div class="sp-cards">
+    
+    <div class="sp-card">
+      <div class="sp-card-head">
+        <h3>매주 금요일 입금</h3>
+        <span class="sp-card-index">/1</span>
+      </div>
+
+      
+      <div class="sp-week">
+        <div class="sp-week-row"><span>전 주 (개통 기간)</span><span>월~일 개통</span></div>
+        <div class="sp-week-grid">
+          <div class="sp-week-day">월</div><div class="sp-week-day">화</div><div class="sp-week-day">수</div><div class="sp-week-day">목</div><div class="sp-week-day">금</div>
+        </div>
+        <div class="sp-week-row"><span>정산 주 (지급 일정)</span><span style="color:var(--hp-green)">금요일 입금</span></div>
+        <div class="sp-week-grid">
+          <div class="sp-week-day">월</div>
+          <div class="sp-week-day">화</div>
+          <div class="sp-week-day sp-week-day--mid">수<span>정산서</span></div>
+          <div class="sp-week-day">목</div>
+          <div class="sp-week-day sp-week-day--out">금<span>입금</span></div>
+        </div>
+      </div>
+      
+
+      <p class="sp-card-desc">월~일 개통분을 다음 주 금요일에 정산합니다.</p>
+    </div>
+    
+    <div class="sp-card">
+      <div class="sp-card-head">
+        <h3>자동 하드마킹</h3>
+        <span class="sp-card-index">/2</span>
+      </div>
+
+      
+      <div class="sp-record">
+        <span class="sp-record-tag">개통완료 · 하드마킹</span>
+        <div class="sp-record-row"><span>고객명</span><span>홍●동</span></div>
+        <div class="sp-record-row"><span>연락처</span><span>010-●●●●-5678</span></div>
+        <div class="sp-record-row"><span>주민번호</span><span>900101-●●●●●●●</span></div>
+      </div>
+      
+
+      <p class="sp-card-desc">개통이 완료되면 이름·연락처·주민번호가 자동으로 가려집니다.</p>
+    </div>
+    
+    <div class="sp-card">
+      <div class="sp-card-head">
+        <h3>놓친 정책은 소급</h3>
+        <span class="sp-card-index">/3</span>
+      </div>
+
+      
+      <div class="sp-card-big">소급</div>
+      
+
+      <p class="sp-card-desc">통신사 기준 환수, 자체 패널티 없음. 1~2분 차이로 놓친 정책은 대부분 소급합니다.</p>
+    </div>
     
   </div>
 </section>
 
-<section>
-  <div class="wrap">
-    <h2>📥 개통까지</h2>
-    <p class="lead">⚡ 접수 후 청약까지 보통 1시간, 빠르면 3분</p>
-    <div class="icon-steps">
-      
-      <div class="icon-step"><span class="icon-step-num">1</span><span class="icon-step-icon">📥</span><span class="icon-step-text-wrap"><span class="icon-step-text">접수·청약</span><span class="icon-step-sub">거래처 접수 → 상부가 통신사 전산 등록</span></span></div>
-      
-      <div class="icon-step"><span class="icon-step-num">2</span><span class="icon-step-icon">🔧</span><span class="icon-step-text-wrap"><span class="icon-step-text">설치·개통</span><span class="icon-step-sub">기사배정·설치 → 개통오더</span></span></div>
-      
-      <div class="icon-step"><span class="icon-step-num">3</span><span class="icon-step-icon">👀</span><span class="icon-step-text-wrap"><span class="icon-step-text">확인 완료</span><span class="icon-step-sub">상부 CRM 확인 → ENTER CRM 확인</span></span></div>
-      
-    </div>
-
-    <h2 style="margin-top:28px">📨 정산까지</h2>
-    <div class="icon-steps">
-      
-      <div class="icon-step"><span class="icon-step-num">1</span><span class="icon-step-icon">📋</span><span class="icon-step-text-wrap"><span class="icon-step-text">정책 검수</span><span class="icon-step-sub">매일</span></span></div>
-      
-      <div class="icon-step"><span class="icon-step-num">2</span><span class="icon-step-icon">📨</span><span class="icon-step-text-wrap"><span class="icon-step-text">정산서 발송</span><span class="icon-step-sub">수요일</span></span></div>
-      
-      <div class="icon-step"><span class="icon-step-num">3</span><span class="icon-step-icon">💰</span><span class="icon-step-text-wrap"><span class="icon-step-text">입금</span><span class="icon-step-sub">금요일 17시</span></span></div>
-      
-    </div>
-    <p class="tagline" style="margin-top:12px">은행서버장애, 정산물량과다 등으로 17시를 넘겨본 적은 있으나, 지급일을 넘겨본 적은 없습니다.</p>
-
+<section class="sp-section" id="detail">
+  <div class="sp-detail-head">
+    <span class="hp-label"><span class="hp-label-dot"></span>SETTLEMENT LEDGER</span>
+    <h2>실제 정산 기록, 90회</h2>
+  </div>
+  
+  <div>
     
-    <ul class="doclist" style="margin-top:16px">
-      <li>늦게 처리된 적 0회</li><li>공휴일과 겹치면 하루~이틀 더 일찍 처리</li>
-    </ul>
-    
-
-    
-    <p class="lead" style="margin-top:16px">실제 정산일 전체 (90일, 샘플 아닌 전수)</p>
-    <div class="ticker-wrap">
-      <div class="ticker-list">
-        
-        <div class="ticker-row"><span class="t-date">2025.01.24 (금)</span><span class="t-count">102건</span><span class="t-amount">204,129,160원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.01.31 (금)</span><span class="t-count">14건</span><span class="t-amount">9,616,260원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.02.07 (금)</span><span class="t-count">140건</span><span class="t-amount">296,106,940원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.02.14 (금)</span><span class="t-count">116건</span><span class="t-amount">198,266,484원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.02.21 (금)</span><span class="t-count">104건</span><span class="t-amount">232,120,714원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.02.28 (금)</span><span class="t-count">131건</span><span class="t-amount">266,813,980원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.03.07 (금)</span><span class="t-count">130건</span><span class="t-amount">291,284,875원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.03.14 (금)</span><span class="t-count">115건</span><span class="t-amount">208,564,161원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.03.21 (금)</span><span class="t-count">110건</span><span class="t-amount">228,088,753원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.03.28 (금)</span><span class="t-count">129건</span><span class="t-amount">221,922,325원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.04.04 (금)</span><span class="t-count">115건</span><span class="t-amount">203,807,856원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.04.11 (금)</span><span class="t-count">120건</span><span class="t-amount">198,403,545원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.04.18 (금)</span><span class="t-count">107건</span><span class="t-amount">172,626,830원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.04.25 (금)</span><span class="t-count">112건</span><span class="t-amount">192,070,399원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.05.02 (금)</span><span class="t-count">106건</span><span class="t-amount">236,134,950원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.05.09 (금)</span><span class="t-count">103건</span><span class="t-amount">194,852,515원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.05.16 (금)</span><span class="t-count">106건</span><span class="t-amount">170,954,396원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.05.23 (금)</span><span class="t-count">128건</span><span class="t-amount">222,734,280원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.05.30 (금)</span><span class="t-count">119건</span><span class="t-amount">188,800,915원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.06.05 (목)</span><span class="t-count">111건</span><span class="t-amount">201,646,287원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.06.13 (금)</span><span class="t-count">102건</span><span class="t-amount">113,775,398원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.06.20 (금)</span><span class="t-count">113건</span><span class="t-amount">199,581,507원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.06.27 (금)</span><span class="t-count">112건</span><span class="t-amount">189,657,154원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.07.04 (금)</span><span class="t-count">110건</span><span class="t-amount">263,421,603원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.07.11 (금)</span><span class="t-count">120건</span><span class="t-amount">251,690,171원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.07.18 (금)</span><span class="t-count">211건</span><span class="t-amount">237,438,855원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.07.25 (금)</span><span class="t-count">119건</span><span class="t-amount">281,398,822원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.08.01 (금)</span><span class="t-count">99건</span><span class="t-amount">219,787,791원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.08.08 (금)</span><span class="t-count">115건</span><span class="t-amount">251,100,059원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.08.14 (목)</span><span class="t-count">99건</span><span class="t-amount">194,784,685원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.08.22 (금)</span><span class="t-count">101건</span><span class="t-amount">209,789,193원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.08.29 (금)</span><span class="t-count">122건</span><span class="t-amount">252,848,963원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.09.05 (금)</span><span class="t-count">126건</span><span class="t-amount">264,838,137원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.09.12 (금)</span><span class="t-count">110건</span><span class="t-amount">220,912,006원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.09.19 (금)</span><span class="t-count">105건</span><span class="t-amount">229,219,820원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.09.26 (금)</span><span class="t-count">117건</span><span class="t-amount">232,634,296원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.10.02 (목)</span><span class="t-count">108건</span><span class="t-amount">262,016,549원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.10.10 (금)</span><span class="t-count">7건</span><span class="t-amount">2,859,747원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.10.17 (금)</span><span class="t-count">105건</span><span class="t-amount">278,389,096원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.10.24 (금)</span><span class="t-count">109건</span><span class="t-amount">205,633,198원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.10.31 (금)</span><span class="t-count">119건</span><span class="t-amount">238,836,685원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.11.07 (금)</span><span class="t-count">112건</span><span class="t-amount">234,683,095원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.11.14 (금)</span><span class="t-count">108건</span><span class="t-amount">179,359,972원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.11.21 (금)</span><span class="t-count">110건</span><span class="t-amount">230,606,479원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.11.28 (금)</span><span class="t-count">109건</span><span class="t-amount">217,117,924원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.12.05 (금)</span><span class="t-count">125건</span><span class="t-amount">295,285,941원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.12.12 (금)</span><span class="t-count">108건</span><span class="t-amount">236,239,701원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.12.19 (금)</span><span class="t-count">114건</span><span class="t-amount">274,734,097원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2025.12.26 (금)</span><span class="t-count">127건</span><span class="t-amount">294,062,095원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.01.02 (금)</span><span class="t-count">98건</span><span class="t-amount">201,798,350원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.01.09 (금)</span><span class="t-count">117건</span><span class="t-amount">185,899,004원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.01.16 (금)</span><span class="t-count">130건</span><span class="t-amount">308,432,315원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.01.23 (금)</span><span class="t-count">130건</span><span class="t-amount">376,308,437원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.01.30 (금)</span><span class="t-count">122건</span><span class="t-amount">332,744,291원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.02.06 (금)</span><span class="t-count">135건</span><span class="t-amount">314,162,770원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.02.13 (금)</span><span class="t-count">114건</span><span class="t-amount">268,862,068원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.02.20 (금)</span><span class="t-count">10건</span><span class="t-amount">24,372,299원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.02.27 (금)</span><span class="t-count">166건</span><span class="t-amount">472,409,257원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.03.06 (금)</span><span class="t-count">134건</span><span class="t-amount">398,562,207원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.03.13 (금)</span><span class="t-count">101건</span><span class="t-amount">250,491,230원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.03.20 (금)</span><span class="t-count">134건</span><span class="t-amount">383,691,030원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.03.27 (금)</span><span class="t-count">123건</span><span class="t-amount">387,159,700원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.04.03 (금)</span><span class="t-count">127건</span><span class="t-amount">330,217,096원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.04.10 (금)</span><span class="t-count">130건</span><span class="t-amount">243,467,667원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.04.17 (금)</span><span class="t-count">108건</span><span class="t-amount">228,124,534원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.04.24 (금)</span><span class="t-count">120건</span><span class="t-amount">308,837,524원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.04.30 (목)</span><span class="t-count">112건</span><span class="t-amount">246,882,431원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.05.08 (금)</span><span class="t-count">115건</span><span class="t-amount">222,204,389원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.05.15 (금)</span><span class="t-count">114건</span><span class="t-amount">198,709,360원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.05.22 (금)</span><span class="t-count">111건</span><span class="t-amount">241,819,367원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.05.29 (금)</span><span class="t-count">110건</span><span class="t-amount">206,534,095원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.06.05 (금)</span><span class="t-count">102건</span><span class="t-amount">186,206,999원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.06.12 (금)</span><span class="t-count">101건</span><span class="t-amount">138,770,370원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.06.19 (금)</span><span class="t-count">121건</span><span class="t-amount">224,166,453원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.06.26 (금)</span><span class="t-count">108건</span><span class="t-amount">189,902,848원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.07.03 (금)</span><span class="t-count">102건</span><span class="t-amount">203,713,901원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.07.10 (금)</span><span class="t-count">100건</span><span class="t-amount">180,410,681원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.07.16 (목)</span><span class="t-count">98건</span><span class="t-amount">173,395,699원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.07.24 (금)</span><span class="t-count">93건</span><span class="t-amount">147,638,577원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.07.31 (금)</span><span class="t-count">103건</span><span class="t-amount">164,586,177원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.08.07 (금)</span><span class="t-count">119건</span><span class="t-amount">167,499,105원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.08.14 (금)</span><span class="t-count">94건</span><span class="t-amount">138,845,688원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.08.21 (금)</span><span class="t-count">98건</span><span class="t-amount">146,174,666원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.08.28 (금)</span><span class="t-count">106건</span><span class="t-amount">205,739,144원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.09.04 (금)</span><span class="t-count">103건</span><span class="t-amount">205,637,822원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.09.11 (금)</span><span class="t-count">100건</span><span class="t-amount">194,254,201원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.09.18 (금)</span><span class="t-count">107건</span><span class="t-amount">166,315,457원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.09.23 (수)</span><span class="t-count">96건</span><span class="t-amount">131,244,831원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.10.02 (금)</span><span class="t-count">76건</span><span class="t-amount">162,247,434원</span></div>
-        
-        <div class="ticker-row"><span class="t-date">2026.10.08 (목)</span><span class="t-count">95건</span><span class="t-amount">126,457,909원</span></div>
-        
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.01.24 (금)</span><span class="t-count">102건</span><span class="t-amount">204,129,160원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.01.31 (금)</span><span class="t-count">14건</span><span class="t-amount">9,616,260원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.02.07 (금)</span><span class="t-count">140건</span><span class="t-amount">296,106,940원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.02.14 (금)</span><span class="t-count">116건</span><span class="t-amount">198,266,484원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.02.21 (금)</span><span class="t-count">104건</span><span class="t-amount">232,120,714원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.02.28 (금)</span><span class="t-count">131건</span><span class="t-amount">266,813,980원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.03.07 (금)</span><span class="t-count">130건</span><span class="t-amount">291,284,875원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.03.14 (금)</span><span class="t-count">115건</span><span class="t-amount">208,564,161원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.03.21 (금)</span><span class="t-count">110건</span><span class="t-amount">228,088,753원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.03.28 (금)</span><span class="t-count">129건</span><span class="t-amount">221,922,325원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.04.04 (금)</span><span class="t-count">115건</span><span class="t-amount">203,807,856원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.04.11 (금)</span><span class="t-count">120건</span><span class="t-amount">198,403,545원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.04.18 (금)</span><span class="t-count">107건</span><span class="t-amount">172,626,830원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.04.25 (금)</span><span class="t-count">112건</span><span class="t-amount">192,070,399원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.05.02 (금)</span><span class="t-count">106건</span><span class="t-amount">236,134,950원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.05.09 (금)</span><span class="t-count">103건</span><span class="t-amount">194,852,515원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.05.16 (금)</span><span class="t-count">106건</span><span class="t-amount">170,954,396원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.05.23 (금)</span><span class="t-count">128건</span><span class="t-amount">222,734,280원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.05.30 (금)</span><span class="t-count">119건</span><span class="t-amount">188,800,915원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.06.05 (목)</span><span class="t-count">111건</span><span class="t-amount">201,646,287원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.06.13 (금)</span><span class="t-count">102건</span><span class="t-amount">113,775,398원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.06.20 (금)</span><span class="t-count">113건</span><span class="t-amount">199,581,507원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.06.27 (금)</span><span class="t-count">112건</span><span class="t-amount">189,657,154원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.07.04 (금)</span><span class="t-count">110건</span><span class="t-amount">263,421,603원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.07.11 (금)</span><span class="t-count">120건</span><span class="t-amount">251,690,171원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.07.18 (금)</span><span class="t-count">211건</span><span class="t-amount">237,438,855원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.07.25 (금)</span><span class="t-count">119건</span><span class="t-amount">281,398,822원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.08.01 (금)</span><span class="t-count">99건</span><span class="t-amount">219,787,791원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.08.08 (금)</span><span class="t-count">115건</span><span class="t-amount">251,100,059원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.08.14 (목)</span><span class="t-count">99건</span><span class="t-amount">194,784,685원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.08.22 (금)</span><span class="t-count">101건</span><span class="t-amount">209,789,193원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.08.29 (금)</span><span class="t-count">122건</span><span class="t-amount">252,848,963원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.09.05 (금)</span><span class="t-count">126건</span><span class="t-amount">264,838,137원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.09.12 (금)</span><span class="t-count">110건</span><span class="t-amount">220,912,006원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.09.19 (금)</span><span class="t-count">105건</span><span class="t-amount">229,219,820원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.09.26 (금)</span><span class="t-count">117건</span><span class="t-amount">232,634,296원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.10.02 (목)</span><span class="t-count">108건</span><span class="t-amount">262,016,549원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.10.10 (금)</span><span class="t-count">7건</span><span class="t-amount">2,859,747원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.10.17 (금)</span><span class="t-count">105건</span><span class="t-amount">278,389,096원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.10.24 (금)</span><span class="t-count">109건</span><span class="t-amount">205,633,198원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.10.31 (금)</span><span class="t-count">119건</span><span class="t-amount">238,836,685원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.11.07 (금)</span><span class="t-count">112건</span><span class="t-amount">234,683,095원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.11.14 (금)</span><span class="t-count">108건</span><span class="t-amount">179,359,972원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.11.21 (금)</span><span class="t-count">110건</span><span class="t-amount">230,606,479원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.11.28 (금)</span><span class="t-count">109건</span><span class="t-amount">217,117,924원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.12.05 (금)</span><span class="t-count">125건</span><span class="t-amount">295,285,941원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.12.12 (금)</span><span class="t-count">108건</span><span class="t-amount">236,239,701원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.12.19 (금)</span><span class="t-count">114건</span><span class="t-amount">274,734,097원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2025.12.26 (금)</span><span class="t-count">127건</span><span class="t-amount">294,062,095원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.01.02 (금)</span><span class="t-count">98건</span><span class="t-amount">201,798,350원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.01.09 (금)</span><span class="t-count">117건</span><span class="t-amount">185,899,004원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.01.16 (금)</span><span class="t-count">130건</span><span class="t-amount">308,432,315원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.01.23 (금)</span><span class="t-count">130건</span><span class="t-amount">376,308,437원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.01.30 (금)</span><span class="t-count">122건</span><span class="t-amount">332,744,291원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.02.06 (금)</span><span class="t-count">135건</span><span class="t-amount">314,162,770원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.02.13 (금)</span><span class="t-count">114건</span><span class="t-amount">268,862,068원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.02.20 (금)</span><span class="t-count">10건</span><span class="t-amount">24,372,299원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.02.27 (금)</span><span class="t-count">166건</span><span class="t-amount">472,409,257원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.03.06 (금)</span><span class="t-count">134건</span><span class="t-amount">398,562,207원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.03.13 (금)</span><span class="t-count">101건</span><span class="t-amount">250,491,230원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.03.20 (금)</span><span class="t-count">134건</span><span class="t-amount">383,691,030원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.03.27 (금)</span><span class="t-count">123건</span><span class="t-amount">387,159,700원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.04.03 (금)</span><span class="t-count">127건</span><span class="t-amount">330,217,096원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.04.10 (금)</span><span class="t-count">130건</span><span class="t-amount">243,467,667원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.04.17 (금)</span><span class="t-count">108건</span><span class="t-amount">228,124,534원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.04.24 (금)</span><span class="t-count">120건</span><span class="t-amount">308,837,524원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.04.30 (목)</span><span class="t-count">112건</span><span class="t-amount">246,882,431원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.05.08 (금)</span><span class="t-count">115건</span><span class="t-amount">222,204,389원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.05.15 (금)</span><span class="t-count">114건</span><span class="t-amount">198,709,360원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.05.22 (금)</span><span class="t-count">111건</span><span class="t-amount">241,819,367원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.05.29 (금)</span><span class="t-count">110건</span><span class="t-amount">206,534,095원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.06.05 (금)</span><span class="t-count">102건</span><span class="t-amount">186,206,999원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.06.12 (금)</span><span class="t-count">101건</span><span class="t-amount">138,770,370원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.06.19 (금)</span><span class="t-count">121건</span><span class="t-amount">224,166,453원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.06.26 (금)</span><span class="t-count">108건</span><span class="t-amount">189,902,848원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.07.03 (금)</span><span class="t-count">102건</span><span class="t-amount">203,713,901원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.07.10 (금)</span><span class="t-count">100건</span><span class="t-amount">180,410,681원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.07.16 (목)</span><span class="t-count">98건</span><span class="t-amount">173,395,699원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.07.24 (금)</span><span class="t-count">93건</span><span class="t-amount">147,638,577원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.07.31 (금)</span><span class="t-count">103건</span><span class="t-amount">164,586,177원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.08.07 (금)</span><span class="t-count">119건</span><span class="t-amount">167,499,105원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.08.14 (금)</span><span class="t-count">94건</span><span class="t-amount">138,845,688원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.08.21 (금)</span><span class="t-count">98건</span><span class="t-amount">146,174,666원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.08.28 (금)</span><span class="t-count">106건</span><span class="t-amount">205,739,144원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.09.04 (금)</span><span class="t-count">103건</span><span class="t-amount">205,637,822원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.09.11 (금)</span><span class="t-count">100건</span><span class="t-amount">194,254,201원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.09.18 (금)</span><span class="t-count">107건</span><span class="t-amount">166,315,457원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.09.23 (수)</span><span class="t-count">96건</span><span class="t-amount">131,244,831원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.10.02 (금)</span><span class="t-count">76건</span><span class="t-amount">162,247,434원</span></div>
-        
-        <div class="ticker-row" aria-hidden="true"><span class="t-date">2026.10.08 (목)</span><span class="t-count">95건</span><span class="t-amount">126,457,909원</span></div>
-        
-      </div>
+    <div class="sp-row">
+      <span class="sp-row-title">2026.10.08 (목)</span>
+      <span class="sp-row-desc">95건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
     </div>
     
-
-    
-    <div class="source-note">
-      <span>출처: 실제 정산 송금 내역</span>
+    <div class="sp-row">
+      <span class="sp-row-title">2026.10.02 (금)</span>
+      <span class="sp-row-desc">76건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
     </div>
     
-
-    
-    
-    <div class="faq-item" style="margin-top:18px">
-      <div class="faq-q">정산이 잘못되면요?</div>
-      <div class="faq-a">정산 전 확인 후 입금하기 때문에 오류 입금은 없으며, 혹시 오류 입금 되더라도 언제든 수정 입금합니다.</div>
+    <div class="sp-row">
+      <span class="sp-row-title">2026.09.23 (수)</span>
+      <span class="sp-row-desc">96건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
     </div>
     
+    <div class="sp-row">
+      <span class="sp-row-title">2026.09.18 (금)</span>
+      <span class="sp-row-desc">107건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.09.11 (금)</span>
+      <span class="sp-row-desc">100건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+  </div>
+  
+  <details class="sp-detail-more">
+    <summary>
+      <span class="sp-detail-foot">
+        <span class="sp-detail-expand">90회 전체 보기 →</span>
+        <span class="sp-detail-source">출처: 실제 정산 송금 내역</span>
+      </span>
+    </summary>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.09.04 (금)</span>
+      <span class="sp-row-desc">103건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.08.28 (금)</span>
+      <span class="sp-row-desc">106건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.08.21 (금)</span>
+      <span class="sp-row-desc">98건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.08.14 (금)</span>
+      <span class="sp-row-desc">94건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.08.07 (금)</span>
+      <span class="sp-row-desc">119건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.07.31 (금)</span>
+      <span class="sp-row-desc">103건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.07.24 (금)</span>
+      <span class="sp-row-desc">93건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.07.16 (목)</span>
+      <span class="sp-row-desc">98건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.07.10 (금)</span>
+      <span class="sp-row-desc">100건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.07.03 (금)</span>
+      <span class="sp-row-desc">102건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.06.26 (금)</span>
+      <span class="sp-row-desc">108건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.06.19 (금)</span>
+      <span class="sp-row-desc">121건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.06.12 (금)</span>
+      <span class="sp-row-desc">101건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.06.05 (금)</span>
+      <span class="sp-row-desc">102건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.05.29 (금)</span>
+      <span class="sp-row-desc">110건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.05.22 (금)</span>
+      <span class="sp-row-desc">111건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.05.15 (금)</span>
+      <span class="sp-row-desc">114건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.05.08 (금)</span>
+      <span class="sp-row-desc">115건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.04.30 (목)</span>
+      <span class="sp-row-desc">112건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.04.24 (금)</span>
+      <span class="sp-row-desc">120건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.04.17 (금)</span>
+      <span class="sp-row-desc">108건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.04.10 (금)</span>
+      <span class="sp-row-desc">130건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.04.03 (금)</span>
+      <span class="sp-row-desc">127건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.03.27 (금)</span>
+      <span class="sp-row-desc">123건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.03.20 (금)</span>
+      <span class="sp-row-desc">134건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.03.13 (금)</span>
+      <span class="sp-row-desc">101건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.03.06 (금)</span>
+      <span class="sp-row-desc">134건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.02.27 (금)</span>
+      <span class="sp-row-desc">166건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.02.20 (금)</span>
+      <span class="sp-row-desc">10건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.02.13 (금)</span>
+      <span class="sp-row-desc">114건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.02.06 (금)</span>
+      <span class="sp-row-desc">135건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.01.30 (금)</span>
+      <span class="sp-row-desc">122건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.01.23 (금)</span>
+      <span class="sp-row-desc">130건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.01.16 (금)</span>
+      <span class="sp-row-desc">130건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.01.09 (금)</span>
+      <span class="sp-row-desc">117건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2026.01.02 (금)</span>
+      <span class="sp-row-desc">98건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.12.26 (금)</span>
+      <span class="sp-row-desc">127건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.12.19 (금)</span>
+      <span class="sp-row-desc">114건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.12.12 (금)</span>
+      <span class="sp-row-desc">108건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.12.05 (금)</span>
+      <span class="sp-row-desc">125건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.11.28 (금)</span>
+      <span class="sp-row-desc">109건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.11.21 (금)</span>
+      <span class="sp-row-desc">110건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.11.14 (금)</span>
+      <span class="sp-row-desc">108건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.11.07 (금)</span>
+      <span class="sp-row-desc">112건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.10.31 (금)</span>
+      <span class="sp-row-desc">119건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.10.24 (금)</span>
+      <span class="sp-row-desc">109건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.10.17 (금)</span>
+      <span class="sp-row-desc">105건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.10.10 (금)</span>
+      <span class="sp-row-desc">7건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.10.02 (목)</span>
+      <span class="sp-row-desc">108건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.09.26 (금)</span>
+      <span class="sp-row-desc">117건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.09.19 (금)</span>
+      <span class="sp-row-desc">105건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.09.12 (금)</span>
+      <span class="sp-row-desc">110건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.09.05 (금)</span>
+      <span class="sp-row-desc">126건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.08.29 (금)</span>
+      <span class="sp-row-desc">122건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.08.22 (금)</span>
+      <span class="sp-row-desc">101건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.08.14 (목)</span>
+      <span class="sp-row-desc">99건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.08.08 (금)</span>
+      <span class="sp-row-desc">115건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.08.01 (금)</span>
+      <span class="sp-row-desc">99건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.07.25 (금)</span>
+      <span class="sp-row-desc">119건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.07.18 (금)</span>
+      <span class="sp-row-desc">211건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.07.11 (금)</span>
+      <span class="sp-row-desc">120건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.07.04 (금)</span>
+      <span class="sp-row-desc">110건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.06.27 (금)</span>
+      <span class="sp-row-desc">112건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.06.20 (금)</span>
+      <span class="sp-row-desc">113건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.06.13 (금)</span>
+      <span class="sp-row-desc">102건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.06.05 (목)</span>
+      <span class="sp-row-desc">111건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.05.30 (금)</span>
+      <span class="sp-row-desc">119건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.05.23 (금)</span>
+      <span class="sp-row-desc">128건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.05.16 (금)</span>
+      <span class="sp-row-desc">106건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.05.09 (금)</span>
+      <span class="sp-row-desc">103건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.05.02 (금)</span>
+      <span class="sp-row-desc">106건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.04.25 (금)</span>
+      <span class="sp-row-desc">112건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.04.18 (금)</span>
+      <span class="sp-row-desc">107건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.04.11 (금)</span>
+      <span class="sp-row-desc">120건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.04.04 (금)</span>
+      <span class="sp-row-desc">115건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.03.28 (금)</span>
+      <span class="sp-row-desc">129건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.03.21 (금)</span>
+      <span class="sp-row-desc">110건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.03.14 (금)</span>
+      <span class="sp-row-desc">115건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.03.07 (금)</span>
+      <span class="sp-row-desc">130건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.02.28 (금)</span>
+      <span class="sp-row-desc">131건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.02.21 (금)</span>
+      <span class="sp-row-desc">104건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.02.14 (금)</span>
+      <span class="sp-row-desc">116건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.02.07 (금)</span>
+      <span class="sp-row-desc">140건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.01.31 (금)</span>
+      <span class="sp-row-desc">14건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+    <div class="sp-row">
+      <span class="sp-row-title">2025.01.24 (금)</span>
+      <span class="sp-row-desc">102건 정산</span>
+      <span class="sp-row-tag">정산완료</span>
+    </div>
+    
+  </details>
+  
+</section>
+
+<section class="sp-section" id="faq">
+  <span class="hp-label"><span class="hp-label-dot"></span>FAQ</span>
+  <div style="margin-top:20px">
+    
+    <details class="sp-faq-item" open>
+      <summary>정산은 언제 되나요?</summary>
+      <div class="sp-faq-body">매주 수요일 정산서를 보내고, 금요일에 입금합니다. 공휴일과 겹치면 하루~이틀 먼저 처리합니다.</div>
+    </details>
+    
+    <details class="sp-faq-item">
+      <summary>정산이 잘못되면요?</summary>
+      <div class="sp-faq-body">정산 내역 검토 중 오지급이나 누락이 확인되면 당일 수정 정산서를 재발행하며, 차액은 확인 즉시 또는 차주 정산 시 최우선 반영하여 소급 지급됩니다.</div>
+    </details>
+    
+    <details class="sp-faq-item">
+      <summary>고객 정보는 어디까지 보관하나요?</summary>
+      <div class="sp-faq-body">개통이 완료되는 즉시 시스템 단위의 하드마킹 암호화 처리가 적용되어 이름, 연락처, 주민번호 등 민감 개인정보는 완전히 마스킹되며 영구 보관되지 않습니다.</div>
+    </details>
     
   </div>
 </section>
 
-<section>
-  <div class="wrap">
-    <h2>🔒 DB 보호</h2>
 
-    
-    <h3 style="font-size:17px">우리는 다 해봤습니다.</h3>
-    
-    <div class="no-obligations">
-      <span>보안업체 위탁</span><span>OTP</span><span>비밀번호 복잡화</span><span>자동 로그아웃</span><span>로그 기록</span>
+<section class="sp-cta" id="cta">
+  <div class="sp-cta-inner">
+    <h2>정해진 날 받는 정산,<br>직접 확인해 보세요.</h2>
+    <div class="sp-cta-ctas">
+      <a class="hp-pill hp-pill--inverted" href="#">카카오톡으로 정책 받기</a>
+      <a class="hp-pill hp-pill--outline" href="tel:010-2222-4183">전화 010-2222-4183</a>
     </div>
-    
-    <p class="lead" style="margin-top:12px">그런데도 두 번이나 뚫렸습니다. 왜 뚫렸는지 정확한 경로는 저희도 모릅니다. OTP까지 썼지만, 너무 불편해서 오래 못 갔습니다. 대기업도 해킹당하는 마당에, 저희 웹이라고 안전하다고 할 수는 없겠더라고요.</p>
-    <p class="tagline">그래서 질문을 바꿨습니다. '막을 수 있는가'가 아니라, '뚫려도 괜찮은가.'</p>
-    
-
-    
-    <div class="stat-grid" style="grid-template-columns:1fr; max-width:260px; margin-top:18px">
-      <div class="stat-box"><div class="num">0회</div><div class="label">하드마킹 도입 이후, 해킹 이슈</div></div>
-    </div>
-    
-
-    
-    <div class="icon-steps" style="margin-top:18px">
-      
-      <div class="icon-step"><span class="icon-step-icon">🔐</span><span class="icon-step-text">개통이 완료되면 CRM의 고객 핵심정보는 자동으로 하드마킹됩니다.</span></div>
-      
-      <div class="icon-step"><span class="icon-step-icon">🗂️</span><span class="icon-step-text">원본 정보는 별도로 보관하고, 고객 VOC나 재영업 등 필요한 경우 요청을 통해 제공합니다.</span></div>
-      
-    </div>
-    
-    <p class="tagline" style="margin-top:14px">보여주는 곳과 보관하는 곳을 구분하는 것. ENTER가 고객정보를 관리하는 방식입니다.</p>
-
-    
-    <div class="steps flow">
-      <div class="step">ENTER CRM에서 '개통완료'로 전환되는 순간</div><div class="step">🔒 고객 핵심정보 하드마킹</div>
-    </div>
-    
-
-    <p class="lead" style="margin-top:10px">2번 정산 흐름의 '개통확인(ENTER CRM)' 지점에서 함께 일어납니다.</p>
-
-    
-    <div class="compare">
-      <div class="compare-item">
-        <div class="compare-tag">BEFORE</div>
-        <img src="static/evidence/db-before.png" alt="청약 접수 시 — 주민번호·연락처 그대로 노출">
-        <p>청약 접수 시 — 주민번호·연락처 그대로 노출</p>
-      </div>
-      <div class="compare-item">
-        <div class="compare-tag compare-tag-after">AFTER</div>
-        <img src="static/evidence/db-after.png" alt="개통완료 후 — 자동 하드마킹, 내부 직원도 못 봄">
-        <p>개통완료 후 — 자동 하드마킹, 내부 직원도 못 봄</p>
-      </div>
-    </div>
-    
-
-    
-    <div class="source-note">
-      <span>출처: 실제 CRM 화면 캡처</span>
-    </div>
-    
-
-    
-    <p style="margin-top:18px"><a class="btn btn-primary" href="#">정책표 먼저 받아보기</a></p>
-    
   </div>
 </section>
+
 
 </main>
 
 
-<footer class="legal">
-  <div class="wrap">(유)위드컴퍼니 도매영업팀이 운영하는 유선 전문 브랜드 ENTER · 사업자정보/주소 추후 표기 · 010-2222-4183</div>
+
+<footer class="hp-footer">
+  <div class="hp-wrap">
+    <div class="hp-footer-top">
+      <div class="hp-footer-brand">
+        <img src="static/brand/enter-horizontal-light.svg" alt="ENTER — 유선전문 도매센터" class="hp-footer-logo">
+        <p>(유)위드컴퍼니 도매영업팀이 운영하는 유선 전문 브랜드</p>
+      </div>
+      <div class="hp-footer-cols">
+        
+        <div class="hp-footer-col">
+          <span class="hp-footer-heading">회사</span>
+          <a href="why.html">왜 ENTER</a><a href="about.html">회사소개</a><a href="stories.html">거래처 이야기</a>
+        </div>
+        
+        <div class="hp-footer-col">
+          <span class="hp-footer-heading">거래</span>
+          <a href="start.html">거래 시작하기</a><a href="settlement.html">정산·DB보호</a><a href="products.html">취급상품</a>
+        </div>
+        
+        <div class="hp-footer-col">
+          <span class="hp-footer-heading">정보</span>
+          <a href="startup.html">창업자 가이드</a><a href="faq.html">FAQ</a><a href="blog.html">블로그</a>
+        </div>
+        
+      </div>
+    </div>
+    <div class="hp-footer-bottom">
+      <span>(유)위드컴퍼니 도매영업팀이 운영하는 유선 전문 브랜드 ENTER · 사업자정보/주소 추후 표기 · 010-2222-4183</span>
+      <span>© 2026 ENTER. All rights reserved.</span>
+    </div>
+  </div>
 </footer>
 
 

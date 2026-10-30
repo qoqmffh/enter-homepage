@@ -1,0 +1,34 @@
+{# 이미지 히어로 — 소개형(tall, 620px) / 게시판형(compact, 360px) 공용.
+   Stitch 시안의 외부(구글) 이미지는 쓰지 않는다. static/photos/hero-<data.photo>.jpg가
+   있으면 쓰고, 없으면 CSS background-color(#2a2d33)만 보인다 — 사진 분위기는
+   data.photo_mood 주석으로 옆에 남겨 실제 사진 교체 시 참고한다. #}
+{% macro render(variant, data) %}
+<div class="sp-hero sp-hero--{{ variant }}">
+  <div class="sp-hero-frame" style="background-image:url('static/photos/hero-{{ data.photo }}.jpg')">
+    {# 사진 분위기(교체용 참고): {{ data.photo_mood }} #}
+    <div class="sp-hero-tint"></div>
+    <div class="sp-hero-body">
+      <div>
+        <p class="sp-hero-label">● {{ data.label }}</p>
+        <h1 class="sp-hero-headline">{% for line in data.headline %}{{ line }}{% if not loop.last %}<br>{% endif %}{% endfor %}</h1>
+        <p class="sp-hero-sub">{{ data.subline | safe }}</p>
+        <div class="sp-hero-ctas">
+          <a class="hp-pill hp-pill--inverted" href="#cta">{{ data.cta_primary }}</a>
+          {% if variant == 'tall' %}<a class="hp-pill hp-pill--outline" href="#faq">{{ data.cta_secondary }}</a>{% endif %}
+        </div>
+      </div>
+      {% if variant == 'tall' and data.facts %}
+      <div class="sp-hero-facts">
+        {% for f in data.facts %}
+        <div class="sp-hero-fact">
+          <span class="sp-hero-fact-value">{{ f.value }}</span>
+          <span class="sp-hero-fact-label">{{ f.label }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    {% if data.photo_caption %}<span class="sp-hero-caption">{{ data.photo_caption }}</span>{% endif %}
+  </div>
+</div>
+{% endmacro %}

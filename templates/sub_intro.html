@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% import "partials/hero.html" as hero_mod %}
+{% import "partials/cta_band.html" as cta_mod with context %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="static/site.css">
+<link rel="stylesheet" href="static/sub.css">
+{% endblock %}
+
+{% block content %}
+{% set s = page.sub %}
+
+{{ hero_mod.render('tall', s.hero) }}
+
+<section class="sp-section sp-section--center" id="statement">
+  <div class="sp-statement">
+    <h2><span class="hp-ink">{{ s.statement.headline_ink }}</span><br><span class="hp-green">{{ s.statement.headline_green }}</span></h2>
+    <p>{{ s.statement.body }}</p>
+  </div>
+</section>
+
+<section class="sp-section" id="cards">
+  <div class="sp-cards">
+    {% for card in s.cards %}
+    <div class="sp-card">
+      <div class="sp-card-head">
+        <h3>{{ card.title }}</h3>
+        <span class="sp-card-index">/{{ card.index }}</span>
+      </div>
+
+      {% if card.mockup == 'week_strip' %}
+      <div class="sp-week">
+        <div class="sp-week-row"><span>전 주 (개통 기간)</span><span>월~일 개통</span></div>
+        <div class="sp-week-grid">
+          {% for d in ['월','화','수','목','금'] %}<div class="sp-week-day">{{ d }}</div>{% endfor %}
+        </div>
+        <div class="sp-week-row"><span>정산 주 (지급 일정)</span><span style="color:var(--hp-green)">금요일 입금</span></div>
+        <div class="sp-week-grid">
+          <div class="sp-week-day">월</div>
+          <div class="sp-week-day">화</div>
+          <div class="sp-week-day sp-week-day--mid">수<span>정산서</span></div>
+          <div class="sp-week-day">목</div>
+          <div class="sp-week-day sp-week-day--out">금<span>입금</span></div>
+        </div>
+      </div>
+      {% elif card.mockup == 'record_card' %}
+      <div class="sp-record">
+        <span class="sp-record-tag">개통완료 · 하드마킹</span>
+        <div class="sp-record-row"><span>고객명</span><span>홍●동</span></div>
+        <div class="sp-record-row"><span>연락처</span><span>010-●●●●-5678</span></div>
+        <div class="sp-record-row"><span>주민번호</span><span>900101-●●●●●●●</span></div>
+      </div>
+      {% elif card.mockup == 'big_text' %}
+      <div class="sp-card-big">{{ card.big_text }}</div>
+      {% endif %}
+
+      <p class="sp-card-desc">{{ card.desc }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="sp-section" id="detail">
+  <div class="sp-detail-head">
+    <span class="hp-label"><span class="hp-label-dot"></span>{{ s.detail.label }}</span>
+    <h2>{{ s.detail.headline }}</h2>
+  </div>
+  {% set all_rows = (page[s.detail.rows_key] | reverse | list) %}
+  <div>
+    {% for row in all_rows[:5] %}
+    <div class="sp-row">
+      <span class="sp-row-title">{{ row.date }} ({{ row.dow[:1] }})</span>
+      <span class="sp-row-desc">{{ row.count }}건 정산</span>
+      <span class="sp-row-tag">{{ s.detail.row_tag }}</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% if all_rows|length > 5 %}
+  <details class="sp-detail-more">
+    <summary>
+      <span class="sp-detail-foot">
+        <span class="sp-detail-expand">{{ s.detail.expand_label }}</span>
+        <span class="sp-detail-source">{{ s.detail.source }}</span>
+      </span>
+    </summary>
+    {% for row in all_rows[5:] %}
+    <div class="sp-row">
+      <span class="sp-row-title">{{ row.date }} ({{ row.dow[:1] }})</span>
+      <span class="sp-row-desc">{{ row.count }}건 정산</span>
+      <span class="sp-row-tag">{{ s.detail.row_tag }}</span>
+    </div>
+    {% endfor %}
+  </details>
+  {% else %}
+  <div class="sp-detail-foot">
+    <span></span>
+    <span class="sp-detail-source">{{ s.detail.source }}</span>
+  </div>
+  {% endif %}
+</section>
+
+<section class="sp-section" id="faq">
+  <span class="hp-label"><span class="hp-label-dot"></span>FAQ</span>
+  <div style="margin-top:20px">
+    {% for item in s.faq %}
+    <details class="sp-faq-item"{% if loop.first %} open{% endif %}>
+      <summary>{{ item.q }}</summary>
+      <div class="sp-faq-body">{{ item.a }}</div>
+    </details>
+    {% endfor %}
+  </div>
+</section>
+
+{{ cta_mod.render(s.cta) }}
+{% endblock %}
