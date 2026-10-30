@@ -1,0 +1,150 @@
+/* ENTER 홈 — "광고 한 편 → 막이 걷히며 하얀 홈" (기획서/클로드코드_홈_광고인트로_지시서.md, v8 기준).
+   철학은 다른 POETIC 스크립트와 동일: 기본 상태는 "하얀 홈이 바로 보임"이고, html.ad-pending이
+   붙었을 때만(동기 인라인 스크립트가 localStorage 1시간 재방문·reduced-motion·?intro=1을 먼저
+   확인한 뒤) 광고 무대가 화면을 덮는다. JS가 실패해도 안전장치(하드 타임아웃)가 ad-pending을
+   풀어 하얀 홈을 보여준다 — static/home-ad.js 참고. */
+
+html.ad-pending body,
+html.ad-pending{ overflow:hidden; height:100%; }
+
+/* ---------- 헤더: 광고 중에는 투명 배경 + 흰 로고 ---------- */
+html.ad-pending .hp-header{ background:transparent; border-bottom-color:transparent; backdrop-filter:none; }
+html.ad-pending .hp-header .hp-brand-svg g{ fill:var(--hp-white); }
+html.ad-pending .hp-header .hp-brand-door-leaf{ fill:#5DB88C; }
+html.ad-pending .hp-nav a{ color:rgba(255,255,250,.75); }
+html.ad-pending .hp-nav a:hover, html.ad-pending .hp-nav a.active{ color:var(--hp-white); }
+html.ad-pending .hp-nav-toggle{ color:var(--hp-white); }
+html.ad-pending .hp-header-right .hp-pill--primary{ background:var(--hp-white); color:var(--hp-black); }
+html.ad-pending .hp-replay-link{ display:none; }
+
+/* 하얀 홈 헤드라인: 광고가 걷히기 전까지 숨겨둔다(FOUC 방지). 전환 시 JS가 인라인 style로
+   직접 되돌려 단계적으로 올라오게 한다(home-ad.js revealWhiteHome 참고). */
+html.ad-pending .hp-hero .hp-display-xl .hp-headline-line{ opacity:0; transform:translateY(24px); }
+
+.hp-replay-link{ font-size:12px; color:var(--hp-grey); white-space:nowrap; }
+.hp-replay-link:hover{ color:var(--hp-ink); }
+.hp-nav .hp-replay-link{ margin-left:8px; }
+
+/* ---------- 광고 무대 ---------- */
+.hp-ad-stage{
+  display:none;
+  position:fixed; inset:0; z-index:30;
+  background:var(--hp-black); overflow:hidden; isolation:isolate;
+}
+html.ad-pending .hp-ad-stage{ display:block; }
+.hp-ad-stage--leaving{ transform:translateX(0); transition:transform .72s cubic-bezier(.7,0,.3,1); }
+
+.hp-ad-canvas{ position:absolute; inset:0; z-index:1; display:block; width:100%; height:100%; opacity:0; transition:opacity 1s ease; }
+.hp-ad-stage--sky .hp-ad-canvas{ opacity:1; }
+
+/* ---------- 인트로 로고 (효과 없음: 페이드인 -> 머묾 -> 페이드아웃) ---------- */
+.hp-ad-intro{
+  position:absolute; inset:0; z-index:5; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; pointer-events:none;
+}
+.hp-ad-intro-logo{ height:44px; width:auto; opacity:0; transition:opacity .7s ease; display:block; }
+.hp-ad-intro-sub{
+  margin-top:14px; font-size:14px; color:rgba(255,255,250,.6); letter-spacing:.14em;
+  opacity:0; transition:opacity .7s ease;
+}
+.hp-ad-intro--in .hp-ad-intro-logo, .hp-ad-intro--in .hp-ad-intro-sub{ opacity:1; }
+.hp-ad-intro--out .hp-ad-intro-logo, .hp-ad-intro--out .hp-ad-intro-sub{ opacity:0; }
+.hp-ad-intro--done{ display:none; }
+
+/* ---------- 장면 텍스트 오버레이(전부 JS가 progress에 따라 opacity/transform을 직접 쓴다) ---------- */
+.hp-ad-overlay{ position:absolute; inset:0; z-index:2; pointer-events:none; }
+.hp-ad-scene{ position:absolute; inset:0; }
+
+.hp-ad-line{
+  position:absolute; margin:0; max-width:80vw; font-weight:800; letter-spacing:-.03em;
+  line-height:1; color:var(--hp-white); opacity:0; will-change:opacity, transform;
+}
+.hp-ad-line--1{ top:20%; left:6%; font-size:40px; }
+.hp-ad-line--2{ bottom:26%; right:6%; text-align:right; font-size:40px; }
+
+.hp-ad-scene--s2{ display:flex; align-items:center; justify-content:flex-end; }
+.hp-ad-s2-box{ position:absolute; right:6%; top:50%; transform:translateY(-50%); text-align:right; opacity:0; will-change:opacity, transform; max-width:70vw; }
+.hp-ad-s2-kpi{ margin:0; font-size:30px; font-weight:800; letter-spacing:-.03em; color:var(--hp-white); }
+.hp-ad-s2-kpi b{ color:#5DB88C; font-weight:800; }
+.hp-ad-s2-note{ margin:10px 0 0; font-size:12px; color:rgba(255,255,250,.6); opacity:0; }
+
+.hp-ad-center{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); text-align:center; }
+.hp-ad-s3-label, .hp-ad-s4-label{ margin:0 0 6px; font-size:16px; font-weight:700; color:rgba(255,255,250,.6); letter-spacing:-.01em; opacity:0; }
+.hp-ad-s3-big, .hp-ad-s4-big{ margin:0; font-size:72px; font-weight:800; line-height:1; color:var(--hp-white); opacity:0; will-change:opacity, transform; }
+.hp-ad-s3-big b, .hp-ad-s4-big b{ color:#5DB88C; }
+.hp-ad-s4-big.hp-ad-done b{ color:#5DB88C; }
+.hp-ad-s3-big i, .hp-ad-s4-big i{ font-style:normal; font-size:34px; margin-left:6px; }
+.hp-ad-s4-note{ margin:14px 0 0; font-size:13px; color:rgba(255,255,250,.6); opacity:0; }
+
+.hp-ad-carriers{ position:absolute; inset:0; }
+.hp-ad-carrier{
+  position:absolute; left:50%; top:50%; margin:0; white-space:nowrap;
+  font-size:32px; font-weight:800; letter-spacing:-.03em; color:var(--hp-white);
+  opacity:0; transform:translate(-50%,-50%); will-change:opacity, transform, filter;
+}
+.hp-ad-slogan{ position:absolute; left:0; right:0; bottom:14%; text-align:center; margin:0; font-size:15px; font-weight:500; letter-spacing:.06em; color:rgba(255,255,250,.6); opacity:0; }
+
+.hp-ad-end-line1{ margin:0; font-size:36px; font-weight:800; letter-spacing:-.03em; color:var(--hp-white); opacity:0; }
+.hp-ad-end-line2{ margin:12px 0 0; font-size:17px; font-weight:600; color:#3a3f48; opacity:0; }
+.hp-ad-end-btns{
+  margin:22px auto 0; display:flex; justify-content:center; flex-wrap:wrap; gap:12px;
+  opacity:0; pointer-events:none; will-change:opacity, transform;
+}
+.hp-ad-btn{ padding:13px 24px; border-radius:999px; font-size:15px; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; }
+.hp-ad-btn--primary{ background:var(--hp-white); color:var(--hp-black); border:none; cursor:pointer; }
+.hp-ad-btn--ghost{ background:transparent; color:var(--hp-white); border:1.5px solid var(--hp-white); cursor:pointer; font-family:inherit; }
+
+/* ---------- 장면 진행 표시(점 6개) + 하단 진행 막대 ---------- */
+.hp-ad-dots{ position:absolute; right:22px; top:50%; transform:translateY(-50%); z-index:3; display:flex; flex-direction:column; gap:10px; }
+.hp-ad-dot{ width:5px; height:5px; border-radius:50%; background:rgba(255,255,250,.25); transition:background .3s ease, transform .3s ease; }
+.hp-ad-dot--active{ background:#5DB88C; transform:scale(1.6); }
+
+.hp-ad-progress{ position:absolute; left:0; right:0; bottom:0; z-index:3; height:2px; background:rgba(255,255,250,.12); }
+.hp-ad-progress-fill{ display:block; width:100%; height:100%; background:#5DB88C; transform:scaleX(0); transform-origin:left; }
+
+.hp-ad-skip{
+  position:absolute; right:22px; bottom:20px; z-index:4;
+  background:none; border:none; font-size:13px; color:rgba(255,255,250,.55);
+  cursor:pointer; padding:8px; font-family:inherit;
+}
+.hp-ad-skip:hover{ color:rgba(255,255,250,1); }
+
+/* ---------- 막 걷힘: 초록 띠 와이프 3장(인트로와 같은 색/타이밍) ---------- */
+.hp-ad-wipe{ position:absolute; inset:0; z-index:6; pointer-events:none; }
+.hp-ad-wipe-layer{ position:absolute; inset:0; transform:translateX(-100%); }
+.hp-ad-wipe-layer--1{ background:#1E6F50; }
+.hp-ad-wipe-layer--2{ background:#2F8F68; }
+.hp-ad-wipe-layer--3{ background:#5DB88C; }
+
+@media (min-width:768px){
+  .hp-ad-intro-logo{ height:56px; }
+  .hp-ad-line--1{ top:18%; left:7%; font-size:72px; }
+  .hp-ad-line--2{ bottom:26%; right:7%; font-size:72px; }
+  .hp-ad-s2-kpi{ font-size:52px; }
+  .hp-ad-s2-note{ font-size:13px; }
+  .hp-ad-s3-label, .hp-ad-s4-label{ font-size:20px; }
+  .hp-ad-s3-big, .hp-ad-s4-big{ font-size:128px; }
+  .hp-ad-s3-big i, .hp-ad-s4-big i{ font-size:56px; }
+  .hp-ad-s4-note{ font-size:15px; }
+  .hp-ad-carrier{ font-size:96px; }
+  .hp-ad-slogan{ font-size:17px; }
+  .hp-ad-end-line1{ font-size:56px; }
+  .hp-ad-end-line2{ font-size:19px; }
+}
+
+@media (min-width:1280px){
+  .hp-ad-line--1{ left:80px; font-size:88px; }
+  .hp-ad-line--2{ right:80px; font-size:88px; }
+  .hp-ad-s3-big, .hp-ad-s4-big{ font-size:150px; }
+  .hp-ad-carrier{ font-size:120px; }
+}
+
+/* ---------- 안전장치 ---------- */
+@media (prefers-reduced-motion:reduce){
+  html.ad-pending .hp-ad-stage{ display:none !important; }
+  html.ad-pending body, html.ad-pending{ overflow:visible !important; height:auto !important; }
+  html.ad-pending .hp-header{ background:rgba(255,255,250,.92); border-bottom-color:var(--hp-line); backdrop-filter:blur(8px); }
+  html.ad-pending .hp-header .hp-brand-svg g{ fill:var(--hp-ink); }
+  html.ad-pending .hp-nav a{ color:inherit; }
+  html.ad-pending .hp-hero .hp-display-xl .hp-headline-line{ opacity:1; transform:none; }
+}

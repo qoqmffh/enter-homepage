@@ -1,0 +1,382 @@
+/* ENTER 홈 — POETIC 오마주 버전 전용 스타일.
+   common.css는 건드리지 않는다(다른 페이지 전부 영향). 이 파일은 home.html에서만 로드된다.
+   common.css의 .wrap(세로 그리드선 배경)을 재사용하지 않고 .hp-wrap을 새로 쓴다 — 배경 그리드선 금지 요구사항 때문. */
+
+:root{
+  --hp-white:#FFFFFA;
+  --hp-black:#0B0D12;
+  --hp-ink:#10182B;
+  --hp-grey:#6B7280;
+  --hp-grey-bg:#F0F0EB;
+  --hp-line:#E5E5DF;
+  --hp-line-dark:#1E222B;
+  --hp-green:#1E6F50;
+  --hp-green-tint:#DCEBE3;
+}
+
+/* ---------- 리셋 겸 베이스 (home.html 범위에서만) ---------- */
+body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; overflow-wrap:break-word; }
+.hp-wrap{ max-width:1200px; margin:0 auto; padding:0 20px; }
+.hp-wrap--narrow{ max-width:900px; }
+.hp-center{ text-align:center; }
+.hp-section{ padding:80px 0; }
+
+/* word-break:keep-all은 body에서 상속되므로 전 요소에 적용됨(blockquote 포함) — 한글이 글자 단위로 끊기지 않게 */
+
+/* ---------- 타이포 스케일 ---------- */
+.hp-display-xl{ font-weight:700; font-size:44px; line-height:1.04; letter-spacing:-.04em; margin:0; display:flex; flex-direction:column; text-wrap:balance; }
+.hp-display-xl .hp-headline-line{ display:block; }
+.hp-display-lg{ font-weight:700; font-size:36px; line-height:1.17; letter-spacing:-.02em; margin:0 0 32px; text-wrap:balance; }
+.hp-headline-lg{ font-weight:700; font-size:28px; line-height:1.3; letter-spacing:-.02em; margin:0; text-wrap:balance; }
+.hp-headline-md{ font-weight:700; font-size:22px; line-height:1.35; letter-spacing:-.015em; margin:16px 0 0; text-wrap:balance; }
+.hp-body-xl{ font-size:16px; line-height:1.65; color:var(--hp-grey); margin:0; }
+.hp-body-lg{ font-size:15px; line-height:1.6; }
+.hp-two-tone{ max-width:640px; margin:12px auto 0; }
+.hp-two-tone-block{ display:flex; flex-direction:column; gap:4px; }
+.hp-ink{ color:var(--hp-ink); }
+.hp-green{ color:var(--hp-green); }
+.hp-green-text{ color:var(--hp-green); }
+.hp-strong{ font-weight:700; }
+.hp-muted{ color:var(--hp-grey); }
+.hp-mono-muted{ font-size:11px; letter-spacing:.04em; color:var(--hp-grey); text-transform:uppercase; }
+.hp-mono-green{ font-size:11px; letter-spacing:.04em; color:var(--hp-green); text-transform:uppercase; }
+
+/* ---------- 섹션 라벨(● 텍스트) ---------- */
+.hp-label{ display:inline-flex; align-items:center; gap:7px; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--hp-grey); margin-bottom:12px; }
+.hp-label-dot{ width:7px; height:7px; border-radius:50%; background:var(--hp-green); flex:0 0 auto; }
+
+/* ---------- 알약 버튼 ---------- */
+.hp-pill{ display:inline-flex; align-items:center; justify-content:center; gap:8px; border-radius:999px; padding:12px 24px; font-size:14px; font-weight:700; white-space:nowrap; transition:background-color .15s ease, color .15s ease, border-color .15s ease; }
+.hp-pill-dot{ width:7px; height:7px; border-radius:50%; background:var(--hp-green); flex:0 0 auto; }
+.hp-pill--primary{ background:var(--hp-black); color:var(--hp-white); }
+.hp-pill--primary:hover{ background:var(--hp-green); }
+.hp-pill--primary .hp-pill-dot{ background:var(--hp-white); }
+.hp-pill--secondary{ background:var(--hp-grey-bg); color:var(--hp-ink); border:1px solid transparent; }
+.hp-pill--secondary:hover{ background:var(--hp-line); border-color:var(--hp-ink); }
+.hp-pill--inverted{ background:var(--hp-white); color:var(--hp-black); }
+.hp-pill--inverted:hover{ background:var(--hp-green-tint); }
+
+/* ---------- 헤더 ---------- */
+.hp-header{ position:sticky; top:0; z-index:40; background:rgba(255,255,250,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--hp-line); transition:background .3s ease, border-color .3s ease; }
+/* 입자 장면(검은 우주) 위에 떠 있는 동안: 투명 배경 + 흰 로고/메뉴.
+   static/home-particles.js가 IntersectionObserver로 #particle-story가
+   보이는 동안에만 .hp-header--on-dark를 붙인다 — JS 없으면 평소 헤더 그대로. */
+/* position:sticky 헤더는 일반 문서 흐름에 있어서 입자 장면과 "겹치는" 게
+   아니라 바로 위에 붙어 있을 뿐이다 — 진짜 투명으로 두면 그 뒤에 보이는 건
+   캔버스가 아니라 body의 흰 배경이다. 그래서 완전 투명 대신 장면과 같은
+   검정으로 맞춰서 이어진 것처럼 보이게 한다. */
+.hp-header--on-dark{ background:var(--hp-black); backdrop-filter:none; border-bottom-color:transparent; }
+.hp-header--on-dark .hp-brand-svg g{ fill:var(--hp-white); transition:fill .3s ease; }
+.hp-header--on-dark .hp-nav a{ color:rgba(255,255,250,.75); }
+.hp-header--on-dark .hp-nav a:hover, .hp-header--on-dark .hp-nav a.active{ color:var(--hp-white); }
+.hp-header--on-dark .hp-nav-toggle{ color:var(--hp-white); }
+.hp-header-inner{ max-width:1200px; margin:0 auto; padding:0 20px; height:68px; display:flex; align-items:center; justify-content:space-between; }
+.hp-brand{ display:inline-flex; align-items:center; }
+.hp-brand-svg{ height:26px; width:auto; display:block; }
+.hp-brand-door-leaf{ transition:transform .3s ease; transform-box:fill-box; transform-origin:0% 50%; }
+.hp-brand:hover .hp-brand-door-leaf{ transform:scaleX(1.3) skewY(-6deg); }
+@media (prefers-reduced-motion:reduce){ .hp-brand-door-leaf{ transition:none; } }
+.hp-nav{ display:none; }
+.hp-nav a{ font-size:14px; color:var(--hp-grey); padding:8px 14px; transition:color .15s ease; }
+.hp-nav a:hover, .hp-nav a.active{ color:var(--hp-ink); }
+.hp-header-right{ display:flex; align-items:center; gap:10px; }
+.hp-header-right .hp-pill{ display:none; }
+.hp-nav-toggle-input{ display:none; }
+.hp-nav-toggle{ display:flex; align-items:center; justify-content:center; width:40px; height:40px; cursor:pointer; color:var(--hp-ink); }
+.hp-nav-mobile{ display:none; flex-direction:column; position:absolute; left:0; right:0; top:68px; background:var(--hp-white); border-bottom:1px solid var(--hp-line); padding:8px 20px 16px; }
+.hp-nav-mobile a{ padding:12px 0; font-size:15px; color:var(--hp-ink); border-bottom:1px solid var(--hp-line); }
+.hp-nav-mobile a:last-child{ border-bottom:none; }
+#hpNavToggle:checked ~ .hp-nav-mobile{ display:flex; }
+
+/* ---------- 히어로 ---------- */
+.hp-hero{ padding-top:24px; }
+/* poetic.com 실제 비율: 헤더-헤드라인 위 여백 + hp-hero-top의 min-height로
+   헤드라인+부제가 첫 화면 가운데쯤 오고, 문단(hp-hero-below)이 화면 아래쪽에
+   살짝 걸쳐 보이게(스크롤 유도) 한다. 고정 gap 대신 뷰포트 기준으로 맞춘다.
+   위아래 여백이 너무 휑하다는 피드백으로 위/아래 모두 절반 수준으로 축소. */
+.hp-hero-top{ display:flex; flex-direction:column; justify-content:center; min-height:calc(100vh - 280px); }
+.hp-hero-subhead{ margin:28px 0 0; font-size:22px; line-height:1.4; color:var(--hp-grey); font-weight:400; }
+.hp-hero-sub{ font-size:20px; line-height:1.5; color:var(--hp-ink); font-weight:700; margin:0 0 20px; max-width:620px; }
+.hp-hero-ctas{ display:flex; flex-wrap:wrap; gap:12px; margin-bottom:28px; }
+.hp-hairline{ height:1px; background:var(--hp-line); margin:0 0 28px; }
+.hp-stats{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+.hp-stat-card{ position:relative; overflow:hidden; background:var(--hp-black); color:var(--hp-white); border:1px solid var(--hp-line-dark); border-radius:14px; padding:20px; min-height:150px; display:flex; flex-direction:column; justify-content:space-between; }
+.hp-stat-num{ font-size:34px; font-weight:700; letter-spacing:-.02em; line-height:1; }
+.hp-stat-label{ font-size:12px; color:rgba(255,255,250,.82); font-weight:600; margin-top:12px; }
+
+/* ---------- 브랜드 스테이트먼트(통계 근거 + 사진) ---------- */
+.hp-statement{ text-align:center; }
+.hp-photo-block{ position:relative; margin-top:64px; width:100%; min-height:280px; border-radius:20px; border:1px solid var(--hp-line); overflow:hidden; background-color:#2a2d33; background-size:cover; background-position:center; display:flex; align-items:center; justify-content:center; }
+.hp-photo-overlay{ position:absolute; inset:0; background:rgba(11,13,18,.55); }
+.hp-photo-corner{ position:absolute; font-size:10px; letter-spacing:.06em; color:rgba(255,255,250,.5); text-transform:uppercase; }
+.hp-photo-corner--tl{ top:16px; left:16px; }
+.hp-photo-corner--bl{ bottom:16px; left:16px; }
+.hp-photo-corner--br{ bottom:16px; right:16px; letter-spacing:.08em; }
+.hp-photo-center{ position:relative; z-index:2; text-align:center; padding:0 20px; color:var(--hp-white); }
+.hp-photo-badge .hp-label{ color:var(--hp-white); background:rgba(255,255,250,.1); border:1px solid rgba(255,255,255,.12); padding:5px 12px; border-radius:999px; margin-bottom:12px; }
+.hp-photo-badge .hp-label-dot{ background:var(--hp-green); }
+.hp-photo-caption-small{ font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:rgba(255,255,250,.7); margin:0 0 8px; }
+.hp-photo-caption{ font-size:28px; font-weight:700; line-height:1.3; letter-spacing:-.02em; margin:0; }
+
+/* ---------- 기능 카드 (블랙 카드 + 미니 UI) ---------- */
+.hp-features-head{ margin-bottom:36px; }
+.hp-features-head .hp-headline-lg{ margin-top:10px; }
+.hp-feature-card{ position:relative; overflow:hidden; background:var(--hp-black); color:var(--hp-white); border:1px solid var(--hp-line-dark); border-radius:20px; padding:28px 20px; margin-bottom:20px; }
+.hp-feature-card-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+.hp-feature-card-head h3{ color:var(--hp-white); }
+.hp-feature-index{ font-size:14px; color:rgba(255,255,250,.4); font-weight:700; white-space:nowrap; }
+.hp-feature-card-foot{ border-top:1px solid rgba(255,255,255,.1); padding-top:18px; margin-top:4px; }
+.hp-feature-card-foot p{ color:rgba(255,255,250,.82); font-size:14px; line-height:1.6; margin:0; }
+.hp-features-foot{ margin-top:32px; }
+.hp-features-foot .hp-pill{ margin-top:16px; }
+
+.hp-mockup{ background:var(--hp-white); color:var(--hp-ink); border:1px solid var(--hp-line); border-radius:14px; padding:18px; margin:24px 0; }
+.hp-mockup-head{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; border-bottom:1px solid var(--hp-line); padding-bottom:12px; margin-bottom:12px; }
+.hp-mockup-head-left{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.hp-mockup-title{ font-size:15px; font-weight:700; }
+.hp-chip{ font-size:10px; font-weight:700; padding:3px 9px; border-radius:999px; display:inline-block; }
+.hp-chip--tint{ background:var(--hp-green-tint); color:var(--hp-green); }
+
+/* ---------- 정산 장부 티커 (CSS 애니메이션, JS는 호버 밖 일시정지 보조만) ---------- */
+:root{ --hp-ledger-row-h:40px; --hp-ledger-cols:76px 20px 56px 1fr 60px; }
+.hp-mockup--ledger{ display:flex; flex-direction:column; }
+.hp-ledger-head, .hp-ledger-row{
+  display:grid; grid-template-columns:var(--hp-ledger-cols); gap:8px; align-items:center;
+}
+.hp-ledger-head{
+  font-size:9px; letter-spacing:.05em; text-transform:uppercase; color:var(--hp-grey); font-weight:700;
+  padding:0 2px 8px; border-bottom:1px solid var(--hp-line); margin-bottom:2px;
+}
+.hp-ledger-head span:nth-child(n+3), .hp-ledger-row .hp-num{ text-align:right; }
+.hp-ledger-viewport{
+  position:relative; overflow:hidden; height:calc(var(--hp-ledger-row-h) * 5.5);
+  mask-image:linear-gradient(to bottom, transparent, black 14%, black 86%, transparent);
+  -webkit-mask-image:linear-gradient(to bottom, transparent, black 14%, black 86%, transparent);
+}
+.hp-ledger-track{
+  display:flex; flex-direction:column;
+  animation:hp-ledger-scroll var(--hp-ledger-dur, 120s) linear infinite;
+}
+.hp-ledger-viewport:hover .hp-ledger-track,
+.hp-ledger-viewport.hp-ledger-offscreen .hp-ledger-track{ animation-play-state:paused; }
+.hp-ledger-row{ font-size:12px; padding:9px 2px; border-bottom:1px solid var(--hp-line); height:var(--hp-ledger-row-h); box-sizing:border-box; }
+.hp-chip-label{ display:none; }
+.hp-ledger-reduced-note{ display:none; font-size:11px; color:var(--hp-grey); margin:10px 0 0; }
+@keyframes hp-ledger-scroll{ from{ transform:translateY(0); } to{ transform:translateY(-50%); } }
+
+@media (prefers-reduced-motion:reduce){
+  .hp-ledger-viewport{ height:calc(var(--hp-ledger-row-h) * 5); mask-image:none; -webkit-mask-image:none; }
+  .hp-ledger-track{ animation:none !important; transform:none !important; }
+  .hp-ledger-reduced-note{ display:block; }
+}
+
+.hp-crm-grid{ display:grid; grid-template-columns:1fr; gap:10px; }
+.hp-crm-field{ background:#F6F6F1; border:1px solid var(--hp-line); border-radius:10px; padding:12px; display:flex; flex-direction:column; gap:4px; }
+.hp-field-label{ font-size:10px; letter-spacing:.04em; text-transform:uppercase; color:var(--hp-grey); }
+.hp-field-value{ font-size:14px; font-weight:700; letter-spacing:.02em; }
+.hp-mockup-foot{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px; border-top:1px solid var(--hp-line); padding-top:12px; margin-top:14px; }
+.hp-crm-badges{ display:flex; align-items:center; gap:6px; }
+.hp-chip--solid{ background:var(--hp-green); color:var(--hp-white); transition:opacity .25s ease, transform .25s ease; }
+
+.hp-chat-dot{ width:10px; height:10px; border-radius:50%; background:var(--hp-green); }
+.hp-chat-list{ display:flex; flex-direction:column; gap:12px; }
+.hp-chat-bubble{ background:#F6F6F1; border:1px solid var(--hp-line); border-radius:14px; border-top-left-radius:4px; padding:12px 14px; max-width:100%; transition:opacity .4s ease, transform .4s ease; }
+.hp-chat-bubble--accent{ background:rgba(220,235,227,.5); border-color:rgba(30,111,80,.2); }
+.hp-chat-bubble--sheet{ padding:0; overflow:hidden; background:var(--hp-white); }
+.hp-chat-label{ display:block; font-size:11px; font-weight:700; color:var(--hp-green); margin-bottom:4px; }
+.hp-chat-text{ font-size:13px; line-height:1.55; margin:0; font-weight:600; }
+
+.hp-policy-sheet{ padding:12px 14px; }
+.hp-policy-sheet-head{ display:flex; justify-content:space-between; align-items:center; font-size:12px; font-weight:700; padding-bottom:8px; margin-bottom:8px; border-bottom:1px solid var(--hp-line); }
+.hp-policy-sheet-row{ display:grid; grid-template-columns:54px 1fr auto; gap:8px; align-items:center; font-size:11px; padding:5px 0; }
+.hp-policy-sheet-row span:first-child{ font-weight:700; }
+.hp-policy-sheet-price{ font-weight:700; filter:blur(4px); -webkit-filter:blur(4px); user-select:none; }
+
+/* 메시지 등장 애니메이션: 기본은 전부 보이는 안전한 상태(JS 꺼지면 이대로 멈춤).
+   static/home-poetic-cards.js가 로드를 확인한 뒤에만 이 클래스를 붙여서 숨겼다가
+   순서대로 뗀다 — "JS는 자기가 되돌릴 수 있는 것만 가린다" 원칙. */
+.hp-chat-msg--pending{ opacity:0; transform:translateY(8px); }
+@media (prefers-reduced-motion:reduce){
+  .hp-chat-bubble, .hp-chip--solid{ transition:none; }
+}
+
+/* ---------- 약속 섹션 ---------- */
+.hp-promise{ position:relative; overflow:hidden; background:var(--hp-black); color:var(--hp-white); }
+.hp-promise .hp-label{ color:var(--hp-green); }
+.hp-promise .hp-label-dot{ border-radius:2px; }
+.hp-quote{ font-size:20px; font-weight:700; line-height:1.4; letter-spacing:-.015em; margin:0 0 36px; max-width:760px; }
+.hp-quote span{ display:block; }
+.hp-promise-grid{ display:flex; flex-direction:column; gap:32px; }
+.hp-promise-photo-col{ width:100%; }
+.hp-promise-photo-lg{
+  width:100%; aspect-ratio:4/5; max-width:360px; margin:0 auto;
+  background-color:var(--hp-black); background-size:cover; background-position:center top;
+  filter:grayscale(1) saturate(0);
+  transform:scaleX(-1);
+  -webkit-mask-image:radial-gradient(ellipse 78% 82% at 50% 42%, black 58%, transparent 100%);
+  mask-image:radial-gradient(ellipse 78% 82% at 50% 42%, black 58%, transparent 100%);
+}
+.hp-promise-content{ flex:1; min-width:0; }
+.hp-promise-foot{ display:flex; flex-direction:column; gap:28px; border-top:1px solid rgba(255,255,255,.1); padding-top:28px; }
+.hp-promise-person{ display:flex; gap:18px; align-items:flex-start; }
+.hp-promise-name{ display:block; font-size:15px; font-weight:700; }
+.hp-promise-title{ display:block; font-size:12px; color:rgba(255,255,250,.55); margin:3px 0 14px; }
+.hp-promise-carousel{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.hp-carousel-btns{ display:flex; gap:8px; }
+.hp-carousel-btns button{ width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,.1); border:none; color:var(--hp-white); display:flex; align-items:center; justify-content:center; cursor:not-allowed; opacity:.5; }
+
+/* ---------- 시작 섹션 ---------- */
+.hp-start-head{ margin-bottom:28px; }
+.hp-start-list{ border-top:1px solid var(--hp-line); }
+.hp-start-row{ display:flex; justify-content:space-between; align-items:center; gap:12px; padding:18px 4px; border-bottom:1px solid var(--hp-line); }
+.hp-start-text{ font-size:15px; font-weight:700; }
+.hp-start-note{ color:var(--hp-grey); font-size:13px; margin:28px 0 20px; }
+
+/* ---------- 신뢰 섹션 ---------- */
+.hp-trust-body{ margin:14px 0 28px; max-width:640px; }
+.hp-trust-badges{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; padding-top:24px; border-top:1px solid var(--hp-line); }
+.hp-badge{ background:#F6F6F1; border:1px solid var(--hp-line); border-radius:12px; padding:16px; display:flex; flex-direction:column; justify-content:space-between; gap:14px; min-height:120px; color:var(--hp-ink); }
+.hp-badge h4{ font-size:14px; font-weight:700; margin:0; }
+.hp-badge p{ font-size:11px; color:var(--hp-grey); margin:3px 0 0; }
+
+/* ---------- 통신사 섹션 ---------- */
+.hp-carriers{ position:relative; overflow:hidden; background:var(--hp-black); color:var(--hp-white); }
+.hp-carriers-label .hp-label{ color:rgba(255,255,250,.6); }
+.hp-carriers-label .hp-label-dot{ border-radius:2px; background:var(--hp-green); }
+.hp-carriers-names{ position:relative; z-index:1; font-size:40px; font-weight:800; letter-spacing:-.02em; line-height:1.15; margin:16px 0 24px; }
+.hp-carriers-body{ color:rgba(255,255,250,.8); max-width:420px; margin:0 0 20px; }
+
+/* 통신사 줄 호버 — 포인터 있는 기기에서만(터치/모바일 제외) */
+@media (hover:hover) and (pointer:fine){
+  .hp-carriers-names > div{ transition:color .3s ease, transform .3s ease, opacity .3s ease; }
+  .hp-carriers-names:hover > div{ opacity:.5; }
+  .hp-carriers-names > div:hover{ opacity:1; color:#3FA176; transform:translateX(8px); }
+}
+
+/* ---------- 픽셀 잔상(hover trail, poetic.com 레퍼런스) ----------
+   호스트(.hp-trail-host)는 position:relative+overflow:hidden이어야 하고,
+   본문 콘텐츠는 z-index:1로 trail 레이어 위에 뜬다. static/home-poetic-trail.js가
+   hover:hover+pointer:fine+!prefers-reduced-motion일 때만 칸을 생성한다 — 조건이
+   안 맞으면 JS가 아예 리스너를 안 걸어서 평소엔 빈 레이어로 아무 영향 없다.
+   색은 호스트의 data-trail="green"|"gray" 값으로 JS가 셀마다 인라인으로 정한다
+   (검은 카드 호스트가 흰 섹션 호스트 안에 중첩돼 있어도 closest()로 가장 안쪽
+   호스트만 선택되므로 겹치는 곳에서 색이 섞이지 않는다). */
+.hp-trail-host{ position:relative; overflow:hidden; }
+.hp-trail{ position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:0; }
+/* statement 사진 블록은 자식이 이미 position:absolute/relative라 DOM 순서(trail이 첫 자식)만으로
+   충분히 위에 쌓인다 — 아래 규칙은 일반 flow 콘텐츠를 쓰는 다른 호스트에만 필요하다. */
+.hp-stat-card > :not(.hp-trail),
+.hp-feature-card > :not(.hp-trail),
+.hp-promise > :not(.hp-trail),
+.hp-carriers > :not(.hp-trail),
+.hp-hero > :not(.hp-trail),
+.hp-statement > :not(.hp-trail),
+.hp-features > :not(.hp-trail),
+.hp-start > :not(.hp-trail),
+.hp-trust > :not(.hp-trail),
+.hp-closing > :not(.hp-trail){ position:relative; z-index:1; }
+.hp-trail-cell{
+  position:absolute; width:20px; height:20px;
+  animation:hp-trail-pop .16s cubic-bezier(0.34,1.56,0.64,1) forwards;
+}
+@keyframes hp-trail-pop{ from{ transform:scale(0); } to{ transform:scale(1); } }
+
+/* ---------- 마무리 CTA ---------- */
+.hp-closing-ctas{ display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin-top:28px; }
+
+/* ---------- 푸터 ---------- */
+.hp-footer{ padding:64px 0 32px; border-top:1px solid var(--hp-line); }
+.hp-footer-top{ display:flex; flex-direction:column; gap:40px; margin-bottom:48px; }
+.hp-footer-logo{ height:40px; width:auto; display:block; }
+.hp-footer-brand p{ color:var(--hp-grey); font-size:13px; margin-top:10px; max-width:320px; }
+.hp-footer-cols{ display:grid; grid-template-columns:repeat(2,1fr); gap:28px; }
+.hp-footer-col{ display:flex; flex-direction:column; gap:10px; }
+.hp-footer-heading{ font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--hp-ink); font-weight:700; margin-bottom:2px; }
+.hp-footer-col a{ font-size:13px; color:var(--hp-grey); }
+.hp-footer-col a:hover{ color:var(--hp-ink); }
+.hp-footer-bottom{ padding-top:24px; border-top:1px solid var(--hp-line); font-size:11px; color:var(--hp-grey); line-height:1.7; }
+
+/* ---------- 모바일 하단 고정바: 데스크톱에서는 숨긴다(지시서 요구) ---------- */
+@media (min-width:768px){ .footerbar{ display:none; } }
+
+/* ---------- 데스크톱 확장 ---------- */
+@media (min-width:768px){
+  .hp-wrap{ padding:0 40px; }
+  .hp-section{ padding:120px 0; }
+
+  .hp-display-xl{ font-size:72px; }
+  .hp-display-lg{ font-size:56px; line-height:1.1; }
+  .hp-headline-lg{ font-size:40px; line-height:1.2; }
+  .hp-headline-md{ font-size:28px; line-height:1.3; }
+  .hp-body-xl{ font-size:19px; }
+  .hp-hero{ padding-top:48px; }
+  .hp-hero-top{ min-height:calc(100vh - 400px); }
+
+  .hp-header-inner{ height:80px; padding:0 40px; }
+  .hp-nav{ display:flex; gap:4px; }
+  .hp-header-right .hp-pill{ display:inline-flex; }
+  .hp-nav-toggle{ display:none; }
+
+  .hp-stats{ grid-template-columns:repeat(4,1fr); gap:16px; }
+  .hp-stat-card{ min-height:220px; padding:28px; }
+  .hp-stat-num{ font-size:52px; }
+  .hp-stat-label{ font-size:13px; }
+
+  .hp-photo-block{ min-height:440px; border-radius:24px; margin-top:96px; }
+  .hp-photo-corner{ font-size:11px; }
+  .hp-photo-caption{ font-size:40px; }
+
+  .hp-feature-card{ padding:52px 56px; border-radius:24px; min-height:560px; display:flex; flex-direction:column; justify-content:space-between; }
+  .hp-mockup{ max-width:720px; margin:40px auto; padding:28px 32px; border-radius:18px; }
+  .hp-feature-card-foot p{ font-size:16px; }
+
+  .hp-mockup--ledger{ max-width:min(70%,820px); }
+  :root{ --hp-ledger-row-h:44px; --hp-ledger-cols:110px 32px 90px 1fr 140px; }
+  .hp-ledger-head{ font-size:10px; padding-bottom:10px; }
+  .hp-ledger-row{ font-size:14px; gap:14px; }
+  .hp-chip-label{ display:inline; }
+
+  .hp-quote{ font-size:32px; max-width:900px; }
+  .hp-promise-grid{ flex-direction:row; align-items:stretch; gap:56px; }
+  .hp-promise-photo-col{ width:40%; flex:0 0 40%; }
+  .hp-promise-photo-lg{ max-width:none; height:100%; }
+  .hp-promise-content{ display:flex; flex-direction:column; justify-content:center; }
+  .hp-promise-foot{ flex-direction:row; justify-content:space-between; align-items:flex-end; }
+  .hp-promise-person{ align-items:center; }
+
+  .hp-trust-badges{ grid-template-columns:repeat(6,1fr); gap:16px; }
+  .hp-carriers-names{ font-size:68px; }
+
+  .hp-footer-top{ flex-direction:row; justify-content:space-between; gap:60px; }
+  .hp-footer-cols{ grid-template-columns:repeat(3,1fr); gap:48px; }
+}
+
+@media (min-width:1024px){
+  .hp-display-xl{ font-size:84px; }
+  .hp-hero-sub{ max-width:none; white-space:nowrap; }
+}
+
+@media (min-width:1281px){
+  .hp-hero{ padding-top:64px; }
+  .hp-hero-top{ min-height:calc(100vh - 480px); }
+}
+
+/* ---------- 인트로·광고 ----------
+   기존 "커서 바 + 와이프" 인트로(legacy_v1/intro-cursor-wipe.js)는 폐기됐다.
+   지금의 인트로+광고 무대는 static/home-ad.js + static/home-ad.css가 전담한다
+   (기획서/클로드코드_홈_광고인트로_지시서.md). */
+
+/* ---------- Letter Swap (static/letter-swap.js) ----------
+   글자마다 칸(.ls-cell, overflow:hidden)에 primary/secondary 두 겹을 쌓아
+   롤 전환한다. .ls-sr-only는 스크린리더용 원문, .ls-cells는 실제 보이는 글자들
+   (aria-hidden) — 헤더 로고 호버 pingpong과 B안 인트로 글자 등장에 쓰인다. */
+.ls-root{ position:relative; display:inline-flex; align-items:center; }
+.ls-sr-only{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+}
+.ls-cells{ display:inline-flex; }
+.ls-cell{ position:relative; display:inline-block; overflow:hidden; white-space:pre; }
+.ls-cell.ls-space{ overflow:visible; }
+.ls-primary{ position:relative; display:inline-block; top:0; }
+.ls-secondary{ position:absolute; left:0; right:0; top:100%; display:inline-block; }
