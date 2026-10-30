@@ -43,7 +43,12 @@
 .sp-card-head h3{ font-size:20px; font-weight:800; margin:0; }
 .sp-card-index{ font-size:15px; color:var(--hp-grey); font-variant-numeric:tabular-nums; }
 .sp-card-desc{ font-size:13px; color:rgba(255,255,250,.7); line-height:1.6; margin:0; }
-.sp-card-big{ font-size:48px; font-weight:800; letter-spacing:-.03em; line-height:1; }
+.sp-card-big{ font-size:40px; font-weight:800; letter-spacing:-.03em; line-height:1; color:var(--hp-white); }
+.sp-card-big--green{ color:#5DB88C; }
+.sp-card-big-prefix{ font-size:18px; font-weight:700; vertical-align:middle; }
+.sp-card-bullets{ margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:8px; }
+.sp-card-bullets li{ font-size:13px; color:rgba(255,255,250,.85); line-height:1.5; padding-left:14px; position:relative; }
+.sp-card-bullets li::before{ content:'·'; position:absolute; left:0; color:#5DB88C; font-weight:800; }
 
 /* 카드 미니 UI — 주 스트립 */
 .sp-week{ background:#1A1C22; border:1px solid rgba(255,255,255,.05); border-radius:10px; padding:14px; font-family:inherit; }
@@ -80,10 +85,26 @@
 .sp-detail-foot{ display:flex; width:100%; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-top:4px; }
 .sp-detail-source{ font-size:12px; color:var(--hp-grey); }
 
+/* ---------- 4b. 검은 통신사 쇼케이스(상세 목록의 carriers 변형, 취급상품 페이지) ---------- */
+.sp-carriers{ margin-top:160px; background:var(--hp-black); color:var(--hp-white); padding:64px 24px; }
+.sp-carriers-head{ max-width:1200px; margin:0 auto; }
+.sp-carriers-head h2{ font-size:28px; font-weight:800; letter-spacing:-.03em; margin:10px 0 0; }
+.sp-carriers-eyebrow{ font-size:12px; color:#5DB88C; font-weight:700; margin:14px 0 0; }
+.sp-carriers-names{ max-width:1200px; margin:18px auto 0; }
+.sp-carriers-names div{ font-size:40px; font-weight:800; letter-spacing:-.03em; line-height:1.25; }
+.sp-carriers-desc{ max-width:1200px; margin:24px auto 0; font-size:14px; color:rgba(255,255,250,.7); line-height:1.6; }
+.sp-carriers-link{ max-width:1200px; display:block; margin:14px auto 0; font-size:14px; font-weight:700; color:var(--hp-white); }
+.sp-carriers-link:hover{ color:#5DB88C; }
+.sp-carriers-foot{ max-width:1200px; margin:40px auto 0; padding-top:24px; border-top:1px solid rgba(255,255,250,.15); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+.sp-carriers-foot a{ font-size:15px; font-weight:700; color:var(--hp-white); }
+.sp-carriers-foot a:hover{ color:#5DB88C; }
+.sp-carriers-foot span{ font-size:12px; color:rgba(255,255,250,.5); }
+
 /* ---------- 5. 질문 3개(FAQ 아코디언) ---------- */
 .sp-faq-item{ border-top:1px solid var(--hp-line); }
 .sp-faq-item:last-child{ border-bottom:1px solid var(--hp-line); }
-.sp-faq-item > summary{ list-style:none; cursor:pointer; padding:18px 0; display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:16px; font-weight:700; color:var(--hp-ink); }
+.sp-faq-item > summary{ list-style:none; cursor:pointer; padding:18px 0; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; font-size:16px; font-weight:700; color:var(--hp-ink); }
+.sp-faq-item > summary > span:first-child{ flex:1 1 auto; }
 .sp-faq-item > summary::-webkit-details-marker{ display:none; }
 .sp-faq-item > summary::after{ content:'+'; font-size:18px; color:var(--hp-grey); flex:0 0 auto; }
 .sp-faq-item[open] > summary::after{ content:'−'; color:var(--hp-ink); }
@@ -100,14 +121,21 @@
 .sp-board-tab{ padding:9px 16px; border-radius:999px; font-size:13px; font-weight:600; color:var(--hp-grey); background:var(--hp-grey-bg); border:1px solid transparent; cursor:pointer; font-family:inherit; }
 .sp-board-tab.is-active{ background:var(--hp-black); color:var(--hp-white); }
 .sp-board-search{ width:100%; max-width:320px; padding:10px 14px; border-radius:999px; border:1px solid var(--hp-line); font-size:13px; font-family:inherit; margin-bottom:28px; }
+.sp-board-featured{ display:grid; grid-template-columns:1fr; gap:16px; margin-bottom:32px; }
+.sp-board-feature-card{ display:flex; flex-direction:column; gap:14px; background:var(--hp-black); color:var(--hp-white); border-radius:16px; padding:24px; min-height:180px; text-decoration:none; justify-content:space-between; }
+.sp-board-feature-card .sp-board-tag{ color:#5DB88C; }
+.sp-board-feature-title{ font-size:18px; font-weight:700; line-height:1.4; }
+.sp-board-feature-foot{ display:flex; justify-content:space-between; font-size:12px; color:rgba(255,255,250,.6); }
+
 .sp-board-list{ display:flex; flex-direction:column; }
 .sp-board-row{ display:flex; gap:16px; align-items:center; border-top:1px solid var(--hp-line); padding:18px 0; text-decoration:none; color:inherit; }
 .sp-board-row:last-child{ border-bottom:1px solid var(--hp-line); }
+.sp-board-row--pending{ cursor:default; opacity:.6; }
 .sp-board-thumb{ width:88px; height:64px; flex:0 0 auto; border-radius:8px; background:var(--hp-grey-bg); background-size:cover; background-position:center; }
 .sp-board-row-body{ flex:1 1 auto; min-width:0; }
-.sp-board-tag{ font-size:11px; font-weight:700; color:var(--hp-green); text-transform:uppercase; letter-spacing:.04em; }
-.sp-board-title{ font-size:16px; font-weight:700; color:var(--hp-ink); margin:4px 0; }
-.sp-board-excerpt{ font-size:13px; color:var(--hp-grey); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.sp-board-tag{ display:block; font-size:11px; font-weight:700; color:var(--hp-green); text-transform:uppercase; letter-spacing:.04em; }
+.sp-board-title{ display:block; font-size:16px; font-weight:700; color:var(--hp-ink); margin:4px 0; }
+.sp-board-excerpt{ display:block; font-size:13px; color:var(--hp-grey); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .sp-board-date{ font-size:12px; color:var(--hp-grey); flex:0 0 auto; }
 .sp-board-foot{ display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; margin-top:28px; }
 .sp-board-pages{ display:flex; gap:6px; }
@@ -129,6 +157,10 @@
   .sp-detail-head h2{ font-size:36px; }
   .sp-row-title{ font-size:20px; }
   .sp-cta h2{ font-size:40px; }
+  .sp-carriers{ padding:88px 40px; }
+  .sp-carriers-head h2{ font-size:36px; }
+  .sp-carriers-names div{ font-size:60px; }
+  .sp-board-featured{ grid-template-columns:repeat(3,1fr); }
 }
 
 @media (min-width:1280px){

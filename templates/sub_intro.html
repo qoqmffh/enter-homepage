@@ -14,7 +14,11 @@
 
 <section class="sp-section sp-section--center" id="statement">
   <div class="sp-statement">
+    {% if s.statement.inline %}
+    <h2><span class="hp-ink">{{ s.statement.headline_ink }}</span> <span class="hp-green">{{ s.statement.headline_green }}</span></h2>
+    {% else %}
     <h2><span class="hp-ink">{{ s.statement.headline_ink }}</span><br><span class="hp-green">{{ s.statement.headline_green }}</span></h2>
+    {% endif %}
     <p>{{ s.statement.body }}</p>
   </div>
 </section>
@@ -51,7 +55,9 @@
         <div class="sp-record-row"><span>주민번호</span><span>900101-●●●●●●●</span></div>
       </div>
       {% elif card.mockup == 'big_text' %}
-      <div class="sp-card-big">{{ card.big_text }}</div>
+      <div class="sp-card-big{% if card.big_color %} sp-card-big--{{ card.big_color }}{% endif %}">{% if card.big_prefix %}<span class="sp-card-big-prefix">{{ card.big_prefix }}</span> {% endif %}{{ card.big_text }}</div>
+      {% elif card.mockup == 'bullet_list' %}
+      <ul class="sp-card-bullets">{% for b in card.bullets %}<li>{{ b }}</li>{% endfor %}</ul>
       {% endif %}
 
       <p class="sp-card-desc">{{ card.desc }}</p>
@@ -60,44 +66,86 @@
   </div>
 </section>
 
+{% if s.detail.style == 'carriers' %}
+<section class="sp-carriers" id="detail">
+  <div class="sp-carriers-head">
+    <span class="hp-label"><span class="hp-label-dot"></span>{{ s.detail.label }}</span>
+    <h2>{{ s.detail.headline }}</h2>
+    <p class="sp-carriers-eyebrow">■ {{ s.detail.eyebrow }}</p>
+  </div>
+  <div class="sp-carriers-names">
+    {% for name in s.detail.names %}<div>{{ name }}</div>{% endfor %}
+  </div>
+  <p class="sp-carriers-desc">{{ s.detail.desc }}</p>
+  <a class="sp-carriers-link" href="{{ s.detail.desc_link_href }}">{{ s.detail.desc_link }}</a>
+  <div class="sp-carriers-foot">
+    <a href="#cta">{{ s.detail.foot_link }}</a>
+    <span>{{ s.detail.foot_note }}</span>
+  </div>
+</section>
+{% else %}
 <section class="sp-section" id="detail">
   <div class="sp-detail-head">
     <span class="hp-label"><span class="hp-label-dot"></span>{{ s.detail.label }}</span>
     <h2>{{ s.detail.headline }}</h2>
   </div>
-  {% set all_rows = (page[s.detail.rows_key] | reverse | list) %}
+  {% if s.detail.rows_key %}
+    {% set all_rows = (page[s.detail.rows_key] | reverse | list) %}
+  {% else %}
+    {% set all_rows = s.detail.rows %}
+  {% endif %}
+  {% set paginate = all_rows|length > 5 and s.detail.expand_label %}
+  {% set visible_rows = all_rows[:5] if paginate else all_rows %}
   <div>
-    {% for row in all_rows[:5] %}
+    {% for row in visible_rows %}
     <div class="sp-row">
+      {% if s.detail.rows_key %}
       <span class="sp-row-title">{{ row.date }} ({{ row.dow[:1] }})</span>
       <span class="sp-row-desc">{{ row.count }}건 정산</span>
       <span class="sp-row-tag">{{ s.detail.row_tag }}</span>
+      {% else %}
+      <span class="sp-row-title{% if row.highlight %} hp-green{% endif %}">{{ row.title }}</span>
+      <span class="sp-row-desc">{{ row.desc }}</span>
+      <span class="sp-row-tag">{{ row.tag }}</span>
+      {% endif %}
     </div>
     {% endfor %}
   </div>
-  {% if all_rows|length > 5 %}
+  {% if paginate %}
   <details class="sp-detail-more">
     <summary>
       <span class="sp-detail-foot">
         <span class="sp-detail-expand">{{ s.detail.expand_label }}</span>
-        <span class="sp-detail-source">{{ s.detail.source }}</span>
+        {% if s.detail.source %}<span class="sp-detail-source">{{ s.detail.source }}</span>{% endif %}
       </span>
     </summary>
     {% for row in all_rows[5:] %}
     <div class="sp-row">
+      {% if s.detail.rows_key %}
       <span class="sp-row-title">{{ row.date }} ({{ row.dow[:1] }})</span>
       <span class="sp-row-desc">{{ row.count }}건 정산</span>
       <span class="sp-row-tag">{{ s.detail.row_tag }}</span>
+      {% else %}
+      <span class="sp-row-title{% if row.highlight %} hp-green{% endif %}">{{ row.title }}</span>
+      <span class="sp-row-desc">{{ row.desc }}</span>
+      <span class="sp-row-tag">{{ row.tag }}</span>
+      {% endif %}
     </div>
     {% endfor %}
   </details>
-  {% else %}
+  {% elif s.detail.source %}
   <div class="sp-detail-foot">
     <span></span>
     <span class="sp-detail-source">{{ s.detail.source }}</span>
   </div>
   {% endif %}
+  {% if s.detail.more_link %}
+  <div class="sp-detail-foot">
+    <a href="{{ s.detail.more_link_href }}">{{ s.detail.more_link }}</a>
+  </div>
+  {% endif %}
 </section>
+{% endif %}
 
 <section class="sp-section" id="faq">
   <span class="hp-label"><span class="hp-label-dot"></span>FAQ</span>

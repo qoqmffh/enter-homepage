@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% import "partials/hero.html" as hero_mod %}
+{% import "partials/cta_band.html" as cta_mod with context %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="static/site.css">
+<link rel="stylesheet" href="static/sub.css">
+{% endblock %}
+
+{% block content %}
+{% set s = page.sub %}
+
+{{ hero_mod.render('compact', s.hero) }}
+
+<section class="sp-section" id="board">
+  <div class="sp-board-tabs" data-board-tabs role="tablist">
+    {% for tab in s.tabs %}
+    <button type="button" class="sp-board-tab{% if loop.first %} is-active{% endif %}" data-tab="{{ tab }}">{{ tab }}</button>
+    {% endfor %}
+  </div>
+  <input type="search" class="sp-board-search" data-board-search placeholder="{{ '질문을 검색하세요' if s.board_type == 'faq' else '궁금한 내용을 검색하세요' }}">
+
+  {% if s.board_type == 'blog' %}
+  {% if s.featured %}
+  <div class="sp-board-featured">
+    {% for slug in s.featured %}
+    {% set post = blog_posts[slug] %}
+    {% set meta = (page.posts | selectattr('slug', 'equalto', slug) | first) %}
+    <a class="sp-board-feature-card" href="{{ slug }}.html">
+      <span class="sp-board-tag">[{{ '업계 질문' if meta.tag == '업계' else meta.tag }}]</span>
+      <span class="sp-board-feature-title">{{ post.h1 }}</span>
+      <span class="sp-board-feature-foot"><span>{{ post.date_published }}</span><span>읽기 →</span></span>
+    </a>
+    {% endfor %}
+  </div>
+  {% endif %}
+  <div class="sp-board-list" data-board-list>
+    {% for p in page.posts %}
+    {% set post = blog_posts.get(p.slug) if p.slug else None %}
+    <a class="sp-board-row{% if not p.slug %} sp-board-row--pending{% endif %}" data-cat="{{ p.tag }}" data-title="{{ p.title }}"
+       {% if p.slug %}href="{{ p.slug }}.html"{% else %}href="javascript:void(0)" tabindex="-1" aria-disabled="true"{% endif %}>
+      <span class="sp-board-thumb"></span>
+      <span class="sp-board-row-body">
+        <span class="sp-board-tag">[{{ '업계 질문' if p.tag == '업계' else p.tag }}]</span>
+        <span class="sp-board-title">{{ p.title }}{% if not p.slug %} <span class="hp-muted" style="font-size:11px">(준비 중)</span>{% endif %}</span>
+        {% if post %}<span class="sp-board-excerpt">{{ post.intro }}</span>{% endif %}
+      </span>
+      {% if post %}<span class="sp-board-date">{{ post.date_published }}</span>{% endif %}
+    </a>
+    {% endfor %}
+  </div>
+  <div class="sp-board-foot">
+    <div class="sp-board-pages" data-board-pages></div>
+  </div>
+  {% else %}
+  <div class="sp-board-list" data-board-list>
+    {% for item in page['items'] %}
+    <details class="sp-faq-item" data-cat="{{ item.category }}" data-title="{{ item.q }}"{% if loop.first %} open{% endif %}>
+      <summary>
+        <span><span class="sp-board-tag" style="display:block;margin-bottom:4px">[{{ item.category }}]</span>{{ item.q }}</span>
+      </summary>
+      <div class="sp-faq-body">{{ item.a }}</div>
+    </details>
+    {% endfor %}
+  </div>
+  <div class="sp-board-contact">
+    <strong>{{ s.contact.heading }}</strong>
+    <div style="margin-top:10px; display:flex; gap:16px; flex-wrap:wrap;">
+      <a href="tel:{{ site.phone }}">{{ s.contact.tel_label }}</a>
+      <a href="#">{{ s.contact.kakao_label }}</a>
+    </div>
+  </div>
+  {% endif %}
+</section>
+
+{{ cta_mod.render(s.cta) }}
+
+<script>
+(function () {
+  var PAGE_SIZE = 8;
+  var tabs = document.querySelectorAll('[data-board-tabs] [data-tab]');
+  var search = document.querySelector('[data-board-search]');
+  var rows = Array.prototype.slice.call(document.querySelectorAll('[data-board-list] > [data-cat]'));
+  var pagesEl = document.querySelector('[data-board-pages]');
+  var activeTab = tabs.length ? tabs[0].dataset.tab : '전체';
+  var page = 1;
+
+  function apply() {
+    var q = (search && search.value || '').trim().toLowerCase();
+    var matched = rows.filter(function (row) {
+      var okTab = activeTab === '전체' || row.dataset.cat === activeTab;
+      var okSearch = !q || row.dataset.title.toLowerCase().indexOf(q) !== -1;
+      return okTab && okSearch;
+    });
+    var pageCount = Math.max(1, Math.ceil(matched.length / PAGE_SIZE));
+    if (page > pageCount) page = pageCount;
+
+    rows.forEach(function (row) { row.style.display = 'none'; });
+    matched.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).forEach(function (row) {
+      row.style.display = '';
+    });
+
+    if (pagesEl) {
+      pagesEl.innerHTML = '';
+      if (pageCount > 1) {
+        for (var i = 1; i <= pageCount; i++) {
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'sp-board-page' + (i === page ? ' is-active' : '');
+          b.textContent = String(i);
+          b.addEventListener('click', (function (n) { return function () { page = n; apply(); }; })(i));
+          pagesEl.appendChild(b);
+        }
+      }
+    }
+  }
+
+  tabs.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      tabs.forEach(function (b) { b.classList.remove('is-active'); });
+      btn.classList.add('is-active');
+      activeTab = btn.dataset.tab;
+      page = 1;
+      apply();
+    });
+  });
+  if (search) search.addEventListener('input', function () { page = 1; apply(); });
+  apply();
+})();
+</script>
+{% endblock %}
