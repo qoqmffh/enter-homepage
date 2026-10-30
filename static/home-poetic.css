@@ -1,23 +1,9 @@
 /* ENTER 홈 — POETIC 오마주 버전 전용 스타일.
-   common.css는 건드리지 않는다(다른 페이지 전부 영향). 이 파일은 home.html에서만 로드된다.
-   common.css의 .wrap(세로 그리드선 배경)을 재사용하지 않고 .hp-wrap을 새로 쓴다 — 배경 그리드선 금지 요구사항 때문. */
+   공통 토큰(색상)·.hp-wrap·타입 유틸(two-tone 등)·라벨·알약버튼·헤더·푸터는
+   전부 static/site.css로 옮겼다(서브페이지 7개와 공유, 기획서/클로드코드_서브페이지7_지시서.md
+   §2). 이 파일은 home.html 전용 섹션 레이아웃(히어로/스테이트먼트/카드/약속/시작/신뢰/통신사/클로징)만 남는다.
+   common.css는 건드리지 않는다(다른 페이지 전부 영향). */
 
-:root{
-  --hp-white:#FFFFFA;
-  --hp-black:#0B0D12;
-  --hp-ink:#10182B;
-  --hp-grey:#6B7280;
-  --hp-grey-bg:#F0F0EB;
-  --hp-line:#E5E5DF;
-  --hp-line-dark:#1E222B;
-  --hp-green:#1E6F50;
-  --hp-green-tint:#DCEBE3;
-}
-
-/* ---------- 리셋 겸 베이스 (home.html 범위에서만) ---------- */
-body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; overflow-wrap:break-word; }
-.hp-wrap{ max-width:1200px; margin:0 auto; padding:0 20px; }
-.hp-wrap--narrow{ max-width:900px; }
 .hp-center{ text-align:center; }
 .hp-section{ padding:80px 0; }
 
@@ -31,62 +17,7 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
 .hp-headline-md{ font-weight:700; font-size:22px; line-height:1.35; letter-spacing:-.015em; margin:16px 0 0; text-wrap:balance; }
 .hp-body-xl{ font-size:16px; line-height:1.65; color:var(--hp-grey); margin:0; }
 .hp-body-lg{ font-size:15px; line-height:1.6; }
-.hp-two-tone{ max-width:640px; margin:12px auto 0; }
-.hp-two-tone-block{ display:flex; flex-direction:column; gap:4px; }
-.hp-ink{ color:var(--hp-ink); }
-.hp-green{ color:var(--hp-green); }
-.hp-green-text{ color:var(--hp-green); }
 .hp-strong{ font-weight:700; }
-.hp-muted{ color:var(--hp-grey); }
-.hp-mono-muted{ font-size:11px; letter-spacing:.04em; color:var(--hp-grey); text-transform:uppercase; }
-.hp-mono-green{ font-size:11px; letter-spacing:.04em; color:var(--hp-green); text-transform:uppercase; }
-
-/* ---------- 섹션 라벨(● 텍스트) ---------- */
-.hp-label{ display:inline-flex; align-items:center; gap:7px; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--hp-grey); margin-bottom:12px; }
-.hp-label-dot{ width:7px; height:7px; border-radius:50%; background:var(--hp-green); flex:0 0 auto; }
-
-/* ---------- 알약 버튼 ---------- */
-.hp-pill{ display:inline-flex; align-items:center; justify-content:center; gap:8px; border-radius:999px; padding:12px 24px; font-size:14px; font-weight:700; white-space:nowrap; transition:background-color .15s ease, color .15s ease, border-color .15s ease; }
-.hp-pill-dot{ width:7px; height:7px; border-radius:50%; background:var(--hp-green); flex:0 0 auto; }
-.hp-pill--primary{ background:var(--hp-black); color:var(--hp-white); }
-.hp-pill--primary:hover{ background:var(--hp-green); }
-.hp-pill--primary .hp-pill-dot{ background:var(--hp-white); }
-.hp-pill--secondary{ background:var(--hp-grey-bg); color:var(--hp-ink); border:1px solid transparent; }
-.hp-pill--secondary:hover{ background:var(--hp-line); border-color:var(--hp-ink); }
-.hp-pill--inverted{ background:var(--hp-white); color:var(--hp-black); }
-.hp-pill--inverted:hover{ background:var(--hp-green-tint); }
-
-/* ---------- 헤더 ---------- */
-.hp-header{ position:sticky; top:0; z-index:40; background:rgba(255,255,250,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--hp-line); transition:background .3s ease, border-color .3s ease; }
-/* 입자 장면(검은 우주) 위에 떠 있는 동안: 투명 배경 + 흰 로고/메뉴.
-   static/home-particles.js가 IntersectionObserver로 #particle-story가
-   보이는 동안에만 .hp-header--on-dark를 붙인다 — JS 없으면 평소 헤더 그대로. */
-/* position:sticky 헤더는 일반 문서 흐름에 있어서 입자 장면과 "겹치는" 게
-   아니라 바로 위에 붙어 있을 뿐이다 — 진짜 투명으로 두면 그 뒤에 보이는 건
-   캔버스가 아니라 body의 흰 배경이다. 그래서 완전 투명 대신 장면과 같은
-   검정으로 맞춰서 이어진 것처럼 보이게 한다. */
-.hp-header--on-dark{ background:var(--hp-black); backdrop-filter:none; border-bottom-color:transparent; }
-.hp-header--on-dark .hp-brand-svg g{ fill:var(--hp-white); transition:fill .3s ease; }
-.hp-header--on-dark .hp-nav a{ color:rgba(255,255,250,.75); }
-.hp-header--on-dark .hp-nav a:hover, .hp-header--on-dark .hp-nav a.active{ color:var(--hp-white); }
-.hp-header--on-dark .hp-nav-toggle{ color:var(--hp-white); }
-.hp-header-inner{ max-width:1200px; margin:0 auto; padding:0 20px; height:68px; display:flex; align-items:center; justify-content:space-between; }
-.hp-brand{ display:inline-flex; align-items:center; }
-.hp-brand-svg{ height:26px; width:auto; display:block; }
-.hp-brand-door-leaf{ transition:transform .3s ease; transform-box:fill-box; transform-origin:0% 50%; }
-.hp-brand:hover .hp-brand-door-leaf{ transform:scaleX(1.3) skewY(-6deg); }
-@media (prefers-reduced-motion:reduce){ .hp-brand-door-leaf{ transition:none; } }
-.hp-nav{ display:none; }
-.hp-nav a{ font-size:14px; color:var(--hp-grey); padding:8px 14px; transition:color .15s ease; }
-.hp-nav a:hover, .hp-nav a.active{ color:var(--hp-ink); }
-.hp-header-right{ display:flex; align-items:center; gap:10px; }
-.hp-header-right .hp-pill{ display:none; }
-.hp-nav-toggle-input{ display:none; }
-.hp-nav-toggle{ display:flex; align-items:center; justify-content:center; width:40px; height:40px; cursor:pointer; color:var(--hp-ink); }
-.hp-nav-mobile{ display:none; flex-direction:column; position:absolute; left:0; right:0; top:68px; background:var(--hp-white); border-bottom:1px solid var(--hp-line); padding:8px 20px 16px; }
-.hp-nav-mobile a{ padding:12px 0; font-size:15px; color:var(--hp-ink); border-bottom:1px solid var(--hp-line); }
-.hp-nav-mobile a:last-child{ border-bottom:none; }
-#hpNavToggle:checked ~ .hp-nav-mobile{ display:flex; }
 
 /* ---------- 히어로 ---------- */
 .hp-hero{ padding-top:24px; }
@@ -284,20 +215,7 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
 /* ---------- 마무리 CTA ---------- */
 .hp-closing-ctas{ display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin-top:28px; }
 
-/* ---------- 푸터 ---------- */
-.hp-footer{ padding:64px 0 32px; border-top:1px solid var(--hp-line); }
-.hp-footer-top{ display:flex; flex-direction:column; gap:40px; margin-bottom:48px; }
-.hp-footer-logo{ height:40px; width:auto; display:block; }
-.hp-footer-brand p{ color:var(--hp-grey); font-size:13px; margin-top:10px; max-width:320px; }
-.hp-footer-cols{ display:grid; grid-template-columns:repeat(2,1fr); gap:28px; }
-.hp-footer-col{ display:flex; flex-direction:column; gap:10px; }
-.hp-footer-heading{ font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--hp-ink); font-weight:700; margin-bottom:2px; }
-.hp-footer-col a{ font-size:13px; color:var(--hp-grey); }
-.hp-footer-col a:hover{ color:var(--hp-ink); }
-.hp-footer-bottom{ padding-top:24px; border-top:1px solid var(--hp-line); font-size:11px; color:var(--hp-grey); line-height:1.7; }
-
-/* ---------- 모바일 하단 고정바: 데스크톱에서는 숨긴다(지시서 요구) ---------- */
-@media (min-width:768px){ .footerbar{ display:none; } }
+/* 헤더·푸터·하단 고정바는 static/site.css로 옮겨 서브페이지와 공유한다. */
 
 /* ---------- 데스크톱 확장 ---------- */
 @media (min-width:768px){
@@ -311,11 +229,6 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
   .hp-body-xl{ font-size:19px; }
   .hp-hero{ padding-top:48px; }
   .hp-hero-top{ min-height:calc(100vh - 400px); }
-
-  .hp-header-inner{ height:80px; padding:0 40px; }
-  .hp-nav{ display:flex; gap:4px; }
-  .hp-header-right .hp-pill{ display:inline-flex; }
-  .hp-nav-toggle{ display:none; }
 
   .hp-stats{ grid-template-columns:repeat(4,1fr); gap:16px; }
   .hp-stat-card{ min-height:220px; padding:28px; }
@@ -346,9 +259,6 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
 
   .hp-trust-badges{ grid-template-columns:repeat(6,1fr); gap:16px; }
   .hp-carriers-names{ font-size:68px; }
-
-  .hp-footer-top{ flex-direction:row; justify-content:space-between; gap:60px; }
-  .hp-footer-cols{ grid-template-columns:repeat(3,1fr); gap:48px; }
 }
 
 @media (min-width:1024px){
