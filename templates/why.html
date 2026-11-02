@@ -49,7 +49,7 @@
       <p class="hp-hero-subhead">{{ p.hero.subhead }}</p>
     </div>
     <div class="hp-hero-below">
-      <p class="hp-hero-sub">{{ p.hero.sub }}</p>
+      <p class="hp-hero-sub">{{ p.hero.sub | safe }}</p>
       <div class="hp-hero-ctas">
         {{ m.pill(p.hero.cta_kakao, '#', 'primary', True) }}
         {{ m.pill(p.hero.cta_tel, 'tel:' ~ site.phone, 'secondary') }}

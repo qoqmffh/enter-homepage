@@ -90,54 +90,58 @@
     <h2>{{ s.detail.headline }}</h2>
   </div>
   {% if s.detail.rows_key %}
+    {# 정산 원장형: 90건 전체를 고정 높이 영역 안에 넣고 스크롤한다(펼치기 아코디언 아님) — 지시서 #6. #}
     {% set all_rows = (page[s.detail.rows_key] | reverse | list) %}
+    <div class="sp-row-scroll">
+      {% for row in all_rows %}
+      <div class="sp-row">
+        <span class="sp-row-title">{{ row.date }} ({{ row.dow[:1] }})</span>
+        <span class="sp-row-desc">{{ row.count }}건 정산</span>
+        <span class="sp-row-tag">{{ s.detail.row_tag }}</span>
+      </div>
+      {% endfor %}
+    </div>
+    {% if s.detail.expand_label or s.detail.source %}
+    <div class="sp-detail-foot">
+      {% if s.detail.expand_label %}<span class="sp-detail-expand">{{ s.detail.expand_label }}</span>{% else %}<span></span>{% endif %}
+      {% if s.detail.source %}<span class="sp-detail-source">{{ s.detail.source }}</span>{% endif %}
+    </div>
+    {% endif %}
   {% else %}
     {% set all_rows = s.detail.rows %}
-  {% endif %}
-  {% set paginate = all_rows|length > 5 and s.detail.expand_label %}
-  {% set visible_rows = all_rows[:5] if paginate else all_rows %}
-  <div>
-    {% for row in visible_rows %}
-    <div class="sp-row">
-      {% if s.detail.rows_key %}
-      <span class="sp-row-title">{{ row.date }} ({{ row.dow[:1] }})</span>
-      <span class="sp-row-desc">{{ row.count }}건 정산</span>
-      <span class="sp-row-tag">{{ s.detail.row_tag }}</span>
-      {% else %}
-      <span class="sp-row-title{% if row.highlight %} hp-green{% endif %}">{{ row.title }}</span>
-      <span class="sp-row-desc">{{ row.desc }}</span>
-      <span class="sp-row-tag">{{ row.tag }}</span>
-      {% endif %}
+    {% set paginate = all_rows|length > 5 and s.detail.expand_label %}
+    {% set visible_rows = all_rows[:5] if paginate else all_rows %}
+    <div>
+      {% for row in visible_rows %}
+      <div class="sp-row">
+        <span class="sp-row-title{% if row.highlight %} hp-green{% endif %}">{{ row.title }}</span>
+        <span class="sp-row-desc">{{ row.desc }}</span>
+        <span class="sp-row-tag">{{ row.tag }}</span>
+      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
-  </div>
-  {% if paginate %}
-  <details class="sp-detail-more">
-    <summary>
-      <span class="sp-detail-foot">
-        <span class="sp-detail-expand">{{ s.detail.expand_label }}</span>
-        {% if s.detail.source %}<span class="sp-detail-source">{{ s.detail.source }}</span>{% endif %}
-      </span>
-    </summary>
-    {% for row in all_rows[5:] %}
-    <div class="sp-row">
-      {% if s.detail.rows_key %}
-      <span class="sp-row-title">{{ row.date }} ({{ row.dow[:1] }})</span>
-      <span class="sp-row-desc">{{ row.count }}건 정산</span>
-      <span class="sp-row-tag">{{ s.detail.row_tag }}</span>
-      {% else %}
-      <span class="sp-row-title{% if row.highlight %} hp-green{% endif %}">{{ row.title }}</span>
-      <span class="sp-row-desc">{{ row.desc }}</span>
-      <span class="sp-row-tag">{{ row.tag }}</span>
-      {% endif %}
+    {% if paginate %}
+    <details class="sp-detail-more">
+      <summary>
+        <span class="sp-detail-foot">
+          <span class="sp-detail-expand">{{ s.detail.expand_label }}</span>
+          {% if s.detail.source %}<span class="sp-detail-source">{{ s.detail.source }}</span>{% endif %}
+        </span>
+      </summary>
+      {% for row in all_rows[5:] %}
+      <div class="sp-row">
+        <span class="sp-row-title{% if row.highlight %} hp-green{% endif %}">{{ row.title }}</span>
+        <span class="sp-row-desc">{{ row.desc }}</span>
+        <span class="sp-row-tag">{{ row.tag }}</span>
+      </div>
+      {% endfor %}
+    </details>
+    {% elif s.detail.source %}
+    <div class="sp-detail-foot">
+      <span></span>
+      <span class="sp-detail-source">{{ s.detail.source }}</span>
     </div>
-    {% endfor %}
-  </details>
-  {% elif s.detail.source %}
-  <div class="sp-detail-foot">
-    <span></span>
-    <span class="sp-detail-source">{{ s.detail.source }}</span>
-  </div>
+    {% endif %}
   {% endif %}
   {% if s.detail.more_link %}
   <div class="sp-detail-foot">

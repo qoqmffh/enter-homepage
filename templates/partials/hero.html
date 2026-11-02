@@ -18,7 +18,7 @@
       <div>
         <p class="sp-hero-label">● {{ data.label }}</p>
         <h1 class="sp-hero-headline">{% for line in data.headline %}{{ line }}{% if not loop.last %}<br>{% endif %}{% endfor %}</h1>
-        <p class="sp-hero-sub">{{ data.subline | safe }}</p>
+        {% if data.subline %}<p class="sp-hero-sub">{{ data.subline | safe }}</p>{% endif %}
         <div class="sp-hero-ctas">
           <a class="hp-pill {% if sk %}hp-pill--primary{% else %}hp-pill--inverted{% endif %}" href="#cta">{{ data.cta_primary }}</a>
           {% if variant == 'tall' %}<a class="hp-pill {% if sk %}hp-pill--secondary{% else %}hp-pill--outline{% endif %}" href="#faq">{{ data.cta_secondary }}</a>{% endif %}
