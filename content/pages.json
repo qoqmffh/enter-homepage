@@ -1963,7 +1963,8 @@
         ],
         "photo": "start",
         "photo_mood": "스마트폰으로 채팅 앱을 켠 모습, 흑백",
-        "photo_caption": "카톡 한 번으로 시작"
+        "photo_caption": "카톡 한 번으로 시작",
+        "sketch": "trade"
       },
       "statement": {
         "inline": true,
@@ -2132,7 +2133,8 @@
         ],
         "photo": "settlement",
         "photo_mood": "정산팀 사무실 책상, 모니터에 스프레드시트, 흑백",
-        "photo_caption": "정산팀 업무 현장"
+        "photo_caption": "정산팀 업무 현장",
+        "sketch": "trade"
       },
       "statement": {
         "headline_ink": "약속은 말이 아니라",
@@ -2860,7 +2862,8 @@
         ],
         "photo": "products",
         "photo_mood": "네트워크 케이블과 라우터랙 클로즈업, 흑백",
-        "photo_caption": "유선 상품 개통 현장"
+        "photo_caption": "유선 상품 개통 현장",
+        "sketch": "trade"
       },
       "statement": {
         "headline_ink": "통신사마다 따로",

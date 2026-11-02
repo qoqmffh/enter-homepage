@@ -189,7 +189,7 @@
 }
 @media (min-width:1024px){
   .sp-hero--sketch .sp-hero-body{ padding-top:110px; }
-  .sp-hero--sketch .sp-hero-body > div:first-child{ max-width:560px; padding-bottom:64px; min-height:432px; box-sizing:border-box; }
+  .sp-hero--sketch .sp-hero-body > div:first-child{ max-width:560px; padding-bottom:104px; min-height:472px; box-sizing:border-box; }
   .sp-hero--sketch .sp-hero-facts{ gap:64px; }
   .sp-hero--sketch .sp-hero-headline{ font-size:52px; }
 }
