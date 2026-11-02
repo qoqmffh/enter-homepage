@@ -4,7 +4,8 @@
    data.photo_mood 주석으로 옆에 남겨 실제 사진 교체 시 참고한다. #}
 {% macro render(variant, data) %}
 {% set sk = data.sketch %}
-<div class="sp-hero sp-hero--{{ variant }}{% if sk %} sp-hero--sketch{% endif %}">
+{% set has_facts = variant == 'tall' and data.facts %}
+<div class="sp-hero sp-hero--{{ variant }}{% if sk %} sp-hero--sketch{% endif %}{% if has_facts %} sp-hero--has-facts{% endif %}">
   {% if sk %}
   {# 분류별 공통 선 스케치 히어로(회사/거래/정보) — static/photos/hero/hero-<분류>.webp (투명 배경, 맨 아래 선이 땅) #}
   <div class="sp-hero-frame">
@@ -24,7 +25,10 @@
           {% if variant == 'tall' %}<a class="hp-pill {% if sk %}hp-pill--secondary{% else %}hp-pill--outline{% endif %}" href="#faq">{{ data.cta_secondary }}</a>{% endif %}
         </div>
       </div>
-      {% if variant == 'tall' and data.facts %}
+      {% if has_facts %}
+      {# 숫자 줄: 정산·취급상품·창업자·회사소개·거래시작 5곳은 이제 hero.facts 데이터 자체가
+         없다(근거 띠 #proof로 옮김) — 거래처 이야기(stories)처럼 facts가 남아있는 페이지만
+         여기서 그대로 렌더링된다(sp-hero--has-facts 클래스로 CSS도 분기). #}
       <div class="sp-hero-facts">
         {% for f in data.facts %}
         <div class="sp-hero-fact">

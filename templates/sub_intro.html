@@ -12,14 +12,20 @@
 
 {{ hero_mod.render('tall', s.hero) }}
 
-<section class="sp-section sp-section--center" id="statement">
-  <div class="sp-statement">
-    {% if s.statement.inline %}
-    <h2><span class="hp-ink">{{ s.statement.headline_ink }}</span> <span class="hp-green">{{ s.statement.headline_green }}</span></h2>
-    {% else %}
-    <h2><span class="hp-ink">{{ s.statement.headline_ink }}</span><br><span class="hp-green">{{ s.statement.headline_green }}</span></h2>
-    {% endif %}
-    <p>{{ s.statement.body }}</p>
+{# 근거 띠 — 히어로 숫자 줄 + 가운데 문구 섹션을 하나로 합쳤다(지시서 2026-11-02 [B]).
+   statement는 더 안 쓰지만 데이터는 pages.json에 남겨 둔다. #}
+<section class="sp-proof" id="proof">
+  <div class="sp-proof-grid">
+    <h2 class="sp-proof-title"><span class="hp-ink">{{ s.proof.headline_ink }}</span><br><span class="hp-green">{{ s.proof.headline_green }}</span></h2>
+    <div class="sp-proof-facts">
+      {% for f in s.proof.facts %}
+      <div class="sp-proof-fact">
+        <span class="sp-proof-fact-value">{{ f.value }}</span>
+        <span class="sp-proof-fact-label">{{ f.label }}</span>
+        <p class="sp-proof-fact-desc">{{ f.desc }}</p>
+      </div>
+      {% endfor %}
+    </div>
   </div>
 </section>
 

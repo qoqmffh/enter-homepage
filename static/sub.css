@@ -32,12 +32,28 @@
 .sp-hero-fact-label{ display:block; font-size:11px; color:rgba(255,255,250,.7); margin-top:6px; }
 .sp-hero-caption{ position:absolute; right:16px; bottom:12px; z-index:1; font-size:10px; color:rgba(255,255,250,.5); }
 
-/* ---------- 2. 선언(두 톤 제목) ---------- */
+/* ---------- 2. 선언(두 톤 제목, 레거시 — 더 이상 어느 페이지에서도 쓰지 않지만
+   콘텐츠는 pages.json에 남아 있어 스타일도 지우지 않는다) ---------- */
 .sp-statement h2{ font-size:28px; font-weight:800; letter-spacing:-.01em; line-height:1.25; margin:0 0 16px; }
 .sp-statement p{ font-size:15px; color:var(--hp-grey); max-width:560px; margin:0 auto; line-height:1.6; }
-/* common.css의 section{border-bottom}이 바로 다음 줄에 붙어 보이는 문제 — 이 섹션
-   (#statement)만 문장과 선 사이에 넉넉한 여백을 둔다(정산·취급상품·창업자·회사·거래시작 공통). */
-.sp-section--center{ padding-bottom:72px; }
+
+/* ---------- 2b. 근거 띠(히어로 숫자 줄 + 가운데 문구를 합친 구성, 2026-11-02) ----------
+   히어로 그림의 땅선이 끝나는 자리에서 48px만 띄우고 1px 선을 깔아 "땅이 이어지는" 느낌을
+   준다. common.css의 전역 section{border-bottom}은 여기서 끈다(아래쪽 구분선 없음). */
+.sp-proof{ max-width:1200px; margin:48px auto 0; padding:32px 24px 64px; border-top:1px solid rgba(16,24,43,.7); border-bottom:none; }
+.sp-proof-grid{ display:flex; flex-direction:column; gap:28px; }
+.sp-proof-title{ font-size:24px; font-weight:800; line-height:1.3; letter-spacing:-.01em; margin:0; }
+.sp-proof-facts{ display:grid; grid-template-columns:1fr; gap:28px; }
+.sp-proof-fact-value{ display:block; font-size:32px; font-weight:800; line-height:1; letter-spacing:-.01em; font-variant-numeric:tabular-nums; color:var(--hp-ink); }
+.sp-proof-fact-label{ display:block; font-size:13px; color:var(--hp-grey); margin-top:8px; }
+.sp-proof-fact-desc{ font-size:15px; color:var(--hp-ink); line-height:1.6; margin:8px 0 0; }
+@media (min-width:1024px){
+  .sp-proof{ padding:40px 24px 96px; }
+  .sp-proof-grid{ display:grid; grid-template-columns:40% 60%; gap:40px; align-items:start; }
+  .sp-proof-title{ font-size:34px; }
+  .sp-proof-facts{ grid-template-columns:repeat(3,1fr); gap:32px; }
+  .sp-proof-fact-value{ font-size:40px; }
+}
 
 /* ---------- 3. 검은 카드 3장 ---------- */
 .sp-cards{ display:grid; grid-template-columns:1fr; gap:16px; }
@@ -190,13 +206,19 @@
    땅은 버튼과 숫자 사이에 오고, 숫자(2010·4,000건·310억)는 땅 아래에 놓인다. */
 .sp-hero--sketch .sp-hero-frame{ position:relative; height:auto; min-height:0; padding:0;
   background:none; border:0; border-radius:0; overflow:visible; }
-.sp-hero-sketch{ position:absolute; right:0; bottom:96px; width:100%; height:auto; z-index:0;
+/* 숫자 줄(sp-hero-facts)을 근거 띠(#proof)로 옮긴 5곳(정산·취급상품·창업자·회사소개·거래시작)은
+   그림을 bottom:0까지 내려서 버튼 → 땅이 히어로의 맨 아래가 된다(지시서 2026-11-02 [A]).
+   거래처 이야기(stories)처럼 숫자 줄이 아직 남아있는 페이지는 .sp-hero--has-facts로 분기해
+   예전처럼 땅 아래에 숫자가 오는 레이아웃을 그대로 쓴다. */
+.sp-hero-sketch{ position:absolute; right:0; bottom:0; width:100%; height:auto; z-index:0;
   pointer-events:none; user-select:none; }
 .sp-hero--sketch .sp-hero-body{ position:relative; z-index:1; height:auto; max-width:none;
   padding:24px 0 0; display:block; color:var(--hp-ink); }
-.sp-hero--sketch .sp-hero-body > div:first-child{ max-width:600px; padding-bottom:60vw; }
+.sp-hero--sketch .sp-hero-body > div:first-child{ max-width:600px; padding-bottom:52vw; }
 .sp-hero--sketch .sp-hero-label{ color:var(--hp-green); }
 .sp-hero--sketch .sp-hero-sub{ color:var(--hp-grey); }
+.sp-hero--has-facts .sp-hero-sketch{ bottom:96px; }
+.sp-hero--has-facts.sp-hero--sketch .sp-hero-body > div:first-child{ padding-bottom:calc(52vw + 96px); }
 .sp-hero--sketch .sp-hero-facts{ margin-top:0; padding-top:20px; height:96px; box-sizing:border-box;
   max-width:none; grid-auto-columns:max-content; gap:28px; }
 .sp-hero--sketch .sp-hero-fact{ border-left:0; padding-left:0; }
@@ -206,7 +228,8 @@
 }
 @media (min-width:1024px){
   .sp-hero--sketch .sp-hero-body{ padding-top:110px; }
-  .sp-hero--sketch .sp-hero-body > div:first-child{ max-width:560px; padding-bottom:104px; min-height:472px; box-sizing:border-box; }
+  .sp-hero--sketch .sp-hero-body > div:first-child{ max-width:560px; padding-bottom:0; min-height:376px; box-sizing:border-box; }
+  .sp-hero--has-facts.sp-hero--sketch .sp-hero-body > div:first-child{ padding-bottom:104px; min-height:472px; }
   .sp-hero--sketch .sp-hero-facts{ gap:64px; }
   .sp-hero--sketch .sp-hero-headline{ font-size:52px; }
   /* 헤드라인만 글 영역보다 넓게: 정산·창업자·회사소개 2줄 헤드라인이 560px 안에서
@@ -219,8 +242,7 @@
 @media (min-width:1280px){
   .sp-hero--sketch .sp-hero-headline{ font-size:56px; }
 }
-/* 게시판형(FAQ·블로그): 숫자 줄이 없으니 땅을 히어로 맨 아래로, 높이도 낮게 */
-.sp-hero--compact.sp-hero--sketch .sp-hero-sketch{ bottom:0; }
+/* 게시판형(FAQ·블로그): 원래부터 숫자 줄이 없어 높이만 낮다(땅은 위의 공통 규칙으로 이미 bottom:0) */
 @media (min-width:1024px){
   .sp-hero--compact.sp-hero--sketch .sp-hero-body{ padding-top:72px; }
   .sp-hero--compact.sp-hero--sketch .sp-hero-body > div:first-child{ min-height:400px; }
