@@ -40,7 +40,10 @@
 /* ---------- 2b. 근거 띠(히어로 숫자 줄 + 가운데 문구를 합친 구성, 2026-11-02) ----------
    히어로 그림이 이미 땅선을 그리고 있어서 위쪽 1px 선은 빼고 48px만 띄운다(2026-11-02 수정).
    common.css의 전역 section{border-bottom}은 여기서 끈다(아래쪽 구분선 없음). */
-.sp-proof{ max-width:1200px; margin:48px auto 0; padding:32px 24px 64px; border-bottom:none; }
+.sp-proof{ max-width:1200px; margin:48px auto 0; padding:32px 24px 40px; border-bottom:none; }
+/* 근거 띠 다음(카드 3장)은 기본 섹션 간격(160px)보다 가깝게 — 숫자 설명 바로 밑에 카드가
+   오게 한다. 다른 .sp-section 사이 간격은 그대로 둔다. */
+.sp-proof + .sp-section{ margin-top:64px; }
 .sp-proof-grid{ display:flex; flex-direction:column; gap:28px; }
 .sp-proof-title{ font-size:24px; font-weight:800; line-height:1.3; letter-spacing:-.01em; margin:0; }
 .sp-proof-facts{ display:grid; grid-template-columns:1fr; gap:28px; }
@@ -48,7 +51,7 @@
 .sp-proof-fact-label{ display:block; font-size:13px; color:var(--hp-grey); margin-top:8px; }
 .sp-proof-fact-desc{ font-size:15px; color:var(--hp-ink); line-height:1.6; margin:8px 0 0; }
 @media (min-width:1024px){
-  .sp-proof{ padding:40px 24px 96px; }
+  .sp-proof{ padding:40px 24px 48px; }
   .sp-proof-grid{ display:grid; grid-template-columns:40% 60%; gap:40px; align-items:start; }
   .sp-proof-title{ font-size:34px; }
   .sp-proof-facts{ grid-template-columns:repeat(3,1fr); gap:32px; }
