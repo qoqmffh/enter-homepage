@@ -167,3 +167,31 @@
   .sp-hero-headline{ font-size:68px; }
   .sp-card-big{ font-size:60px; }
 }
+
+/* ---------- 분류별 연필 스케치 히어로 (2026-11-02, 회사 분류부터) ----------
+   밝은 종이 배경 + 왼쪽 잉크 글자 + 오른쪽 스케치. 그림의 왼쪽 절반은 빈 종이라 글자 자리다. */
+.sp-hero--sketch .sp-hero-frame{
+  background-color:#FDFDFB; border:1px solid var(--hp-line);
+  background-size:100% auto; background-position:center bottom; background-repeat:no-repeat;
+}
+.sp-hero--sketch.sp-hero--tall .sp-hero-frame{ height:auto; min-height:560px; padding-bottom:40vw; }
+.sp-hero--sketch .sp-hero-body{ color:var(--hp-ink); height:auto; }
+.sp-hero--sketch .sp-hero-label{ color:var(--hp-green); }
+.sp-hero--sketch .sp-hero-sub{ color:var(--hp-grey); }
+.sp-hero--sketch .sp-hero-fact{ border-left-color:var(--hp-line); }
+.sp-hero--sketch .sp-hero-fact-label{ color:var(--hp-grey); }
+.sp-hero--sketch .sp-hero-facts{ margin-top:28px; }
+@media (min-width:1024px){
+  .sp-hero--sketch.sp-hero--tall .sp-hero-frame{ height:620px; min-height:0; padding-bottom:0;
+    background-size:contain; background-position:right bottom; }
+  .sp-hero--sketch .sp-hero-body{ height:100%; max-width:600px; }
+  .sp-hero--sketch .sp-hero-headline{ font-size:52px; }
+}
+@media (min-width:1280px){
+  .sp-hero--sketch .sp-hero-headline{ font-size:56px; }
+}
+
+/* sketch hero — mobile: crop to the right half (building) */
+@media (max-width:1023px){
+  .sp-hero--sketch.sp-hero--tall .sp-hero-frame{ background-size:200% auto; background-position:right bottom; padding-bottom:52vw; }
+}
