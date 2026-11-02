@@ -196,3 +196,9 @@
 @media (min-width:1280px){
   .sp-hero--sketch .sp-hero-headline{ font-size:56px; }
 }
+/* 게시판형(FAQ·블로그): 숫자 줄이 없으니 땅을 히어로 맨 아래로, 높이도 낮게 */
+.sp-hero--compact.sp-hero--sketch .sp-hero-sketch{ bottom:0; }
+@media (min-width:1024px){
+  .sp-hero--compact.sp-hero--sketch .sp-hero-body{ padding-top:72px; }
+  .sp-hero--compact.sp-hero--sketch .sp-hero-body > div:first-child{ min-height:400px; }
+}

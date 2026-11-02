@@ -3007,7 +3007,8 @@
         ],
         "photo": "startup",
         "photo_mood": "오픈 준비 중인 빈 휴대폰 매장, 흑백",
-        "photo_caption": "매장 오픈 준비"
+        "photo_caption": "매장 오픈 준비",
+        "sketch": "info"
       },
       "statement": {
         "headline_ink": "창업 준비,",
@@ -3273,7 +3274,8 @@
         "cta_primary": "전화로 묻기",
         "photo": "faq",
         "photo_mood": "헤드셋을 쓴 CS 데스크, 흑백",
-        "photo_caption": "CS팀"
+        "photo_caption": "CS팀",
+        "sketch": "info"
       },
       "tabs": [
         "전체",
@@ -3317,7 +3319,8 @@
         "cta_primary": "정책 받아보기",
         "photo": "blog",
         "photo_mood": "매장에서 노트북으로 글을 읽는 모습, 흑백",
-        "photo_caption": "ENTER 블로그"
+        "photo_caption": "ENTER 블로그",
+        "sketch": "info"
       },
       "tabs": [
         "전체",
