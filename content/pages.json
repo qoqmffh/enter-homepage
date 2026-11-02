@@ -3424,7 +3424,8 @@
         ],
         "photo": "about",
         "photo_mood": "사무실 팀 미팅 모습(실제 팀 사진으로 교체 예정), 흑백",
-        "photo_caption": "ENTER 도매영업팀"
+        "photo_caption": "ENTER 도매영업팀",
+        "sketch": "company"
       },
       "statement": {
         "headline_ink": "15년 이상,",

@@ -3,18 +3,24 @@
    있으면 쓰고, 없으면 CSS background-color(#2a2d33)만 보인다 — 사진 분위기는
    data.photo_mood 주석으로 옆에 남겨 실제 사진 교체 시 참고한다. #}
 {% macro render(variant, data) %}
-<div class="sp-hero sp-hero--{{ variant }}">
+{% set sk = data.sketch %}
+<div class="sp-hero sp-hero--{{ variant }}{% if sk %} sp-hero--sketch{% endif %}">
+  {% if sk %}
+  {# 분류별 공통 연필 스케치 히어로(회사/거래/정보) — static/photos/hero/hero-<분류>.webp, 밝은 종이 배경 + 잉크 글자 #}
+  <div class="sp-hero-frame" style="background-image:url('static/photos/hero/hero-{{ sk }}.webp')">
+  {% else %}
   <div class="sp-hero-frame" style="background-image:url('static/photos/hero-{{ data.photo }}.jpg')">
     {# 사진 분위기(교체용 참고): {{ data.photo_mood }} #}
     <div class="sp-hero-tint"></div>
+  {% endif %}
     <div class="sp-hero-body">
       <div>
         <p class="sp-hero-label">● {{ data.label }}</p>
         <h1 class="sp-hero-headline">{% for line in data.headline %}{{ line }}{% if not loop.last %}<br>{% endif %}{% endfor %}</h1>
         <p class="sp-hero-sub">{{ data.subline | safe }}</p>
         <div class="sp-hero-ctas">
-          <a class="hp-pill hp-pill--inverted" href="#cta">{{ data.cta_primary }}</a>
-          {% if variant == 'tall' %}<a class="hp-pill hp-pill--outline" href="#faq">{{ data.cta_secondary }}</a>{% endif %}
+          <a class="hp-pill {% if sk %}hp-pill--primary{% else %}hp-pill--inverted{% endif %}" href="#cta">{{ data.cta_primary }}</a>
+          {% if variant == 'tall' %}<a class="hp-pill {% if sk %}hp-pill--secondary{% else %}hp-pill--outline{% endif %}" href="#faq">{{ data.cta_secondary }}</a>{% endif %}
         </div>
       </div>
       {% if variant == 'tall' and data.facts %}
@@ -28,7 +34,7 @@
       </div>
       {% endif %}
     </div>
-    {% if data.photo_caption %}<span class="sp-hero-caption">{{ data.photo_caption }}</span>{% endif %}
+    {% if data.photo_caption and not sk %}<span class="sp-hero-caption">{{ data.photo_caption }}</span>{% endif %}
   </div>
 </div>
 {% endmacro %}
