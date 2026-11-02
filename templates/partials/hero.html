@@ -6,8 +6,9 @@
 {% set sk = data.sketch %}
 <div class="sp-hero sp-hero--{{ variant }}{% if sk %} sp-hero--sketch{% endif %}">
   {% if sk %}
-  {# 분류별 공통 연필 스케치 히어로(회사/거래/정보) — static/photos/hero/hero-<분류>.webp, 밝은 종이 배경 + 잉크 글자 #}
-  <div class="sp-hero-frame" style="background-image:url('static/photos/hero/hero-{{ sk }}.webp')">
+  {# 분류별 공통 선 스케치 히어로(회사/거래/정보) — static/photos/hero/hero-<분류>.webp (투명 배경, 맨 아래 선이 땅) #}
+  <div class="sp-hero-frame">
+    <img class="sp-hero-sketch" src="static/photos/hero/hero-{{ sk }}.webp" alt="" aria-hidden="true">
   {% else %}
   <div class="sp-hero-frame" style="background-image:url('static/photos/hero-{{ data.photo }}.jpg')">
     {# 사진 분위기(교체용 참고): {{ data.photo_mood }} #}
