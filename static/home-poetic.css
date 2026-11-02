@@ -347,3 +347,9 @@
   .hp-feature-grid .hp-mockup--chat .hp-mockup-head{ position:relative; z-index:1; }
   .hp-feature-grid .hp-feature-card-head .hp-headline-lg{ font-size:26px; }
 }
+
+/* 왜 ENTER 히어로 — 회사 분류 선 스케치(2026-11-02). 그림의 바닥선 = 구분선. */
+.hp-ground{ position:relative; background:transparent; }
+.hp-hero-sketch{ position:absolute; right:0; bottom:-1px; width:100%; height:auto; z-index:0; pointer-events:none; user-select:none; }
+.hp-hero .hp-hero-top, .hp-hero .hp-hero-sub, .hp-hero .hp-hero-ctas{ position:relative; z-index:1; }
+.hp-hero:has(.hp-ground) .hp-hero-sub{ max-width:560px; white-space:normal; }

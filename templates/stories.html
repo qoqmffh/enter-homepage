@@ -1,10 +1,24 @@
 {% extends "base.html" %}
+{% import "partials/hero.html" as hero_mod %}
+{% import "partials/cta_band.html" as cta_mod with context %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="static/site.css">
+<link rel="stylesheet" href="static/sub.css">
+{% endblock %}
+
 {% block content %}
-<section style="padding-top:28px">
-  <div class="wrap">
-    <div class="eyebrow">{{ page.eyebrow }}</div>
-    <h1>{{ page.h1 }}</h1>
-    <div class="placeholder">{{ page.placeholder_text | safe }}</div>
+{% set s = page.sub %}
+
+{{ hero_mod.render('tall', s.hero) }}
+
+{# 실제 거래처 발언이 모이면 이 자리를 채운다 — 지어낸 후기는 넣지 않는다. #}
+<section class="sp-section sp-section--center" id="stories">
+  <div class="sp-statement">
+    <h2><span class="hp-ink">{{ page.h1 }}</span></h2>
+    <p>{{ page.placeholder_text | safe }}</p>
   </div>
 </section>
+
+{{ cta_mod.render(s.cta) }}
 {% endblock %}

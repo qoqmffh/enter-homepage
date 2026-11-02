@@ -54,7 +54,12 @@
         {{ m.pill(p.hero.cta_kakao, '#', 'primary', True) }}
         {{ m.pill(p.hero.cta_tel, 'tel:' ~ site.phone, 'secondary') }}
       </div>
+      {% if p.hero.sketch %}
+      {# 회사 분류 선 스케치 — 그림 맨 아래 선이 곧 이 구분선(땅). 버튼은 땅 위, 숫자 카드는 땅 아래. #}
+      <div class="hp-hairline hp-ground"><img class="hp-hero-sketch" src="static/photos/hero/hero-{{ p.hero.sketch }}.webp" alt="" aria-hidden="true"></div>
+      {% else %}
       <div class="hp-hairline"></div>
+      {% endif %}
       <div class="hp-stats" id="stats">
         {% for s in p.stats %}{{ m.stat_card(s.num, s.label) }}{% endfor %}
       </div>
