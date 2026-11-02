@@ -322,3 +322,28 @@
   .hp-feature-grid .hp-chat-text{ font-size:12px; }
   .hp-feature-grid .hp-feature-card-foot p{ font-size:14px; }
 }
+
+/* 2026-11-02 b: 3열 카드 높이 줄이기 — /2 고객 카드를 한 줄짜리 행으로 압축, 주소·보안 문구 숨김 / 장부 금액 잘림 해결 */
+@media (min-width:1024px){
+  .hp-feature-grid .hp-feature-card{ min-height:0; }
+  .hp-feature-grid .hp-mockup{ margin:24px 0; }
+  .hp-feature-grid .hp-mockup--crm .hp-mockup-head{ flex-wrap:wrap; gap:8px; }
+  .hp-feature-grid .hp-crm-grid{ gap:0; }
+  .hp-feature-grid .hp-crm-field{ flex-direction:row; justify-content:space-between; align-items:center; background:none; border:0; border-bottom:1px solid var(--hp-line); border-radius:0; padding:10px 2px; }
+  .hp-feature-grid .hp-crm-field:last-child{ border-bottom:0; }
+  .hp-feature-grid .hp-crm-field:nth-child(n+4){ display:none; }
+  .hp-feature-grid .hp-mockup--crm .hp-mockup-foot{ display:none; }
+  .hp-feature-grid .hp-field-label{ font-size:11px; letter-spacing:0; text-transform:none; }
+  .hp-feature-grid .hp-field-value{ font-size:13px; }
+  .hp-feature-grid{ --hp-ledger-cols:76px 20px 46px 1fr; }
+  .hp-feature-grid .hp-ledger-head > :nth-child(n+5),
+  .hp-feature-grid .hp-ledger-row > :nth-child(n+5){ display:none; }
+}
+@media (min-width:1024px){
+  /* /3 정책방: 채팅창 높이를 고정하고 최신 메시지가 아래에 보이도록 — 카드 3장 높이를 함께 줄인다 */
+  .hp-feature-grid .hp-mockup--chat{ height:250px; overflow:hidden; display:flex; flex-direction:column; }
+  .hp-feature-grid .hp-mockup--chat .hp-chat-list{ margin-top:auto; }
+  .hp-feature-grid .hp-mockup--chat .hp-chat-list{ min-height:0; overflow:hidden; justify-content:flex-end; -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 36px); mask-image:linear-gradient(to bottom, transparent 0, #000 36px); }
+  .hp-feature-grid .hp-mockup--chat .hp-mockup-head{ position:relative; z-index:1; }
+  .hp-feature-grid .hp-feature-card-head .hp-headline-lg{ font-size:26px; }
+}
