@@ -304,3 +304,46 @@
 .ls-cell.ls-space{ overflow:visible; }
 .ls-primary{ position:relative; display:inline-block; top:0; }
 .ls-secondary{ position:absolute; left:0; right:0; top:100%; display:inline-block; }
+
+/* ---------- 2026-11-02 수정 ---------- */
+/* HOW WE WORK 제목 가운데 정렬 복구: site.css의 .hp-two-tone(margin:auto)을 .hp-headline-lg{margin:0}가 덮어써서 왼쪽으로 쏠리던 문제 */
+.hp-features-head .hp-two-tone{ margin-left:auto; margin-right:auto; }
+
+/* /1 /2 /3 카드 3장을 한 화면에 가로로 (데스크톱). 모바일은 기존처럼 세로 */
+@media (min-width:1024px){
+  .hp-feature-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; align-items:stretch; }
+  .hp-feature-grid .hp-feature-card{ margin:0; padding:36px 32px; min-height:560px; border-radius:20px; }
+  .hp-feature-grid .hp-feature-card-head .hp-headline-lg{ font-size:28px; line-height:1.25; }
+  .hp-feature-grid .hp-mockup,
+  .hp-feature-grid .hp-mockup--ledger{ max-width:100%; width:100%; margin:28px 0; padding:18px 16px; border-radius:14px; }
+  .hp-feature-grid{ --hp-ledger-row-h:36px; --hp-ledger-cols:74px 20px 46px 1fr 62px; }
+  .hp-feature-grid .hp-ledger-head{ font-size:9px; }
+  .hp-feature-grid .hp-ledger-row{ font-size:11px; }
+  .hp-feature-grid .hp-chat-text{ font-size:12px; }
+  .hp-feature-grid .hp-feature-card-foot p{ font-size:14px; }
+}
+
+/* 2026-11-02 b: 3열 카드 높이 줄이기 — /2 고객 카드를 한 줄짜리 행으로 압축, 주소·보안 문구 숨김 / 장부 금액 잘림 해결 */
+@media (min-width:1024px){
+  .hp-feature-grid .hp-feature-card{ min-height:0; }
+  .hp-feature-grid .hp-mockup{ margin:24px 0; }
+  .hp-feature-grid .hp-mockup--crm .hp-mockup-head{ flex-wrap:wrap; gap:8px; }
+  .hp-feature-grid .hp-crm-grid{ gap:0; }
+  .hp-feature-grid .hp-crm-field{ flex-direction:row; justify-content:space-between; align-items:center; background:none; border:0; border-bottom:1px solid var(--hp-line); border-radius:0; padding:10px 2px; }
+  .hp-feature-grid .hp-crm-field:last-child{ border-bottom:0; }
+  .hp-feature-grid .hp-crm-field:nth-child(n+4){ display:none; }
+  .hp-feature-grid .hp-mockup--crm .hp-mockup-foot{ display:none; }
+  .hp-feature-grid .hp-field-label{ font-size:11px; letter-spacing:0; text-transform:none; }
+  .hp-feature-grid .hp-field-value{ font-size:13px; }
+  .hp-feature-grid{ --hp-ledger-cols:76px 20px 46px 1fr; }
+  .hp-feature-grid .hp-ledger-head > :nth-child(n+5),
+  .hp-feature-grid .hp-ledger-row > :nth-child(n+5){ display:none; }
+}
+@media (min-width:1024px){
+  /* /3 정책방: 채팅창 높이를 고정하고 최신 메시지가 아래에 보이도록 — 카드 3장 높이를 함께 줄인다 */
+  .hp-feature-grid .hp-mockup--chat{ height:250px; overflow:hidden; display:flex; flex-direction:column; }
+  .hp-feature-grid .hp-mockup--chat .hp-chat-list{ margin-top:auto; }
+  .hp-feature-grid .hp-mockup--chat .hp-chat-list{ min-height:0; overflow:hidden; justify-content:flex-end; -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 36px); mask-image:linear-gradient(to bottom, transparent 0, #000 36px); }
+  .hp-feature-grid .hp-mockup--chat .hp-mockup-head{ position:relative; z-index:1; }
+  .hp-feature-grid .hp-feature-card-head .hp-headline-lg{ font-size:26px; }
+}
