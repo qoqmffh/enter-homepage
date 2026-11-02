@@ -55,6 +55,7 @@
 <script src="static/home-poetic-trail.js" defer></script>
 <script src="static/home-poetic-cards.js" defer></script>
 <script src="static/wipe-reveal.js" defer></script>
+<script src="static/why-carousels.js" defer></script>
 
 </head>
 <body>
@@ -215,19 +216,41 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     </p>
   </div>
   <div class="hp-wrap">
-    <div class="hp-photo-block hp-trail-host" data-trail="green" style="background-image:url('static/photos/office.jpg')">
+    <div class="hp-photo-block hp-trail-host" data-photo-carousel data-interval="5000" data-trail="green">
       <div class="hp-trail" aria-hidden="true"></div>
+      <div class="hp-photo-stage">
+        
+        <img class="hp-photo-img is-active" src="static/photos/Headquarters/1.webp" alt="ENTER 서울 본사 도매정산·개통운영센터 업무 현장 1" loading="eager">
+        
+        <img class="hp-photo-img" src="static/photos/Headquarters/2.webp" alt="ENTER 서울 본사 도매정산·개통운영센터 업무 현장 2" loading="lazy">
+        
+        <img class="hp-photo-img" src="static/photos/Headquarters/3.webp" alt="ENTER 서울 본사 도매정산·개통운영센터 업무 현장 3" loading="lazy">
+        
+        <img class="hp-photo-img" src="static/photos/Headquarters/4.webp" alt="ENTER 서울 본사 도매정산·개통운영센터 업무 현장 4" loading="lazy">
+        
+      </div>
       <div class="hp-photo-overlay"></div>
       <div class="hp-photo-corner hp-photo-corner--tl">SYS // OPERATIONAL_HUB</div>
       <div class="hp-photo-corner hp-photo-corner--bl">SEOUL 37.5665° N, 126.9780° E</div>
-      <div class="hp-photo-corner hp-photo-corner--br hp-green-text">ENTER NETWORK</div>
-      <div class="hp-photo-center">
-        <span class="hp-photo-badge">
-<span class="hp-label"><span class="hp-label-dot"></span>HEADQUARTERS CENTER</span>
-</span>
-        <p class="hp-photo-caption-small">실제 업무 현장</p>
-        <p class="hp-photo-caption">서울 본사 도매정산·개통운영센터</p>
+      <div class="hp-photo-corner hp-photo-corner--br hp-photo-nav">
+        <span class="hp-photo-counter" data-photo-counter>01 / 04</span>
+        <div class="hp-carousel-btns hp-carousel-btns--photo">
+          <button type="button" aria-label="이전 사진" data-photo-prev>
+
+<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+
+</button>
+          <button type="button" aria-label="다음 사진" data-photo-next>
+
+<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+
+</button>
+        </div>
       </div>
+    </div>
+    <div class="hp-photo-foot">
+      <p class="hp-photo-caption-below">서울 본사 도매정산·개통운영센터</p>
+      <p class="hp-photo-disclaimer">※ 실제 촬영본을 AI로 보정·재생성한 이미지입니다.</p>
     </div>
   </div>
 </section>
@@ -1907,26 +1930,60 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       
 <span class="hp-label"><span class="hp-label-dot"></span>우리의 약속</span>
 
-      <blockquote class="hp-quote"><span>“정산일을 미룬 적은 한 번도 없습니다.</span><span>앞으로도 그럴 겁니다.”</span></blockquote>
+      <div class="hp-quote-stage" data-quote-carousel data-interval="7000" aria-live="polite">
+        
+        <div class="hp-quote-item is-active">
+          <blockquote class="hp-quote"><span>“정산일을 미룬 적은 한 번도 없습니다.</span><span>앞으로도 그럴 겁니다.”</span></blockquote>
+          
+<a href="settlement.html" class="hp-pill hp-pill--inverted">정산 방식 자세히 보기 →</a>
+
+        </div>
+        
+        <div class="hp-quote-item">
+          <blockquote class="hp-quote"><span>“고객 정보는 개통이 끝나면 가립니다.</span><span>남겨 둘 이유가 없으니까요.”</span></blockquote>
+          
+<a href="settlement.html" class="hp-pill hp-pill--inverted">DB 보호 방식 보기 →</a>
+
+        </div>
+        
+        <div class="hp-quote-item">
+          <blockquote class="hp-quote"><span>“정책표는 매일 아침 먼저 보내드립니다.</span><span>비교는 사장님이 하시면 됩니다.”</span></blockquote>
+          
+<a href="#" class="hp-pill hp-pill--inverted">정책 받아보기 →</a>
+
+        </div>
+        
+        <div class="hp-quote-item">
+          <blockquote class="hp-quote"><span>“서류보다 개통이 먼저입니다.</span><span>저희가 먼저 믿고 움직이겠습니다.”</span></blockquote>
+          
+<a href="start.html" class="hp-pill hp-pill--inverted">거래 시작하기 →</a>
+
+        </div>
+        
+        <div class="hp-quote-item">
+          <blockquote class="hp-quote"><span>“한 건을 하셔도,</span><span>백 건처럼 챙기겠습니다.”</span></blockquote>
+          
+<a href="start.html" class="hp-pill hp-pill--inverted">거래 시작하기 →</a>
+
+        </div>
+        
+      </div>
       <div class="hp-promise-foot">
         <div class="hp-promise-person">
           <div>
             <span class="hp-promise-name">방수현</span>
             <span class="hp-promise-title">총괄이사 · (유)위드컴퍼니</span>
-            
-<a href="settlement.html" class="hp-pill hp-pill--inverted">정산 방식 자세히 보기 →</a>
-
           </div>
         </div>
         <div class="hp-promise-carousel">
-          <span class="hp-mono-muted">약속 · 거래처 이야기 (준비 중)</span>
+          <span class="hp-mono-muted" data-quote-counter>01 / 05</span>
           <div class="hp-carousel-btns">
-            <button type="button" aria-label="이전" disabled>
+            <button type="button" aria-label="이전 약속" data-quote-prev>
 
 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
 
 </button>
-            <button type="button" aria-label="다음" disabled>
+            <button type="button" aria-label="다음 약속" data-quote-next>
 
 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 
