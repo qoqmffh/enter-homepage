@@ -14,6 +14,11 @@
   --hp-line-dark:#1E222B;
   --hp-green:#1E6F50;
   --hp-green-tint:#DCEBE3;
+
+  /* 모서리 둥글기 토큰(2026-11-02) — 사이트 전체 카드/버튼 둥글기를 여기 두 값으로 통일.
+     원형(50%)·점(dot)·의도적 각진 디테일(0, 4px 셀 등)은 토큰 대상이 아니다. */
+  --radius-card:8px;
+  --radius-btn:6px;
 }
 
 body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; overflow-wrap:break-word; }
@@ -32,7 +37,7 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
 .hp-label{ display:inline-flex; align-items:center; gap:7px; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--hp-grey); margin-bottom:12px; }
 .hp-label-dot{ width:7px; height:7px; border-radius:50%; background:var(--hp-green); flex:0 0 auto; }
 
-.hp-pill{ display:inline-flex; align-items:center; justify-content:center; gap:8px; border-radius:999px; padding:12px 24px; font-size:14px; font-weight:700; white-space:nowrap; transition:background-color .15s ease, color .15s ease, border-color .15s ease; }
+.hp-pill{ display:inline-flex; align-items:center; justify-content:center; gap:8px; border-radius:var(--radius-btn); padding:12px 24px; font-size:14px; font-weight:700; white-space:nowrap; transition:background-color .15s ease, color .15s ease, border-color .15s ease; }
 .hp-pill-dot{ width:7px; height:7px; border-radius:50%; background:var(--hp-green); flex:0 0 auto; }
 .hp-pill--primary{ background:var(--hp-black); color:var(--hp-white); }
 .hp-pill--primary:hover{ background:var(--hp-green); }
