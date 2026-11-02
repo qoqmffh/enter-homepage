@@ -52,7 +52,7 @@ html.ad-pending .hp-ad-stage{ display:block; }
 .hp-ad-scene{ position:absolute; inset:0; }
 
 .hp-ad-line{
-  position:absolute; margin:0; max-width:80vw; font-weight:800; letter-spacing:-.03em;
+  position:absolute; margin:0; max-width:80vw; font-weight:800; letter-spacing:-.02em;
   line-height:1; color:var(--hp-white); opacity:0; will-change:opacity, transform;
 }
 .hp-ad-line--1{ top:20%; left:6%; font-size:40px; }
@@ -60,12 +60,12 @@ html.ad-pending .hp-ad-stage{ display:block; }
 
 .hp-ad-scene--s2{ display:flex; align-items:center; justify-content:flex-end; }
 .hp-ad-s2-box{ position:absolute; right:6%; top:50%; transform:translateY(-50%); text-align:right; opacity:0; will-change:opacity, transform; max-width:70vw; }
-.hp-ad-s2-kpi{ margin:0; font-size:30px; font-weight:800; letter-spacing:-.03em; color:var(--hp-white); }
+.hp-ad-s2-kpi{ margin:0; font-size:30px; font-weight:800; letter-spacing:-.02em; color:var(--hp-white); }
 .hp-ad-s2-kpi b{ color:#5DB88C; font-weight:800; }
 .hp-ad-s2-note{ margin:10px 0 0; font-size:12px; color:rgba(255,255,250,.6); opacity:0; }
 
 .hp-ad-center{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); text-align:center; }
-.hp-ad-s3-label, .hp-ad-s4-label{ margin:0 0 6px; font-size:16px; font-weight:700; color:rgba(255,255,250,.6); letter-spacing:-.01em; opacity:0; }
+.hp-ad-s3-label, .hp-ad-s4-label{ margin:0 0 6px; font-size:16px; font-weight:600; color:rgba(255,255,250,.6); letter-spacing:-.01em; opacity:0; }
 .hp-ad-s3-big, .hp-ad-s4-big{ margin:0; font-size:72px; font-weight:800; line-height:1; color:var(--hp-white); opacity:0; will-change:opacity, transform; }
 .hp-ad-s3-big b, .hp-ad-s4-big b{ color:#5DB88C; }
 .hp-ad-s4-big.hp-ad-done b{ color:#5DB88C; }
@@ -75,18 +75,18 @@ html.ad-pending .hp-ad-stage{ display:block; }
 .hp-ad-carriers{ position:absolute; inset:0; }
 .hp-ad-carrier{
   position:absolute; left:50%; top:50%; margin:0; white-space:nowrap;
-  font-size:32px; font-weight:800; letter-spacing:-.03em; color:var(--hp-white);
+  font-size:32px; font-weight:800; letter-spacing:-.02em; color:var(--hp-white);
   opacity:0; transform:translate(-50%,-50%); will-change:opacity, transform, filter;
 }
 .hp-ad-slogan{ position:absolute; left:0; right:0; bottom:14%; text-align:center; margin:0; font-size:15px; font-weight:500; letter-spacing:.06em; color:rgba(255,255,250,.6); opacity:0; }
 
-.hp-ad-end-line1{ margin:0; font-size:36px; font-weight:800; letter-spacing:-.03em; color:var(--hp-white); opacity:0; }
+.hp-ad-end-line1{ margin:0; font-size:36px; font-weight:800; letter-spacing:-.02em; color:var(--hp-white); opacity:0; }
 .hp-ad-end-line2{ margin:12px 0 0; font-size:17px; font-weight:600; color:#3a3f48; opacity:0; }
 .hp-ad-end-btns{
   margin:22px auto 0; display:flex; justify-content:center; flex-wrap:wrap; gap:12px;
   opacity:0; pointer-events:none; will-change:opacity, transform;
 }
-.hp-ad-btn{ padding:13px 24px; border-radius:999px; font-size:15px; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; }
+.hp-ad-btn{ padding:13px 24px; border-radius:999px; font-size:15px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; }
 .hp-ad-btn--primary{ background:var(--hp-white); color:var(--hp-black); border:none; cursor:pointer; }
 .hp-ad-btn--ghost{ background:transparent; color:var(--hp-white); border:1.5px solid var(--hp-white); cursor:pointer; font-family:inherit; }
 

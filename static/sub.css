@@ -20,8 +20,8 @@
 .sp-hero--compact .sp-hero-frame{ height:260px; }
 .sp-hero-tint{ position:absolute; inset:0; background:rgba(11,13,18,.55); }
 .sp-hero-body{ position:relative; z-index:1; height:100%; padding:32px; display:flex; flex-direction:column; justify-content:space-between; color:var(--hp-white); }
-.sp-hero-label{ font-size:12px; color:rgba(255,255,250,.7); letter-spacing:.08em; margin:0 0 12px; font-weight:700; text-transform:uppercase; }
-.sp-hero-headline{ font-size:32px; font-weight:800; line-height:1.15; letter-spacing:-.03em; margin:0 0 16px; }
+.sp-hero-label{ font-size:12px; color:rgba(255,255,250,.7); letter-spacing:.08em; margin:0 0 12px; font-weight:600; text-transform:uppercase; }
+.sp-hero-headline{ font-size:32px; font-weight:800; line-height:1.15; letter-spacing:-.01em; margin:0 0 16px; }
 .sp-hero-headline br{ content:''; }
 .sp-hero-sub{ font-size:15px; color:rgba(255,255,250,.8); max-width:560px; line-height:1.55; margin:0 0 20px; }
 .sp-hero-ctas{ display:flex; flex-wrap:wrap; gap:10px; }
@@ -33,7 +33,7 @@
 .sp-hero-caption{ position:absolute; right:16px; bottom:12px; z-index:1; font-size:10px; color:rgba(255,255,250,.5); }
 
 /* ---------- 2. 선언(두 톤 제목) ---------- */
-.sp-statement h2{ font-size:28px; font-weight:800; letter-spacing:-.03em; line-height:1.25; margin:0 0 16px; }
+.sp-statement h2{ font-size:28px; font-weight:800; letter-spacing:-.01em; line-height:1.25; margin:0 0 16px; }
 .sp-statement p{ font-size:15px; color:var(--hp-grey); max-width:560px; margin:0 auto; line-height:1.6; }
 /* common.css의 section{border-bottom}이 바로 다음 줄에 붙어 보이는 문제 — 이 섹션
    (#statement)만 문장과 선 사이에 넉넉한 여백을 둔다(정산·취급상품·창업자·회사·거래시작 공통). */
@@ -43,12 +43,12 @@
 .sp-cards{ display:grid; grid-template-columns:1fr; gap:16px; }
 .sp-card{ background:var(--hp-black); color:var(--hp-white); border-radius:var(--radius-card); padding:28px 24px; min-height:320px; display:flex; flex-direction:column; justify-content:space-between; gap:20px; }
 .sp-card-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
-.sp-card-head h3{ font-size:20px; font-weight:800; margin:0; }
+.sp-card-head h3{ font-size:20px; font-weight:600; margin:0; }
 .sp-card-index{ font-size:15px; color:var(--hp-grey); font-variant-numeric:tabular-nums; }
 .sp-card-desc{ font-size:13px; color:rgba(255,255,250,.7); line-height:1.6; margin:0; }
-.sp-card-big{ font-size:40px; font-weight:800; letter-spacing:-.03em; line-height:1; color:var(--hp-white); }
+.sp-card-big{ font-size:40px; font-weight:800; letter-spacing:-.02em; line-height:1; color:var(--hp-white); }
 .sp-card-big--green{ color:#5DB88C; }
-.sp-card-big-prefix{ font-size:18px; font-weight:700; vertical-align:middle; }
+.sp-card-big-prefix{ font-size:18px; font-weight:600; vertical-align:middle; }
 .sp-card-bullets{ margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:8px; }
 .sp-card-bullets li{ font-size:13px; color:rgba(255,255,250,.85); line-height:1.5; padding-left:14px; position:relative; }
 .sp-card-bullets li::before{ content:'·'; position:absolute; left:0; color:#5DB88C; font-weight:800; }
@@ -58,14 +58,14 @@
 .sp-week-row{ display:flex; align-items:center; justify-content:space-between; font-size:10px; color:rgba(255,255,250,.6); margin-bottom:6px; }
 .sp-week-row + .sp-week-row{ margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,.05); }
 .sp-week-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:4px; }
-.sp-week-day{ text-align:center; padding:4px 0; border-radius:4px; font-size:10px; font-weight:700; color:rgba(255,255,250,.5); }
-.sp-week-day span{ display:block; font-size:8px; font-weight:700; margin-top:2px; }
+.sp-week-day{ text-align:center; padding:4px 0; border-radius:4px; font-size:10px; font-weight:600; color:rgba(255,255,250,.5); }
+.sp-week-day span{ display:block; font-size:8px; font-weight:600; margin-top:2px; }
 .sp-week-day--mid{ background:rgba(30,111,80,.18); border:1px solid rgba(30,111,80,.4); color:var(--hp-white); }
 .sp-week-day--out{ background:var(--hp-green); color:var(--hp-white); }
 
 /* 카드 미니 UI — 고객 레코드(하드마킹) */
 .sp-record{ background:var(--hp-white); color:var(--hp-ink); border-radius:var(--radius-card); padding:14px; }
-.sp-record-tag{ font-size:10px; font-weight:700; color:var(--hp-green); display:block; margin-bottom:10px; }
+.sp-record-tag{ font-size:10px; font-weight:600; color:var(--hp-green); display:block; margin-bottom:10px; }
 .sp-record-row{ display:flex; justify-content:space-between; font-size:11px; padding-bottom:6px; margin-bottom:6px; border-bottom:1px solid var(--hp-line); }
 .sp-record-row:last-child{ border-bottom:none; margin-bottom:0; padding-bottom:0; }
 .sp-record-row span:first-child{ color:var(--hp-grey); }
@@ -73,10 +73,10 @@
 
 /* ---------- 4. 상세 목록(원장형 행) ---------- */
 .sp-detail-head{ margin-bottom:28px; }
-.sp-detail-head h2{ font-size:28px; font-weight:800; letter-spacing:-.03em; margin:10px 0 0; }
+.sp-detail-head h2{ font-size:28px; font-weight:800; letter-spacing:-.01em; margin:10px 0 0; }
 .sp-row{ border-top:1px solid var(--hp-line); padding:16px 0; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
 .sp-row:last-child{ border-bottom:1px solid var(--hp-line); }
-.sp-row-title{ font-size:16px; font-weight:700; color:var(--hp-ink); font-variant-numeric:tabular-nums; }
+.sp-row-title{ font-size:16px; font-weight:600; color:var(--hp-ink); font-variant-numeric:tabular-nums; }
 .sp-row-desc{ font-size:13px; color:var(--hp-grey); }
 .sp-row-tag{ font-size:11px; font-weight:600; color:var(--hp-green); text-transform:uppercase; letter-spacing:.04em; }
 /* 가운데 열(설명) 정렬: flex+space-between은 제목 길이에 따라 설명 시작 x가 행마다
@@ -105,22 +105,22 @@
 /* ---------- 4b. 검은 통신사 쇼케이스(상세 목록의 carriers 변형, 취급상품 페이지) ---------- */
 .sp-carriers{ margin-top:160px; background:var(--hp-black); color:var(--hp-white); padding:64px 24px; }
 .sp-carriers-head{ max-width:1200px; margin:0 auto; }
-.sp-carriers-head h2{ font-size:28px; font-weight:800; letter-spacing:-.03em; margin:10px 0 0; }
-.sp-carriers-eyebrow{ font-size:12px; color:#5DB88C; font-weight:700; margin:14px 0 0; }
+.sp-carriers-head h2{ font-size:28px; font-weight:800; letter-spacing:-.01em; margin:10px 0 0; }
+.sp-carriers-eyebrow{ font-size:12px; color:#5DB88C; font-weight:600; margin:14px 0 0; }
 .sp-carriers-names{ max-width:1200px; margin:18px auto 0; }
-.sp-carriers-names div{ font-size:40px; font-weight:800; letter-spacing:-.03em; line-height:1.25; }
+.sp-carriers-names div{ font-size:40px; font-weight:800; letter-spacing:-.02em; line-height:1.25; }
 .sp-carriers-desc{ max-width:1200px; margin:24px auto 0; font-size:14px; color:rgba(255,255,250,.7); line-height:1.6; }
-.sp-carriers-link{ max-width:1200px; display:block; margin:14px auto 0; font-size:14px; font-weight:700; color:var(--hp-white); }
+.sp-carriers-link{ max-width:1200px; display:block; margin:14px auto 0; font-size:14px; font-weight:600; color:var(--hp-white); }
 .sp-carriers-link:hover{ color:#5DB88C; }
 .sp-carriers-foot{ max-width:1200px; margin:40px auto 0; padding-top:24px; border-top:1px solid rgba(255,255,250,.15); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
-.sp-carriers-foot a{ font-size:15px; font-weight:700; color:var(--hp-white); }
+.sp-carriers-foot a{ font-size:15px; font-weight:600; color:var(--hp-white); }
 .sp-carriers-foot a:hover{ color:#5DB88C; }
 .sp-carriers-foot span{ font-size:12px; color:rgba(255,255,250,.5); }
 
 /* ---------- 5. 질문 3개(FAQ 아코디언) ---------- */
 .sp-faq-item{ border-top:1px solid var(--hp-line); }
 .sp-faq-item:last-child{ border-bottom:1px solid var(--hp-line); }
-.sp-faq-item > summary{ list-style:none; cursor:pointer; padding:18px 0; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; font-size:16px; font-weight:700; color:var(--hp-ink); }
+.sp-faq-item > summary{ list-style:none; cursor:pointer; padding:18px 0; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; font-size:16px; font-weight:600; color:var(--hp-ink); }
 .sp-faq-item > summary > span:first-child{ flex:1 1 auto; }
 .sp-faq-item > summary::-webkit-details-marker{ display:none; }
 .sp-faq-item > summary::after{ content:'+'; font-size:18px; color:var(--hp-grey); flex:0 0 auto; }
@@ -130,7 +130,7 @@
 /* ---------- 6. CTA 띠(검은 통 섹션) ---------- */
 .sp-cta{ margin-top:160px; background:var(--hp-black); padding:72px 24px; text-align:center; color:var(--hp-white); }
 .sp-cta-inner{ max-width:1200px; margin:0 auto; }
-.sp-cta h2{ font-size:28px; font-weight:800; letter-spacing:-.03em; line-height:1.3; margin:0 0 24px; }
+.sp-cta h2{ font-size:28px; font-weight:800; letter-spacing:-.01em; line-height:1.3; margin:0 0 24px; }
 .sp-cta-ctas{ display:flex; flex-wrap:wrap; justify-content:center; gap:12px; }
 
 /* ---------- 게시판형: 탭 + 검색 + 목록 ---------- */
@@ -141,7 +141,7 @@
 .sp-board-featured{ display:grid; grid-template-columns:1fr; gap:16px; margin-bottom:32px; }
 .sp-board-feature-card{ display:flex; flex-direction:column; gap:14px; background:var(--hp-black); color:var(--hp-white); border-radius:var(--radius-card); padding:24px; min-height:180px; text-decoration:none; justify-content:space-between; }
 .sp-board-feature-card .sp-board-tag{ color:#5DB88C; }
-.sp-board-feature-title{ font-size:18px; font-weight:700; line-height:1.4; }
+.sp-board-feature-title{ font-size:18px; font-weight:600; line-height:1.4; }
 .sp-board-feature-foot{ display:flex; justify-content:space-between; font-size:12px; color:rgba(255,255,250,.6); }
 
 .sp-board-list{ display:flex; flex-direction:column; }
@@ -150,8 +150,8 @@
 .sp-board-row--pending{ cursor:default; opacity:.6; }
 .sp-board-thumb{ width:88px; height:64px; flex:0 0 auto; border-radius:var(--radius-card); background:var(--hp-grey-bg); background-size:cover; background-position:center; }
 .sp-board-row-body{ flex:1 1 auto; min-width:0; }
-.sp-board-tag{ display:block; font-size:11px; font-weight:700; color:var(--hp-green); text-transform:uppercase; letter-spacing:.04em; }
-.sp-board-title{ display:block; font-size:16px; font-weight:700; color:var(--hp-ink); margin:4px 0; }
+.sp-board-tag{ display:block; font-size:11px; font-weight:600; color:var(--hp-green); text-transform:uppercase; letter-spacing:.04em; }
+.sp-board-title{ display:block; font-size:16px; font-weight:600; color:var(--hp-ink); margin:4px 0; }
 .sp-board-excerpt{ display:block; font-size:13px; color:var(--hp-grey); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .sp-board-date{ font-size:12px; color:var(--hp-grey); flex:0 0 auto; }
 .sp-board-foot{ display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; margin-top:28px; }
@@ -165,7 +165,7 @@
   .sp-hero--compact .sp-hero-frame{ height:360px; }
   .sp-hero-body{ padding:64px; }
   .sp-hero-label{ font-size:12px; }
-  .sp-hero-headline{ font-size:56px; margin-bottom:20px; }
+  .sp-hero-headline{ font-size:56px; margin-bottom:20px; letter-spacing:-.02em; }
   .sp-hero-sub{ font-size:18px; max-width:620px; }
   .sp-hero-fact-value{ font-size:32px; }
   .sp-cards{ grid-template-columns:repeat(3,1fr); gap:24px; }
@@ -173,7 +173,7 @@
   .sp-card-head h3{ font-size:26px; }
   .sp-detail-head h2{ font-size:36px; }
   .sp-row-title{ font-size:20px; }
-  .sp-cta h2{ font-size:40px; }
+  .sp-cta h2{ font-size:40px; letter-spacing:-.02em; }
   .sp-carriers{ padding:88px 40px; }
   .sp-carriers-head h2{ font-size:36px; }
   .sp-carriers-names div{ font-size:60px; }

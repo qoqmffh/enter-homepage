@@ -12,14 +12,14 @@
 /* word-break:keep-all은 body에서 상속되므로 전 요소에 적용됨(blockquote 포함) — 한글이 글자 단위로 끊기지 않게 */
 
 /* ---------- 타이포 스케일 ---------- */
-.hp-display-xl{ font-weight:700; font-size:44px; line-height:1.04; letter-spacing:-.04em; margin:0; display:flex; flex-direction:column; text-wrap:balance; }
+.hp-display-xl{ font-weight:800; font-size:44px; line-height:1.04; letter-spacing:-.02em; margin:0; display:flex; flex-direction:column; text-wrap:balance; }
 .hp-display-xl .hp-headline-line{ display:block; }
-.hp-display-lg{ font-weight:700; font-size:36px; line-height:1.17; letter-spacing:-.02em; margin:0 0 32px; text-wrap:balance; }
-.hp-headline-lg{ font-weight:700; font-size:28px; line-height:1.3; letter-spacing:-.02em; margin:0; text-wrap:balance; }
-.hp-headline-md{ font-weight:700; font-size:22px; line-height:1.35; letter-spacing:-.015em; margin:16px 0 0; text-wrap:balance; }
+.hp-display-lg{ font-weight:800; font-size:36px; line-height:1.17; letter-spacing:-.02em; margin:0 0 32px; text-wrap:balance; }
+.hp-headline-lg{ font-weight:800; font-size:28px; line-height:1.3; letter-spacing:-.02em; margin:0; text-wrap:balance; }
+.hp-headline-md{ font-weight:800; font-size:22px; line-height:1.35; letter-spacing:-.01em; margin:16px 0 0; text-wrap:balance; }
 .hp-body-xl{ font-size:16px; line-height:1.65; color:var(--hp-grey); margin:0; }
 .hp-body-lg{ font-size:15px; line-height:1.6; }
-.hp-strong{ font-weight:700; }
+.hp-strong{ font-weight:600; }
 
 /* ---------- 히어로 ---------- */
 .hp-hero{ padding-top:24px; }
@@ -29,12 +29,12 @@
    위아래 여백이 너무 휑하다는 피드백으로 위/아래 모두 절반 수준으로 축소. */
 .hp-hero-top{ display:flex; flex-direction:column; justify-content:center; min-height:calc(100vh - 280px); }
 .hp-hero-subhead{ margin:28px 0 0; font-size:22px; line-height:1.4; color:var(--hp-grey); font-weight:400; }
-.hp-hero-sub{ font-size:20px; line-height:1.5; color:var(--hp-ink); font-weight:700; margin:0 0 20px; max-width:620px; }
+.hp-hero-sub{ font-size:20px; line-height:1.5; color:var(--hp-ink); font-weight:600; margin:0 0 20px; max-width:620px; }
 .hp-hero-ctas{ display:flex; flex-wrap:wrap; gap:12px; margin-bottom:28px; }
 .hp-hairline{ height:1px; background:var(--hp-line); margin:0 0 28px; }
 .hp-stats{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
 .hp-stat-card{ position:relative; overflow:hidden; background:var(--hp-black); color:var(--hp-white); border:1px solid var(--hp-line-dark); border-radius:var(--radius-card); padding:20px; min-height:150px; display:flex; flex-direction:column; justify-content:space-between; }
-.hp-stat-num{ font-size:34px; font-weight:700; letter-spacing:-.02em; line-height:1; }
+.hp-stat-num{ font-size:34px; font-weight:800; letter-spacing:-.02em; line-height:1; font-variant-numeric:tabular-nums; }
 .hp-stat-label{ font-size:12px; color:rgba(255,255,250,.82); font-weight:600; margin-top:12px; }
 
 /* ---------- 브랜드 스테이트먼트(통계 근거 + 사진) ---------- */
@@ -49,7 +49,7 @@
 .hp-photo-badge .hp-label{ color:var(--hp-white); background:rgba(255,255,250,.1); border:1px solid rgba(255,255,255,.12); padding:5px 12px; border-radius:var(--radius-btn); margin-bottom:12px; }
 .hp-photo-badge .hp-label-dot{ background:var(--hp-green); }
 .hp-photo-caption-small{ font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:rgba(255,255,250,.7); margin:0 0 8px; }
-.hp-photo-caption{ font-size:28px; font-weight:700; line-height:1.3; letter-spacing:-.02em; margin:0; }
+.hp-photo-caption{ font-size:28px; font-weight:600; line-height:1.3; letter-spacing:-.02em; margin:0; }
 
 /* ---------- KOSIS 통계 근거(지시서 §1 — 서브페이지 상세목록 행 스타일과 맞춤, static/sub.css의 .sp-row 참고) ---------- */
 .hp-kosis-table-wrap{ overflow-x:auto; margin-top:24px; -webkit-overflow-scrolling:touch; }
@@ -57,7 +57,7 @@
 .hp-kosis-table th{ text-align:left; padding:10px 12px; font-size:11px; color:var(--hp-grey); font-weight:600; border-top:1px solid var(--hp-line); border-bottom:1px solid var(--hp-line); }
 .hp-kosis-table td{ padding:14px 12px; border-top:1px solid var(--hp-line); color:var(--hp-ink); font-variant-numeric:tabular-nums; }
 .hp-kosis-table tr:last-child td{ border-bottom:1px solid var(--hp-line); }
-.hp-kosis-table td:first-child{ font-weight:700; }
+.hp-kosis-table td:first-child{ font-weight:600; }
 .hp-kosis-share{ margin-top:20px; font-size:14px; color:var(--hp-grey); line-height:1.6; }
 .hp-kosis-source{ margin-top:14px; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; font-size:12px; color:var(--hp-grey); }
 .hp-kosis-source a{ color:var(--hp-ink); font-weight:600; }
@@ -68,8 +68,8 @@
 .hp-features-head .hp-headline-lg{ margin-top:10px; }
 .hp-feature-card{ position:relative; overflow:hidden; background:var(--hp-black); color:var(--hp-white); border:1px solid var(--hp-line-dark); border-radius:var(--radius-card); padding:28px 20px; margin-bottom:20px; }
 .hp-feature-card-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
-.hp-feature-card-head h3{ color:var(--hp-white); }
-.hp-feature-index{ font-size:14px; color:rgba(255,255,250,.4); font-weight:700; white-space:nowrap; }
+.hp-feature-card-head h3{ color:var(--hp-white); font-weight:600; }
+.hp-feature-index{ font-size:14px; color:rgba(255,255,250,.4); font-weight:600; white-space:nowrap; }
 .hp-feature-card-foot{ border-top:1px solid rgba(255,255,255,.1); padding-top:18px; margin-top:4px; }
 .hp-feature-card-foot p{ color:rgba(255,255,250,.82); font-size:14px; line-height:1.6; margin:0; }
 .hp-features-foot{ margin-top:32px; }
@@ -78,8 +78,8 @@
 .hp-mockup{ background:var(--hp-white); color:var(--hp-ink); border:1px solid var(--hp-line); border-radius:var(--radius-card); padding:18px; margin:24px 0; }
 .hp-mockup-head{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; border-bottom:1px solid var(--hp-line); padding-bottom:12px; margin-bottom:12px; }
 .hp-mockup-head-left{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-.hp-mockup-title{ font-size:15px; font-weight:700; }
-.hp-chip{ font-size:10px; font-weight:700; padding:3px 9px; border-radius:var(--radius-btn); display:inline-block; }
+.hp-mockup-title{ font-size:15px; font-weight:600; }
+.hp-chip{ font-size:10px; font-weight:600; padding:3px 9px; border-radius:var(--radius-btn); display:inline-block; }
 .hp-chip--tint{ background:var(--hp-green-tint); color:var(--hp-green); }
 
 /* ---------- 정산 장부 티커 (CSS 애니메이션, JS는 호버 밖 일시정지 보조만) ---------- */
@@ -89,10 +89,11 @@
   display:grid; grid-template-columns:var(--hp-ledger-cols); gap:8px; align-items:center;
 }
 .hp-ledger-head{
-  font-size:9px; letter-spacing:.05em; text-transform:uppercase; color:var(--hp-grey); font-weight:700;
+  font-size:9px; letter-spacing:.05em; text-transform:uppercase; color:var(--hp-grey); font-weight:600;
   padding:0 2px 8px; border-bottom:1px solid var(--hp-line); margin-bottom:2px;
 }
 .hp-ledger-head span:nth-child(n+3), .hp-ledger-row .hp-num{ text-align:right; }
+.hp-ledger-row .hp-num{ font-variant-numeric:tabular-nums; }
 .hp-ledger-viewport{
   position:relative; overflow:hidden; height:calc(var(--hp-ledger-row-h) * 5.5);
   mask-image:linear-gradient(to bottom, transparent, black 14%, black 86%, transparent);
@@ -118,7 +119,7 @@
 .hp-crm-grid{ display:grid; grid-template-columns:1fr; gap:10px; }
 .hp-crm-field{ background:#F6F6F1; border:1px solid var(--hp-line); border-radius:var(--radius-card); padding:12px; display:flex; flex-direction:column; gap:4px; }
 .hp-field-label{ font-size:10px; letter-spacing:.04em; text-transform:uppercase; color:var(--hp-grey); }
-.hp-field-value{ font-size:14px; font-weight:700; letter-spacing:.02em; }
+.hp-field-value{ font-size:14px; font-weight:600; letter-spacing:.02em; }
 .hp-mockup-foot{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px; border-top:1px solid var(--hp-line); padding-top:12px; margin-top:14px; }
 .hp-crm-badges{ display:flex; align-items:center; gap:6px; }
 .hp-chip--solid{ background:var(--hp-green); color:var(--hp-white); transition:opacity .25s ease, transform .25s ease; }
@@ -128,14 +129,14 @@
 .hp-chat-bubble{ background:#F6F6F1; border:1px solid var(--hp-line); border-radius:var(--radius-card); border-top-left-radius:4px; padding:12px 14px; max-width:100%; transition:opacity .4s ease, transform .4s ease; }
 .hp-chat-bubble--accent{ background:rgba(220,235,227,.5); border-color:rgba(30,111,80,.2); }
 .hp-chat-bubble--sheet{ padding:0; overflow:hidden; background:var(--hp-white); }
-.hp-chat-label{ display:block; font-size:11px; font-weight:700; color:var(--hp-green); margin-bottom:4px; }
+.hp-chat-label{ display:block; font-size:11px; font-weight:600; color:var(--hp-green); margin-bottom:4px; }
 .hp-chat-text{ font-size:13px; line-height:1.55; margin:0; font-weight:600; }
 
 .hp-policy-sheet{ padding:12px 14px; }
-.hp-policy-sheet-head{ display:flex; justify-content:space-between; align-items:center; font-size:12px; font-weight:700; padding-bottom:8px; margin-bottom:8px; border-bottom:1px solid var(--hp-line); }
+.hp-policy-sheet-head{ display:flex; justify-content:space-between; align-items:center; font-size:12px; font-weight:600; padding-bottom:8px; margin-bottom:8px; border-bottom:1px solid var(--hp-line); }
 .hp-policy-sheet-row{ display:grid; grid-template-columns:54px 1fr auto; gap:8px; align-items:center; font-size:11px; padding:5px 0; }
-.hp-policy-sheet-row span:first-child{ font-weight:700; }
-.hp-policy-sheet-price{ font-weight:700; filter:blur(4px); -webkit-filter:blur(4px); user-select:none; }
+.hp-policy-sheet-row span:first-child{ font-weight:600; }
+.hp-policy-sheet-price{ font-weight:600; filter:blur(4px); -webkit-filter:blur(4px); user-select:none; }
 
 /* 메시지 등장 애니메이션: 기본은 전부 보이는 안전한 상태(JS 꺼지면 이대로 멈춤).
    static/home-poetic-cards.js가 로드를 확인한 뒤에만 이 클래스를 붙여서 숨겼다가
@@ -149,7 +150,7 @@
 .hp-promise{ position:relative; overflow:hidden; background:var(--hp-black); color:var(--hp-white); }
 .hp-promise .hp-label{ color:var(--hp-green); }
 .hp-promise .hp-label-dot{ border-radius:2px; }
-.hp-quote{ font-size:20px; font-weight:700; line-height:1.4; letter-spacing:-.015em; margin:0 0 36px; max-width:760px; }
+.hp-quote{ font-size:20px; font-weight:600; line-height:1.4; letter-spacing:-.015em; margin:0 0 36px; max-width:760px; }
 .hp-quote span{ display:block; }
 .hp-promise-grid{ display:flex; flex-direction:column; gap:32px; }
 .hp-promise-photo-col{ width:100%; }
@@ -164,7 +165,7 @@
 .hp-promise-content{ flex:1; min-width:0; }
 .hp-promise-foot{ display:flex; flex-direction:column; gap:28px; border-top:1px solid rgba(255,255,255,.1); padding-top:28px; }
 .hp-promise-person{ display:flex; gap:18px; align-items:flex-start; }
-.hp-promise-name{ display:block; font-size:15px; font-weight:700; }
+.hp-promise-name{ display:block; font-size:15px; font-weight:600; }
 .hp-promise-title{ display:block; font-size:12px; color:rgba(255,255,250,.55); margin:3px 0 14px; }
 .hp-promise-carousel{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
 .hp-carousel-btns{ display:flex; gap:8px; }
@@ -174,14 +175,14 @@
 .hp-start-head{ margin-bottom:28px; }
 .hp-start-list{ border-top:1px solid var(--hp-line); }
 .hp-start-row{ display:flex; justify-content:space-between; align-items:center; gap:12px; padding:18px 4px; border-bottom:1px solid var(--hp-line); }
-.hp-start-text{ font-size:15px; font-weight:700; }
+.hp-start-text{ font-size:15px; font-weight:600; }
 .hp-start-note{ color:var(--hp-grey); font-size:13px; margin:28px 0 20px; }
 
 /* ---------- 신뢰 섹션 ---------- */
 .hp-trust-body{ margin:14px 0 28px; max-width:640px; }
 .hp-trust-badges{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; padding-top:24px; border-top:1px solid var(--hp-line); }
 .hp-badge{ background:#F6F6F1; border:1px solid var(--hp-line); border-radius:var(--radius-card); padding:16px; display:flex; flex-direction:column; justify-content:space-between; gap:14px; min-height:120px; color:var(--hp-ink); }
-.hp-badge h4{ font-size:14px; font-weight:700; margin:0; }
+.hp-badge h4{ font-size:14px; font-weight:600; margin:0; }
 .hp-badge p{ font-size:11px; color:var(--hp-grey); margin:3px 0 0; }
 
 /* ---------- 통신사 섹션 ---------- */
