@@ -117,3 +117,17 @@ html.ad-pending .hp-subnav, html.ad-pending .hp-subnav a{ color:rgba(255,255,250
 @media (min-width:1024px){
   .hp-nav-toggle{ display:none; }
 }
+
+/* ---------- 페이지 전환 와이프(광고 index.html -> why.html#from-ad) ----------
+   index.html의 광고 무대가 똑같은 색·타이밍으로 화면을 덮은 채 why.html로 넘어오면,
+   동기 인라인 스크립트가 html.wipe-pending을 미리 붙여서 띠가 계속 덮인 상태로
+   시작하게 한다(FOUC 없음) — static/wipe-reveal.js가 곧바로 띠를 걷어 하얀 페이지를
+   드러낸다. 평소(해시 없이 why.html 직접 방문) 기본 상태는 띠가 아예 안 보인다. */
+html.wipe-pending body, html.wipe-pending{ overflow:hidden; }
+.hp-page-wipe{ display:none; position:fixed; inset:0; z-index:200; pointer-events:none; }
+html.wipe-pending .hp-page-wipe{ display:block; }
+.hp-page-wipe-layer{ position:absolute; inset:0; transform:translateX(100%); }
+html.wipe-pending .hp-page-wipe-layer{ transform:translateX(0); }
+.hp-page-wipe-layer--1{ background:#1E6F50; }
+.hp-page-wipe-layer--2{ background:#2F8F68; }
+.hp-page-wipe-layer--3{ background:#5DB88C; }

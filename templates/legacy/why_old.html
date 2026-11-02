@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% block content %}
+<section style="padding-top:28px">
+  <div class="wrap">
+    <div class="eyebrow">{{ page.eyebrow }}</div>
+    <h1>{{ page.h1 }}</h1>
+    <p class="lead">{{ page.intro }}</p>
+  </div>
+</section>
+
+{% for r in page.reasons %}
+<section>
+  <div class="wrap">
+  {% if r.style == "card" %}
+    <div class="reason-card">
+      <div class="eyebrow">REASON {{ "%02d"|format(r.num) }} · {{ r.title }}</div>
+      <h2 style="font-size:20px">{{ r.headline }}</h2>
+      <p class="lead">{{ r.subline }}</p>
+
+      {% if r.stats_grid %}
+      <div class="stat-grid">
+        {% for s in r.stats_grid %}
+        <div class="stat-box"><div class="num">{{ s.num }}</div><div class="label">{{ s.label }}</div></div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {% if r.body_text %}<p class="lead" style="margin-top:14px">{{ r.body_text }}</p>{% endif %}
+
+      {% if r.pills %}
+      <div class="pill-flow">
+        {% for p in r.pills %}{% if not loop.first %}<span class="arrow">→</span>{% endif %}<span class="pill">{{ p }}</span>{% endfor %}
+      </div>
+      {% endif %}
+
+      {% if r.checklist %}
+      <div class="checklist">
+        {% for item in r.checklist %}
+        <div class="checklist-item"><span>{{ loop.index }}. {{ item }}</span><span class="check">✓</span></div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {% if r.note %}<p class="lead" style="margin-top:10px">{{ r.note }}</p>{% endif %}
+
+      {% if r.market_share_text %}<p class="tagline" style="margin-top:14px">{{ r.market_share_text }}</p>{% endif %}
+
+      {% if r.tagline %}
+      <hr class="divider">
+      <p class="tagline">{{ r.tagline }}</p>
+      {% endif %}
+
+      {% if r.market_table or r.source_label %}
+      <div class="evidence-block">
+        {% if r.market_table %}
+        <p>{{ r.market_table_caption }}</p>
+        <div class="table-scroll">
+          <table>
+            <thead><tr>{% for cell in r.market_table[0] %}<th>{{ cell }}</th>{% endfor %}</tr></thead>
+            <tbody>
+              {% for row in r.market_table[1:] %}
+              <tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% endif %}
+
+        {% if r.source_label %}
+        <div class="source-note">
+          <span>{{ r.source_label }}</span>
+          {% if r.source_url %}
+          <a class="more-link" href="{{ r.source_url }}" target="_blank" rel="noopener">{{ r.source_link_text or "바로가기 →" }}</a>
+          {% endif %}
+        </div>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+  {% else %}
+    <div class="eyebrow">REASON {{ "%02d"|format(r.num) }} · {{ r.title }}</div>
+    <h2 style="font-size:20px">{{ r.summary }}</h2>
+
+    {% if r.body %}
+    {% for p in r.body %}<p class="lead" style="margin-top:8px">{{ p }}</p>{% endfor %}
+    {% endif %}
+    {% if r.tagline %}<p class="tagline">{{ r.tagline }}</p>{% endif %}
+
+    {% if r.steps_1 %}
+    <p class="lead" style="margin-top:14px">{{ r.steps_heading_1 }}</p>
+    <div class="steps flow">
+      {% for s in r.steps_1 %}<div class="step">{{ s }}</div>{% endfor %}
+    </div>
+    <p class="lead" style="margin-top:14px">{{ r.steps_heading_2 }}</p>
+    <div class="steps flow">
+      {% for s in r.steps_2 %}<div class="step">{{ s }}</div>{% endfor %}
+    </div>
+    {% else %}
+    <div class="steps flow">
+      {% for s in r.steps %}<div class="step">{{ s }}</div>{% endfor %}
+    </div>
+    {% endif %}
+
+    {% if r.note %}<p class="lead" style="margin-top:10px">{{ r.note }}</p>{% endif %}
+
+    {% if r.stats %}
+    <ul class="doclist" style="margin-top:14px">
+      {% for s in r.stats %}<li>{{ s }}</li>{% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if r.ticker_rows %}
+    <p class="lead" style="margin-top:14px">{{ r.ticker_heading }}</p>
+    <div class="ticker-wrap">
+      <div class="ticker-list">
+        {% for row in r.ticker_rows %}
+        <div class="ticker-row"><span class="t-date">{{ row.date }} ({{ row.dow[:1] }})</span><span class="t-count">{{ row.count }}건</span><span class="t-amount">{{ row.amount }}</span></div>
+        {% endfor %}
+        {% for row in r.ticker_rows %}
+        <div class="ticker-row" aria-hidden="true"><span class="t-date">{{ row.date }} ({{ row.dow[:1] }})</span><span class="t-count">{{ row.count }}건</span><span class="t-amount">{{ row.amount }}</span></div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if r.compare %}
+    <div class="compare">
+      <div class="compare-item">
+        <div class="compare-tag">BEFORE</div>
+        <img src="{{ r.compare.before_img }}" alt="{{ r.compare.before_label }}">
+        <p>{{ r.compare.before_label }}</p>
+      </div>
+      <div class="compare-item">
+        <div class="compare-tag compare-tag-after">AFTER</div>
+        <img src="{{ r.compare.after_img }}" alt="{{ r.compare.after_label }}">
+        <p>{{ r.compare.after_label }}</p>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if r.source_label %}
+    <div class="source-note">
+      <span>{{ r.source_label }}</span>
+      {% if r.source_url %}
+      <a class="more-link" href="{{ r.source_url }}" target="_blank" rel="noopener">{{ r.source_link_text or "바로가기 →" }}</a>
+      {% elif r.source_status %}
+      <span class="source-status">{{ r.source_status }}</span>
+      {% endif %}
+    </div>
+    {% endif %}
+  {% endif %}
+  </div>
+</section>
+{% endfor %}
+{% endblock %}

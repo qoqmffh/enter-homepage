@@ -19,7 +19,7 @@
       {% for item in site.header_nav_main %}
       <a href="{{ item.slug }}.html"{% if item.slug == slug %} class="active"{% endif %}>{{ item.label }}</a>
       {% endfor %}
-      {% if slug == 'index' %}<a href="?intro=1" class="hp-replay-link">{{ page.poetic.ad.replay_label }}</a>{% endif %}
+      {% if slug == 'why' %}<a href="index.html?intro=1" class="hp-replay-link">{{ site.ad_replay_label }}</a>{% endif %}
     </nav>
     <div class="hp-header-right">
       <nav class="hp-subnav">
@@ -40,7 +40,7 @@
       {% for item in site.header_nav_sub %}
       <a href="{{ item.slug }}.html" class="hp-nav-mobile-sub{% if item.slug == slug %} active{% endif %}">{{ item.label }}</a>
       {% endfor %}
-      {% if slug == 'index' %}<a href="?intro=1" class="hp-nav-mobile-sub">{{ page.poetic.ad.replay_label }}</a>{% endif %}
+      {% if slug == 'why' %}<a href="index.html?intro=1" class="hp-nav-mobile-sub">{{ site.ad_replay_label }}</a>{% endif %}
       <div class="hp-nav-mobile-cta"><a class="hp-pill hp-pill--primary" href="#">{{ site.header_cta }}</a></div>
     </nav>
   </div>

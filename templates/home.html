@@ -1,45 +1,55 @@
 {% extends "base.html" %}
-{% import "_poetic_macros.html" as m %}
 
 {% block extra_head %}
 <script>
 (function () {
+  /* 기획서/클로드코드_홈_왜ENTER_구조변경_지시서.md §2 — index.html은 광고만 남는다.
+     광고를 안 틀어야 하는 경우(1시간 재방문 / reduced-motion / WebGL 불가)는 전부
+     이 자리에서 즉시 why.html로 보낸다(깜빡임 없이) — 더 이상 index 안에 보여줄
+     "하얀 홈"이 없기 때문이다. ?intro=1이면 이 판단 전체를 건너뛰고 항상 광고를 튼다. */
   try {
     var params = new URLSearchParams(location.search);
     var forced = params.get('intro') === '1';
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var skip = false;
     if (!forced) {
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var recentlySeen = false;
       try {
         var last = localStorage.getItem('enter_ad_seen');
-        if (last && (Date.now() - parseInt(last, 10)) < 60 * 60 * 1000) skip = true;
+        recentlySeen = !!last && (Date.now() - parseInt(last, 10)) < 60 * 60 * 1000;
       } catch (e) {}
+      var hasWebGL = false;
+      try {
+        var c = document.createElement('canvas');
+        hasWebGL = !!(window.WebGLRenderingContext && (c.getContext('webgl') || c.getContext('experimental-webgl')));
+      } catch (e) {}
+      if (reduce || recentlySeen || !hasWebGL) {
+        location.replace('why.html');
+        return;
+      }
     }
-    if (!reduce && !skip) {
-      document.documentElement.classList.add('ad-pending');
-      /* 모듈 로드·파싱 자체가 실패하는 경우(404, 문법 오류 등)의 최후 안전장치 —
-         static/home-ad.js가 정상 시작하면 즉시 clearTimeout으로 취소한다. */
-      window.__adHardTimeout = setTimeout(function () {
-        document.documentElement.classList.remove('ad-pending');
-      }, 8000);
-    }
+    document.documentElement.classList.add('ad-pending');
+    /* 모듈 로드·파싱 자체가 실패하는 경우(404, 문법 오류 등)의 최후 안전장치 —
+       static/home-ad.js가 정상 시작하면 즉시 clearTimeout으로 취소한다. */
+    window.__adHardTimeout = setTimeout(function () {
+      location.replace('why.html');
+    }, 8000);
   } catch (e) {}
 })();
 </script>
-<link rel="stylesheet" href="static/home-poetic.css">
 <link rel="stylesheet" href="static/home-ad.css">
-<script src="static/vendor/gsap.min.js" defer></script>
-<script src="static/vendor/ScrollTrigger.min.js" defer></script>
-<script src="static/home-poetic.js" defer></script>
-<script src="static/home-poetic-trail.js" defer></script>
-<script src="static/home-poetic-cards.js" defer></script>
-<!-- 하얀 홈 스크롤 인터랙션 비활성(팀장 요청 2026-10-29): 일반 스크롤로 쭉 내려감. 다시 켜려면 아래 주석 해제 --><!-- <script src="static/home-poetic-scroll.js" defer></script> -->
 <script type="module" src="static/home-ad.js"></script>
 {% endblock %}
 
 {% block content %}
 {% set p = page.poetic %}
 {% set ad = p.ad %}
+
+<noscript>
+  <div style="background:#0B0D12; color:#FFFFFA; padding:64px 24px; text-align:center;">
+    <p style="margin:0 0 16px; font-size:18px;">이 광고는 자바스크립트가 필요합니다.</p>
+    <a href="why.html" style="color:#5DB88C; font-weight:700;">왜 ENTER를 써야 하는지 바로 보기 →</a>
+  </div>
+</noscript>
 
 <div class="hp-ad-stage" data-ad-stage aria-hidden="true">
   <div class="hp-ad-intro" data-ad-intro>
@@ -108,294 +118,6 @@
     <span class="hp-ad-wipe-layer hp-ad-wipe-layer--2"></span>
     <span class="hp-ad-wipe-layer hp-ad-wipe-layer--3"></span>
   </div>
-</div>
-
-<div class="hp-white-home" data-white-home>
-
-<section class="hp-section hp-hero hp-trail-host" id="hero" data-trail="gray">
-  <div class="hp-trail" aria-hidden="true"></div>
-  <div class="hp-wrap">
-    <div class="hp-hero-top">
-      <h1 class="hp-display-xl" data-scroll-headline>
-        {% for line in p.hero.headline %}<span class="hp-headline-line">{% for word in line.split(' ') %}<span class="hp-word">{{ word }}</span>{{ ' ' if not loop.last else '' }}{% endfor %}</span>{% endfor %}
-      </h1>
-      <p class="hp-hero-subhead">{{ p.hero.subhead }}</p>
-    </div>
-    <div class="hp-hero-below">
-      <p class="hp-hero-sub">{{ p.hero.sub }}</p>
-      <div class="hp-hero-ctas">
-        {{ m.pill(p.hero.cta_kakao, '#', 'primary', True) }}
-        {{ m.pill(p.hero.cta_tel, 'tel:' ~ site.phone, 'secondary') }}
-      </div>
-      <div class="hp-hairline"></div>
-      <div class="hp-stats" id="stats">
-        {% for s in p.stats %}{{ m.stat_card(s.num, s.label) }}{% endfor %}
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="hp-section hp-statement hp-trail-host" id="statement" data-trail="gray">
-  <div class="hp-trail" aria-hidden="true"></div>
-  <div class="hp-wrap hp-wrap--narrow">
-    <h2 class="hp-headline-lg hp-center">{{ p.statement.headline }}</h2>
-    <p class="hp-headline-md hp-center hp-two-tone">
-      <span class="hp-ink">{{ p.statement.sub_ink }}</span><span class="hp-green">{{ p.statement.sub_green }}</span>
-    </p>
-  </div>
-  <div class="hp-wrap">
-    <div class="hp-photo-block hp-trail-host" data-trail="green" style="background-image:url('{{ p.statement.photo_src }}')">
-      <div class="hp-trail" aria-hidden="true"></div>
-      <div class="hp-photo-overlay"></div>
-      <div class="hp-photo-corner hp-photo-corner--tl">{{ p.statement.photo_top_left }}</div>
-      <div class="hp-photo-corner hp-photo-corner--bl">{{ p.statement.photo_geo }}</div>
-      <div class="hp-photo-corner hp-photo-corner--br hp-green-text">{{ p.statement.photo_tag }}</div>
-      <div class="hp-photo-center">
-        <span class="hp-photo-badge">{{ m.section_label(p.statement.photo_badge) }}</span>
-        <p class="hp-photo-caption-small">{{ p.statement.photo_caption_small }}</p>
-        <p class="hp-photo-caption">{{ p.statement.photo_caption }}</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="hp-section hp-features hp-trail-host" id="features" data-trail="gray">
-  <div class="hp-trail" aria-hidden="true"></div>
-  <div class="hp-wrap">
-    <div class="hp-center hp-features-head">
-      {{ m.section_label(p.features.label) }}
-      <h2 class="hp-headline-lg hp-two-tone">
-        <span class="hp-ink">{{ p.features.headline_ink }}</span><span class="hp-green">{{ p.features.headline_green }}</span>
-      </h2>
-    </div>
-
-    {% for card in p.features.cards %}
-    <div class="hp-feature-card hp-trail-host" data-trail="green">
-      <div class="hp-trail" aria-hidden="true"></div>
-      <div class="hp-feature-card-head">
-        <h3 class="hp-headline-lg">{{ card.title }}</h3>
-        <span class="hp-feature-index">/ {{ card.index }}</span>
-      </div>
-
-      {% if card.mockup == 'ledger' %}
-      {% set ticker_rows = (page.evidence_summary.ticker_rows | reverse | list) %}
-      <div class="hp-mockup hp-mockup--ledger">
-        <div class="hp-mockup-head">
-          <div class="hp-mockup-head-left">
-            <span class="hp-mockup-title">{{ p.ledger.title }}</span>
-            <span class="hp-chip hp-chip--tint">{{ p.ledger.tag }}</span>
-          </div>
-          <span class="hp-mono-muted">{{ p.ledger.term }}</span>
-        </div>
-        <div class="hp-ledger-head">
-          {% for c in p.ledger.columns %}<span>{{ c }}</span>{% endfor %}
-        </div>
-        <div class="hp-ledger-viewport">
-          <div class="hp-ledger-track" style="--hp-ledger-dur:{{ (ticker_rows|length) * 1.6 }}s">
-            {% for _ in range(2) %}
-            {% for row in ticker_rows %}
-            <div class="hp-ledger-row">
-              <span class="hp-strong">{{ row.date }}</span>
-              <span class="hp-muted">{{ row.dow[:1] }}</span>
-              <span class="hp-num">{{ row.count }}건</span>
-              <span class="hp-num hp-strong">{{ row.amount }}</span>
-              <span class="hp-num"><span class="hp-chip hp-chip--tint">● <span class="hp-chip-label">정산완료</span></span></span>
-            </div>
-            {% endfor %}
-            {% endfor %}
-          </div>
-        </div>
-        <p class="hp-ledger-reduced-note">최근 5건 표시 · 전체 {{ ticker_rows|length }}건</p>
-      </div>
-      {% elif card.mockup == 'crm' %}
-      {# 기본(JS 꺼졌을 때) 상태는 이미 마스킹 완료된 안전한 화면이다. JS가 돌 때만
-         data-crm-unmasked/data-crm-name 등 원문값을 읽어서 "접수 -> 마스킹" 사이클을
-         재생한다 — 안전장치는 항상 "더 가려진 쪽"이 기본값이어야 하므로. #}
-      <div class="hp-mockup hp-mockup--crm" data-crm-scene
-           data-crm-name-unmasked="{{ p.crm.customer.name_unmasked }}" data-crm-name-masked="{{ p.crm.customer.name_masked }}"
-           data-crm-phone-unmasked="{{ p.crm.customer.phone_unmasked }}" data-crm-phone-masked="{{ p.crm.customer.phone_masked }}"
-           data-crm-rrn-unmasked="{{ p.crm.customer.rrn_unmasked }}" data-crm-rrn-masked="{{ p.crm.customer.rrn_masked }}"
-           data-crm-status-start="{{ p.crm.statuses[0] }}" data-crm-status-mid="{{ p.crm.statuses[1] }}" data-crm-status-end="{{ p.crm.statuses[2] }}">
-        <div class="hp-mockup-head">
-          <span class="hp-mockup-title">{{ p.crm.title }}</span>
-          <span class="hp-crm-badges">
-            <span class="hp-chip hp-chip--tint" data-crm-status>{{ p.crm.statuses[-1] }}</span>
-            <span class="hp-chip hp-chip--solid" data-crm-hardmark>{{ p.crm.hardmark_tag }}</span>
-          </span>
-        </div>
-        <div class="hp-crm-grid">
-          <div class="hp-crm-field">
-            <span class="hp-field-label">고객명</span>
-            <span class="hp-field-value" data-crm-field="name">{{ p.crm.customer.name_masked }}</span>
-          </div>
-          <div class="hp-crm-field">
-            <span class="hp-field-label">연락처</span>
-            <span class="hp-field-value" data-crm-field="phone">{{ p.crm.customer.phone_masked }}</span>
-          </div>
-          <div class="hp-crm-field">
-            <span class="hp-field-label">주민등록번호</span>
-            <span class="hp-field-value" data-crm-field="rrn">{{ p.crm.customer.rrn_masked }}</span>
-          </div>
-          <div class="hp-crm-field">
-            <span class="hp-field-label">설치주소</span>
-            <span class="hp-field-value">{{ p.crm.address }}</span>
-          </div>
-        </div>
-        <div class="hp-mockup-foot">
-          <span class="hp-mono-muted">{{ p.crm.footer_left }}</span>
-          <span class="hp-mono-green">{{ p.crm.footer_right }}</span>
-        </div>
-      </div>
-      {% elif card.mockup == 'chat' %}
-      <div class="hp-mockup hp-mockup--chat" data-chat-scene>
-        <div class="hp-mockup-head">
-          <div class="hp-mockup-head-left">
-            <span class="hp-chat-dot"></span>
-            <span class="hp-mockup-title">{{ p.chat.title }}</span>
-          </div>
-          <span class="hp-mono-muted">{{ p.chat.members }}</span>
-        </div>
-        <div class="hp-chat-list" data-chat-list>
-          {% for msg in p.chat.messages %}
-          {% if msg.kind == 'sheet' %}
-          <div class="hp-chat-bubble hp-chat-bubble--sheet" data-chat-msg>
-            <div class="hp-policy-sheet">
-              <div class="hp-policy-sheet-head">
-                <span>{{ p.chat.sheet.title }}</span>
-                <span class="hp-mono-muted">{{ p.chat.sheet.time }}</span>
-              </div>
-              {% for row in p.chat.sheet.rows %}
-              <div class="hp-policy-sheet-row">
-                <span>{{ row[0] }}</span>
-                <span>{{ row[1] }}</span>
-                <span class="hp-policy-sheet-price">{{ row[2] }}</span>
-              </div>
-              {% endfor %}
-            </div>
-          </div>
-          {% else %}
-          <div class="hp-chat-bubble{% if msg.accent %} hp-chat-bubble--accent{% endif %}" data-chat-msg>
-            <span class="hp-chat-label">{{ msg.label }}</span>
-            <p class="hp-chat-text">{{ msg.text }}</p>
-          </div>
-          {% endif %}
-          {% endfor %}
-        </div>
-      </div>
-      {% endif %}
-
-      <div class="hp-feature-card-foot">
-        <p>{{ card.desc }}</p>
-      </div>
-    </div>
-    {% endfor %}
-
-    <div class="hp-center hp-features-foot">
-      <h3 class="hp-headline-md">{{ p.features.closing_line }}</h3>
-      {{ m.pill(p.features.cta_kakao, '#', 'primary', True) }}
-    </div>
-  </div>
-</section>
-
-<section class="hp-section hp-promise hp-trail-host" id="promise" data-trail="green">
-  <div class="hp-trail" aria-hidden="true"></div>
-  <div class="hp-wrap hp-promise-grid">
-    <div class="hp-promise-photo-col">
-      <div class="hp-promise-photo-lg" style="background-image:url('{{ p.promise.photo_src }}')"></div>
-    </div>
-    <div class="hp-promise-content">
-      {{ m.section_label(p.promise.label) }}
-      <blockquote class="hp-quote">{% for line in p.promise.quote_lines %}<span>{% if loop.first %}“{% endif %}{{ line }}{% if loop.last %}”{% endif %}</span>{% endfor %}</blockquote>
-      <div class="hp-promise-foot">
-        <div class="hp-promise-person">
-          <div>
-            <span class="hp-promise-name">{{ p.promise.name }}</span>
-            <span class="hp-promise-title">{{ p.promise.title }}</span>
-            {{ m.pill(p.promise.cta, p.promise.cta_slug ~ '.html', 'inverted') }}
-          </div>
-        </div>
-        <div class="hp-promise-carousel">
-          <span class="hp-mono-muted">{{ p.promise.carousel_label }}</span>
-          <div class="hp-carousel-btns">
-            <button type="button" aria-label="이전" disabled>{{ m.icon('arrow-left') }}</button>
-            <button type="button" aria-label="다음" disabled>{{ m.icon('arrow-right') }}</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="hp-section hp-start hp-trail-host" id="start" data-trail="gray">
-  <div class="hp-trail" aria-hidden="true"></div>
-  <div class="hp-wrap hp-wrap--narrow">
-    <div class="hp-center hp-start-head">
-      {{ m.section_label(p.start.label) }}
-      <h2 class="hp-headline-lg hp-two-tone">
-        <span class="hp-ink">{{ p.start.headline_ink }}</span><span class="hp-green">{{ p.start.headline_green }}</span>
-      </h2>
-    </div>
-    <div class="hp-start-list">
-      {% for step in p.start.steps %}
-      <div class="hp-start-row">
-        <span class="hp-start-text">{{ step.text }}</span>
-        <span class="hp-mono-muted hp-strong">{{ step.num }}</span>
-      </div>
-      {% endfor %}
-    </div>
-    <div class="hp-center">
-      <p class="hp-start-note">{{ p.start.note }}</p>
-      {{ m.pill(p.start.cta, '#contact', 'primary') }}
-    </div>
-  </div>
-</section>
-
-<section class="hp-section hp-trust hp-trail-host" id="trust" data-trail="gray">
-  <div class="hp-trail" aria-hidden="true"></div>
-  <div class="hp-wrap">
-    {{ m.section_label(p.trust.label) }}
-    <h2 class="hp-headline-lg">{{ p.trust.headline }}</h2>
-    <p class="hp-body-xl hp-trust-body">{{ p.trust.body }}</p>
-    <div class="hp-trust-badges">
-      {% for b in p.trust.badges %}
-      <div class="hp-badge">
-        {{ m.icon(b.icon) }}
-        <div>
-          <h4>{{ b.name }}</h4>
-          <p>{{ b.note }}</p>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-
-<section class="hp-section hp-carriers hp-trail-host" id="carriers" data-trail="green">
-  <div class="hp-trail" aria-hidden="true"></div>
-  <div class="hp-wrap">
-    <div class="hp-carriers-label">{{ m.section_label(p.carriers.label) }}</div>
-    <div class="hp-carriers-names">
-      {% for n in p.carriers.names %}<div>{{ n }}</div>{% endfor %}
-    </div>
-    <p class="hp-body-lg hp-carriers-body">{{ p.carriers.body }}</p>
-    {{ m.pill(p.carriers.cta, p.carriers.cta_slug ~ '.html', 'inverted') }}
-  </div>
-</section>
-
-<section class="hp-section hp-closing hp-trail-host" id="contact" data-trail="gray">
-  <div class="hp-trail" aria-hidden="true"></div>
-  <div class="hp-wrap hp-center">
-    <h2 class="hp-display-lg hp-two-tone-block" data-scroll-fill>
-      <span class="hp-ink">{{ p.closing.headline_ink }}</span>
-      <span class="hp-green">{{ p.closing.headline_green }}</span>
-    </h2>
-    <div class="hp-closing-ctas">
-      {{ m.pill(p.closing.cta_kakao, '#', 'primary', True) }}
-      {{ m.pill(p.closing.cta_tel, 'tel:' ~ site.phone, 'secondary') }}
-    </div>
-  </div>
-</section>
-
 </div>
 {% endblock %}
 

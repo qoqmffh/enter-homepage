@@ -1,8 +1,10 @@
-/* ENTER 홈 — "광고 한 편 → 막이 걷히며 하얀 홈" (기획서/클로드코드_홈_광고인트로_지시서.md, v8 기준).
-   철학은 다른 POETIC 스크립트와 동일: 기본 상태는 "하얀 홈이 바로 보임"이고, html.ad-pending이
-   붙었을 때만(동기 인라인 스크립트가 localStorage 1시간 재방문·reduced-motion·?intro=1을 먼저
-   확인한 뒤) 광고 무대가 화면을 덮는다. JS가 실패해도 안전장치(하드 타임아웃)가 ad-pending을
-   풀어 하얀 홈을 보여준다 — static/home-ad.js 참고. */
+/* ENTER 홈(index.html) — 광고 무대 전용 스타일.
+   기획서/클로드코드_홈_왜ENTER_구조변경_지시서.md 이후 index.html은 광고만 남는다
+   ("하얀 홈"은 why.html로 옮겨짐, static/home-poetic.css + static/wipe-reveal.js 참고).
+   동기 인라인 스크립트가 localStorage 1시간 재방문·reduced-motion·WebGL 가능 여부·
+   ?intro=1을 먼저 확인해서, 광고를 틀 수 없으면 애초에 ad-pending을 붙이지 않고
+   바로 why.html로 보낸다. JS가 실패해도 안전장치(하드 타임아웃)가 why.html로 보낸다
+   — static/home-ad.js 참고. */
 
 html.ad-pending body,
 html.ad-pending{ overflow:hidden; height:100%; }
@@ -15,11 +17,6 @@ html.ad-pending .hp-nav a{ color:rgba(255,255,250,.75); }
 html.ad-pending .hp-nav a:hover, html.ad-pending .hp-nav a.active{ color:var(--hp-white); }
 html.ad-pending .hp-nav-toggle{ color:var(--hp-white); }
 html.ad-pending .hp-header-right .hp-pill--primary{ background:var(--hp-white); color:var(--hp-black); }
-html.ad-pending .hp-replay-link{ display:none; }
-
-/* 하얀 홈 헤드라인: 광고가 걷히기 전까지 숨겨둔다(FOUC 방지). 전환 시 JS가 인라인 style로
-   직접 되돌려 단계적으로 올라오게 한다(home-ad.js revealWhiteHome 참고). */
-html.ad-pending .hp-hero .hp-display-xl .hp-headline-line{ opacity:0; transform:translateY(24px); }
 
 .hp-replay-link{ font-size:12px; color:var(--hp-grey); white-space:nowrap; }
 .hp-replay-link:hover{ color:var(--hp-ink); }
@@ -32,7 +29,6 @@ html.ad-pending .hp-hero .hp-display-xl .hp-headline-line{ opacity:0; transform:
   background:var(--hp-black); overflow:hidden; isolation:isolate;
 }
 html.ad-pending .hp-ad-stage{ display:block; }
-.hp-ad-stage--leaving{ transform:translateX(0); transition:transform .72s cubic-bezier(.7,0,.3,1); }
 
 .hp-ad-canvas{ position:absolute; inset:0; z-index:1; display:block; width:100%; height:100%; opacity:0; transition:opacity 1s ease; }
 .hp-ad-stage--sky .hp-ad-canvas{ opacity:1; }
@@ -139,12 +135,10 @@ html.ad-pending .hp-ad-stage{ display:block; }
   .hp-ad-carrier{ font-size:120px; }
 }
 
-/* ---------- 안전장치 ---------- */
+/* ---------- 안전장치 ----------
+   index.html의 동기 인라인 스크립트가 reduced-motion이면 ad-pending을 붙이기 전에
+   이미 why.html로 보낸다 — 아래는 혹시 모를 경우를 위한 2차 방어선일 뿐이다. */
 @media (prefers-reduced-motion:reduce){
   html.ad-pending .hp-ad-stage{ display:none !important; }
   html.ad-pending body, html.ad-pending{ overflow:visible !important; height:auto !important; }
-  html.ad-pending .hp-header{ background:rgba(255,255,250,.92); border-bottom-color:var(--hp-line); backdrop-filter:blur(8px); }
-  html.ad-pending .hp-header .hp-brand-svg g{ fill:var(--hp-ink); }
-  html.ad-pending .hp-nav a{ color:inherit; }
-  html.ad-pending .hp-hero .hp-display-xl .hp-headline-line{ opacity:1; transform:none; }
 }
