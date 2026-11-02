@@ -45,7 +45,9 @@ import * as THREE from './vendor/three.module.min.js';
 
   function bailOut() {
     cancelHardTimeout();
-    html.classList.remove('ad-pending');
+    /* index.html에는 더 이상 "하얀 홈"이 없다(기획서/클로드코드_홈_왜ENTER_구조변경_지시서.md) —
+       광고를 못 틀 사정이면 보여줄 게 없으니 바로 why.html로 보낸다. */
+    location.replace('why.html');
   }
 
   if (reduce || (!forced && recentlySeen())) {
@@ -550,31 +552,6 @@ import * as THREE from './vendor/three.module.min.js';
     }, 700 + 1100 + 700 + 1000);
   }
 
-  // ================= 전환: 막이 걷힘(초록 띠 와이프) -> 하얀 홈 =================
-  function revealWhiteHome() {
-    var lines = document.querySelectorAll('.hp-hero .hp-display-xl .hp-headline-line');
-    lines.forEach(function (el) {
-      el.style.transition = 'none';
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(24px)';
-    });
-    html.classList.remove('ad-pending');
-    window.scrollTo(0, 0);
-    requestAnimationFrame(function () {
-      lines.forEach(function (el, i) {
-        el.style.transition = 'opacity .6s ease ' + (i * 0.1) + 's, transform .6s ease ' + (i * 0.1) + 's';
-        el.style.opacity = '1';
-        el.style.transform = 'translateY(0)';
-      });
-      setTimeout(function () {
-        lines.forEach(function (el) {
-          el.style.transition = ''; el.style.opacity = ''; el.style.transform = '';
-        });
-      }, 600 + lines.length * 100 + 50);
-    });
-    if (window.ScrollTrigger) { try { ScrollTrigger.refresh(); } catch (e) {} }
-  }
-
   function stopThree() {
     if (raf) cancelAnimationFrame(raf);
     visObserver.disconnect();
@@ -590,21 +567,20 @@ import * as THREE from './vendor/three.module.min.js';
     detachInput();
     markSeen();
 
-    stage.classList.add('hp-ad-stage--leaving');
-    requestAnimationFrame(function () {
-      stage.style.transform = 'translateX(100%)';
-    });
+    /* 기획서/클로드코드_홈_왜ENTER_구조변경_지시서.md §2 — 초록 띠 3장이 "들어와서
+       화면을 덮고"(왼쪽→오른쪽, -100% -> 0%) 다 덮이면 why.html#from-ad로 이동한다.
+       실제로 걷히는(reveal) 쪽은 why.html의 static/wipe-reveal.js가 맡는다 — 사용자
+       눈에는 페이지가 바뀌는 게 아니라 기존과 같은 한 번의 와이프로 보인다. */
     wipeLayers.forEach(function (layer, i) {
       setTimeout(function () {
         layer.style.transition = 'transform .72s cubic-bezier(.7,0,.3,1)';
-        layer.style.transform = 'translateX(100%)';
+        layer.style.transform = 'translateX(0)';
       }, i * 80);
     });
 
     setTimeout(function () {
       stopThree();
-      stage.style.display = 'none';
-      revealWhiteHome();
+      location.href = 'why.html#from-ad';
     }, 900);
   }
 

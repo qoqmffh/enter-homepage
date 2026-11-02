@@ -1,7 +1,9 @@
-/* ENTER 홈 — POETIC 오마주 버전 전용 스타일.
-   공통 토큰(색상)·.hp-wrap·타입 유틸(two-tone 등)·라벨·알약버튼·헤더·푸터는
-   전부 static/site.css로 옮겼다(서브페이지 7개와 공유, 기획서/클로드코드_서브페이지7_지시서.md
-   §2). 이 파일은 home.html 전용 섹션 레이아웃(히어로/스테이트먼트/카드/약속/시작/신뢰/통신사/클로징)만 남는다.
+/* ENTER 왜 ENTER(why.html) — POETIC 오마주 버전 전용 스타일.
+   기획서/클로드코드_홈_왜ENTER_구조변경_지시서.md로 이 섹션들 전부 home.html에서
+   why.html로 옮겨왔다(디자인·문구·움직임은 그대로). 공통 토큰(색상)·.hp-wrap·
+   타입 유틸(two-tone 등)·라벨·알약버튼·헤더·푸터는 static/site.css로 옮겨서
+   서브페이지 7개와 공유한다(클로드코드_서브페이지7_지시서.md §2). 이 파일은
+   why.html 전용 섹션 레이아웃(히어로/스테이트먼트/KOSIS/카드/약속/시작/신뢰/통신사/클로징)만 남는다.
    common.css는 건드리지 않는다(다른 페이지 전부 영향). */
 
 .hp-center{ text-align:center; }
@@ -48,6 +50,18 @@
 .hp-photo-badge .hp-label-dot{ background:var(--hp-green); }
 .hp-photo-caption-small{ font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:rgba(255,255,250,.7); margin:0 0 8px; }
 .hp-photo-caption{ font-size:28px; font-weight:700; line-height:1.3; letter-spacing:-.02em; margin:0; }
+
+/* ---------- KOSIS 통계 근거(지시서 §1 — 서브페이지 상세목록 행 스타일과 맞춤, static/sub.css의 .sp-row 참고) ---------- */
+.hp-kosis-table-wrap{ overflow-x:auto; margin-top:24px; -webkit-overflow-scrolling:touch; }
+.hp-kosis-table{ width:100%; border-collapse:collapse; font-size:13px; white-space:nowrap; }
+.hp-kosis-table th{ text-align:left; padding:10px 12px; font-size:11px; color:var(--hp-grey); font-weight:600; border-top:1px solid var(--hp-line); border-bottom:1px solid var(--hp-line); }
+.hp-kosis-table td{ padding:14px 12px; border-top:1px solid var(--hp-line); color:var(--hp-ink); font-variant-numeric:tabular-nums; }
+.hp-kosis-table tr:last-child td{ border-bottom:1px solid var(--hp-line); }
+.hp-kosis-table td:first-child{ font-weight:700; }
+.hp-kosis-share{ margin-top:20px; font-size:14px; color:var(--hp-grey); line-height:1.6; }
+.hp-kosis-source{ margin-top:14px; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; font-size:12px; color:var(--hp-grey); }
+.hp-kosis-source a{ color:var(--hp-ink); font-weight:600; }
+.hp-kosis-source a:hover{ color:var(--hp-green); }
 
 /* ---------- 기능 카드 (블랙 카드 + 미니 UI) ---------- */
 .hp-features-head{ margin-bottom:36px; }
