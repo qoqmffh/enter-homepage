@@ -81,7 +81,7 @@
       <div class="hp-trail" aria-hidden="true"></div>
       <div class="hp-photo-stage">
         {% for src in p.statement.photos %}
-        <img class="hp-photo-img{% if loop.first %} is-active{% endif %}" src="{{ src }}" alt="ENTER 서울 본사 도매정산·개통운영센터 업무 현장 {{ loop.index }}" {% if loop.first %}loading="eager"{% else %}loading="lazy"{% endif %}>
+        <img class="hp-photo-img{% if loop.first %} is-active{% endif %}" src="{{ src }}" alt="ENTER {{ p.statement.photo_caption }} 업무 현장 {{ loop.index }}" {% if loop.first %}loading="eager"{% else %}loading="lazy"{% endif %}>
         {% endfor %}
       </div>
       <div class="hp-photo-overlay"></div>
