@@ -39,7 +39,8 @@
 
 /* ---------- 브랜드 스테이트먼트(통계 근거 + 사진) ---------- */
 .hp-statement{ text-align:center; }
-.hp-photo-block{ position:relative; margin-top:64px; width:100%; min-height:280px; border-radius:var(--radius-card); border:1px solid var(--hp-line); overflow:hidden; background-color:#2a2d33; }
+.hp-statement-desc{ font-size:17px; color:var(--hp-grey); line-height:1.6; max-width:560px; margin:16px auto 0; }
+.hp-photo-block{ position:relative; margin-top:48px; width:100%; min-height:280px; border-radius:var(--radius-card); border:1px solid var(--hp-line); overflow:hidden; background-color:#2a2d33; }
 /* 사진 4장 크로스페이드 — CSS 그리드 스태킹(전부 같은 셀에 겹쳐 놓기)으로 전환만 하고
    줌·슬라이드는 쓰지 않는다. visibility를 opacity보다 늦게/빠르게 전환해 숨은 사진은
    클릭·탭 포커스도 받지 않게 한다. */
@@ -272,7 +273,7 @@
   .hp-stat-num{ font-size:52px; }
   .hp-stat-label{ font-size:13px; }
 
-  .hp-photo-block{ min-height:440px; border-radius:var(--radius-card); margin-top:96px; }
+  .hp-photo-block{ min-height:440px; border-radius:var(--radius-card); margin-top:48px; }
   .hp-photo-corner{ font-size:11px; }
 
   .hp-feature-card{ padding:52px 56px; border-radius:var(--radius-card); min-height:560px; display:flex; flex-direction:column; justify-content:space-between; }
