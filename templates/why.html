@@ -124,6 +124,7 @@
       </h2>
     </div>
 
+    <div class="hp-feature-grid">
     {% for card in p.features.cards %}
     <div class="hp-feature-card hp-trail-host" data-trail="green">
       <div class="hp-trail" aria-hidden="true"></div>
@@ -245,6 +246,7 @@
     </div>
     {% endfor %}
 
+    </div>
     <div class="hp-center hp-features-foot">
       <h3 class="hp-headline-md">{{ p.features.closing_line }}</h3>
       {{ m.pill(p.features.cta_kakao, '#', 'primary', True) }}

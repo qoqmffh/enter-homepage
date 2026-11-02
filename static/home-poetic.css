@@ -304,3 +304,21 @@
 .ls-cell.ls-space{ overflow:visible; }
 .ls-primary{ position:relative; display:inline-block; top:0; }
 .ls-secondary{ position:absolute; left:0; right:0; top:100%; display:inline-block; }
+
+/* ---------- 2026-11-02 수정 ---------- */
+/* HOW WE WORK 제목 가운데 정렬 복구: site.css의 .hp-two-tone(margin:auto)을 .hp-headline-lg{margin:0}가 덮어써서 왼쪽으로 쏠리던 문제 */
+.hp-features-head .hp-two-tone{ margin-left:auto; margin-right:auto; }
+
+/* /1 /2 /3 카드 3장을 한 화면에 가로로 (데스크톱). 모바일은 기존처럼 세로 */
+@media (min-width:1024px){
+  .hp-feature-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; align-items:stretch; }
+  .hp-feature-grid .hp-feature-card{ margin:0; padding:36px 32px; min-height:560px; border-radius:20px; }
+  .hp-feature-grid .hp-feature-card-head .hp-headline-lg{ font-size:28px; line-height:1.25; }
+  .hp-feature-grid .hp-mockup,
+  .hp-feature-grid .hp-mockup--ledger{ max-width:100%; width:100%; margin:28px 0; padding:18px 16px; border-radius:14px; }
+  .hp-feature-grid{ --hp-ledger-row-h:36px; --hp-ledger-cols:74px 20px 46px 1fr 62px; }
+  .hp-feature-grid .hp-ledger-head{ font-size:9px; }
+  .hp-feature-grid .hp-ledger-row{ font-size:11px; }
+  .hp-feature-grid .hp-chat-text{ font-size:12px; }
+  .hp-feature-grid .hp-feature-card-foot p{ font-size:14px; }
+}
