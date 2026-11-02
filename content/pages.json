@@ -1138,12 +1138,15 @@
         "sub_ink": "ENTER의 월 4,000건이 ",
         "sub_green": "상부에서 받는 정책의 근거입니다.",
         "photo_top_left": "SYS // OPERATIONAL_HUB",
-        "photo_badge": "HEADQUARTERS CENTER",
-        "photo_caption_small": "실제 업무 현장",
         "photo_caption": "서울 본사 도매정산·개통운영센터",
         "photo_geo": "SEOUL 37.5665° N, 126.9780° E",
-        "photo_tag": "ENTER NETWORK",
-        "photo_src": "static/photos/office.jpg"
+        "photo_disclaimer": "※ 실제 촬영본을 AI로 보정·재생성한 이미지입니다.",
+        "photos": [
+          "static/photos/Headquarters/1.webp",
+          "static/photos/Headquarters/2.webp",
+          "static/photos/Headquarters/3.webp",
+          "static/photos/Headquarters/4.webp"
+        ]
       },
       "features": {
         "label": "HOW WE WORK",
@@ -1288,12 +1291,32 @@
         "photo_src": "static/photos/director.webp",
         "name": "방수현",
         "title": "총괄이사 · (유)위드컴퍼니",
-        "cta": "정산 방식 자세히 보기 →",
-        "cta_slug": "settlement",
-        "carousel_label": "약속 · 거래처 이야기 (준비 중)",
-        "quote_lines": [
-          "정산일을 미룬 적은 한 번도 없습니다.",
-          "앞으로도 그럴 겁니다."
+        "quotes": [
+          {
+            "lines": ["정산일을 미룬 적은 한 번도 없습니다.", "앞으로도 그럴 겁니다."],
+            "cta": "정산 방식 자세히 보기 →",
+            "cta_slug": "settlement"
+          },
+          {
+            "lines": ["고객 정보는 개통이 끝나면 가립니다.", "남겨 둘 이유가 없으니까요."],
+            "cta": "DB 보호 방식 보기 →",
+            "cta_slug": "settlement"
+          },
+          {
+            "lines": ["정책표는 매일 아침 먼저 보내드립니다.", "비교는 사장님이 하시면 됩니다."],
+            "cta": "정책 받아보기 →",
+            "cta_slug": "#"
+          },
+          {
+            "lines": ["서류보다 개통이 먼저입니다.", "저희가 먼저 믿고 움직이겠습니다."],
+            "cta": "거래 시작하기 →",
+            "cta_slug": "start"
+          },
+          {
+            "lines": ["한 건을 하셔도,", "백 건처럼 챙기겠습니다."],
+            "cta": "거래 시작하기 →",
+            "cta_slug": "start"
+          }
         ]
       },
       "start": {
