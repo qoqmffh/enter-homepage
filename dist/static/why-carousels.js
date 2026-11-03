@@ -56,6 +56,17 @@
     start();
   }
 
+  /* 박스 전체를 클릭해도 다음으로 넘어가게(지시서 2026-11-04, 커스텀 커서 라벨 "넘기기/다음 →"
+     와 짝). 실제 링크·버튼(화살표 버튼, 인용문 안의 CTA 링크) 클릭은 원래 동작 그대로 두고
+     건드리지 않는다. */
+  function makeBoxClickable(root, nextBtn) {
+    if (!root || !nextBtn) return;
+    root.addEventListener('click', function (e) {
+      if (e.target.closest('a, button')) return;
+      nextBtn.click();
+    });
+  }
+
   function init() {
     var photoRoot = document.querySelector('[data-photo-carousel]');
     if (photoRoot) {
@@ -67,6 +78,7 @@
         nextBtn: photoRoot.querySelector('[data-photo-next]'),
         counter: photoRoot.querySelector('[data-photo-counter]'),
       });
+      makeBoxClickable(photoRoot, photoRoot.querySelector('[data-photo-next]'));
     }
 
     var quoteStage = document.querySelector('[data-quote-carousel]');
@@ -80,6 +92,7 @@
         nextBtn: quoteRoot.querySelector('[data-quote-next]'),
         counter: quoteRoot.querySelector('[data-quote-counter]'),
       });
+      makeBoxClickable(quoteRoot, quoteRoot.querySelector('[data-quote-next]'));
     }
   }
 
