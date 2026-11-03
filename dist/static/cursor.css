@@ -20,12 +20,17 @@ html.has-cursor [contenteditable] *{ cursor:auto !important; }
 html.has-cursor .cursor-cross,
 html.has-cursor .cursor-label{ opacity:1; }
 
-/* 창 밖으로 나가거나 입력 요소 위일 때 — 둘 다 숨김. 라벨 원이 떠 있어도 십자는 계속
-   보인다(클릭 지점은 항상 십자 중심) — 지시서 2026-11-05/06. */
+/* 창 밖으로 나가거나 입력 요소 위일 때 — 둘 다 숨김. */
 html.cursor-outside .cursor-cross,
 html.cursor-outside .cursor-label,
 html.cursor-on-field .cursor-cross,
 html.cursor-on-field .cursor-label{ opacity:0; }
+
+/* 라벨 원이 이제 커서 자리를 그대로 대신한다(지시서 2026-11-07) — 원이 뜨는 동안 십자는
+   숨기고, 원이 사라지면 다시 보인다. 둘 다 0.15s 같은 길이로 opacity만 엇갈리게 해서
+   깜빡이는 빈 순간 없이 자연스럽게 겹쳐 넘어가게 한다. */
+.cursor-cross{ transition:opacity .15s ease; }
+html.cursor-on-label .cursor-cross{ opacity:0; }
 
 /* ---------- 십자: 20x20, 두께 3px, 꽉 찬 모양, 초록 + 흰 테두리 1px ----------
    위치(.cursor-cross, JS가 매 mousemove마다 translate3d로만 옮김)와 클릭 스케일
@@ -58,21 +63,24 @@ html.cursor-clicking .cursor-cross-shape{ transform:scale(.9); }
   .cursor-cross-shape{ transition:none; }
 }
 
-/* ---------- 라벨 원(C): 64px, 커서 오른쪽 아래(+14,+14)에 보간 없이 붙음 ----------
-   위치는 cursor.js가 뷰포트 가장자리를 보고 필요하면 반대쪽으로 뒤집어 매 mousemove마다
-   .cursor-label(바깥)에 translate3d로 직접 찍는다. 나타남·사라짐(scale .6→1, opacity
-   0→1, 0.18s)과 색은 안쪽 .cursor-label-shape가 맡는다 — 역시 transform 충돌을 피하려고
-   레이어를 나눴다. */
+/* ---------- 라벨 원(C): 64px, 커서 자리를 그대로 대신함(지시서 2026-11-07) ----------
+   원의 중심 = 마우스 좌표 = 클릭 지점. 위치는 cursor.js가 십자와 똑같은 translate3d를
+   .cursor-label(바깥)에 매 mousemove마다 보간 없이 찍고, margin:-32px로 64px 원을
+   그 점 위에 중앙 정렬한다(화면 끝 반전 처리 없음). 나타남·사라짐(scale .6→1, opacity
+   0→1, 0.15s — 십자가 숨는 시간과 맞춰 깜빡임 없이 겹쳐 넘어가게)과 색은 안쪽
+   .cursor-label-shape가 맡는다 — 역시 transform 충돌을 피하려고 레이어를 나눴다. */
 .cursor-label-shape{
-  width:64px; height:64px;
+  width:64px; height:64px; margin:-32px 0 0 -32px;
   border-radius:50%;
   display:flex; align-items:center; justify-content:center;
   background:#10182B; color:#FFFFFA;
   font-size:12px; font-weight:600; line-height:1.3; white-space:nowrap; text-align:center; padding:0 6px;
   opacity:0; transform:scale(.6);
-  transition:opacity .18s ease, transform .18s ease, background-color .18s ease, color .18s ease;
+  transition:opacity .15s ease, transform .15s ease, background-color .15s ease, color .15s ease;
 }
 html.cursor-on-label .cursor-label-shape{ opacity:1; transform:scale(1); }
+/* 클릭 피드백(0.9배, 0.15s)도 라벨 원에 적용 — scale(1)과 겹치지 않게 켜진 상태 위에서만. */
+html.cursor-on-label.cursor-clicking .cursor-label-shape{ transform:scale(.9); }
 /* 어두운 영역(광고 무대·검은 카드·약속 섹션·본사 사진)은 섹션에 data-cursor-tone="light"를
    한 번만 붙이면 closest()로 상속되어 그 안의 모든 클릭 가능 요소가 이 색을 쓴다. */
 html.cursor-on-label.cursor-tone-light .cursor-label-shape{ background:#FFFFFA; color:#10182B; }

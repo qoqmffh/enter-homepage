@@ -1,11 +1,11 @@
-/* 커스텀 커서 — 두꺼운 초록 십자 + 라벨 원 (지시서 2026-11-06: 누를 수 있는 모든 곳에
-   라벨 원을 일관되게 적용). static/cursor.css와 짝. (hover:hover) and (pointer:fine) and
+/* 커스텀 커서 — 두꺼운 초록 십자 + 라벨 원 (지시서 2026-11-07: 라벨 원이 십자 자리를
+   그대로 대신하게). static/cursor.css와 짝. (hover:hover) and (pointer:fine) and
    >=1024px에서만 켠다. 십자·라벨 원 모두 보간 없이 매 mousemove마다 커서 좌표에 바로
-   translate3d로 붙는다.
+   translate3d로 붙는다 — 라벨 원이 뜨면 십자는 숨고(opacity, CSS) 원 중심이 곧 클릭 지점.
 
    라벨 판단은 mouseover 위임 한 곳(updateHoverState)에서만 closest()로 하고, 결과를
-   html 클래스 + labelText.textContent에 저장해 둔다. mousemove(매 프레임)는 그 저장된
-   값을 그대로 쓰기만 할 뿐 DOM 탐색을 하지 않는다 — 성능 요구사항(지시서 5). */
+   html 클래스 + labelText.textContent에 저장해 둔다. mousemove(매 프레임)는 그 값을
+   그대로 쓰기만 할 뿐 DOM 탐색을 하지 않는다 — 성능 요구사항. */
 (function () {
   'use strict';
   var html = document.documentElement;
@@ -38,19 +38,13 @@
 
   var active = false;
   var started = false;
-  var hasLabel = false; /* mousemove가 매 프레임 다시 판단하지 않도록 캐싱 */
 
-  var LABEL_SIZE = 64;
-  var LABEL_GAP = 14;
-
+  /* 라벨 원이 이제 커서 자리를 그대로 대신하므로(지시서 2026-11-07) 십자와 똑같은
+     translate3d를 그대로 쓴다 — 뷰포트 가장자리 반전 계산은 더 이상 필요 없다. */
   function onMouseMove(e) {
-    var x = e.clientX, y = e.clientY;
-    cross.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0)';
-    if (!hasLabel) return;
-    var lx = x + LABEL_GAP, ly = y + LABEL_GAP;
-    if (lx + LABEL_SIZE > window.innerWidth) lx = x - LABEL_GAP - LABEL_SIZE;
-    if (ly + LABEL_SIZE > window.innerHeight) ly = y - LABEL_GAP - LABEL_SIZE;
-    label.style.transform = 'translate3d(' + lx + 'px,' + ly + 'px,0)';
+    var t = 'translate3d(' + e.clientX + 'px,' + e.clientY + 'px,0)';
+    cross.style.transform = t;
+    label.style.transform = t;
   }
 
   /* ---------- 라벨 결정: closest()를 위에서부터 순서대로, 처음 맞는 규칙을 쓴다 ----------
@@ -82,7 +76,6 @@
     var fieldEl = target && target.closest && target.closest('input, textarea, select, [contenteditable]');
     if (fieldEl) {
       html.classList.add('cursor-on-field');
-      hasLabel = false;
       labelText.textContent = '';
       return;
     }
@@ -93,10 +86,8 @@
       if (tone === 'light') html.classList.add('cursor-tone-light');
       else if (tone === 'green') html.classList.add('cursor-tone-green');
       labelText.textContent = text;
-      hasLabel = true;
     } else {
       labelText.textContent = '';
-      hasLabel = false;
     }
   }
 
@@ -127,7 +118,6 @@
     document.removeEventListener('mouseup', onMouseUp);
     html.removeEventListener('mouseenter', onWindowEnter);
     html.removeEventListener('mouseleave', onWindowLeave);
-    hasLabel = false;
     html.classList.remove('cursor-on-label', 'cursor-on-field', 'cursor-tone-light', 'cursor-tone-green', 'cursor-outside', 'cursor-clicking');
     if (cross.parentNode) cross.parentNode.removeChild(cross);
     if (label.parentNode) label.parentNode.removeChild(label);
