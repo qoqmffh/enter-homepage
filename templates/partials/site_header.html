@@ -34,7 +34,7 @@
     </nav>
     <div class="hp-header-right">
       {% if slug == 'why' %}<a href="index.html?intro=1" class="hp-replay-link">{{ site.ad_replay_label }}</a>{% endif %}
-      <a class="hp-pill hp-pill--primary" href="#" id="hpHeaderCta">{{ site.header_cta }}</a>
+      <a class="hp-pill hp-pill--primary" href="#" id="hpHeaderCta" data-cursor-kind="kakao">{{ site.header_cta }}</a>
       <label for="hpNavToggle" class="hp-nav-toggle" aria-label="메뉴">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </label>
@@ -65,7 +65,7 @@
         </div>
         {% endfor %}
         <div class="hp-mega-col hp-mega-col--cta">
-          <div class="hp-mega-cta">
+          <div class="hp-mega-cta" data-cursor-tone="green">
             {# 평소 문구 / 호버한 페이지 요약을 같은 자리에서 opacity 크로스페이드로 바꾼다
                (지시서 2026-11-03) — 데이터는 menu_summaries(빌드 시점에 미리 계산, 아래
                JSON)에서만 읽는다. 런타임에 다른 페이지를 불러오지 않는다. #}
@@ -74,7 +74,7 @@
               <span class="hp-mega-cta-sub" id="hpMegaCtaSub">{{ site.header_menu_cta.sub }}</span>
             </div>
             <div class="hp-mega-cta-actions">
-              <a class="hp-mega-cta-btn" href="#">{{ site.header_menu_cta.button }}</a>
+              <a class="hp-mega-cta-btn" href="#" data-cursor-kind="kakao">{{ site.header_menu_cta.button }}</a>
               <a class="hp-mega-cta-tel" href="tel:{{ site.phone }}">전화 {{ site.phone }}</a>
             </div>
           </div>
@@ -97,7 +97,7 @@
     {% endfor %}
     {% if slug == 'why' %}<a href="index.html?intro=1" class="hp-nav-mobile-sub">{{ site.ad_replay_label }}</a>{% endif %}
     <div class="hp-nav-mobile-cta">
-      <a class="hp-pill hp-pill--primary" href="#">{{ site.header_menu_cta.button }}</a>
+      <a class="hp-pill hp-pill--primary" href="#" data-cursor-kind="kakao">{{ site.header_menu_cta.button }}</a>
       <a class="hp-nav-mobile-tel" href="tel:{{ site.phone }}">전화 {{ site.phone }}</a>
     </div>
   </nav>
