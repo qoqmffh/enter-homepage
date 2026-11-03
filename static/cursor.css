@@ -1,6 +1,7 @@
-/* 커스텀 커서 — 두꺼운 초록 십자 + 라벨 원 (지시서 2026-11-05: 추적 링 제거, 십자로 교체).
-   (hover:hover) and (pointer:fine) and >=1024px일 때만 cursor.js가 html에 has-cursor를
-   붙인다. 그 전까지는 이 파일의 규칙이 아무 효과도 없다(기본 시스템 커서 그대로). */
+/* 커스텀 커서 — 두꺼운 초록 십자 + 라벨 원 (지시서 2026-11-06: 누를 수 있는 모든 곳에
+   라벨 원을 일관되게). (hover:hover) and (pointer:fine) and >=1024px일 때만 cursor.js가
+   html에 has-cursor를 붙인다. 그 전까지는 이 파일의 규칙이 아무 효과도 없다(기본 시스템
+   커서 그대로). */
 
 html.has-cursor, html.has-cursor *{ cursor:none !important; }
 /* 입력 요소 위에서는 기본 커서(I-beam 등)를 보여주고 커스텀 커서는 숨긴다. */
@@ -19,26 +20,25 @@ html.has-cursor [contenteditable] *{ cursor:auto !important; }
 html.has-cursor .cursor-cross,
 html.has-cursor .cursor-label{ opacity:1; }
 
-/* 창 밖으로 나가거나 입력 요소 위일 때 — 둘 다 숨김 */
+/* 창 밖으로 나가거나 입력 요소 위일 때 — 둘 다 숨김. 라벨 원이 떠 있어도 십자는 계속
+   보인다(클릭 지점은 항상 십자 중심) — 지시서 2026-11-05/06. */
 html.cursor-outside .cursor-cross,
 html.cursor-outside .cursor-label,
 html.cursor-on-field .cursor-cross,
 html.cursor-on-field .cursor-label{ opacity:0; }
 
 /* ---------- 십자: 20x20, 두께 3px, 꽉 찬 모양, 초록 + 흰 테두리 1px ----------
-   위치(.cursor-cross, JS가 매 mousemove마다 translate3d로만 옮김)와 회전·클릭 스케일
+   위치(.cursor-cross, JS가 매 mousemove마다 translate3d로만 옮김)와 클릭 스케일
    (.cursor-cross-shape, CSS transform)을 분리했다 — 같은 요소에서 JS의 inline transform과
-   CSS transform이 부딪히면 인라인이 항상 이겨서 회전/스케일이 전혀 안 보이기 때문이다
-   (이전 추적 링에서 mix-blend-mode를 두고 똑같은 "transform 충돌"을 겪은 적이 있어 남긴다). */
+   CSS transform이 부딪히면 인라인이 항상 이겨서 스케일이 전혀 안 보이기 때문이다. */
 .cursor-cross-shape{
   position:relative; width:20px; height:20px; margin:-10px 0 0 -10px;
   transition:transform .15s ease;
 }
-/* 흰 테두리는 drop-shadow가 아니라 "1px 더 큰 흰 십자를 뒤에 깔고 그 위에 초록 십자를
-   얹는" 2겹 구조로 만든다 — filter:drop-shadow()는 offset-x/offset-y/blur만 받고
-   box-shadow처럼 번지는 "퍼짐(spread)" 값이 없어서 drop-shadow(0 0 0 1px ...)은 무효한
-   값으로 조용히 무시된다(초록 CTA 카드처럼 배경이 십자와 같은 색일 때 커서가 완전히
-   안 보이는 버그로 실제 발견). 2겹 방식은 그런 함정이 없다. */
+/* 흰 테두리는 "1px 더 큰 흰 십자를 뒤에 깔고 그 위에 초록 십자를 얹는" 2겹 구조로 만든다 —
+   filter:drop-shadow()는 offset-x/offset-y/blur만 받고 box-shadow처럼 퍼지는 "spread" 값이
+   없어서 drop-shadow(0 0 0 1px ...)은 무효한 값으로 조용히 무시된다(초록 배경 위에서 커서가
+   완전히 안 보이는 버그로 실제 발견했다). */
 .cursor-cross-outline, .cursor-cross-fill{ position:absolute; inset:0; }
 .cursor-cross-outline::before{ /* 세로 — 사방으로 1px씩 더 큼(5px 두께, 위아래 1px 연장) */
   content:''; position:absolute; left:50%; top:-1px; width:5px; height:calc(100% + 2px); margin-left:-2.5px; background:#FFFFFA;
@@ -52,27 +52,29 @@ html.cursor-on-field .cursor-label{ opacity:0; }
 .cursor-cross-fill::after{ /* 가로 바 */
   content:''; position:absolute; top:50%; left:0; height:3px; width:100%; margin-top:-1.5px; background:#1E6F50;
 }
-html.cursor-on-link .cursor-cross-shape{ transform:rotate(45deg); } /* 누를 수 있음 = × */
 html.cursor-clicking .cursor-cross-shape{ transform:scale(.9); }
-html.cursor-on-link.cursor-clicking .cursor-cross-shape{ transform:rotate(45deg) scale(.9); }
-html.cursor-on-label .cursor-cross{ opacity:0; } /* 라벨 원일 땐 십자 숨김 */
 
 @media (prefers-reduced-motion:reduce){
-  .cursor-cross-shape{ transition:none; } /* 회전은 보간 없이 바로 바뀌게 */
+  .cursor-cross-shape{ transition:none; }
 }
 
-/* ---------- 라벨 원(C): 커서에 보간 없이 붙음, 나타날 때 scale .6→1 + opacity 0→1(0.2s) ----------
-   .cursor-label(위치, JS translate3d)과 .cursor-label-shape(생김새, CSS transform)를
-   역시 같은 이유로 분리했다. */
+/* ---------- 라벨 원(C): 64px, 커서 오른쪽 아래(+14,+14)에 보간 없이 붙음 ----------
+   위치는 cursor.js가 뷰포트 가장자리를 보고 필요하면 반대쪽으로 뒤집어 매 mousemove마다
+   .cursor-label(바깥)에 translate3d로 직접 찍는다. 나타남·사라짐(scale .6→1, opacity
+   0→1, 0.18s)과 색은 안쪽 .cursor-label-shape가 맡는다 — 역시 transform 충돌을 피하려고
+   레이어를 나눴다. */
 .cursor-label-shape{
-  width:84px; height:84px; margin:-42px 0 0 -42px;
+  width:64px; height:64px;
   border-radius:50%;
   display:flex; align-items:center; justify-content:center;
   background:#10182B; color:#FFFFFA;
-  font-size:13px; font-weight:600; line-height:1; white-space:nowrap;
+  font-size:12px; font-weight:600; line-height:1.3; white-space:nowrap; text-align:center; padding:0 6px;
   opacity:0; transform:scale(.6);
-  transition:opacity .2s ease, transform .2s ease, background-color .2s ease, color .2s ease;
+  transition:opacity .18s ease, transform .18s ease, background-color .18s ease, color .18s ease;
 }
 html.cursor-on-label .cursor-label-shape{ opacity:1; transform:scale(1); }
+/* 어두운 영역(광고 무대·검은 카드·약속 섹션·본사 사진)은 섹션에 data-cursor-tone="light"를
+   한 번만 붙이면 closest()로 상속되어 그 안의 모든 클릭 가능 요소가 이 색을 쓴다. */
 html.cursor-on-label.cursor-tone-light .cursor-label-shape{ background:#FFFFFA; color:#10182B; }
-html.cursor-on-label.cursor-tone-green .cursor-label-shape{ background:#1E6F50; color:#FFFFFA; }
+/* 초록 CTA 카드 안은 흰 바탕 + 초록 글자. */
+html.cursor-on-label.cursor-tone-green .cursor-label-shape{ background:#FFFFFA; color:#1E6F50; }
