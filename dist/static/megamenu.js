@@ -9,6 +9,7 @@
   if (!header || !nav || !panel || !grid) return;
 
   var groupBtns = Array.prototype.slice.call(nav.querySelectorAll('.hp-nav-group'));
+  var indicator = document.getElementById('hpNavIndicator');
   var cols = Array.prototype.slice.call(grid.querySelectorAll('.hp-mega-col[data-col]'));
   var links = Array.prototype.slice.call(grid.querySelectorAll('.hp-mega-link[data-preview]'));
   var preview = document.getElementById('hpMegaPreview');
@@ -27,6 +28,23 @@
     groupBtns.forEach(function (b) { b.setAttribute('aria-expanded', val ? 'true' : 'false'); });
   }
 
+  /* ---------- 움직이는 밑줄 인디케이터: 호버/포커스한 그룹 라벨 아래 8px로 이동 ---------- */
+  function moveIndicatorToGroup(num) {
+    if (!indicator) return;
+    var btn = groupBtns.filter(function (b) { return b.getAttribute('data-group') === num; })[0];
+    var label = btn && btn.querySelector('.hp-nav-group-label');
+    if (!label) return;
+    var left = label.offsetLeft;
+    var width = label.offsetWidth;
+    var top = label.offsetTop + label.offsetHeight + 8;
+    indicator.style.transform = 'translate(' + left + 'px,' + top + 'px)';
+    indicator.style.width = width + 'px';
+    indicator.style.opacity = '1';
+  }
+  function hideIndicator() {
+    if (indicator) indicator.style.opacity = '0';
+  }
+
   function openPanel() {
     if (!isDesktop() || isOpen) return;
     isOpen = true;
@@ -36,6 +54,7 @@
     setExpanded(true);
   }
   function closePanel() {
+    hideIndicator();
     if (!isOpen) return;
     isOpen = false;
     panel.classList.remove('is-open');
@@ -64,7 +83,8 @@
 
   groupBtns.forEach(function (btn) {
     btn.addEventListener('click', function () { isOpen ? closePanel() : openPanel(); });
-    btn.addEventListener('focus', scheduleOpen);
+    btn.addEventListener('mouseenter', function () { moveIndicatorToGroup(btn.getAttribute('data-group')); });
+    btn.addEventListener('focus', function () { moveIndicatorToGroup(btn.getAttribute('data-group')); scheduleOpen(); });
   });
 
   document.addEventListener('keydown', function (e) {
@@ -86,8 +106,10 @@
   /* ---------- 열 강조: 패널 안에서 마우스가 올라간 열만 잉크, 나머지는 회색 ---------- */
   cols.forEach(function (col) {
     col.addEventListener('mouseenter', function () {
-      grid.setAttribute('data-hover-col', col.getAttribute('data-col'));
+      var num = col.getAttribute('data-col');
+      grid.setAttribute('data-hover-col', num);
       cols.forEach(function (c) { c.classList.toggle('is-dimmed', c !== col); });
+      moveIndicatorToGroup(num);
     });
   });
   grid.addEventListener('mouseleave', function () {

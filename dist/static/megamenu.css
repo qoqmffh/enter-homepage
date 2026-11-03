@@ -2,18 +2,28 @@
    헤더 공통 토큰(--hp-*)은 static/site.css. 여기는 닫힌 헤더의 3그룹 버튼,
    펼친 메가 패널, 커서 추적 미리보기 카드, 새 모바일 메뉴 구조만 담는다. */
 
-/* ---------- 닫힌 헤더: 01/02/03 그룹 버튼 ---------- */
+/* ---------- 닫힌 헤더: 01/02/03 그룹 버튼 ----------
+   2026-11-03 수정: 현재 그룹 고정 밑줄을 없애고(번호·라벨을 초록 글자로 대신 표시),
+   호버/포커스 때만 나타나 미끄러지는 인디케이터 하나로 바꿨다(static/megamenu.js). */
 .hp-nav{ display:none; }
 .hp-nav-group{ display:none; }
 @media (min-width:1024px){
-  .hp-nav{ display:flex; align-items:center; margin-left:72px; gap:40px; }
+  .hp-nav{ display:flex; align-items:center; margin-left:72px; gap:40px; position:relative; }
   .hp-nav-group{ display:flex; align-items:center; background:none; border:none; padding:0; margin:0; cursor:pointer; font:inherit; color:inherit; }
-  .hp-nav-group-num{ font-size:12px; color:var(--hp-green); margin-right:6px; font-variant-numeric:tabular-nums; line-height:1; }
-  .hp-nav-group-label{ position:relative; display:inline-block; font-size:16px; font-weight:600; color:var(--hp-ink); line-height:1; }
-  .hp-nav-group-label::after{ content:''; position:absolute; left:0; right:0; bottom:-8px; height:2px; background:var(--hp-green); transform:scaleX(0); transition:transform .15s ease; }
-  /* 현재 페이지가 속한 그룹에만 고정 밑줄 — 패널이 열려서 aria-expanded=true가
-     세 버튼 모두에 붙어도(같은 패널을 공유하므로) 밑줄은 .active에만 반응한다. */
-  .hp-nav-group.active .hp-nav-group-label::after{ transform:scaleX(1); }
+  .hp-nav-group-num{ font-size:12px; color:var(--hp-ink); margin-right:6px; font-variant-numeric:tabular-nums; line-height:1; transition:color .15s ease; }
+  .hp-nav-group-label{ position:relative; display:inline-block; font-size:16px; font-weight:600; color:var(--hp-ink); line-height:1; transition:color .15s ease; }
+  /* 현재 페이지가 속한 그룹: 밑줄 대신 번호+라벨을 초록으로. 다른 그룹은 잉크색. */
+  .hp-nav-group.active .hp-nav-group-num,
+  .hp-nav-group.active .hp-nav-group-label{ color:var(--hp-green); }
+
+  .hp-nav-indicator{
+    position:absolute; top:0; left:0; height:2px; width:0; background:var(--hp-green);
+    opacity:0; pointer-events:none;
+    transition:transform .25s ease, width .25s ease, opacity .15s ease;
+  }
+  @media (prefers-reduced-motion:reduce){
+    .hp-nav-indicator{ transition:opacity .15s ease; }
+  }
 }
 
 /* ---------- 메가 패널 ---------- */
