@@ -2,8 +2,9 @@
    클래스명(hp-header, hp-header-inner, hp-brand, hp-brand-svg, hp-header-right, hp-pill)은
    static/site.css + static/home-ad.css(광고 무대 투명/흰 글자 처리)가 참조하므로 유지한다.
    메가 패널/미리보기 전용 스타일은 static/megamenu.css, 동작은 static/megamenu.js. #}
-{% set active_group = none %}
-{% for g in site.header_menu %}{% for it in g['items'] %}{% if it.slug == slug %}{% set active_group = g.num %}{% endif %}{% endfor %}{% endfor %}
+{# Jinja2는 {% for %} 안의 {% set %}이 바깥 스코프로 안 새어나간다 — namespace()로 우회. #}
+{% set ns = namespace(active_group=none) %}
+{% for g in site.header_menu %}{% for it in g['items'] %}{% if it.slug == slug %}{% set ns.active_group = g.num %}{% endif %}{% endfor %}{% endfor %}
 <header class="hp-header" id="hpHeader">
   {# 체크박스는 .hp-nav-mobile과 같은 레벨(header의 직계 자식)에 있어야
      #hpNavToggle:checked ~ .hp-nav-mobile 형제 선택자가 동작한다. #}
@@ -22,7 +23,7 @@
     </a>
     <nav class="hp-nav" id="hpMegaNav">
       {% for g in site.header_menu %}
-      <button type="button" class="hp-nav-group{% if g.num == active_group %} active{% endif %}" data-group="{{ g.num }}" aria-expanded="false" aria-controls="hpMegaPanel">
+      <button type="button" class="hp-nav-group{% if g.num == ns.active_group %} active{% endif %}" data-group="{{ g.num }}" aria-expanded="false" aria-controls="hpMegaPanel">
         <span class="hp-nav-group-num">{{ g.num }}</span>
         <span class="hp-nav-group-label">{{ g.label }}</span>
       </button>
