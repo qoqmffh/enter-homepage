@@ -10,11 +10,17 @@
 @media (min-width:1024px){
   .hp-nav{ display:flex; align-items:center; margin-left:72px; gap:40px; position:relative; }
   .hp-nav-group{ display:flex; align-items:center; background:none; border:none; padding:0; margin:0; cursor:pointer; font:inherit; color:inherit; }
-  .hp-nav-group-num{ font-size:12px; color:var(--hp-ink); margin-right:6px; font-variant-numeric:tabular-nums; line-height:1; transition:color .15s ease; }
-  .hp-nav-group-label{ position:relative; display:inline-block; font-size:16px; font-weight:600; color:var(--hp-ink); line-height:1; transition:color .15s ease; }
-  /* 현재 페이지가 속한 그룹: 밑줄 대신 번호+라벨을 초록으로. 다른 그룹은 잉크색. */
-  .hp-nav-group.active .hp-nav-group-num,
-  .hp-nav-group.active .hp-nav-group-label{ color:var(--hp-green); }
+  .hp-nav-group-num{ font-size:12px; color:var(--hp-ink); margin-right:6px; font-variant-numeric:tabular-nums; line-height:1; transition:color .2s ease; }
+  .hp-nav-group-label{ position:relative; display:inline-block; font-size:16px; font-weight:600; color:var(--hp-ink); line-height:1; transition:color .2s ease; }
+  /* 초록 글자는 nav의 data-active-group 하나로 결정 — 인디케이터(아래)와 같은 상태값을
+     쓰므로 둘은 항상 같은 항목을 가리킨다(static/megamenu.js가 둘 다 같이 바꾼다).
+     기본값(호버 전)은 템플릿이 현재 페이지 그룹으로 서버 렌더한다. */
+  .hp-nav[data-active-group="01"] .hp-nav-group[data-group="01"] .hp-nav-group-num,
+  .hp-nav[data-active-group="01"] .hp-nav-group[data-group="01"] .hp-nav-group-label,
+  .hp-nav[data-active-group="02"] .hp-nav-group[data-group="02"] .hp-nav-group-num,
+  .hp-nav[data-active-group="02"] .hp-nav-group[data-group="02"] .hp-nav-group-label,
+  .hp-nav[data-active-group="03"] .hp-nav-group[data-group="03"] .hp-nav-group-num,
+  .hp-nav[data-active-group="03"] .hp-nav-group[data-group="03"] .hp-nav-group-label{ color:var(--hp-green); }
 
   .hp-nav-indicator{
     position:absolute; top:0; left:0; height:2px; width:0; background:var(--hp-green);
@@ -23,6 +29,7 @@
   }
   @media (prefers-reduced-motion:reduce){
     .hp-nav-indicator{ transition:opacity .15s ease; }
+    .hp-nav-group-num, .hp-nav-group-label{ transition:none; }
   }
 }
 
