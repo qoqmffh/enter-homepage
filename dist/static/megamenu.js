@@ -28,8 +28,13 @@
     groupBtns.forEach(function (b) { b.setAttribute('aria-expanded', val ? 'true' : 'false'); });
   }
 
-  /* ---------- 움직이는 밑줄 인디케이터: 호버/포커스한 그룹 라벨 아래 8px로 이동 ---------- */
-  function moveIndicatorToGroup(num) {
+  /* ---------- 움직이는 밑줄 인디케이터 + 초록 글자 ----------
+     nav의 data-active-group 하나로 초록 글자(static/megamenu.css)와 인디케이터 위치를
+     같이 제어한다. 기본값은 템플릿이 서버에서 렌더한 현재 페이지 그룹. */
+  var defaultActiveGroup = nav.getAttribute('data-active-group') || '';
+
+  function setActiveGroup(num) {
+    nav.setAttribute('data-active-group', num);
     if (!indicator) return;
     var btn = groupBtns.filter(function (b) { return b.getAttribute('data-group') === num; })[0];
     var label = btn && btn.querySelector('.hp-nav-group-label');
@@ -41,7 +46,8 @@
     indicator.style.width = width + 'px';
     indicator.style.opacity = '1';
   }
-  function hideIndicator() {
+  function resetActiveGroup() {
+    nav.setAttribute('data-active-group', defaultActiveGroup);
     if (indicator) indicator.style.opacity = '0';
   }
 
@@ -54,7 +60,7 @@
     setExpanded(true);
   }
   function closePanel() {
-    hideIndicator();
+    resetActiveGroup();
     if (!isOpen) return;
     isOpen = false;
     panel.classList.remove('is-open');
@@ -83,8 +89,8 @@
 
   groupBtns.forEach(function (btn) {
     btn.addEventListener('click', function () { isOpen ? closePanel() : openPanel(); });
-    btn.addEventListener('mouseenter', function () { moveIndicatorToGroup(btn.getAttribute('data-group')); });
-    btn.addEventListener('focus', function () { moveIndicatorToGroup(btn.getAttribute('data-group')); scheduleOpen(); });
+    btn.addEventListener('mouseenter', function () { setActiveGroup(btn.getAttribute('data-group')); });
+    btn.addEventListener('focus', function () { setActiveGroup(btn.getAttribute('data-group')); scheduleOpen(); });
   });
 
   document.addEventListener('keydown', function (e) {
@@ -109,7 +115,7 @@
       var num = col.getAttribute('data-col');
       grid.setAttribute('data-hover-col', num);
       cols.forEach(function (c) { c.classList.toggle('is-dimmed', c !== col); });
-      moveIndicatorToGroup(num);
+      setActiveGroup(num);
     });
   });
   grid.addEventListener('mouseleave', function () {
