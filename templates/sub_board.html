@@ -26,7 +26,7 @@
     {% for slug in s.featured %}
     {% set post = blog_posts[slug] %}
     {% set meta = (page.posts | selectattr('slug', 'equalto', slug) | first) %}
-    <a class="sp-board-feature-card" href="{{ slug }}.html" data-cursor-label="읽기 →" data-cursor-tone="light">
+    <a class="sp-board-feature-card" href="{{ slug }}.html">
       <span class="sp-board-tag">[{{ '업계 질문' if meta.tag == '업계' else meta.tag }}]</span>
       <span class="sp-board-feature-title">{{ post.h1 }}</span>
       <span class="sp-board-feature-foot"><span>{{ post.date_published }}</span><span>읽기 →</span></span>
@@ -38,7 +38,7 @@
     {% for p in page.posts %}
     {% set post = blog_posts.get(p.slug) if p.slug else None %}
     <a class="sp-board-row{% if not p.slug %} sp-board-row--pending{% endif %}" data-cat="{{ p.tag }}" data-title="{{ p.title }}"
-       {% if p.slug %}href="{{ p.slug }}.html" data-cursor-label="읽기 →"{% else %}href="javascript:void(0)" tabindex="-1" aria-disabled="true"{% endif %}>
+       {% if p.slug %}href="{{ p.slug }}.html"{% else %}href="javascript:void(0)" tabindex="-1" aria-disabled="true"{% endif %}>
       <span class="sp-board-thumb"></span>
       <span class="sp-board-row-body">
         <span class="sp-board-tag">[{{ '업계 질문' if p.tag == '업계' else p.tag }}]</span>
@@ -67,7 +67,7 @@
     <strong>{{ s.contact.heading }}</strong>
     <div style="margin-top:10px; display:flex; gap:16px; flex-wrap:wrap;">
       <a href="tel:{{ site.phone }}">{{ s.contact.tel_label }}</a>
-      <a href="#" data-cursor-kind="kakao">{{ s.contact.kakao_label }}</a>
+      <a href="#" data-cursor="kakao">{{ s.contact.kakao_label }}</a>
     </div>
   </div>
   {% endif %}

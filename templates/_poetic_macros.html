@@ -1,7 +1,7 @@
 {# ENTER 홈 — POETIC 버전 전용 Jinja 매크로. home.html에서만 import한다. #}
 
 {% macro pill(label, href, variant='primary', icon_dot=False, kakao=False) %}
-<a href="{{ href }}" class="hp-pill hp-pill--{{ variant }}"{% if kakao %} data-cursor-kind="kakao"{% endif %}>{% if icon_dot %}<span class="hp-pill-dot"></span>{% endif %}{{ label }}</a>
+<a href="{{ href }}" class="hp-pill hp-pill--{{ variant }}"{% if kakao %} data-cursor="kakao"{% endif %}>{% if icon_dot %}<span class="hp-pill-dot"></span>{% endif %}{{ label }}</a>
 {% endmacro %}
 
 {% macro section_label(text) %}
