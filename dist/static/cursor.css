@@ -1,7 +1,6 @@
-/* 커스텀 커서 — 십자 + 추적 링(B) + 라벨 원(C) (지시서 2026-11-04).
-   (hover:hover) and (pointer:fine) and >=1024px and !reduced-motion일 때만
-   cursor.js가 html에 has-cursor를 붙인다. 그 전까지는 이 파일의 규칙이
-   아무 효과도 없다(기본 시스템 커서 그대로). */
+/* 커스텀 커서 — 두꺼운 초록 십자 + 라벨 원 (지시서 2026-11-05: 추적 링 제거, 십자로 교체).
+   (hover:hover) and (pointer:fine) and >=1024px일 때만 cursor.js가 html에 has-cursor를
+   붙인다. 그 전까지는 이 파일의 규칙이 아무 효과도 없다(기본 시스템 커서 그대로). */
 
 html.has-cursor, html.has-cursor *{ cursor:none !important; }
 /* 입력 요소 위에서는 기본 커서(I-beam 등)를 보여주고 커스텀 커서는 숨긴다. */
@@ -11,75 +10,69 @@ html.has-cursor select,
 html.has-cursor [contenteditable],
 html.has-cursor [contenteditable] *{ cursor:auto !important; }
 
-/* mix-blend-mode는 transform(JS가 매 프레임 건드리는)과 반드시 "같은 요소"에 있어야 한다.
-   transform이 있는 조상의 자식에 blend-mode를 두면 그 조상이 새 스태킹 컨텍스트를 만들어
-   블렌드가 격리되어(배경이 안 보여서) 사실상 투명하게 그려진다 — 실제로 겪은 버그라
-   남긴다. 그래서 .cursor-cross/.cursor-ring 자신에 mix-blend-mode를 직접 건다. 클릭
-   스케일도 같은 이유로 CSS transform이 아니라 cursor.js가 같은 translate3d 문자열 안에
-   scale()을 합쳐서 적용한다(JS가 쓰는 inline transform을 CSS가 못 건드리므로). */
-.cursor-cross, .cursor-ring{
+.cursor-cross, .cursor-label{
   position:fixed; top:0; left:0;
   pointer-events:none;
   z-index:9999; /* 헤더(40)·메가 패널(45)·페이지 와이프(200)보다 위 */
   opacity:0;
-  mix-blend-mode:difference;
-  will-change:transform;
 }
 html.has-cursor .cursor-cross,
-html.has-cursor .cursor-ring{ opacity:1; }
+html.has-cursor .cursor-label{ opacity:1; }
 
 /* 창 밖으로 나가거나 입력 요소 위일 때 — 둘 다 숨김 */
 html.cursor-outside .cursor-cross,
-html.cursor-outside .cursor-ring,
+html.cursor-outside .cursor-label,
 html.cursor-on-field .cursor-cross,
-html.cursor-on-field .cursor-ring{ opacity:0; }
+html.cursor-on-field .cursor-label{ opacity:0; }
 
-/* ---------- 십자: 14x14, 선 1.5px, 가운데 2px 비움, 보간 없이 좌표에 정확히 붙음 ---------- */
-.cursor-cross{ width:14px; height:14px; margin:-7px 0 0 -7px; }
-.cursor-cross::before, .cursor-cross::after{
-  content:''; position:absolute; background:#FFFFFA;
+/* ---------- 십자: 20x20, 두께 3px, 꽉 찬 모양, 초록 + 흰 테두리 1px ----------
+   위치(.cursor-cross, JS가 매 mousemove마다 translate3d로만 옮김)와 회전·클릭 스케일
+   (.cursor-cross-shape, CSS transform)을 분리했다 — 같은 요소에서 JS의 inline transform과
+   CSS transform이 부딪히면 인라인이 항상 이겨서 회전/스케일이 전혀 안 보이기 때문이다
+   (이전 추적 링에서 mix-blend-mode를 두고 똑같은 "transform 충돌"을 겪은 적이 있어 남긴다). */
+.cursor-cross-shape{
+  position:relative; width:20px; height:20px; margin:-10px 0 0 -10px;
+  transition:transform .15s ease;
 }
-.cursor-cross::before{ /* 세로 — 위/아래 6px씩, 가운데 2px 비움 */
-  left:50%; top:0; width:1.5px; height:100%; margin-left:-.75px;
-  background:
-    linear-gradient(#FFFFFA,#FFFFFA) top / 100% 6px no-repeat,
-    linear-gradient(#FFFFFA,#FFFFFA) bottom / 100% 6px no-repeat;
+/* 흰 테두리는 drop-shadow가 아니라 "1px 더 큰 흰 십자를 뒤에 깔고 그 위에 초록 십자를
+   얹는" 2겹 구조로 만든다 — filter:drop-shadow()는 offset-x/offset-y/blur만 받고
+   box-shadow처럼 번지는 "퍼짐(spread)" 값이 없어서 drop-shadow(0 0 0 1px ...)은 무효한
+   값으로 조용히 무시된다(초록 CTA 카드처럼 배경이 십자와 같은 색일 때 커서가 완전히
+   안 보이는 버그로 실제 발견). 2겹 방식은 그런 함정이 없다. */
+.cursor-cross-outline, .cursor-cross-fill{ position:absolute; inset:0; }
+.cursor-cross-outline::before{ /* 세로 — 사방으로 1px씩 더 큼(5px 두께, 위아래 1px 연장) */
+  content:''; position:absolute; left:50%; top:-1px; width:5px; height:calc(100% + 2px); margin-left:-2.5px; background:#FFFFFA;
 }
-.cursor-cross::after{ /* 가로 — 좌/우 6px씩, 가운데 2px 비움 */
-  top:50%; left:0; height:1.5px; width:100%; margin-top:-.75px;
-  background:
-    linear-gradient(90deg,#FFFFFA,#FFFFFA) left / 6px 100% no-repeat,
-    linear-gradient(90deg,#FFFFFA,#FFFFFA) right / 6px 100% no-repeat;
+.cursor-cross-outline::after{
+  content:''; position:absolute; top:50%; left:-1px; height:5px; width:calc(100% + 2px); margin-top:-2.5px; background:#FFFFFA;
 }
+.cursor-cross-fill::before{ /* 세로 바 — 가운데 비움 없이 꽉 채움 */
+  content:''; position:absolute; left:50%; top:0; width:3px; height:100%; margin-left:-1.5px; background:#1E6F50;
+}
+.cursor-cross-fill::after{ /* 가로 바 */
+  content:''; position:absolute; top:50%; left:0; height:3px; width:100%; margin-top:-1.5px; background:#1E6F50;
+}
+html.cursor-on-link .cursor-cross-shape{ transform:rotate(45deg); } /* 누를 수 있음 = × */
+html.cursor-clicking .cursor-cross-shape{ transform:scale(.9); }
+html.cursor-on-link.cursor-clicking .cursor-cross-shape{ transform:rotate(45deg) scale(.9); }
 html.cursor-on-label .cursor-cross{ opacity:0; } /* 라벨 원일 땐 십자 숨김 */
 
-/* ---------- 추적 링: rAF 보간(cursor.js), 지름 34px, 1px 선, 투명도 35% ---------- */
-.cursor-ring{
-  width:34px; height:34px; margin:-17px 0 0 -17px;
-  border-radius:50%;
-  border:1px solid #FFFFFA;
-  background:transparent;
-  opacity:.35;
-  display:flex; align-items:center; justify-content:center;
-  color:#FFFFFA; font-size:13px; font-weight:600; line-height:1; white-space:nowrap;
-  transition:width .2s ease, height .2s ease, margin .2s ease, opacity .2s ease,
-             border-color .25s ease, background-color .25s ease, color .25s ease;
-}
-.cursor-ring-label{ opacity:0; }
-
-/* 링크·버튼(a, button, [role=button]) 위 — 48px, 투명도 60% */
-html.cursor-on-link .cursor-ring{ width:48px; height:48px; margin:-24px 0 0 -24px; opacity:.6; }
-
-/* 라벨 원(C) — mix-blend-mode 쓰지 않음(지시서 5) */
-html.cursor-on-label .cursor-ring{
-  width:84px; height:84px; margin:-42px 0 0 -42px;
-  opacity:1; mix-blend-mode:normal;
-  background:#10182B; color:#FFFFFA; border-color:transparent;
-}
-html.cursor-on-label .cursor-ring-label{ opacity:1; }
-html.cursor-on-label.cursor-tone-light .cursor-ring{ background:#FFFFFA; color:#10182B; }
-html.cursor-on-label.cursor-tone-green .cursor-ring{ background:#1E6F50; color:#FFFFFA; }
-
 @media (prefers-reduced-motion:reduce){
-  .cursor-ring{ transition:opacity .15s ease, background-color .15s ease, color .15s ease, border-color .15s ease; }
+  .cursor-cross-shape{ transition:none; } /* 회전은 보간 없이 바로 바뀌게 */
 }
+
+/* ---------- 라벨 원(C): 커서에 보간 없이 붙음, 나타날 때 scale .6→1 + opacity 0→1(0.2s) ----------
+   .cursor-label(위치, JS translate3d)과 .cursor-label-shape(생김새, CSS transform)를
+   역시 같은 이유로 분리했다. */
+.cursor-label-shape{
+  width:84px; height:84px; margin:-42px 0 0 -42px;
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  background:#10182B; color:#FFFFFA;
+  font-size:13px; font-weight:600; line-height:1; white-space:nowrap;
+  opacity:0; transform:scale(.6);
+  transition:opacity .2s ease, transform .2s ease, background-color .2s ease, color .2s ease;
+}
+html.cursor-on-label .cursor-label-shape{ opacity:1; transform:scale(1); }
+html.cursor-on-label.cursor-tone-light .cursor-label-shape{ background:#FFFFFA; color:#10182B; }
+html.cursor-on-label.cursor-tone-green .cursor-label-shape{ background:#1E6F50; color:#FFFFFA; }
