@@ -56,7 +56,7 @@
           </div>
           <div class="hp-mega-links">
             {% for it in g['items'] %}
-            <a href="{{ it.slug }}.html" class="hp-mega-link{% if it.slug == slug %} is-current{% endif %}" data-preview="{{ it.slug }}">
+            <a href="{{ it.slug }}.html" class="hp-mega-link{% if it.slug == slug %} is-current{% endif %}" data-slug="{{ it.slug }}">
               <span class="hp-mega-link-title">{{ it.label }}</span>
               <span class="hp-mega-link-desc">{{ it.desc }}</span>
             </a>
@@ -66,9 +66,12 @@
         {% endfor %}
         <div class="hp-mega-col hp-mega-col--cta">
           <div class="hp-mega-cta">
-            <div class="hp-mega-cta-text">
-              <span class="hp-mega-cta-title">{{ site.header_menu_cta.title }}</span>
-              <span class="hp-mega-cta-sub">{{ site.header_menu_cta.sub }}</span>
+            {# 평소 문구 / 호버한 페이지 요약을 같은 자리에서 opacity 크로스페이드로 바꾼다
+               (지시서 2026-11-03) — 데이터는 menu_summaries(빌드 시점에 미리 계산, 아래
+               JSON)에서만 읽는다. 런타임에 다른 페이지를 불러오지 않는다. #}
+            <div class="hp-mega-cta-text" id="hpMegaCtaText" aria-live="polite">
+              <span class="hp-mega-cta-title" id="hpMegaCtaTitle">{{ site.header_menu_cta.title }}</span>
+              <span class="hp-mega-cta-sub" id="hpMegaCtaSub">{{ site.header_menu_cta.sub }}</span>
             </div>
             <div class="hp-mega-cta-actions">
               <a class="hp-mega-cta-btn" href="#">{{ site.header_menu_cta.button }}</a>
@@ -79,12 +82,8 @@
       </div>
     </div>
   </div>
-
-  {# 커서를 따라다니는 미리보기 카드 — ≥1024px, hover 가능, reduced-motion 아닐 때만 JS가 켠다. #}
-  <div class="hp-mega-preview" id="hpMegaPreview" aria-hidden="true">
-    <img class="hp-mega-preview-poster" id="hpMegaPreviewPoster" alt="" loading="lazy">
-    <video class="hp-mega-preview-video" id="hpMegaPreviewVideo" muted loop playsinline preload="none"></video>
-  </div>
+  <script type="application/json" id="hpMegaSummaries">{{ menu_summaries | tojson }}</script>
+  <script type="application/json" id="hpMegaCtaDefault">{{ {"title": site.header_menu_cta.title, "sub": site.header_menu_cta.sub} | tojson }}</script>
 
   {# 모바일(1023px 이하) 메뉴 — 그룹 제목 아래 페이지 나열 #}
   <nav class="hp-nav-mobile">

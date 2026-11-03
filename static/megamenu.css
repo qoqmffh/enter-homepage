@@ -68,9 +68,22 @@
 
 .hp-mega-col--cta{ display:flex; }
 .hp-mega-cta{ width:100%; border-radius:var(--radius-card); background:var(--hp-green); padding:24px; display:flex; flex-direction:column; justify-content:space-between; color:var(--hp-white); }
-.hp-mega-cta-text{ display:flex; flex-direction:column; }
+/* 글 영역만 opacity 크로스페이드(0.18s) — 높이는 고정해 카드 전체가 들썩이지 않는다
+   (평소 문구는 2줄, 요약은 글머리+2줄 헤드라인+숫자 줄까지 있어 더 길다). */
+.hp-mega-cta-text{ display:flex; flex-direction:column; min-height:154px; transition:opacity .18s ease; }
+.hp-mega-cta-text.is-fading{ opacity:0; }
 .hp-mega-cta-title{ font-size:18px; font-weight:700; line-height:1.3; }
 .hp-mega-cta-sub{ font-size:13px; color:rgba(255,255,250,.8); margin-top:4px; }
+.hp-mega-cta-eyebrow{ font-size:12px; color:rgba(255,255,250,.7); }
+.hp-mega-cta-headline{ font-size:18px; font-weight:700; line-height:1.35; margin:6px 0 0; }
+.hp-mega-cta-numbers{ display:flex; gap:20px; margin-top:auto; padding-top:14px; }
+.hp-mega-cta-number{ display:flex; flex-direction:column; }
+.hp-mega-cta-number-value{ font-size:22px; font-weight:800; color:var(--hp-white); font-variant-numeric:tabular-nums; line-height:1; }
+.hp-mega-cta-number-label{ font-size:12px; color:rgba(255,255,250,.7); margin-top:4px; }
+.hp-mega-cta-special{ font-size:14px; color:rgba(255,255,250,.9); margin:6px 0 0; }
+@media (prefers-reduced-motion:reduce){
+  .hp-mega-cta-text{ transition:none; }
+}
 .hp-mega-cta-actions{ margin-top:24px; display:flex; flex-direction:column; }
 .hp-mega-cta-btn{ height:44px; padding:0 16px; border-radius:var(--radius-btn); background:var(--hp-white); color:var(--hp-ink); font-size:14px; font-weight:600; display:flex; align-items:center; justify-content:center; text-align:center; transition:background-color .15s ease; }
 .hp-mega-cta-btn:hover{ background:#F4F4EE; }
@@ -89,20 +102,6 @@ html.ad-pending .hp-header.mega-open .hp-brand-door-leaf{ fill:var(--hp-green) !
 html.ad-pending .hp-header.mega-open .hp-nav-group-label{ color:var(--hp-ink) !important; }
 html.ad-pending .hp-header.mega-open .hp-nav-toggle{ color:var(--hp-ink) !important; }
 html.ad-pending .hp-header.mega-open #hpHeaderCta{ background:transparent !important; color:var(--hp-ink) !important; }
-
-/* ---------- 커서 추적 미리보기 카드 ---------- */
-.hp-mega-preview{
-  position:fixed; top:0; left:0; z-index:60; width:280px; height:175px;
-  border-radius:var(--radius-card); border:1px solid var(--hp-line); overflow:hidden;
-  background:var(--hp-white); box-shadow:0 12px 32px rgba(16,24,43,.08); /* 지시서 허용 예외 */
-  opacity:0; pointer-events:none; transition:opacity .15s ease;
-  will-change:transform;
-}
-.hp-mega-preview.is-visible{ opacity:1; }
-.hp-mega-preview-poster, .hp-mega-preview-video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
-.hp-mega-preview-video{ opacity:0; transition:opacity .2s ease; }
-.hp-mega-preview-video.is-ready{ opacity:1; }
-@media (max-width:1023px), (hover:none){ .hp-mega-preview{ display:none !important; } }
 
 /* ---------- 모바일(≤1023px) 메뉴: 그룹 제목 + 목록 ---------- */
 .hp-nav-mobile{ display:none; flex-direction:column; position:absolute; left:0; right:0; top:100%; background:var(--hp-white); border-bottom:1px solid var(--hp-line); padding:8px 20px 20px; max-height:calc(100vh - 76px); overflow-y:auto; }

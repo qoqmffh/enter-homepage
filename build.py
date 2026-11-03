@@ -24,6 +24,46 @@ def load_json(name):
         return json.load(f)
 
 
+def build_menu_summaries(site, pages, blog_posts):
+    """메가 메뉴 초록 CTA 카드용 페이지 요약 — 지시서 2026-11-03.
+    런타임에 다른 페이지를 불러오지 않도록 빌드 시점에 전부 미리 계산해서
+    헤더 템플릿에 JSON으로 박아 넣는다(9개 항목 전부, 페이지 공통)."""
+    summaries = {}
+    for group in site["header_menu"]:
+        for item in group["items"]:
+            slug = item["slug"]
+            page = pages[slug]
+            if slug == "why":
+                headline = page["poetic"]["hero"]["headline"]
+            else:
+                headline = page["sub"]["hero"]["headline"]
+
+            numbers = None
+            special_text = None
+            if slug == "why":
+                numbers = [{"value": s["num"], "label": s["label"]} for s in page["poetic"]["stats"][:2]]
+            elif slug == "stories":
+                special_text = "실제 발언을 모으고 있습니다"
+            elif slug == "blog":
+                count = len(blog_posts["pages"])
+                numbers = [{"value": f"{count}편", "label": "발행된 글"}]
+            elif slug == "faq":
+                count = len(page["items"])
+                numbers = [{"value": f"{count}개", "label": "자주 묻는 질문"}]
+            else:
+                facts = page["sub"]["proof"]["facts"][:2]
+                numbers = [{"value": f["value"], "label": f["label"]} for f in facts]
+
+            summaries[slug] = {
+                "groupNum": group["num"],
+                "pageLabel": item["label"],
+                "headline": headline,
+                "numbers": numbers,
+                "specialText": special_text,
+            }
+    return summaries
+
+
 def main():
     site = load_json("site.json")
     pages = load_json("pages.json")
@@ -35,6 +75,8 @@ def main():
     # 블로그 포스트(blog_posts.json)도 같은 방식으로 합쳐서 렌더링
     blog_posts = load_json("blog_posts.json")
     pages.update(blog_posts["pages"])
+
+    menu_summaries = build_menu_summaries(site, pages, blog_posts)
 
     env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
 
@@ -51,7 +93,7 @@ def main():
     for slug, page in pages.items():
         template = env.get_template(page["template"])
         legal_text = site["legal_footer_about"] if slug == "about" else site["legal_footer"]
-        html = template.render(site=site, page=page, slug=slug, legal_text=legal_text, blog_posts=blog_posts["pages"])
+        html = template.render(site=site, page=page, slug=slug, legal_text=legal_text, blog_posts=blog_posts["pages"], menu_summaries=menu_summaries)
         out_path = os.path.join(DIST_DIR, f"{slug}.html")
         with open(out_path, "w", encoding="utf-8") as f:
             f.write(html)

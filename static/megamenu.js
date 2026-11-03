@@ -1,5 +1,7 @@
-/* ENTER 메가 메뉴 — 지시서 2026-11-03. 열기/닫기 지연, 열 강조, 커서를 따라다니는
-   미리보기 카드(지연 로드 영상)를 전부 여기서 다룬다. static/megamenu.css와 짝. */
+/* ENTER 메가 메뉴 — 지시서 2026-11-03(개정: 영상 미리보기 제거, 초록 CTA 카드에
+   페이지 요약 표시). 열기/닫기 지연, 열 강조, CTA 카드 요약 크로스페이드를 전부
+   여기서 다룬다. static/megamenu.css와 짝. 데이터는 menu_summaries(빌드 시점에
+   site_header.html이 JSON 스크립트 태그로 박아 넣음)만 읽고 런타임 fetch는 없다. */
 (function () {
   'use strict';
   var header = document.getElementById('hpHeader');
@@ -11,16 +13,11 @@
   var groupBtns = Array.prototype.slice.call(nav.querySelectorAll('.hp-nav-group'));
   var indicator = document.getElementById('hpNavIndicator');
   var cols = Array.prototype.slice.call(grid.querySelectorAll('.hp-mega-col[data-col]'));
-  var links = Array.prototype.slice.call(grid.querySelectorAll('.hp-mega-link[data-preview]'));
-  var preview = document.getElementById('hpMegaPreview');
-  var previewPoster = document.getElementById('hpMegaPreviewPoster');
-  var previewVideo = document.getElementById('hpMegaPreviewVideo');
+  var links = Array.prototype.slice.call(grid.querySelectorAll('.hp-mega-link[data-slug]'));
 
   function isDesktop() { return window.matchMedia('(min-width:1024px)').matches; }
-  var reduceMotion = false, canHover = true;
+  var reduceMotion = false;
   try { reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
-  try { canHover = window.matchMedia('(hover: hover)').matches; } catch (e) {}
-  var previewEnabled = !reduceMotion && canHover && !!preview;
 
   var openTimer = null, closeTimer = null, isOpen = false;
 
@@ -61,6 +58,11 @@
   }
   function closePanel() {
     resetActiveGroup();
+    /* 마우스가 링크를 벗어날 때 이미 300ms 복귀 타이머가 걸려 있으면 그대로 두고(지시서의
+       "목록에서 빠지면 300ms 뒤" 기준이 되는 그 타이머), 키보드 Escape/포커스 이탈처럼
+       그 타이머가 아예 없을 때만 즉시 되돌린다 — 패널 닫힘 지연(250ms)에 또 300ms를
+       더 얹어 900ms 가까이 늘어지는 것을 막는다. */
+    if (ctaRevertTimer === null) revertCtaNow();
     if (!isOpen) return;
     isOpen = false;
     panel.classList.remove('is-open');
@@ -69,7 +71,6 @@
     setExpanded(false);
     grid.removeAttribute('data-hover-col');
     cols.forEach(function (c) { c.classList.remove('is-dimmed'); });
-    hidePreview();
   }
   function scheduleOpen() {
     clearTimeout(closeTimer); closeTimer = null;
@@ -123,73 +124,81 @@
     cols.forEach(function (c) { c.classList.remove('is-dimmed'); });
   });
 
-  /* ---------- 커서를 따라다니는 미리보기 카드 ---------- */
-  if (!previewEnabled) return;
+  /* ---------- 초록 CTA 카드: 호버한 페이지 요약으로 글 영역만 교체 ---------- */
+  var ctaText = document.getElementById('hpMegaCtaText');
+  var summariesEl = document.getElementById('hpMegaSummaries');
+  var ctaDefaultEl = document.getElementById('hpMegaCtaDefault');
+  var summaries = {}, ctaDefault = null;
+  try { summaries = JSON.parse(summariesEl.textContent); } catch (e) {}
+  try { ctaDefault = JSON.parse(ctaDefaultEl.textContent); } catch (e) {}
 
-  var mouseX = 0, mouseY = 0, curX = 0, curY = 0, rafId = null, previewVisible = false;
-  var loadedSlug = null, currentSlug = null;
-
-  function lerp(a, b, t) { return a + (b - a) * t; }
-
-  function positionPreview(x, y) {
-    var w = 280, h = 175, offset = 18;
-    var vw = window.innerWidth, vh = window.innerHeight;
-    var left = x + offset, top = y + offset;
-    if (left + w > vw - 8) left = x - offset - w;
-    if (top + h > vh - 8) top = y - offset - h;
-    if (left < 8) left = 8;
-    if (top < 8) top = 8;
-    preview.style.transform = 'translate(' + left + 'px,' + top + 'px)';
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
   }
 
-  function tick() {
-    curX = lerp(curX, mouseX, 0.22);
-    curY = lerp(curY, mouseY, 0.22);
-    positionPreview(curX, curY);
-    if (previewVisible) rafId = requestAnimationFrame(tick);
-    else rafId = null;
+  function defaultCtaHtml() {
+    if (!ctaDefault) return '';
+    return '<span class="hp-mega-cta-title">' + escapeHtml(ctaDefault.title) + '</span>' +
+      '<span class="hp-mega-cta-sub">' + escapeHtml(ctaDefault.sub) + '</span>';
   }
 
-  function loadVideo(slug) {
-    previewPoster.src = 'static/previews/' + slug + '.webp';
-    previewVideo.classList.remove('is-ready');
-    if (loadedSlug === slug) {
-      try { previewVideo.currentTime = 0; previewVideo.play(); } catch (e) {}
-      previewVideo.classList.add('is-ready');
+  function summaryCtaHtml(data) {
+    var html = '<span class="hp-mega-cta-eyebrow">' + escapeHtml(data.groupNum) + ' · ' + escapeHtml(data.pageLabel) + '</span>';
+    html += '<h3 class="hp-mega-cta-headline">' + data.headline.map(escapeHtml).join('<br>') + '</h3>';
+    if (data.numbers && data.numbers.length) {
+      html += '<div class="hp-mega-cta-numbers">';
+      data.numbers.forEach(function (n) {
+        html += '<div class="hp-mega-cta-number"><span class="hp-mega-cta-number-value">' + escapeHtml(n.value) +
+          '</span><span class="hp-mega-cta-number-label">' + escapeHtml(n.label) + '</span></div>';
+      });
+      html += '</div>';
+    } else if (data.specialText) {
+      html += '<p class="hp-mega-cta-special">' + escapeHtml(data.specialText) + '</p>';
+    }
+    return html;
+  }
+
+  var ctaFadeTimer = null, ctaRevertTimer = null, ctaCurrentSlug = null;
+
+  function setCtaContent(html) {
+    if (!ctaText) return;
+    clearTimeout(ctaFadeTimer);
+    if (reduceMotion) {
+      ctaText.innerHTML = html;
       return;
     }
-    try { previewVideo.pause(); } catch (e) {}
-    previewVideo.src = 'static/previews/' + slug + '.webm';
-    previewVideo.load();
-    var onReady = function () {
-      if (currentSlug !== slug) return;
-      previewVideo.classList.add('is-ready');
-      try { previewVideo.play(); } catch (e) {}
-      loadedSlug = slug;
-    };
-    previewVideo.addEventListener('canplay', onReady, { once: true });
+    ctaText.classList.add('is-fading');
+    ctaFadeTimer = setTimeout(function () {
+      ctaText.innerHTML = html;
+      ctaText.classList.remove('is-fading');
+    }, 180);
   }
 
-  function showPreview(slug) {
-    currentSlug = slug;
-    curX = mouseX; curY = mouseY;
-    positionPreview(curX, curY);
-    preview.classList.add('is-visible');
-    if (!previewVisible) { previewVisible = true; tick(); }
-    loadVideo(slug);
+  function showCtaSummary(slug) {
+    var data = summaries[slug];
+    if (!data || !ctaText) return;
+    clearTimeout(ctaRevertTimer);
+    ctaCurrentSlug = slug;
+    setCtaContent(summaryCtaHtml(data));
   }
-  function hidePreview() {
-    previewVisible = false;
-    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
-    preview.classList.remove('is-visible');
-    previewVideo.classList.remove('is-ready');
-    try { previewVideo.pause(); } catch (e) {}
-    currentSlug = null;
+  function revertCtaNow() {
+    ctaRevertTimer = null;
+    if (ctaCurrentSlug === null) return;
+    ctaCurrentSlug = null;
+    setCtaContent(defaultCtaHtml());
+  }
+  function scheduleCtaRevert() {
+    clearTimeout(ctaRevertTimer);
+    ctaRevertTimer = setTimeout(revertCtaNow, 300);
   }
 
-  document.addEventListener('mousemove', function (e) { mouseX = e.clientX; mouseY = e.clientY; });
-  links.forEach(function (link) {
-    link.addEventListener('mouseenter', function () { showPreview(link.getAttribute('data-preview')); });
-    link.addEventListener('mouseleave', hidePreview);
-  });
+  if (ctaText && Object.keys(summaries).length) {
+    links.forEach(function (link) {
+      link.addEventListener('mouseenter', function () { showCtaSummary(link.getAttribute('data-slug')); });
+      link.addEventListener('focus', function () { showCtaSummary(link.getAttribute('data-slug')); });
+      link.addEventListener('mouseleave', scheduleCtaRevert);
+    });
+  }
 })();
