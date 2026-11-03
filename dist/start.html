@@ -18,6 +18,7 @@
 <link rel="stylesheet" href="static/fonts/pretendard/pretendard-dynamic-subset.css">
 <link rel="stylesheet" href="static/common.css">
 <link rel="stylesheet" href="static/site.css">
+<link rel="stylesheet" href="static/megamenu.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -46,7 +47,11 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 
 
-<header class="hp-header">
+
+
+<header class="hp-header" id="hpHeader">
+  
+  <input type="checkbox" id="hpNavToggle" class="hp-nav-toggle-input">
   <div class="hp-header-inner">
     <a class="hp-brand" href="index.html" aria-label="ENTER">
       <svg viewBox="0 0 559 152" class="hp-brand-svg" aria-hidden="true">
@@ -59,64 +64,189 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
         </g></g>
       </svg>
     </a>
-    <input type="checkbox" id="hpNavToggle" class="hp-nav-toggle-input">
-    <nav class="hp-nav">
+    <nav class="hp-nav" id="hpMegaNav">
       
-      <a href="why.html">왜 ENTER</a>
+      <button type="button" class="hp-nav-group" data-group="01" aria-expanded="false" aria-controls="hpMegaPanel">
+        <span class="hp-nav-group-num">01</span>
+        <span class="hp-nav-group-label">회사소개</span>
+      </button>
       
-      <a href="settlement.html">정산·DB보호</a>
+      <button type="button" class="hp-nav-group" data-group="02" aria-expanded="false" aria-controls="hpMegaPanel">
+        <span class="hp-nav-group-num">02</span>
+        <span class="hp-nav-group-label">파트너십</span>
+      </button>
       
-      <a href="products.html">취급상품</a>
-      
-      <a href="startup.html">창업자 가이드</a>
-      
-      <a href="about.html">회사소개</a>
-      
+      <button type="button" class="hp-nav-group" data-group="03" aria-expanded="false" aria-controls="hpMegaPanel">
+        <span class="hp-nav-group-num">03</span>
+        <span class="hp-nav-group-label">정보마당</span>
+      </button>
       
     </nav>
     <div class="hp-header-right">
-      <nav class="hp-subnav">
-        
-        
-        <a href="start.html" class="active">거래 시작하기</a>
-        
-        <span>·</span>
-        <a href="blog.html">블로그</a>
-        
-        <span>·</span>
-        <a href="faq.html">FAQ</a>
-        
-      </nav>
-      <a class="hp-pill hp-pill--primary" href="#">정책 받기</a>
+      
+      <a class="hp-pill hp-pill--primary" href="#" id="hpHeaderCta">정책 받기</a>
       <label for="hpNavToggle" class="hp-nav-toggle" aria-label="메뉴">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </label>
     </div>
-    <nav class="hp-nav-mobile">
+  </div>
+
+  
+  <div class="hp-mega" id="hpMegaPanel" role="region" aria-hidden="true">
+    <div class="hp-mega-inner">
+      <div class="hp-mega-grid" id="hpMegaGrid">
+        
+        <div class="hp-mega-col" data-col="01">
+          <div class="hp-mega-card">
+            <div class="hp-mega-card-text">
+              <span class="hp-mega-card-label">회사소개</span>
+              <span class="hp-mega-card-en">Company</span>
+            </div>
+            <span class="hp-mega-card-num" aria-hidden="true">01</span>
+          </div>
+          <div class="hp-mega-links">
+            
+            <a href="why.html" class="hp-mega-link" data-preview="why">
+              <span class="hp-mega-link-title">왜 ENTER</span>
+              <span class="hp-mega-link-desc">숫자로 보는 정책·정산</span>
+            </a>
+            
+            <a href="about.html" class="hp-mega-link" data-preview="about">
+              <span class="hp-mega-link-title">회사소개</span>
+              <span class="hp-mega-link-desc">2010년부터 유선 한 길</span>
+            </a>
+            
+            <a href="stories.html" class="hp-mega-link" data-preview="stories">
+              <span class="hp-mega-link-title">거래처 이야기</span>
+              <span class="hp-mega-link-desc">사장님들의 실제 이야기</span>
+            </a>
+            
+          </div>
+        </div>
+        
+        <div class="hp-mega-col" data-col="02">
+          <div class="hp-mega-card">
+            <div class="hp-mega-card-text">
+              <span class="hp-mega-card-label">파트너십</span>
+              <span class="hp-mega-card-en">Partnership</span>
+            </div>
+            <span class="hp-mega-card-num" aria-hidden="true">02</span>
+          </div>
+          <div class="hp-mega-links">
+            
+            <a href="start.html" class="hp-mega-link is-current" data-preview="start">
+              <span class="hp-mega-link-title">거래 시작하기</span>
+              <span class="hp-mega-link-desc">서류 없이 개통부터</span>
+            </a>
+            
+            <a href="settlement.html" class="hp-mega-link" data-preview="settlement">
+              <span class="hp-mega-link-title">정산·DB보호</span>
+              <span class="hp-mega-link-desc">정해진 날 정산</span>
+            </a>
+            
+            <a href="products.html" class="hp-mega-link" data-preview="products">
+              <span class="hp-mega-link-title">취급상품</span>
+              <span class="hp-mega-link-desc">통신사 6곳 유선 상품</span>
+            </a>
+            
+          </div>
+        </div>
+        
+        <div class="hp-mega-col" data-col="03">
+          <div class="hp-mega-card">
+            <div class="hp-mega-card-text">
+              <span class="hp-mega-card-label">정보마당</span>
+              <span class="hp-mega-card-en">Insight</span>
+            </div>
+            <span class="hp-mega-card-num" aria-hidden="true">03</span>
+          </div>
+          <div class="hp-mega-links">
+            
+            <a href="startup.html" class="hp-mega-link" data-preview="startup">
+              <span class="hp-mega-link-title">창업자 가이드</span>
+              <span class="hp-mega-link-desc">매장 창업 5챕터</span>
+            </a>
+            
+            <a href="blog.html" class="hp-mega-link" data-preview="blog">
+              <span class="hp-mega-link-title">블로그</span>
+              <span class="hp-mega-link-desc">사장님이 궁금한 것들</span>
+            </a>
+            
+            <a href="faq.html" class="hp-mega-link" data-preview="faq">
+              <span class="hp-mega-link-title">FAQ</span>
+              <span class="hp-mega-link-desc">묻기 전에 답합니다</span>
+            </a>
+            
+          </div>
+        </div>
+        
+        <div class="hp-mega-col hp-mega-col--cta">
+          <div class="hp-mega-cta">
+            <div class="hp-mega-cta-text">
+              <span class="hp-mega-cta-title">정책표는 매일 아침</span>
+              <span class="hp-mega-cta-sub">카톡방으로 먼저 보내드립니다</span>
+            </div>
+            <div class="hp-mega-cta-actions">
+              <a class="hp-mega-cta-btn" href="#">카카오톡으로 정책 받기</a>
+              <a class="hp-mega-cta-tel" href="tel:010-2222-4183">전화 010-2222-4183</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="hp-mega-preview" id="hpMegaPreview" aria-hidden="true">
+    <img class="hp-mega-preview-poster" id="hpMegaPreviewPoster" alt="" loading="lazy">
+    <video class="hp-mega-preview-video" id="hpMegaPreviewVideo" muted loop playsinline preload="none"></video>
+  </div>
+
+  
+  <nav class="hp-nav-mobile">
+    
+    <div class="hp-nav-mobile-group">
+      <p class="hp-nav-mobile-group-title">01 회사소개</p>
       
       <a href="why.html">왜 ENTER</a>
+      
+      <a href="about.html">회사소개</a>
+      
+      <a href="stories.html">거래처 이야기</a>
+      
+    </div>
+    
+    <div class="hp-nav-mobile-group">
+      <p class="hp-nav-mobile-group-title">02 파트너십</p>
+      
+      <a href="start.html" class="active">거래 시작하기</a>
       
       <a href="settlement.html">정산·DB보호</a>
       
       <a href="products.html">취급상품</a>
       
+    </div>
+    
+    <div class="hp-nav-mobile-group">
+      <p class="hp-nav-mobile-group-title">03 정보마당</p>
+      
       <a href="startup.html">창업자 가이드</a>
       
-      <a href="about.html">회사소개</a>
+      <a href="blog.html">블로그</a>
       
+      <a href="faq.html">FAQ</a>
       
-      <a href="start.html" class="hp-nav-mobile-sub active">거래 시작하기</a>
-      
-      <a href="blog.html" class="hp-nav-mobile-sub">블로그</a>
-      
-      <a href="faq.html" class="hp-nav-mobile-sub">FAQ</a>
-      
-      
-      <div class="hp-nav-mobile-cta"><a class="hp-pill hp-pill--primary" href="#">정책 받기</a></div>
-    </nav>
-  </div>
+    </div>
+    
+    
+    <div class="hp-nav-mobile-cta">
+      <a class="hp-pill hp-pill--primary" href="#">카카오톡으로 정책 받기</a>
+      <a class="hp-nav-mobile-tel" href="tel:010-2222-4183">전화 010-2222-4183</a>
+    </div>
+  </nav>
 </header>
 
+<script src="static/megamenu.js" defer></script>
 
 <main>
 

@@ -1,7 +1,13 @@
-{# 사이트 전체 공통 헤더. base.html이 모든 페이지에서 include한다.
-   클래스명(hp-header 등)은 static/site.css + static/home-ad.css(광고 무대 중
-   투명/흰 글자 처리)가 그대로 참조하므로 바꾸지 않는다. #}
-<header class="hp-header">
+{# 사이트 전체 공통 헤더 — 3그룹 메가 메뉴(지시서 2026-11-03, stitch_export/04_megamenu 기준).
+   클래스명(hp-header, hp-header-inner, hp-brand, hp-brand-svg, hp-header-right, hp-pill)은
+   static/site.css + static/home-ad.css(광고 무대 투명/흰 글자 처리)가 참조하므로 유지한다.
+   메가 패널/미리보기 전용 스타일은 static/megamenu.css, 동작은 static/megamenu.js. #}
+{% set active_group = none %}
+{% for g in site.header_menu %}{% for it in g['items'] %}{% if it.slug == slug %}{% set active_group = g.num %}{% endif %}{% endfor %}{% endfor %}
+<header class="hp-header" id="hpHeader">
+  {# 체크박스는 .hp-nav-mobile과 같은 레벨(header의 직계 자식)에 있어야
+     #hpNavToggle:checked ~ .hp-nav-mobile 형제 선택자가 동작한다. #}
+  <input type="checkbox" id="hpNavToggle" class="hp-nav-toggle-input">
   <div class="hp-header-inner">
     <a class="hp-brand" href="index.html" aria-label="ENTER">
       <svg viewBox="0 0 559 152" class="hp-brand-svg" aria-hidden="true">
@@ -14,34 +20,82 @@
         </g></g>
       </svg>
     </a>
-    <input type="checkbox" id="hpNavToggle" class="hp-nav-toggle-input">
-    <nav class="hp-nav">
-      {% for item in site.header_nav_main %}
-      <a href="{{ item.slug }}.html"{% if item.slug == slug %} class="active"{% endif %}>{{ item.label }}</a>
+    <nav class="hp-nav" id="hpMegaNav">
+      {% for g in site.header_menu %}
+      <button type="button" class="hp-nav-group{% if g.num == active_group %} active{% endif %}" data-group="{{ g.num }}" aria-expanded="false" aria-controls="hpMegaPanel">
+        <span class="hp-nav-group-num">{{ g.num }}</span>
+        <span class="hp-nav-group-label">{{ g.label }}</span>
+      </button>
       {% endfor %}
-      {% if slug == 'why' %}<a href="index.html?intro=1" class="hp-replay-link">{{ site.ad_replay_label }}</a>{% endif %}
     </nav>
     <div class="hp-header-right">
-      <nav class="hp-subnav">
-        {% for item in site.header_nav_sub %}
-        {% if not loop.first %}<span>·</span>{% endif %}
-        <a href="{{ item.slug }}.html"{% if item.slug == slug %} class="active"{% endif %}>{{ item.label }}</a>
-        {% endfor %}
-      </nav>
-      <a class="hp-pill hp-pill--primary" href="#">{{ site.header_cta }}</a>
+      {% if slug == 'why' %}<a href="index.html?intro=1" class="hp-replay-link">{{ site.ad_replay_label }}</a>{% endif %}
+      <a class="hp-pill hp-pill--primary" href="#" id="hpHeaderCta">{{ site.header_cta }}</a>
       <label for="hpNavToggle" class="hp-nav-toggle" aria-label="메뉴">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </label>
     </div>
-    <nav class="hp-nav-mobile">
-      {% for item in site.header_nav_main %}
-      <a href="{{ item.slug }}.html"{% if item.slug == slug %} class="active"{% endif %}>{{ item.label }}</a>
-      {% endfor %}
-      {% for item in site.header_nav_sub %}
-      <a href="{{ item.slug }}.html" class="hp-nav-mobile-sub{% if item.slug == slug %} active{% endif %}">{{ item.label }}</a>
-      {% endfor %}
-      {% if slug == 'why' %}<a href="index.html?intro=1" class="hp-nav-mobile-sub">{{ site.ad_replay_label }}</a>{% endif %}
-      <div class="hp-nav-mobile-cta"><a class="hp-pill hp-pill--primary" href="#">{{ site.header_cta }}</a></div>
-    </nav>
   </div>
+
+  {# 메가 패널: 헤더 바로 아래 position:absolute로 페이지 위를 덮는다(레이아웃 밀림 없음). #}
+  <div class="hp-mega" id="hpMegaPanel" role="region" aria-hidden="true">
+    <div class="hp-mega-inner">
+      <div class="hp-mega-grid" id="hpMegaGrid">
+        {% for g in site.header_menu %}
+        <div class="hp-mega-col" data-col="{{ g.num }}">
+          <div class="hp-mega-card">
+            <div class="hp-mega-card-text">
+              <span class="hp-mega-card-label">{{ g.label }}</span>
+              <span class="hp-mega-card-en">{{ g.en }}</span>
+            </div>
+            <span class="hp-mega-card-num" aria-hidden="true">{{ g.num }}</span>
+          </div>
+          <div class="hp-mega-links">
+            {% for it in g['items'] %}
+            <a href="{{ it.slug }}.html" class="hp-mega-link{% if it.slug == slug %} is-current{% endif %}" data-preview="{{ it.slug }}">
+              <span class="hp-mega-link-title">{{ it.label }}</span>
+              <span class="hp-mega-link-desc">{{ it.desc }}</span>
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+        <div class="hp-mega-col hp-mega-col--cta">
+          <div class="hp-mega-cta">
+            <div class="hp-mega-cta-text">
+              <span class="hp-mega-cta-title">{{ site.header_menu_cta.title }}</span>
+              <span class="hp-mega-cta-sub">{{ site.header_menu_cta.sub }}</span>
+            </div>
+            <div class="hp-mega-cta-actions">
+              <a class="hp-mega-cta-btn" href="#">{{ site.header_menu_cta.button }}</a>
+              <a class="hp-mega-cta-tel" href="tel:{{ site.phone }}">전화 {{ site.phone }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {# 커서를 따라다니는 미리보기 카드 — ≥1024px, hover 가능, reduced-motion 아닐 때만 JS가 켠다. #}
+  <div class="hp-mega-preview" id="hpMegaPreview" aria-hidden="true">
+    <img class="hp-mega-preview-poster" id="hpMegaPreviewPoster" alt="" loading="lazy">
+    <video class="hp-mega-preview-video" id="hpMegaPreviewVideo" muted loop playsinline preload="none"></video>
+  </div>
+
+  {# 모바일(1023px 이하) 메뉴 — 그룹 제목 아래 페이지 나열 #}
+  <nav class="hp-nav-mobile">
+    {% for g in site.header_menu %}
+    <div class="hp-nav-mobile-group">
+      <p class="hp-nav-mobile-group-title">{{ g.num }} {{ g.label }}</p>
+      {% for it in g['items'] %}
+      <a href="{{ it.slug }}.html"{% if it.slug == slug %} class="active"{% endif %}>{{ it.label }}</a>
+      {% endfor %}
+    </div>
+    {% endfor %}
+    {% if slug == 'why' %}<a href="index.html?intro=1" class="hp-nav-mobile-sub">{{ site.ad_replay_label }}</a>{% endif %}
+    <div class="hp-nav-mobile-cta">
+      <a class="hp-pill hp-pill--primary" href="#">{{ site.header_menu_cta.button }}</a>
+      <a class="hp-nav-mobile-tel" href="tel:{{ site.phone }}">전화 {{ site.phone }}</a>
+    </div>
+  </nav>
 </header>

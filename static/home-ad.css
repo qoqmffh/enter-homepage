@@ -13,9 +13,13 @@ html.ad-pending{ overflow:hidden; height:100%; }
 html.ad-pending .hp-header{ background:transparent; border-bottom-color:transparent; backdrop-filter:none; }
 html.ad-pending .hp-header .hp-brand-svg g{ fill:var(--hp-white); }
 html.ad-pending .hp-header .hp-brand-door-leaf{ fill:#5DB88C; }
-html.ad-pending .hp-nav a{ color:rgba(255,255,250,.75); }
-html.ad-pending .hp-nav a:hover, html.ad-pending .hp-nav a.active{ color:var(--hp-white); }
+html.ad-pending .hp-nav-group-num{ color:#5DB88C; }
+html.ad-pending .hp-nav-group-label{ color:rgba(255,255,250,.75); }
+html.ad-pending .hp-nav-group:hover .hp-nav-group-label,
+html.ad-pending .hp-nav-group[aria-expanded="true"] .hp-nav-group-label{ color:var(--hp-white); }
 html.ad-pending .hp-nav-toggle{ color:var(--hp-white); }
+/* 메가 패널이 열려있는 동안은 megamenu.css의 mega-open 규칙이 흰 바탕/잉크 글자로
+   되돌리므로(!important) 여기서 더 손대지 않는다. */
 html.ad-pending .hp-header-right .hp-pill--primary{ background:var(--hp-white); color:var(--hp-black); }
 
 .hp-replay-link{ font-size:12px; color:var(--hp-grey); white-space:nowrap; }

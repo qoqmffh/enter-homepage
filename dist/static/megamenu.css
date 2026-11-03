@@ -1,0 +1,101 @@
+/* ENTER 메가 메뉴 — 지시서 2026-11-03(stitch_export/04_megamenu 기준).
+   헤더 공통 토큰(--hp-*)은 static/site.css. 여기는 닫힌 헤더의 3그룹 버튼,
+   펼친 메가 패널, 커서 추적 미리보기 카드, 새 모바일 메뉴 구조만 담는다. */
+
+/* ---------- 닫힌 헤더: 01/02/03 그룹 버튼 ---------- */
+.hp-nav{ display:none; }
+.hp-nav-group{ display:none; }
+@media (min-width:1024px){
+  .hp-nav{ display:flex; align-items:center; margin-left:72px; gap:40px; }
+  .hp-nav-group{ display:flex; align-items:center; background:none; border:none; padding:0; margin:0; cursor:pointer; font:inherit; color:inherit; }
+  .hp-nav-group-num{ font-size:12px; color:var(--hp-green); margin-right:6px; font-variant-numeric:tabular-nums; line-height:1; }
+  .hp-nav-group-label{ position:relative; display:inline-block; font-size:16px; font-weight:600; color:var(--hp-ink); line-height:1; }
+  .hp-nav-group-label::after{ content:''; position:absolute; left:0; right:0; bottom:-8px; height:2px; background:var(--hp-green); transform:scaleX(0); transition:transform .15s ease; }
+  /* 현재 페이지가 속한 그룹에만 고정 밑줄 — 패널이 열려서 aria-expanded=true가
+     세 버튼 모두에 붙어도(같은 패널을 공유하므로) 밑줄은 .active에만 반응한다. */
+  .hp-nav-group.active .hp-nav-group-label::after{ transform:scaleX(1); }
+}
+
+/* ---------- 메가 패널 ---------- */
+.hp-mega{
+  position:absolute; top:100%; left:0; right:0; z-index:45;
+  background:var(--hp-white); border-bottom:1px solid var(--hp-line);
+  box-shadow:0 12px 32px rgba(16,24,43,.06); /* 지시서 허용 예외(패널 전용) */
+  opacity:0; visibility:hidden; transform:translateY(-6px);
+  transition:opacity .18s ease, transform .18s ease, visibility 0s linear .18s;
+  display:none;
+}
+@media (min-width:1024px){ .hp-mega{ display:block; } }
+.hp-mega.is-open{ opacity:1; visibility:visible; transform:translateY(0); transition:opacity .18s ease, transform .18s ease, visibility 0s linear 0s; }
+.hp-mega-inner{ max-width:1152px; margin:0 auto; padding:28px 24px 40px; }
+.hp-mega-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:24px; align-items:stretch; }
+
+.hp-mega-card{ width:100%; height:80px; border-radius:var(--radius-card); background:#F1F3EC; padding:0 20px; display:flex; align-items:center; justify-content:space-between; }
+.hp-mega-card-text{ display:flex; flex-direction:column; }
+.hp-mega-card-label{ font-size:20px; font-weight:800; color:var(--hp-ink); letter-spacing:-.01em; line-height:1.2; }
+.hp-mega-card-en{ font-size:12px; color:var(--hp-grey); font-weight:600; margin-top:2px; }
+.hp-mega-card-num{ font-size:56px; font-weight:800; color:var(--hp-ink); opacity:.08; line-height:1; }
+
+.hp-mega-links{ margin-top:20px; display:flex; flex-direction:column; gap:18px; }
+.hp-mega-link{ display:flex; flex-direction:column; }
+.hp-mega-link-title{ font-size:16px; font-weight:800; color:var(--hp-ink); line-height:1.3; transition:color .12s ease; }
+.hp-mega-link-desc{ font-size:13px; color:var(--hp-grey); margin-top:4px; line-height:1.3; }
+.hp-mega-link.is-current .hp-mega-link-title,
+.hp-mega-link.is-current .hp-mega-link-desc{ color:var(--hp-green); }
+/* 열 강조: 패널 안에서 마우스가 올라간 열만 잉크, 나머지 두 열은 회색으로 — is-dimmed는
+   JS가 비호버 열에만 붙인다. is-current/:hover는 뒤에 와서 어느 상태에서도 초록이 이긴다. */
+.hp-mega-col.is-dimmed .hp-mega-link-title{ color:var(--hp-grey); }
+.hp-mega-link.is-current .hp-mega-link-title{ color:var(--hp-green); }
+.hp-mega-link:hover .hp-mega-link-title,
+.hp-mega-link:hover .hp-mega-link-desc{ color:var(--hp-green); }
+
+.hp-mega-col--cta{ display:flex; }
+.hp-mega-cta{ width:100%; border-radius:var(--radius-card); background:var(--hp-green); padding:24px; display:flex; flex-direction:column; justify-content:space-between; color:var(--hp-white); }
+.hp-mega-cta-text{ display:flex; flex-direction:column; }
+.hp-mega-cta-title{ font-size:18px; font-weight:700; line-height:1.3; }
+.hp-mega-cta-sub{ font-size:13px; color:rgba(255,255,250,.8); margin-top:4px; }
+.hp-mega-cta-actions{ margin-top:24px; display:flex; flex-direction:column; }
+.hp-mega-cta-btn{ height:44px; padding:0 16px; border-radius:var(--radius-btn); background:var(--hp-white); color:var(--hp-ink); font-size:14px; font-weight:600; display:flex; align-items:center; justify-content:center; text-align:center; transition:background-color .15s ease; }
+.hp-mega-cta-btn:hover{ background:#F4F4EE; }
+.hp-mega-cta-tel{ font-size:12px; color:rgba(255,255,250,.9); text-align:center; margin-top:12px; }
+.hp-mega-cta-tel:hover{ text-decoration:underline; }
+
+/* 패널이 열려 있는 동안 "정책 받기"를 테두리 버튼으로(CTA 카드와 겹치지 않게) */
+.hp-header.mega-open #hpHeaderCta{ background:transparent; color:var(--hp-ink); border:1px solid var(--hp-ink); }
+.hp-header.mega-open #hpHeaderCta:hover{ background:rgba(16,24,43,.05); }
+
+/* 광고 무대(index.html) 위에서도 패널은 항상 흰 바탕 + 잉크 글자로 — 패널이 열리면
+   헤더 자체도 흰 바탕/잉크 글자로 돌아와 패널과 이어지는 하나의 UI로 보이게 한다. */
+html.ad-pending .hp-header.mega-open{ background:var(--hp-white) !important; border-bottom-color:var(--hp-line) !important; }
+html.ad-pending .hp-header.mega-open .hp-brand-svg g{ fill:var(--hp-ink) !important; }
+html.ad-pending .hp-header.mega-open .hp-brand-door-leaf{ fill:var(--hp-green) !important; }
+html.ad-pending .hp-header.mega-open .hp-nav-group-label{ color:var(--hp-ink) !important; }
+html.ad-pending .hp-header.mega-open .hp-nav-toggle{ color:var(--hp-ink) !important; }
+html.ad-pending .hp-header.mega-open #hpHeaderCta{ background:transparent !important; color:var(--hp-ink) !important; }
+
+/* ---------- 커서 추적 미리보기 카드 ---------- */
+.hp-mega-preview{
+  position:fixed; top:0; left:0; z-index:60; width:280px; height:175px;
+  border-radius:var(--radius-card); border:1px solid var(--hp-line); overflow:hidden;
+  background:var(--hp-white); box-shadow:0 12px 32px rgba(16,24,43,.08); /* 지시서 허용 예외 */
+  opacity:0; pointer-events:none; transition:opacity .15s ease;
+  will-change:transform;
+}
+.hp-mega-preview.is-visible{ opacity:1; }
+.hp-mega-preview-poster, .hp-mega-preview-video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.hp-mega-preview-video{ opacity:0; transition:opacity .2s ease; }
+.hp-mega-preview-video.is-ready{ opacity:1; }
+@media (max-width:1023px), (hover:none){ .hp-mega-preview{ display:none !important; } }
+
+/* ---------- 모바일(≤1023px) 메뉴: 그룹 제목 + 목록 ---------- */
+.hp-nav-mobile{ display:none; flex-direction:column; position:absolute; left:0; right:0; top:100%; background:var(--hp-white); border-bottom:1px solid var(--hp-line); padding:8px 20px 20px; max-height:calc(100vh - 76px); overflow-y:auto; }
+#hpNavToggle:checked ~ .hp-nav-mobile{ display:flex; }
+.hp-nav-mobile-group{ padding:16px 0 6px; border-top:1px solid var(--hp-line); }
+.hp-nav-mobile-group:first-child{ border-top:none; }
+.hp-nav-mobile-group-title{ margin:0 0 4px; font-size:12px; font-weight:600; color:var(--hp-green); letter-spacing:.04em; }
+.hp-nav-mobile-group a{ display:block; padding:10px 0; font-size:15px; color:var(--hp-ink); }
+.hp-nav-mobile-group a.active{ font-weight:600; color:var(--hp-green); }
+.hp-nav-mobile-sub{ display:block; padding:12px 0; font-size:13px; color:var(--hp-grey); border-top:1px solid var(--hp-line); }
+.hp-nav-mobile-cta{ margin-top:12px; padding-top:16px; border-top:1px solid var(--hp-line); display:flex; flex-direction:column; align-items:center; gap:10px; }
+.hp-nav-mobile-cta .hp-pill{ width:100%; }
+.hp-nav-mobile-tel{ font-size:13px; color:var(--hp-grey); }
