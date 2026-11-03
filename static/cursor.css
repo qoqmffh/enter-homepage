@@ -89,10 +89,18 @@ html.cursor-clicking:not([data-cursor-icon]) .cursor-cross-shape{ transform:scal
 /* 클릭 피드백(0.9배, 0.15s) — 등장 키프레임이 돌고 있어도 !important로 눌림이 보이게 한다. */
 html.cursor-clicking .cursor-icon-shape{ transform:scale(.9) !important; transition:transform .15s ease; }
 
-.cursor-icon-anim{ width:24px; height:24px; display:flex; align-items:center; justify-content:center; }
+.cursor-icon-anim{ width:24px; height:24px; display:flex; align-items:center; justify-content:center; transform-origin:center bottom; }
 .cursor-icon-anim svg{ display:block; overflow:visible; }
 
 /* 머무는 동안 반복(등장이 끝난 뒤 cursor.js가 is-looping을 붙인다) */
+@keyframes cursorHomeBounce{
+  0%{ transform:translateY(0) scaleY(1); }
+  18%{ transform:translateY(-4px) scaleY(1); }
+  36%{ transform:translateY(0) scaleY(1); }
+  40%{ transform:translateY(0) scaleY(.92); } /* 착지할 때 살짝 눌림 */
+  46%{ transform:translateY(0) scaleY(1); }
+  100%{ transform:translateY(0) scaleY(1); } /* 나머지 0.6s는 쉼 */
+}
 @keyframes cursorKakaoPulse{
   0%{ transform:scale(1); } 15%{ transform:scale(1.18); } 30%{ transform:scale(1); }
   42%{ transform:scale(1.12); } 55%{ transform:scale(1); } 100%{ transform:scale(1); }
@@ -109,6 +117,7 @@ html.cursor-clicking .cursor-icon-shape{ transform:scale(.9) !important; transit
 @keyframes cursorSwipeSlide{
   0%{ transform:translateX(0); } 50%{ transform:translateX(-6px); } 100%{ transform:translateX(0); }
 }
+html[data-cursor-icon="home"] .cursor-icon-anim.is-looping{ animation:cursorHomeBounce 1.1s ease-in-out infinite; }
 html[data-cursor-icon="kakao"] .cursor-icon-anim.is-looping{ animation:cursorKakaoPulse 1.1s ease-in-out infinite; }
 html[data-cursor-icon="phone"] .cursor-icon-anim.is-looping{ animation:cursorPhoneRing 1.2s ease-in-out infinite; }
 html[data-cursor-icon="go"] .cursor-icon-anim.is-looping{ animation:cursorGoSlide .8s ease-in-out infinite; }

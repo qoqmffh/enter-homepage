@@ -23,6 +23,8 @@
       '</svg>';
   }
   var ICON_SVGS = {
+    /* 세모 지붕 + 네모 몸체 + 가운데 작은 문 */
+    home: svg('<path d="M4 11 12 4 20 11 M6 10 6 21 18 21 18 10 M10 21 10 15 14 15 14 21"/>', 'miter'),
     /* 꼬리 달린 타원형 말풍선(둥근 사각형 아님), 꼬리는 왼쪽 아래 */
     kakao: svg('<ellipse cx="12" cy="10" rx="8" ry="6"/><path d="M7.5 15 4.5 21 11.5 16.3"/>', 'round'),
     /* 옛 전화 수화기 실루엣 */
@@ -58,7 +60,7 @@
 
   var active = false;
   var started = false;
-  var currentType = null; /* null | 'kakao' | 'phone' | 'go' | 'swipe' */
+  var currentType = null; /* null | 'home' | 'kakao' | 'phone' | 'go' | 'swipe' */
 
   function onMouseMove(e) {
     var t = 'translate3d(' + e.clientX + 'px,' + e.clientY + 'px,0)';
@@ -72,6 +74,7 @@
   function determineType(target) {
     if (!target || !target.closest) return null;
     if (target.closest('.hp-nav-group')) return null;
+    if (target.closest('a.hp-brand')) return 'home';
     if (target.closest('[data-cursor="kakao"]')) return 'kakao';
     if (target.closest('a[href^="tel:"]')) return 'phone';
     if (target.closest('[data-cursor="swipe"]')) return 'swipe';
