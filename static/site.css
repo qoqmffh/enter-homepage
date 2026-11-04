@@ -5,15 +5,26 @@
    카드/상세목록/FAQ 아코디언/CTA 띠)은 static/sub.css에 따로 둔다. */
 
 :root{
-  --hp-white:#FFFFFA;
+  /* 강조색 R2(2026-11-09) — 주황은 아껴 쓴다. 화면에서 주황으로 "칠한" 면은 헤더
+     "정책 받기" 버튼 하나뿐이다(메가 메뉴가 열렸을 때만 보이는 CTA 카드는 예외).
+     --hp-accent-text는 16px 미만 작은 글자 전용(밝은 바탕 위 대비 확보), --hp-accent-tint는
+     hover 등 아주 좁은 면적 전용 — 둘 다 넓은 배경에는 쓰지 않는다. */
+  --hp-accent:#E36B2C;
+  --hp-accent-text:#C4561D;
+  --hp-accent-tint:#FBE9DE;
+
+  --hp-white:#FBF8F4;
   --hp-black:#0B0D12;
   --hp-ink:#10182B;
   --hp-grey:#6B7280;
   --hp-grey-bg:#F0F0EB;
-  --hp-line:#E5E5DF;
+  --hp-card-bg:#F3EEE7;
+  --hp-line:#E9E3DA;
   --hp-line-dark:#1E222B;
-  --hp-green:#1E6F50;
-  --hp-green-tint:#DCEBE3;
+  /* 옛 이름은 새 토큰을 가리키는 별칭으로만 남긴다 — 코드에서 "green"이라는 이름은
+     더 이상 새로 쓰지 않는다(2026-11-09 강조색 교체). */
+  --hp-green:var(--hp-accent);
+  --hp-green-tint:var(--hp-accent-tint);
 
   /* 모서리 둥글기 토큰(2026-11-02) — 사이트 전체 카드/버튼 둥글기를 여기 두 값으로 통일.
      원형(50%)·점(dot)·의도적 각진 디테일(0, 4px 셀 등)은 토큰 대상이 아니다. */
@@ -37,7 +48,7 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
 .hp-green-text{ color:var(--hp-green); }
 .hp-muted{ color:var(--hp-grey); }
 .hp-mono-muted{ font-size:11px; letter-spacing:.04em; color:var(--hp-grey); text-transform:uppercase; }
-.hp-mono-green{ font-size:11px; letter-spacing:.04em; color:var(--hp-green); text-transform:uppercase; }
+.hp-mono-green{ font-size:11px; letter-spacing:.04em; color:var(--hp-accent-text); text-transform:uppercase; }
 
 .hp-label{ display:inline-flex; align-items:center; gap:7px; font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--hp-grey); margin-bottom:12px; }
 .hp-label-dot{ width:7px; height:7px; border-radius:50%; background:var(--hp-green); flex:0 0 auto; }
@@ -53,6 +64,16 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
 .hp-pill--inverted:hover{ background:var(--hp-green-tint); }
 .hp-pill--outline{ background:transparent; color:var(--hp-white); border:1px solid rgba(255,255,250,.8); }
 .hp-pill--outline:hover{ background:rgba(255,255,255,.1); }
+
+/* 강조색 R2(2026-11-09) — 화면에서 주황을 "칠한" 면은 이 헤더 "정책 받기" 버튼 하나뿐이다
+   (메가 메뉴가 열렸을 때만 보이는 CTA 카드가 유일한 예외, static/megamenu.css). 다른
+   .hp-pill--primary(히어로 "정책 받아보기" 등)는 잉크 바탕 그대로 두고 hover만 주황으로
+   바뀌게 둔다 — #hpHeaderCta만 기본 상태부터 주황이어야 하므로 ID로 따로 지정한다.
+   광고 무대(ad-pending)에서는 어두운 배경 위라 흰 바탕/검은 글자 버튼을 그대로 둬야 하므로
+   :not(.ad-pending)으로 비켜준다(그 규칙은 static/home-ad.css, ID보다 특정도가 낮아 안
+   비키면 이 규칙이 덮어써 버린다). */
+html:not(.ad-pending) #hpHeaderCta{ background:var(--hp-accent); }
+html:not(.ad-pending) #hpHeaderCta:hover{ background:var(--hp-accent-text); }
 
 /* ---------- 헤더(사이트 전체 공통) ----------
    01/02/03 그룹 버튼·메가 패널·모바일 메뉴 전용 스타일은 static/megamenu.css.
@@ -115,6 +136,6 @@ html.wipe-pending body, html.wipe-pending{ overflow:hidden; }
 html.wipe-pending .hp-page-wipe{ display:block; }
 .hp-page-wipe-layer{ position:absolute; inset:0; transform:translateX(100%); }
 html.wipe-pending .hp-page-wipe-layer{ transform:translateX(0); }
-.hp-page-wipe-layer--1{ background:#1E6F50; }
-.hp-page-wipe-layer--2{ background:#2F8F68; }
-.hp-page-wipe-layer--3{ background:#5DB88C; }
+.hp-page-wipe-layer--1{ background:#E36B2C; }
+.hp-page-wipe-layer--2{ background:#EA864D; }
+.hp-page-wipe-layer--3{ background:#F2A16E; }

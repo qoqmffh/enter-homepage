@@ -47,7 +47,7 @@
 .hp-mega-inner{ max-width:1152px; margin:0 auto; padding:28px 24px 40px; }
 .hp-mega-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:24px; align-items:stretch; }
 
-.hp-mega-card{ width:100%; height:80px; border-radius:var(--radius-card); background:#F1F3EC; padding:0 20px; display:flex; align-items:center; justify-content:space-between; }
+.hp-mega-card{ width:100%; height:80px; border-radius:var(--radius-card); background:var(--hp-card-bg); padding:0 20px; display:flex; align-items:center; justify-content:space-between; }
 .hp-mega-card-text{ display:flex; flex-direction:column; }
 .hp-mega-card-label{ font-size:20px; font-weight:800; color:var(--hp-ink); letter-spacing:-.01em; line-height:1.2; }
 .hp-mega-card-en{ font-size:12px; color:var(--hp-grey); font-weight:600; margin-top:2px; }
@@ -57,14 +57,15 @@
 .hp-mega-link{ display:flex; flex-direction:column; }
 .hp-mega-link-title{ font-size:16px; font-weight:800; color:var(--hp-ink); line-height:1.3; transition:color .12s ease; }
 .hp-mega-link-desc{ font-size:13px; color:var(--hp-grey); margin-top:4px; line-height:1.3; }
-.hp-mega-link.is-current .hp-mega-link-title,
-.hp-mega-link.is-current .hp-mega-link-desc{ color:var(--hp-green); }
+/* 16px 미만(설명 13px)은 밝은 패널 배경 위 대비를 위해 --hp-accent-text(진한 주황)를 쓰고,
+   16px 이상(제목)은 --hp-accent(기본 주황)를 쓴다 — 강조색 R2 §4. */
+.hp-mega-link.is-current .hp-mega-link-desc{ color:var(--hp-accent-text); }
 /* 열 강조: 패널 안에서 마우스가 올라간 열만 잉크, 나머지 두 열은 회색으로 — is-dimmed는
-   JS가 비호버 열에만 붙인다. is-current/:hover는 뒤에 와서 어느 상태에서도 초록이 이긴다. */
+   JS가 비호버 열에만 붙인다. is-current/:hover는 뒤에 와서 어느 상태에서도 주황이 이긴다. */
 .hp-mega-col.is-dimmed .hp-mega-link-title{ color:var(--hp-grey); }
-.hp-mega-link.is-current .hp-mega-link-title{ color:var(--hp-green); }
-.hp-mega-link:hover .hp-mega-link-title,
-.hp-mega-link:hover .hp-mega-link-desc{ color:var(--hp-green); }
+.hp-mega-link.is-current .hp-mega-link-title{ color:var(--hp-accent); }
+.hp-mega-link:hover .hp-mega-link-title{ color:var(--hp-accent); }
+.hp-mega-link:hover .hp-mega-link-desc{ color:var(--hp-accent-text); }
 
 .hp-mega-col--cta{ display:flex; }
 .hp-mega-cta{ width:100%; border-radius:var(--radius-card); background:var(--hp-green); padding:24px; display:flex; flex-direction:column; justify-content:space-between; color:var(--hp-white); }
@@ -108,9 +109,9 @@ html.ad-pending .hp-header.mega-open #hpHeaderCta{ background:transparent !impor
 #hpNavToggle:checked ~ .hp-nav-mobile{ display:flex; }
 .hp-nav-mobile-group{ padding:16px 0 6px; border-top:1px solid var(--hp-line); }
 .hp-nav-mobile-group:first-child{ border-top:none; }
-.hp-nav-mobile-group-title{ margin:0 0 4px; font-size:12px; font-weight:600; color:var(--hp-green); letter-spacing:.04em; }
+.hp-nav-mobile-group-title{ margin:0 0 4px; font-size:12px; font-weight:600; color:var(--hp-accent-text); letter-spacing:.04em; }
 .hp-nav-mobile-group a{ display:block; padding:10px 0; font-size:15px; color:var(--hp-ink); }
-.hp-nav-mobile-group a.active{ font-weight:600; color:var(--hp-green); }
+.hp-nav-mobile-group a.active{ font-weight:600; color:var(--hp-accent-text); }
 .hp-nav-mobile-sub{ display:block; padding:12px 0; font-size:13px; color:var(--hp-grey); border-top:1px solid var(--hp-line); }
 .hp-nav-mobile-cta{ margin-top:12px; padding-top:16px; border-top:1px solid var(--hp-line); display:flex; flex-direction:column; align-items:center; gap:10px; }
 .hp-nav-mobile-cta .hp-pill{ width:100%; }

@@ -1,4 +1,4 @@
-/* 커스텀 커서 — 평소엔 초록 십자, 누를 수 있는 곳에서는 상황별 아이콘으로 바뀐다
+/* 커스텀 커서 — 평소엔 주황 십자, 누를 수 있는 곳에서는 상황별 아이콘으로 바뀐다
    (지시서 2026-11-08). static/cursor.css와 짝. (hover:hover) and (pointer:fine) and
    >=1024px에서만 켠다. 십자·아이콘 모두 보간 없이 매 mousemove마다 커서 좌표에 바로
    translate3d로 붙는다.
@@ -13,13 +13,13 @@
   var mqCapable = window.matchMedia('(hover:hover) and (pointer:fine)');
   var mqDesktop = window.matchMedia('(min-width:1024px)');
 
-  /* ---------- 아이콘 SVG — 전부 선 두께 3px, 초록(#1E6F50) + 바깥 흰(#FFFFFA) 테두리.
-     흰 테두리는 십자와 같은 원리: 같은 path를 5px 흰 선으로 먼저 깔고, 3px 초록 선을
+  /* ---------- 아이콘 SVG — 전부 선 두께 3px, 주황(#E36B2C) + 바깥 흰(#FFFFFA) 테두리.
+     흰 테두리는 십자와 같은 원리: 같은 path를 5px 흰 선으로 먼저 깔고, 3px 주황 선을
      그 위에 얹는다(획 2겹). viewBox 24x24. ---------- */
   function svg(paths, linejoin) {
     return '<svg viewBox="0 0 24 24" width="24" height="24" fill="none">' +
       '<g stroke="#FFFFFA" stroke-width="5" stroke-linecap="round" stroke-linejoin="' + linejoin + '">' + paths + '</g>' +
-      '<g stroke="#1E6F50" stroke-width="3" stroke-linecap="round" stroke-linejoin="' + linejoin + '">' + paths + '</g>' +
+      '<g stroke="#E36B2C" stroke-width="3" stroke-linecap="round" stroke-linejoin="' + linejoin + '">' + paths + '</g>' +
       '</svg>';
   }
   var ICON_SVGS = {
