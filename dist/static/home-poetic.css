@@ -75,7 +75,7 @@
 .hp-kosis-share{ margin-top:20px; font-size:14px; color:var(--hp-grey); line-height:1.6; }
 .hp-kosis-source{ margin-top:14px; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; font-size:12px; color:var(--hp-grey); }
 .hp-kosis-source a{ color:var(--hp-ink); font-weight:600; }
-.hp-kosis-source a:hover{ color:var(--hp-green); }
+.hp-kosis-source a:hover{ color:var(--hp-accent-text); }
 
 /* ---------- 기능 카드 (블랙 카드 + 미니 UI) ---------- */
 .hp-features-head{ margin-bottom:36px; }
@@ -94,7 +94,7 @@
 .hp-mockup-head-left{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
 .hp-mockup-title{ font-size:15px; font-weight:600; }
 .hp-chip{ font-size:10px; font-weight:600; padding:3px 9px; border-radius:var(--radius-btn); display:inline-block; }
-.hp-chip--tint{ background:var(--hp-green-tint); color:var(--hp-green); }
+.hp-chip--tint{ background:var(--hp-green-tint); color:var(--hp-accent-text); }
 
 /* ---------- 정산 장부 티커 (CSS 애니메이션, JS는 호버 밖 일시정지 보조만) ---------- */
 :root{ --hp-ledger-row-h:40px; --hp-ledger-cols:76px 20px 56px 1fr 60px; }
@@ -141,9 +141,9 @@
 .hp-chat-dot{ width:10px; height:10px; border-radius:50%; background:var(--hp-green); }
 .hp-chat-list{ display:flex; flex-direction:column; gap:12px; }
 .hp-chat-bubble{ background:#F6F6F1; border:1px solid var(--hp-line); border-radius:var(--radius-card); border-top-left-radius:4px; padding:12px 14px; max-width:100%; transition:opacity .4s ease, transform .4s ease; }
-.hp-chat-bubble--accent{ background:rgba(220,235,227,.5); border-color:rgba(30,111,80,.2); }
+.hp-chat-bubble--accent{ background:rgba(251,233,222,.5); border-color:rgba(227,107,44,.2); }
 .hp-chat-bubble--sheet{ padding:0; overflow:hidden; background:var(--hp-white); }
-.hp-chat-label{ display:block; font-size:11px; font-weight:600; color:var(--hp-green); margin-bottom:4px; }
+.hp-chat-label{ display:block; font-size:11px; font-weight:600; color:var(--hp-accent-text); margin-bottom:4px; }
 .hp-chat-text{ font-size:13px; line-height:1.55; margin:0; font-weight:600; }
 
 .hp-policy-sheet{ padding:12px 14px; }
@@ -219,7 +219,7 @@
 @media (hover:hover) and (pointer:fine){
   .hp-carriers-names > div{ transition:color .3s ease, transform .3s ease, opacity .3s ease; }
   .hp-carriers-names:hover > div{ opacity:.5; }
-  .hp-carriers-names > div:hover{ opacity:1; color:#3FA176; transform:translateX(8px); }
+  .hp-carriers-names > div:hover{ opacity:1; color:#F2A16E; transform:translateX(8px); }
 }
 
 /* ---------- 픽셀 잔상(hover trail, poetic.com 레퍼런스) ----------

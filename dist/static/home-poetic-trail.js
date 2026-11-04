@@ -25,7 +25,7 @@
   var MAX_CELLS = 5;     // 호스트당 동시 최대 — 넘으면 막지 않고 가장 오래된 칸을 바로 없앤다
   var LIFETIME = 260;    // 고정 수명(ms), 랜덤 없음
   var EXIT_DUR = 120;    // 사라질 때 scale 1->0 (ms)
-  var COLOR_GREEN = '#1E6F50';
+  var COLOR_GREEN = '#E36B2C';
   var COLOR_GRAY = '#E5E5DF';
 
   var hostStates = new WeakMap();
