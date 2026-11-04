@@ -314,8 +314,11 @@ import * as THREE from './vendor/three.module.min.js';
     camera = new THREE.OrthographicCamera(-W / 2, W / 2, H / 2, -H / 2, 0.1, 10);
     camera.position.z = 5;
 
-    renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
-    var pr = Math.min(window.devicePixelRatio || 1, 2);
+    /* antialias는 점(Points) 렌더링이라 필요 없어서 끈다. 해상도 상한도 2 -> 1.5(모바일
+       1.25)로 낮춘다 — 둘 다 매 프레임 그려야 하는 픽셀 수를 줄여서 렌더 비용을 낮춘다.
+       powerPreference는 일부러 안 넣는다(기본값 유지, 지시서 2026-11-09 §1). */
+    renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: false, alpha: true });
+    var pr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.25 : 1.5);
     renderer.setPixelRatio(pr);
     renderer.setSize(W, H, false);
 
@@ -362,18 +365,31 @@ import * as THREE from './vendor/three.module.min.js';
     camera.updateProjectionMatrix();
     renderer.setSize(W, H, false);
   }
-  window.addEventListener('resize', sizeRenderer);
+  var resizeTimer = null;
+  function onResize() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(sizeRenderer, 150);
+  }
+  window.addEventListener('resize', onResize);
 
   // 휠 입력은 한 칸(약 100px)씩 뚝뚝 들어오므로, 목표 진행도(latestProgress)를 바로 쓰지 않고
   // 매 프레임 부드럽게 따라가게 한다(관성 스무딩). 프레임레이트와 무관하게 같은 속도로 수렴.
   var MIN_AD_SECONDS = 18; // 광고(장면1~엔딩) 최소 재생 시간. 줄이면 빨라지고 늘리면 느려짐
   var smoothProgress = 0, lastTickTime = performance.now();
+
+  /* 렌더 빈도 조절(지시서 2026-11-09 §2) — 진행도가 실제로 움직이는 동안(스무딩이 목표를
+     따라가는 중)만 매 프레임 그린다. 진행도가 멈춰 있으면(uTime 반짝임만 바뀜) 1000/24ms마다
+     한 번꼴로만 그려서 가만히 있을 때의 GPU/CPU 부담을 줄인다. reduced-motion이면(지금은
+     위에서 이미 bailOut되어 이 코드까지 안 오지만, 혹시 몰라 방어적으로 넣는다) 반짝임
+     자체가 없으므로 진행도가 실제로 바뀐 프레임에만 그린다. */
+  var RENDER_INTERVAL_IDLE = 1000 / 24;
+  var lastRenderTime = 0;
   function tick() {
     raf = requestAnimationFrame(tick);
     var now = performance.now(), dt = Math.min(0.05, (now - lastTickTime) / 1000); lastTickTime = now;
-    if (!isVisible) return;
     var diff = latestProgress - smoothProgress;
-    if (Math.abs(diff) > 0.00002) {
+    var moving = Math.abs(diff) > 0.00002;
+    if (moving) {
       var step = diff * (1 - Math.pow(1 - 0.085, dt * 60));
       // 재생 속도 상한: 아무리 빨리 휠을 돌려도 광고 전체가 최소 MIN_AD_SECONDS초에 걸쳐 재생된다(영상처럼 보이게).
       var maxStep = dt / MIN_AD_SECONDS;
@@ -382,16 +398,49 @@ import * as THREE from './vendor/three.module.min.js';
     } else {
       smoothProgress = latestProgress;
     }
-    if (smoothProgress !== lastApplied) {
+    var progressChanged = smoothProgress !== lastApplied;
+    if (progressChanged) {
       applyProgress(smoothProgress);
       lastApplied = smoothProgress;
     }
     uniforms.uTime.value = clock.getElapsedTime();
-    renderer.render(scene, camera);
+
+    if (reduce) {
+      if (!progressChanged) return;
+      renderer.render(scene, camera);
+      lastRenderTime = now;
+      return;
+    }
+    if (moving || now - lastRenderTime >= RENDER_INTERVAL_IDLE) {
+      renderer.render(scene, camera);
+      lastRenderTime = now;
+    }
   }
+
+  /* rAF 루프 시작·정지 — 광고가 화면 밖(스크롤로 지나감)이거나 탭이 숨겨지면 루프 자체를
+     끊는다(cancelAnimationFrame). 매 프레임 할 일을 건너뛰기만 하던 이전 방식은 보이지
+     않을 때도 rAF가 계속 돌았다(지시서 2026-11-09 §2). */
+  function shouldRun() { return !!renderer && isVisible && isTabVisible; }
+  function startLoop() {
+    if (raf || !shouldRun()) return;
+    lastTickTime = performance.now(); // 멈춰 있던 동안의 실제 경과 시간이 dt로 한번에 들어가지 않게
+    raf = requestAnimationFrame(tick);
+  }
+  function stopLoop() {
+    if (raf) { cancelAnimationFrame(raf); raf = null; }
+  }
+  function syncLoop() { if (shouldRun()) startLoop(); else stopLoop(); }
+
+  var isTabVisible = document.visibilityState !== 'hidden';
+  function onVisibilityChange() {
+    isTabVisible = document.visibilityState !== 'hidden';
+    syncLoop();
+  }
+  document.addEventListener('visibilitychange', onVisibilityChange);
 
   var visObserver = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) { isVisible = e.isIntersecting; });
+    syncLoop();
   }, { threshold: 0 });
   visObserver.observe(stage);
 
@@ -553,8 +602,10 @@ import * as THREE from './vendor/three.module.min.js';
   }
 
   function stopThree() {
-    if (raf) cancelAnimationFrame(raf);
+    stopLoop();
+    clearTimeout(resizeTimer);
     visObserver.disconnect();
+    document.removeEventListener('visibilitychange', onVisibilityChange);
     if (renderer) {
       renderer.dispose();
       if (points) { points.geometry.dispose(); points.material.dispose(); }
@@ -603,7 +654,7 @@ import * as THREE from './vendor/three.module.min.js';
     .then(function (r) { if (!r.ok) throw new Error('korea-points fetch failed'); return r.json(); })
     .then(function (data) {
       initThree(data.points);
-      tick();
+      startLoop();
       playIntro();
     })
     .catch(function () {
