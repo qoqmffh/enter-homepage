@@ -6,6 +6,7 @@ sitemap.xml · robots.txt 도 이 스크립트가 자동으로 만듭니다.
 
 실행: python build.py
 """
+import hashlib
 import json
 import os
 import re
@@ -41,6 +42,31 @@ def is_countable(value):
     if not m:
         return False
     return int(m.group(1).replace(",", "")) != 0
+
+
+_ASSET_REF_RE = re.compile(r'((?:href|src)=")(static/[^"?]+\.(?:css|js))(")')
+_asset_hash_cache = {}
+
+
+def _asset_hash(rel_path):
+    """static/xxx.css·js 파일의 내용 해시(8자리) — 캐시 무효화용(지시서 2026-11-14).
+    파일이 바뀌어야만 해시도 바뀌므로, 배포 후 브라우저가 옛 CSS/JS를 계속 쓰는 문제를 막는다."""
+    if rel_path not in _asset_hash_cache:
+        abs_path = os.path.join(BASE_DIR, rel_path)
+        with open(abs_path, "rb") as f:
+            _asset_hash_cache[rel_path] = hashlib.sha256(f.read()).hexdigest()[:8]
+    return _asset_hash_cache[rel_path]
+
+
+def add_cache_busting(html):
+    """렌더링된 HTML에서 static/*.css·*.js를 가리키는 href="..."/src="...."(type="module"
+    스크립트 포함, 속성 순서는 안 가림)를 찾아 ?v=<해시>를 붙인다. 파일이 없으면 손대지 않는다."""
+    def repl(match):
+        prefix, rel_path, suffix = match.groups()
+        if not os.path.isfile(os.path.join(BASE_DIR, rel_path)):
+            return match.group(0)
+        return f"{prefix}{rel_path}?v={_asset_hash(rel_path)}{suffix}"
+    return _ASSET_REF_RE.sub(repl, html)
 
 
 def build_menu_summaries(site, pages, blog_posts):
@@ -114,6 +140,7 @@ def main():
         template = env.get_template(page["template"])
         legal_text = site["legal_footer_about"] if slug == "about" else site["legal_footer"]
         html = template.render(site=site, page=page, slug=slug, legal_text=legal_text, blog_posts=blog_posts["pages"], menu_summaries=menu_summaries)
+        html = add_cache_busting(html)
         out_path = os.path.join(DIST_DIR, f"{slug}.html")
         with open(out_path, "w", encoding="utf-8") as f:
             f.write(html)
