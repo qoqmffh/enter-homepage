@@ -51,7 +51,7 @@
       <p class="hp-hero-subhead">{{ p.hero.subhead }}</p>
     </div>
     <div class="hp-hero-below">
-      <p class="hp-hero-sub">{{ p.hero.sub | safe }}</p>
+      {% if p.hero.sub %}<p class="hp-hero-sub">{{ p.hero.sub | safe }}</p>{% endif %}
       <div class="hp-hero-ctas">
         {{ m.pill(p.hero.cta_kakao, '#', 'primary', True, True) }}
         {{ m.pill(p.hero.cta_tel, 'tel:' ~ site.phone, 'secondary') }}
@@ -72,7 +72,6 @@
         {% set h = heights[loop.index0] %}
         <div class="sp-chart-card{% if h == 0 %} sp-chart-card--zero{% endif %}" data-chart-card data-bar-h="{{ h }}" data-delay="{{ (loop.index0 * 0.08) | round(2) }}" style="--bar-h:0%">
           <div class="sp-chart-bar"></div>
-          {% if h == 0 %}<div class="sp-chart-zero-line"></div>{% endif %}
           <div class="sp-chart-text">
             <span class="sp-chart-value">{{ s.num }}</span>
             <span class="sp-chart-label">{{ s.label }}</span>
