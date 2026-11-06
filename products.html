@@ -19,6 +19,9 @@
 <link rel="stylesheet" href="static/common.css">
 <link rel="stylesheet" href="static/site.css">
 <link rel="stylesheet" href="static/megamenu.css">
+
+<link rel="stylesheet" href="static/reveal.css">
+
 <link rel="stylesheet" href="static/cursor.css">
 <script type="application/ld+json">
 {
@@ -31,6 +34,9 @@
   "foundingDate": "2010"
 }
 </script>
+
+<script src="static/reveal.js" defer></script>
+
 
 <link rel="stylesheet" href="static/site.css">
 <link rel="stylesheet" href="static/sub.css">
@@ -283,23 +289,23 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 <section class="sp-proof" id="proof">
   <div class="sp-proof-grid">
-    <h2 class="sp-proof-title"><span class="hp-ink">통신사마다 따로</span><br><span class="hp-green">알아볼 필요 없습니다.</span></h2>
+    <h2 class="sp-proof-title" data-reveal><span class="hp-ink">통신사마다 따로</span><br><span class="hp-green">알아볼 필요 없습니다.</span></h2>
     <div class="sp-proof-facts">
       
-      <div class="sp-proof-fact">
-        <span class="sp-proof-fact-value">6곳</span>
+      <div class="sp-proof-fact" data-reveal>
+        <span class="sp-proof-fact-value" data-count>6곳</span>
         <span class="sp-proof-fact-label">취급 통신사</span>
         <p class="sp-proof-fact-desc">SKT·SKB·LG U+·KT·스카이라이프·LG헬로비전</p>
       </div>
       
-      <div class="sp-proof-fact">
-        <span class="sp-proof-fact-value">5종</span>
+      <div class="sp-proof-fact" data-reveal>
+        <span class="sp-proof-fact-value" data-count>5종</span>
         <span class="sp-proof-fact-label">취급 상품</span>
         <p class="sp-proof-fact-desc">인터넷·IPTV·CCTV·가전렌탈·유심</p>
       </div>
       
-      <div class="sp-proof-fact">
-        <span class="sp-proof-fact-value">1시간</span>
+      <div class="sp-proof-fact" data-reveal>
+        <span class="sp-proof-fact-value" data-count>1시간</span>
         <span class="sp-proof-fact-label">접수 후 청약까지 보통</span>
         <p class="sp-proof-fact-desc">빠르면 3분, 보통 1시간이면 청약까지 끝납니다.</p>
       </div>
@@ -311,7 +317,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 <section class="sp-section" id="cards">
   <div class="sp-cards">
     
-    <div class="sp-card">
+    <div class="sp-card" data-reveal>
       <div class="sp-card-head">
         <h3>인터넷 · IPTV</h3>
         <span class="sp-card-index">/1</span>
@@ -324,7 +330,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       <p class="sp-card-desc">초고속인터넷과 IPTV 결합 상품.</p>
     </div>
     
-    <div class="sp-card">
+    <div class="sp-card" data-reveal>
       <div class="sp-card-head">
         <h3>CCTV · 가전렌탈</h3>
         <span class="sp-card-index">/2</span>
@@ -337,7 +343,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       <p class="sp-card-desc">소상공인 매장용 CCTV, 인터넷 결합 가전렌탈.</p>
     </div>
     
-    <div class="sp-card">
+    <div class="sp-card" data-reveal>
       <div class="sp-card-head">
         <h3>유심(UIT)</h3>
         <span class="sp-card-index">/3</span>
@@ -355,7 +361,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 
 <section class="sp-carriers" id="detail">
-  <div class="sp-carriers-head">
+  <div class="sp-carriers-head" data-reveal>
     <span class="hp-label"><span class="hp-label-dot"></span>CARRIERS</span>
     <h2>취급 통신사</h2>
     <p class="sp-carriers-eyebrow">■ 함께 일하는 통신사</p>
@@ -376,17 +382,17 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   <span class="hp-label"><span class="hp-label-dot"></span>FAQ</span>
   <div style="margin-top:20px">
     
-    <details class="sp-faq-item" open>
+    <details class="sp-faq-item" data-reveal open>
       <summary>상품별 정책은 홈페이지에서 볼 수 있나요?</summary>
       <div class="sp-faq-body">정책은 시간 단위로 바뀌어 카톡 정책방으로 안내합니다. 매일 아침 공지 후, 바뀌면 바로 다시 공지합니다.</div>
     </details>
     
-    <details class="sp-faq-item">
+    <details class="sp-faq-item" data-reveal>
       <summary>통신사마다 따로 접수해야 하나요?</summary>
       <div class="sp-faq-body">아니요. 통신사별 상품을 ENTER 한 곳에서 접수하실 수 있습니다.</div>
     </details>
     
-    <details class="sp-faq-item">
+    <details class="sp-faq-item" data-reveal>
       <summary>무선 상품도 취급하나요?</summary>
       <div class="sp-faq-body">유심(UIT) 연계 상품은 취급하며, 무선 단가는 별도 문의 바랍니다.</div>
     </details>
@@ -396,7 +402,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 
 <section class="sp-cta" id="cta">
-  <div class="sp-cta-inner">
+  <div class="sp-cta-inner" data-reveal>
     <h2>오늘의 상품별 정책,<br>한 번에 받아보세요.</h2>
     <div class="sp-cta-ctas">
       <a class="hp-pill hp-pill--inverted" href="#" data-cursor="kakao">카카오톡으로 정책 받기</a>
