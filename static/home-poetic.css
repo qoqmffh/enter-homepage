@@ -32,12 +32,14 @@
 .hp-hero-sub{ font-size:var(--fs-body); line-height:1.6; color:var(--hp-ink); font-weight:600; margin:24px 0 28px; max-width:620px; }
 .hp-hero-ctas{ display:flex; flex-wrap:wrap; gap:12px; margin-bottom:28px; }
 .hp-hairline{ height:1px; background:var(--hp-line); margin:0 0 28px; }
-/* ---------- 내려가는 막대 그래프(2026-11-10) — 4,000건/3,000곳/16년/0회 계단식 ----------
-   @property로 --bar-h(퍼센트)를 애니메이션 가능한 값으로 등록해 둔다 — 막대 높이와
-   흰 글자 겹의 clip-path가 같은 값을 보고 움직이므로 저절로 같이 움직인다(지시서 §4).
-   흰 글자 겹(.sp-chart-text--white)은 position:absolute;inset:0으로 카드 전체 높이를
-   그대로 차지해야 clip-path의 %가 막대 높이 %와 같은 기준이 된다 — padding은 안쪽에서
-   따로 준다(여기에 inset:20px 같은 식으로 박스 자체를 줄이면 두 % 기준이 어긋난다). */
+/* ---------- 주황 막대 그래프(2026-11-11) — 4,000건/3,000곳/16년 100%, 0회만 0% ----------
+   세 장은 카드 전체가 주황으로 꽉 차고 0회만 빈 카드라, 글자가 막대 경계에 걸칠 일이
+   없다(이전의 잉크/흰 두 겹 + clip-path 반전 구조는 필요 없어져서 뺐다 — 텍스트 한 겹,
+   스크린리더 중복도 자연히 없어진다). @property로 --bar-h를 애니메이션 가능한 값으로
+   등록해 막대가 부드럽게 차오르게 한다. 글자는 흰색으로 미리 깔아 두되 막대가 다 찬
+   뒤(0.9s 뒤) 0.2s 페이드인해서, 차오르는 중간에 밝은 카드 바탕 위에서 흰 글자가
+   떠 보이지 않게 한다(지시서 §4) — static/why-chart.js가 IntersectionObserver로
+   한 번만 트리거한다. */
 @property --bar-h{ syntax:'<percentage>'; inherits:true; initial-value:0%; }
 .sp-chart-row{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
 .sp-chart-card{
@@ -47,17 +49,19 @@
   height:150px;
   transition:--bar-h .9s cubic-bezier(.16,1,.3,1);
 }
-.sp-chart-bar{ position:absolute; left:0; right:0; bottom:0; height:var(--bar-h); background:var(--hp-ink); }
+.sp-chart-bar{ position:absolute; left:0; right:0; bottom:0; height:var(--bar-h); background:var(--hp-accent); }
 .sp-chart-zero-line{ position:absolute; left:0; right:0; bottom:0; height:2px; background:var(--hp-accent); transform:scaleX(0); transform-origin:left; transition:transform .4s ease .9s; }
 .sp-chart-card--zero.is-in .sp-chart-zero-line{ transform:scaleX(1); }
-.sp-chart-text{ position:absolute; inset:0; padding:20px; box-sizing:border-box; display:flex; flex-direction:column; justify-content:space-between; }
-.sp-chart-text--ink{ color:var(--hp-ink); }
-.sp-chart-text--white{ color:var(--hp-white); clip-path:inset(calc(100% - var(--bar-h)) 0 0 0); }
+.sp-chart-text{ position:absolute; inset:0; padding:20px; box-sizing:border-box; display:flex; flex-direction:column; justify-content:space-between; color:var(--hp-ink); }
+.sp-chart-card--zero .sp-chart-text{ color:var(--hp-ink); }
+.sp-chart-card:not(.sp-chart-card--zero) .sp-chart-text{ color:#FFFFFF; opacity:0; transition:opacity .2s ease; }
+.sp-chart-card:not(.sp-chart-card--zero).is-text-in .sp-chart-text{ opacity:1; }
 .sp-chart-value{ font-size:26px; font-weight:800; letter-spacing:-.02em; line-height:1; font-variant-numeric:tabular-nums; }
 .sp-chart-label{ font-size:12px; font-weight:600; margin-top:12px; }
 @media (prefers-reduced-motion:reduce){
   .sp-chart-card{ transition:none; }
   .sp-chart-zero-line{ transition:none; }
+  .sp-chart-text{ transition:none; }
 }
 
 /* ---------- 브랜드 스테이트먼트(통계 근거 + 사진) ---------- */
