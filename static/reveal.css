@@ -1,0 +1,30 @@
+/* ENTER 사이트 공통 — 조용한 스크롤 등장 연출(지시서 2026-11-12).
+   static/reveal.js가 IntersectionObserver 하나로 [data-reveal]/[data-count] 요소를
+   전부 처리한다. index.html(광고 인트로)·헤더·메가 메뉴·푸터·커스텀 커서는 애초에
+   data-reveal을 붙이지 않는다(index.html은 base.html에서 이 파일 자체를 안 불러온다).
+
+   숨김 스타일은 html.js-reveal이 붙어 있을 때만 켜진다 — reveal.js가 실행돼서
+   "내가 다 처리할 준비가 됐다"는 뜻으로 붙이는 클래스라서, JS가 실행되기 전이나
+   실패했을 때는 이 규칙 자체가 안 걸려 내용이 항상 정상적으로 보인다. */
+html.js-reveal [data-reveal]{
+  opacity:0;
+  transform:translateY(16px);
+  transition:opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1);
+}
+html.js-reveal [data-reveal].is-revealed{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* 숫자 카운트업 — 올라가는 동안 자릿수가 바뀌어도 폭이 흔들리지 않게 tabular-nums.
+   min-width는 reveal.js가 최종 값 기준으로 측정해 인라인 스타일로 넣는다. */
+[data-count]{
+  font-variant-numeric:tabular-nums;
+  display:inline-block;
+}
+
+@media (prefers-reduced-motion:reduce){
+  html.js-reveal [data-reveal]{
+    opacity:1; transform:none; transition:none;
+  }
+}

@@ -16,11 +16,11 @@
    statement는 더 안 쓰지만 데이터는 pages.json에 남겨 둔다. #}
 <section class="sp-proof" id="proof">
   <div class="sp-proof-grid">
-    <h2 class="sp-proof-title"><span class="hp-ink">{{ s.proof.headline_ink }}</span><br><span class="hp-green">{{ s.proof.headline_green }}</span></h2>
+    <h2 class="sp-proof-title" data-reveal><span class="hp-ink">{{ s.proof.headline_ink }}</span><br><span class="hp-green">{{ s.proof.headline_green }}</span></h2>
     <div class="sp-proof-facts">
       {% for f in s.proof.facts %}
-      <div class="sp-proof-fact">
-        <span class="sp-proof-fact-value">{{ f.value }}</span>
+      <div class="sp-proof-fact" data-reveal>
+        <span class="sp-proof-fact-value"{% if f.value | countable %} data-count{% endif %}>{{ f.value }}</span>
         <span class="sp-proof-fact-label">{{ f.label }}</span>
         <p class="sp-proof-fact-desc">{{ f.desc }}</p>
       </div>
@@ -32,7 +32,7 @@
 <section class="sp-section" id="cards">
   <div class="sp-cards">
     {% for card in s.cards %}
-    <div class="sp-card">
+    <div class="sp-card" data-reveal>
       <div class="sp-card-head">
         <h3>{{ card.title }}</h3>
         <span class="sp-card-index">/{{ card.index }}</span>
@@ -74,7 +74,7 @@
 
 {% if s.detail.style == 'carriers' %}
 <section class="sp-carriers" id="detail">
-  <div class="sp-carriers-head">
+  <div class="sp-carriers-head" data-reveal>
     <span class="hp-label"><span class="hp-label-dot"></span>{{ s.detail.label }}</span>
     <h2>{{ s.detail.headline }}</h2>
     <p class="sp-carriers-eyebrow">■ {{ s.detail.eyebrow }}</p>
@@ -91,7 +91,7 @@
 </section>
 {% else %}
 <section class="sp-section" id="detail">
-  <div class="sp-detail-head">
+  <div class="sp-detail-head" data-reveal>
     <span class="hp-label"><span class="hp-label-dot"></span>{{ s.detail.label }}</span>
     <h2>{{ s.detail.headline }}</h2>
   </div>
@@ -100,7 +100,7 @@
     {% set all_rows = (page[s.detail.rows_key] | reverse | list) %}
     <div class="sp-row-scroll">
       {% for row in all_rows %}
-      <div class="sp-row">
+      <div class="sp-row" data-reveal>
         <span class="sp-row-title">{{ row.date }} ({{ row.dow[:1] }})</span>
         <span class="sp-row-desc">{{ row.count }}건 정산</span>
         <span class="sp-row-tag">{{ s.detail.row_tag }}</span>
@@ -119,7 +119,7 @@
     {% set visible_rows = all_rows[:5] if paginate else all_rows %}
     <div>
       {% for row in visible_rows %}
-      <div class="sp-row">
+      <div class="sp-row" data-reveal>
         <span class="sp-row-title{% if row.highlight %} hp-green{% endif %}">{{ row.title }}</span>
         <span class="sp-row-desc">{{ row.desc }}</span>
         <span class="sp-row-tag">{{ row.tag }}</span>
@@ -135,7 +135,7 @@
         </span>
       </summary>
       {% for row in all_rows[5:] %}
-      <div class="sp-row">
+      <div class="sp-row" data-reveal>
         <span class="sp-row-title{% if row.highlight %} hp-green{% endif %}">{{ row.title }}</span>
         <span class="sp-row-desc">{{ row.desc }}</span>
         <span class="sp-row-tag">{{ row.tag }}</span>
@@ -161,7 +161,7 @@
   <span class="hp-label"><span class="hp-label-dot"></span>FAQ</span>
   <div style="margin-top:20px">
     {% for item in s.faq %}
-    <details class="sp-faq-item"{% if loop.first %} open{% endif %}>
+    <details class="sp-faq-item" data-reveal{% if loop.first %} open{% endif %}>
       <summary>{{ item.q }}</summary>
       <div class="sp-faq-body">{{ item.a }}</div>
     </details>

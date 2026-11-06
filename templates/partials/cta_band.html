@@ -1,7 +1,7 @@
 {# 검은 CTA 띠 — 소개형/게시판형 공용, 7개 서브페이지 전부 같은 부품. #}
 {% macro render(data) %}
 <section class="sp-cta" id="cta">
-  <div class="sp-cta-inner">
+  <div class="sp-cta-inner" data-reveal>
     <h2>{% for line in data.headline %}{{ line }}{% if not loop.last %}<br>{% endif %}{% endfor %}</h2>
     <div class="sp-cta-ctas">
       <a class="hp-pill hp-pill--inverted" href="#" data-cursor="kakao">{{ data.cta_primary }}</a>

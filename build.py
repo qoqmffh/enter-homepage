@@ -8,6 +8,7 @@ sitemap.xml · robots.txt 도 이 스크립트가 자동으로 만듭니다.
 """
 import json
 import os
+import re
 import shutil
 
 from jinja2 import Environment, FileSystemLoader
@@ -22,6 +23,24 @@ DIST_DIR = os.path.join(BASE_DIR, "dist")
 def load_json(name):
     with open(os.path.join(CONTENT_DIR, name), encoding="utf-8") as f:
         return json.load(f)
+
+
+_YEAR_RE = re.compile(r"^(19|20)\d{2}$")
+_LEADING_NUM_RE = re.compile(r"^([\d][\d,]*)")
+
+
+def is_countable(value):
+    """스크롤 숫자 카운트업(지시서 2026-11-12) 대상인지 — static/reveal.js의 data-count
+    대상을 템플릿에서 고를 때 쓰는 필터. 연도(2010)·0 값(0회·0원)·숫자 아닌 값(금요일·없음)은
+    차오르지 않고 그대로 표시해야 하므로 여기서 걸러낸다. reveal.js도 같은 모양의 문자열에서
+    숫자만 떼어 애니메이션하므로, 여기서 "세도 되는 값"만 미리 골라 data-count를 붙인다."""
+    text = str(value)
+    if _YEAR_RE.match(text):
+        return False
+    m = _LEADING_NUM_RE.match(text)
+    if not m:
+        return False
+    return int(m.group(1).replace(",", "")) != 0
 
 
 def build_menu_summaries(site, pages, blog_posts):
@@ -79,6 +98,7 @@ def main():
     menu_summaries = build_menu_summaries(site, pages, blog_posts)
 
     env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
+    env.filters["countable"] = is_countable
 
     # dist/ 비우고 다시 생성
     if os.path.exists(DIST_DIR):

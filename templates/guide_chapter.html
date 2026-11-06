@@ -40,7 +40,7 @@
   <div class="wrap">
     <div class="cards">
       {% for c in page.criteria_cards %}
-      <div class="card"><div style="font-size:22px; margin-bottom:6px">{{ c.icon }}</div><h3>{{ c.title }}</h3><p>{{ c.text }}</p></div>
+      <div class="card" data-reveal><div style="font-size:22px; margin-bottom:6px">{{ c.icon }}</div><h3>{{ c.title }}</h3><p>{{ c.text }}</p></div>
       {% endfor %}
     </div>
   </div>
@@ -53,7 +53,7 @@
     <h2>{{ page.doc_section_title }}</h2>
     <div class="doc-grid">
       {% for d in page.docs %}
-      <div class="doc-card"><div class="doc-icon">{{ d.icon }}</div><div class="doc-name">{{ d.name }}</div><div class="doc-reason">{{ d.reason }}</div></div>
+      <div class="doc-card" data-reveal><div class="doc-icon">{{ d.icon }}</div><div class="doc-name">{{ d.name }}</div><div class="doc-reason">{{ d.reason }}</div></div>
       {% endfor %}
     </div>
   </div>
@@ -65,7 +65,7 @@
   <div class="wrap">
     <div class="icon-steps">
       {% for c in page.checklist %}
-      <div class="icon-step"><span class="icon-step-num">{{ loop.index }}</span><span class="icon-step-icon">{{ c.icon }}</span><span class="icon-step-text-wrap"><span class="icon-step-text">{{ c.name }}</span><span class="icon-step-sub">{{ c.note }}</span></span></div>
+      <div class="icon-step" data-reveal><span class="icon-step-num">{{ loop.index }}</span><span class="icon-step-icon">{{ c.icon }}</span><span class="icon-step-text-wrap"><span class="icon-step-text">{{ c.name }}</span><span class="icon-step-sub">{{ c.note }}</span></span></div>
       {% endfor %}
     </div>
   </div>
@@ -86,7 +86,7 @@
   <div class="wrap">
     <h2>{{ page.checkpoint_heading }}</h2>
     <ul class="doclist">
-      {% for c in page.checkpoint_items %}<li>{{ c }}</li>{% endfor %}
+      {% for c in page.checkpoint_items %}<li data-reveal>{{ c }}</li>{% endfor %}
     </ul>
   </div>
 </section>
