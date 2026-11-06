@@ -33,8 +33,9 @@
     go: svg('<path d="M4 12h16M13 5l7 7-7 7"/>', 'miter'),
     /* ← 넘기기, 화살촉 각지게 */
     swipe: svg('<path d="M20 12H4M11 5l-7 7 7 7"/>', 'miter'),
-    /* 검지를 편 손가락 — 끝(12,3)이 클릭 지점(아래 HAND_OFFSET과 짝) */
-    hand: svg('<path d="M12 3 L12 11"/><path d="M7 13 C7 11.5 8.5 11 10 11 L14 11 C15.5 11 17 11.5 17 13 L17 16.5 C17 19.5 14.8 21.5 12 21.5 C9.2 21.5 7 19.5 7 16.5 Z"/><path d="M7.3 14.5 C5.8 13.5 4 14.3 4 16 C4 17.4 5.3 18.2 6.8 17.8"/>', 'round'),
+    /* 마우스 포인터 화살표(Feather mouse-pointer 변형) — 끝(3,3)이 클릭 지점.
+       손가락 아이콘이 작은 크기에서 욕 모양으로 보인다는 지적(2026-11-14)으로 교체. */
+    click: svg('<path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="M13 13l6 6"/>', 'miter'),
   };
 
   var cross = document.createElement('div');
@@ -62,7 +63,7 @@
 
   var active = false;
   var started = false;
-  var currentType = null; /* null | 'home' | 'kakao' | 'phone' | 'go' | 'swipe' | 'hand' */
+  var currentType = null; /* null | 'home' | 'kakao' | 'phone' | 'go' | 'swipe' | 'click' */
 
   function onMouseMove(e) {
     var t = 'translate3d(' + e.clientX + 'px,' + e.clientY + 'px,0)';
@@ -70,21 +71,21 @@
     icon.style.transform = t;
   }
 
-  /* 손가락(hand) 영역(지시서 2026-11-14) — 정책 받기 팝업·1:1 상담창·플로팅 내비 안의
-     누를 수 있는 요소는 카톡/전화/go 대신 전부 손가락으로 통일한다. label은 [for] 없이
-     체크박스를 감싸는 형태([data-lm-input="consent"] 글자 행)까지 잡아야 해서 go의
-     fallback(label[for])보다 느슨하게(label 전체) 잡는다. */
-  var HAND_ZONE_SEL = '[data-fn-bottombar], [data-fn-quickmenu], [data-fn-consult], [data-fn-consult-panel], .lm-modal';
-  var HAND_CLICKABLE_SEL = 'a[href], button, [role="button"], label, summary, input[type="checkbox"], input[type="radio"]';
+  /* 클릭 포인터 영역(지시서 2026-11-14) — 정책 받기 팝업·1:1 상담창·플로팅 내비 안의
+     누를 수 있는 요소는 카톡/전화/go 대신 전부 마우스 포인터 화살표로 통일한다. label은
+     [for] 없이 체크박스를 감싸는 형태([data-lm-input="consent"] 글자 행)까지 잡아야 해서
+     go의 fallback(label[for])보다 느슨하게(label 전체) 잡는다. */
+  var CLICK_ZONE_SEL = '[data-fn-bottombar], [data-fn-quickmenu], [data-fn-consult], [data-fn-consult-panel], .lm-modal';
+  var CLICK_CLICKABLE_SEL = 'a[href], button, [role="button"], label, summary, input[type="checkbox"], input[type="radio"]';
 
   /* ---------- 종류 판단: closest()를 위에서부터 순서대로, 처음 맞는 걸 쓴다 ----------
      (지시서 §2) 헤더의 01/02/03 그룹 버튼은 호버만으로 메가 패널이 열리므로 십자를
-     그대로 유지한다(예외, 최우선 검사). 손가락 영역 판정은 home·kakao·phone·swipe·go보다
-     먼저 한다(지시서 2026-11-14 §1) — 같은 버튼이라도 이 영역 안이면 손가락이 이긴다. */
+     그대로 유지한다(예외, 최우선 검사). 클릭 포인터 영역 판정은 home·kakao·phone·swipe·go
+     보다 먼저 한다(지시서 2026-11-14 §1) — 같은 버튼이라도 이 영역 안이면 포인터가 이긴다. */
   function determineType(target) {
     if (!target || !target.closest) return null;
     if (target.closest('.hp-nav-group')) return null;
-    if (target.closest(HAND_ZONE_SEL) && target.closest(HAND_CLICKABLE_SEL)) return 'hand';
+    if (target.closest(CLICK_ZONE_SEL) && target.closest(CLICK_CLICKABLE_SEL)) return 'click';
     if (target.closest('a.hp-brand')) return 'home';
     if (target.closest('[data-cursor="kakao"]')) return 'kakao';
     if (target.closest('a[href^="tel:"]')) return 'phone';
