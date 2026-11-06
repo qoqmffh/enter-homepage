@@ -118,11 +118,6 @@ html:not(.ad-pending) #hpHeaderCta:hover{ background:var(--hp-ink); }
 .hp-replay-link{ font-size:12px; color:var(--hp-grey); white-space:nowrap; }
 .hp-replay-link:hover{ color:var(--hp-ink); }
 
-/* ---------- 하단 연락 바: 모바일에서만(common.css 기본값을 데스크톱에서 덮어쓴다) ---------- */
-@media (min-width:768px){
-  .footerbar{ display:none; }
-}
-
 /* ---------- 푸터(사이트 전체 공통) ---------- */
 .hp-footer{ padding:64px 0 32px; border-top:1px solid var(--hp-line); }
 .hp-footer-top{ display:flex; flex-direction:column; gap:40px; margin-bottom:48px; }
