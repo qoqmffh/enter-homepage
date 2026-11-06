@@ -73,9 +73,17 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
 
 .hp-pill{ display:inline-flex; align-items:center; justify-content:center; gap:8px; border-radius:var(--radius-btn); padding:12px 24px; font-size:14px; font-weight:600; white-space:nowrap; transition:background-color .15s ease, color .15s ease, border-color .15s ease; }
 .hp-pill-dot{ width:7px; height:7px; border-radius:50%; background:var(--hp-green); flex:0 0 auto; }
-.hp-pill--primary{ background:var(--hp-black); color:var(--hp-white); }
-.hp-pill--primary:hover{ background:var(--hp-green); }
+.hp-pill--primary{ background:var(--hp-accent); color:#FFFFFF; transition:background-color .2s ease, color .2s ease; }
+.hp-pill--primary:hover{ background:var(--hp-ink); }
 .hp-pill--primary .hp-pill-dot{ background:var(--hp-white); }
+/* "거래 시작하기"(#start)는 카카오톡/정책 받기 버튼이 아니라서 이번 주황 통일에서 빼고
+   예전 모습(잉크 바탕, hover만 주황) 그대로 둔다(2026-11-12). */
+#start .hp-pill--primary{ background:var(--hp-black); color:var(--hp-white); }
+#start .hp-pill--primary:hover{ background:var(--hp-accent); }
+/* static/guide_chapter.html 글 하단 CTA는 .hp-pill 체계가 아니라 common.css의 .btn-primary를
+   쓰지만 같은 카카오톡 버튼이라 색만 맞춘다. */
+.btn-primary[data-cursor="kakao"]{ background:var(--hp-accent); color:#FFFFFF; transition:background-color .2s ease, color .2s ease; }
+.btn-primary[data-cursor="kakao"]:hover{ background:var(--hp-ink); }
 .hp-pill--secondary{ background:var(--hp-grey-bg); color:var(--hp-ink); border:1px solid transparent; }
 .hp-pill--secondary:hover{ background:var(--hp-line); border-color:var(--hp-ink); }
 .hp-pill--inverted{ background:var(--hp-white); color:var(--hp-black); }
@@ -83,15 +91,13 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
 .hp-pill--outline{ background:transparent; color:var(--hp-white); border:1px solid rgba(255,255,250,.8); }
 .hp-pill--outline:hover{ background:rgba(255,255,255,.1); }
 
-/* 강조색 R2(2026-11-09) — 화면에서 주황을 "칠한" 면은 이 헤더 "정책 받기" 버튼 하나뿐이다
-   (메가 메뉴가 열렸을 때만 보이는 CTA 카드가 유일한 예외, static/megamenu.css). 다른
-   .hp-pill--primary(히어로 "정책 받아보기" 등)는 잉크 바탕 그대로 두고 hover만 주황으로
-   바뀌게 둔다 — #hpHeaderCta만 기본 상태부터 주황이어야 하므로 ID로 따로 지정한다.
-   광고 무대(ad-pending)에서는 어두운 배경 위라 흰 바탕/검은 글자 버튼을 그대로 둬야 하므로
-   :not(.ad-pending)으로 비켜준다(그 규칙은 static/home-ad.css, ID보다 특정도가 낮아 안
-   비키면 이 규칙이 덮어써 버린다). */
-html:not(.ad-pending) #hpHeaderCta{ background:var(--hp-accent); }
-html:not(.ad-pending) #hpHeaderCta:hover{ background:var(--hp-accent-text); }
+/* 카카오톡/정책 받기 버튼 통일(2026-11-12) — .hp-pill--primary 기본이 이미 주황이라
+   #hpHeaderCta는 배경을 따로 안 정해도 되지만, 광고 무대(ad-pending)에서는 어두운 배경
+   위라 흰 바탕/검은 글자 버튼(static/home-ad.css)을 그대로 둬야 해서 호버만 :not(.ad-pending)
+   으로 비켜서 다시 지정한다(ID보다 특정도가 낮은 그 규칙을 이 파일이 덮어쓰지 않도록).
+   메가 메뉴가 열렸을 때 테두리 버튼으로 바뀌는 규칙은 static/megamenu.css가 더 높은
+   특정도(.hp-header.mega-open #hpHeaderCta)로 따로 담당 — 그대로 유지된다. */
+html:not(.ad-pending) #hpHeaderCta:hover{ background:var(--hp-ink); }
 
 /* ---------- 헤더(사이트 전체 공통) ----------
    01/02/03 그룹 버튼·메가 패널·모바일 메뉴 전용 스타일은 static/megamenu.css.
