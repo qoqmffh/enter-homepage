@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENTER 플로팅 내비게이션 & UI 컴포넌트 스펙</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+  :root {
+    --bg-page: #0B101D;
+    --bg-surface: #FBF8F4;
+    --ink: #10182B;
+    --grey: #6B7280;
+    --line: #E9E3DA;
+    --orange: #E36B2C;
+    --orange-light: #FBE9DE;
+    --font: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background-color: var(--bg-page);
+    color: #FBF8F4;
+    font-family: var(--font);
+    word-break: keep-all;
+    -webkit-font-smoothing: antialiased;
+    padding: 48px 40px 100px;
+  }
+
+  /* Header */
+  .spec-header {
+    max-width: 1440px;
+    margin: 0 auto 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(233, 227, 218, 0.15);
+  }
+  .tag-badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    background: var(--orange);
+    padding: 4px 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+  }
+  .spec-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .spec-desc {
+    font-size: 15px;
+    color: #9CA3AF;
+    line-height: 1.6;
+    max-width: 900px;
+  }
+
+  /* Section Layouts */
+  .section-container {
+    max-width: 1440px;
+    margin: 0 auto 56px;
+  }
+  .section-headline {
+    font-size: 20px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-headline span.sub {
+    font-size: 13px;
+    font-weight: 400;
+    color: #9CA3AF;
+  }
+
+  /* 1. Full Desktop & Mobile Overview Mockup Frame */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: 1fr 390px;
+    gap: 32px;
+    align-items: start;
+  }
+
+  .desktop-viewport-frame {
+    background: #F4EFEB;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 48px rgba(0,0,0,0.4);
+    height: 780px;
+    border: 1px solid rgba(233, 227, 218, 0.2);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .browser-bar {
+    background: #E5DFD7;
+    height: 38px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid #D9D2C8;
+    z-index: 5;
+  }
+  .browser-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #C4BEB5;
+  }
+  .browser-url {
+    background: #FBF8F4;
+    padding: 4px 14px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: var(--grey);
+    margin-left: 12px;
+    width: 280px;
+  }
+
+  /* Simulated Page Background Content */
+  .mockup-content {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    background: #FBF8F4;
+  }
+  .mockup-page-header {
+    height: 60px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    background: #FFFFFF;
+  }
+  .mockup-logo {
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--ink);
+    letter-spacing: -0.5px;
+  }
+  .mockup-nav {
+    display: flex;
+    gap: 28px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--grey);
+  }
+  .mockup-hero {
+    padding: 60px 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .mockup-badge {
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .mockup-heading {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.3;
+    margin-bottom: 20px;
+  }
+  .mockup-text {
+    font-size: 16px;
+    color: var(--grey);
+    line-height: 1.6;
+    margin-bottom: 32px;
+    max-width: 620px;
+  }
+  .mockup-cards-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .mockup-sample-card {
+    background: #FFFFFF;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 24px;
+  }
+  .mockup-card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .mockup-card-val {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--orange);
+    margin-bottom: 4px;
+  }
+  .mockup-card-sub {
+    font-size: 12px;
+    color: var(--grey);
+  }
+
+  /* Right Quick Menu (Desktop In-situ) */
+  .floating-quick-menu {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 64px;
+    background: var(--bg-surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: none;
+    z-index: 40;
+    overflow: hidden;
+  }
+  .quick-menu-item {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--ink);
+    transition: all 0.15s ease;
+    border: none;
+    background: transparent;
+  }
+  .quick-menu-item svg {
+    stroke: var(--ink);
+    transition: stroke 0.15s ease;
+  }
+  .quick-menu-item span {
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--ink);
+    transition: color 0.15s ease;
+  }
+  .quick-menu-item:hover, .quick-menu-item.active-hover {
+    background: var(--orange-light);
+  }
+  .quick-menu-item:hover svg, .quick-menu-item.active-hover svg {
+    stroke: var(--orange);
+  }
+  .quick-menu-item:hover span, .quick-menu-item.active-hover span {
+    color: var(--orange);
+  }
+  .quick-menu-divider {
+    width: 44px;
+    height: 1px;
+    background: var(--line);
+    margin: 2px 0;
+  }
+  .quick-menu-top {
+    width: 64px;
+    height: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    color: var(--grey);
+    font-size: 11px;
+    font-weight: 700;
+    transition: all 0.15s ease;
+  }
+  .quick-menu-top:hover {
+    color: var(--orange);
+    background: var(--orange-light);
+  }
+
+  /* 1:1 Consulting Launcher (Desktop In-situ) */
+  .consult-launcher-wrap {
+    position: absolute;
+    right: 28px;
+    bottom: 84px; /* Placed above the 64px bottom bar */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 50;
+    cursor: pointer;
+  }
+  .consult-pill-label {
+    background: #FFFFFF;
+    color: var(--ink);
+    border: 1px solid var(--line);
+    padding: 8px 14px;
+    border-radius: 9999px;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(16,24,43,0.08);
+    white-space: nowrap;
+    transition: transform 0.2s ease;
+  }
+  .consult-launcher-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(227, 107, 44, 0.35);
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+  .consult-launcher-btn:hover {
+    transform: scale(1.04);
+    background: #d35f21;
+  }
+  .consult-launcher-btn svg {
+    stroke: #FFFFFF;
+  }
+
+  /* Desktop Sticky Bottom Bar */
+  .desktop-bottom-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: var(--ink);
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .bottom-bar-inner {
+    width: 100%;
+    max-width: 1152px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .bar-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .bar-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #FFFFFF;
+    letter-spacing: -0.3px;
+  }
+  .bar-sub {
+    font-size: 13px;
+    color: #9CA3AF;
+  }
+  .bar-right-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-outline-white {
+    height: 44px;
+    padding: 0 16px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: transparent;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+  .btn-outline-white:hover {
+    border-color: #FFFFFF;
+    background: rgba(255,255,255,0.08);
+  }
+  .btn-solid-orange {
+    height: 44px;
+    padding: 0 20px;
+    border-radius: 6px;
+    border: 1px solid var(--orange);
+    background: var(--orange);
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+  .btn-solid-orange:hover {
+    background: #d35f21;
+    border-color: #d35f21;
+  }
+
+  /* Mobile 390px Viewport Frame */
+  .mobile-viewport-frame {
+    width: 390px;
+    height: 780px;
+    background: #FBF8F4;
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+    border: 2px solid rgba(233, 227, 218, 0.3);
+    box-shadow: 0 20px 48px rgba(0,0,0,0.4);
+    display: flex;
+    flex-direction: column;
+  }
+  .mobile-status-bar {
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    background: #FFFFFF;
+    border-bottom: 1px solid var(--line);
+  }
+  .mobile-header {
+    height: 52px;
+    background: #FFFFFF;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+  }
+  .mobile-content {
+    flex: 1;
+    padding: 24px 20px;
+    overflow: hidden;
+    position: relative;
+    background: #FBF8F4;
+  }
+  .mobile-badge {
+    color: var(--orange);
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .mobile-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.35;
+    margin-bottom: 12px;
+  }
+  .mobile-card {
+    background: #FFFFFF;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+
+  /* Mobile Launcher (Circular above bar) */
+  .mobile-consult-launcher {
+    position: absolute;
+    right: 16px;
+    bottom: 76px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 14px rgba(227,107,44,0.4);
+    z-index: 50;
+    border: none;
+  }
+  .mobile-consult-launcher svg {
+    stroke: #FFF;
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Mobile Sticky Bottom Bar (60px, 3 equal buttons) */
+  .mobile-bottom-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: var(--ink);
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .mobile-bar-btn {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: transparent;
+    border: none;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s ease;
+  }
+  .mobile-bar-btn:last-child {
+    border-right: none;
+  }
+  .mobile-bar-btn.primary {
+    background: var(--orange);
+    font-weight: 700;
+  }
+  .mobile-bar-btn svg {
+    stroke: currentColor;
+  }
+
+  /* 2. Detailed Component Zoom / Spec Cards (Grid of 3) */
+  .detail-specs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    margin-top: 24px;
+  }
+  .detail-card {
+    background: #141B2D;
+    border: 1px solid rgba(233, 227, 218, 0.18);
+    border-radius: 12px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+  }
+  .detail-badge {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .detail-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 12px;
+  }
+  .detail-preview-box {
+    background: #20293D;
+    border: 1px dashed rgba(233,227,218,0.25);
+    border-radius: 8px;
+    padding: 24px;
+    min-height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .detail-spec-list {
+    list-style: none;
+    font-size: 13px;
+    color: #CBD5E1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .detail-spec-list li {
+    display: flex;
+    gap: 8px;
+    line-height: 1.5;
+  }
+  .detail-spec-list li::before {
+    content: "•";
+    color: var(--orange);
+    font-weight: bold;
+  }
+
+  /* Zoom 1: Bottom Bar Closeup */
+  .zoom-bottom-bar-preview {
+    width: 100%;
+    background: var(--ink);
+    border-radius: 6px;
+    padding: 10px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .zoom-bar-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Zoom 2: Right Quick Menu Closeup (Side by Side Normal vs Hover) */
+  .zoom-quick-menu-compare {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 36px;
+  }
+  .compare-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .col-label {
+    font-size: 11px;
+    color: #94A3B8;
+  }
+
+  /* Zoom 3: Open Chat Panel */
+  .chat-panel-container {
+    width: 360px;
+    height: 520px;
+    background: var(--bg-surface);
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 16px 40px rgba(16,24,43,0.25);
+  }
+  .chat-header {
+    background: var(--ink);
+    padding: 18px 20px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  .chat-header-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .online-indicator {
+    width: 8px;
+    height: 8px;
+    background: #10B981;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .chat-header-sub {
+    font-size: 12px;
+    color: #9CA3AF;
+  }
+  .chat-close-btn {
+    background: transparent;
+    border: none;
+    color: #9CA3AF;
+    cursor: pointer;
+    padding: 2px;
+  }
+  .chat-close-btn:hover {
+    color: #FFFFFF;
+  }
+
+  .chat-body {
+    flex: 1;
+    padding: 16px 16px 12px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .chat-timestamp {
+    text-align: center;
+    font-size: 11px;
+    color: var(--grey);
+    margin: 4px 0;
+  }
+  .assistant-msg-row {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .assistant-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .assistant-avatar svg {
+    stroke: #FFF;
+    width: 16px;
+    height: 16px;
+  }
+  .assistant-bubble {
+    background: #FFFFFF;
+    border: 1px solid var(--line);
+    border-radius: 0 12px 12px 12px;
+    padding: 12px 14px;
+    font-size: 13.5px;
+    color: var(--ink);
+    line-height: 1.5;
+    max-width: 260px;
+  }
+  .quick-chips-wrap {
+    margin-left: 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .chips-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--grey);
+    margin-bottom: 2px;
+  }
+  .quick-chip {
+    background: #FFFFFF;
+    border: 1px solid var(--orange);
+    color: var(--orange);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.15s ease;
+  }
+  .quick-chip:hover {
+    background: var(--orange-light);
+  }
+  .quick-chip svg {
+    stroke: var(--orange);
+    width: 14px;
+    height: 14px;
+  }
+
+  .chat-footer {
+    padding: 12px 16px;
+    background: #FFFFFF;
+    border-top: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .chat-input {
+    flex: 1;
+    height: 38px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 0 12px;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--ink);
+    outline: none;
+    background: var(--bg-surface);
+  }
+  .chat-input:focus {
+    border-color: var(--orange);
+  }
+  .chat-send-btn {
+    width: 38px;
+    height: 38px;
+    background: var(--orange);
+    border: none;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #FFF;
+    flex-shrink: 0;
+  }
+
+  /* Interaction note banner */
+  .rule-banner {
+    background: #10182B;
+    border-left: 4px solid var(--orange);
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin-top: 24px;
+    font-size: 13.5px;
+    color: #CBD5E1;
+    line-height: 1.6;
+  }
+  .rule-banner strong {
+    color: #FFFFFF;
+  }
+</style>
+</head>
+<body>
+
+  <!-- Top Title Header -->
+  <header class="spec-header">
+    <div class="tag-badge">ENTER UI Component Spec</div>
+    <h1 class="spec-title">유선통신 도매 브랜드 ENTER — 플로팅 내비게이션 시스템</h1>
+    <p class="spec-desc">
+      스크롤 다운 시 활성화되는 3가지 유기적 플로팅 요소(하단 스티키 바, 우측 퀵메뉴, 1:1 상담 런처)의 데스크톱(1440px) 및 모바일(390px) 뷰포트 배치 현황과 세부 컴포넌트 클로즈업 사양입니다.
+    </p>
+  </header>
+
+  <!-- SECTION 1: Viewport Overview (Desktop + Mobile) -->
+  <section class="section-container">
+    <h2 class="section-headline">
+      1. Viewport Overview & Layout Integration
+      <span class="sub">데스크톱(1440px 기준) & 모바일(390px) 화면 내 세 요소 간 비간섭 상호배치</span>
+    </h2>
+
+    <div class="overview-grid">
+      <!-- Desktop 1440px Simulated Frame -->
+      <div class="desktop-viewport-frame">
+        <div class="browser-bar">
+          <div class="browser-dot"></div>
+          <div class="browser-dot"></div>
+          <div class="browser-dot"></div>
+          <div class="browser-url">https://enter-wholesale.co.kr/policies</div>
+        </div>
+
+        <div class="mockup-content">
+          <!-- Page GNB -->
+          <div class="mockup-page-header">
+            <div class="mockup-logo">ENTER 도매통신</div>
+            <div class="mockup-nav">
+              <span>오늘의 정책표</span>
+              <span>SKB / KT / LGU+</span>
+              <span>온라인 신청</span>
+              <span>거래 가이드</span>
+            </div>
+          </div>
+
+          <!-- Page Content (Hero passed state) -->
+          <div class="mockup-hero">
+            <div class="mockup-badge">2025 실시간 일일 단가표</div>
+            <h2 class="mockup-heading">대한민국 1등 유선통신 대리점 파트너,<br>가장 빠르고 투명한 도매 정책</h2>
+            <p class="mockup-text">
+              본사 직영 마진 없는 일일 도매 정산표를 매일 오전 9시 카카오톡과 문자로 브리핑해 드립니다. 지금 바로 단가를 비교하고 즉시 접수하세요.
+            </p>
+
+            <div class="mockup-cards-row">
+              <div class="mockup-sample-card">
+                <div class="mockup-card-title">SK 브로드밴드 기가</div>
+                <div class="mockup-card-val">최대 48만 + α</div>
+                <div class="mockup-card-sub">당일 정산 / 비대면 즉시 개통</div>
+              </div>
+              <div class="mockup-sample-card">
+                <div class="mockup-card-title">KT 에센스 500M</div>
+                <div class="mockup-card-val">최대 45만 + α</div>
+                <div class="mockup-card-sub">전국 직영 CS 지원 라인</div>
+              </div>
+              <div class="mockup-sample-card">
+                <div class="mockup-card-title">LG U+ 프리미엄</div>
+                <div class="mockup-card-val">최대 47만 + α</div>
+                <div class="mockup-card-sub">소상공인 결합 특가 지원</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. RIGHT QUICK MENU (Fixed Vertically Centered) -->
+          <aside class="floating-quick-menu" aria-label="우측 빠른 메뉴">
+            <!-- 1. 카톡 (Generic Speech bubble) -->
+            <button class="quick-menu-item" title="카카오톡 문의">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+              </svg>
+              <span>카톡</span>
+            </button>
+            <!-- 2. 전화 (Handset) -->
+            <button class="quick-menu-item" title="직통 전화">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+              <span>전화</span>
+            </button>
+            <!-- 3. 문의 (Document with pencil) -->
+            <button class="quick-menu-item" title="정책 문의">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+              <span>문의</span>
+            </button>
+            <!-- 4. 1:1 상담 (Headset) -->
+            <button class="quick-menu-item" title="1:1 상담">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+              </svg>
+              <span>1:1상담</span>
+            </button>
+            <div class="quick-menu-divider"></div>
+            <!-- TOP button -->
+            <button class="quick-menu-top" title="최상단으로 이동">
+              TOP ↑
+            </button>
+          </aside>
+
+          <!-- 3. 1:1 CONSULTING LAUNCHER (Above bottom bar) -->
+          <div class="consult-launcher-wrap" title="ENTER 1:1 상담센터 열기">
+            <div class="consult-pill-label">1:1 상담센터</div>
+            <button class="consult-launcher-btn" aria-label="1:1 상담센터 열기">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+            </button>
+          </div>
+
+          <!-- 1. BOTTOM BAR (Sticky at Viewport Bottom, Full Width) -->
+          <footer class="desktop-bottom-bar">
+            <div class="bottom-bar-inner">
+              <div class="bar-left">
+                <span class="bar-title">지금 바로 정책 받아보기</span>
+                <span class="bar-sub">매일 아침 정책표를 먼저 보내드립니다</span>
+              </div>
+              <div class="bar-right-actions">
+                <a href="#kakao" class="btn-outline-white">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                  </svg>
+                  카카오톡
+                </a>
+                <a href="tel:010-2222-4183" class="btn-outline-white">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                  </svg>
+                  전화 010-2222-4183
+                </a>
+                <button class="btn-solid-orange">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                  </svg>
+                  정책 문의
+                </button>
+              </div>
+            </div>
+          </footer>
+        </div>
+      </div>
+
+      <!-- Mobile 390px Viewport Frame -->
+      <div class="mobile-viewport-frame">
+        <div class="mobile-status-bar">
+          <span>9:41</span>
+          <span>5G • 100%</span>
+        </div>
+        <div class="mobile-header">
+          <strong style="color:var(--ink); font-size:16px;">ENTER</strong>
+          <span style="font-size:12px; color:var(--grey);">유선통신 도매</span>
+        </div>
+        <div class="mobile-content">
+          <div class="mobile-badge">실시간 단가</div>
+          <h3 class="mobile-title">매일 아침 정책표를<br>먼저 보내드립니다</h3>
+          <div class="mobile-card">
+            <div style="font-size:12px; color:var(--grey); margin-bottom:4px;">SKB 기가인터넷</div>
+            <div style="font-size:18px; font-weight:800; color:var(--orange);">최대 48만 + α</div>
+          </div>
+          <div class="mobile-card">
+            <div style="font-size:12px; color:var(--grey); margin-bottom:4px;">KT GiGA 에센스</div>
+            <div style="font-size:18px; font-weight:800; color:var(--ink);">최대 45만 + α</div>
+          </div>
+          <div class="mobile-card">
+            <div style="font-size:12px; color:var(--grey); margin-bottom:4px;">LG U+ 프리미엄</div>
+            <div style="font-size:18px; font-weight:800; color:var(--ink);">최대 47만 + α</div>
+          </div>
+        </div>
+
+        <!-- Mobile 1:1 Launcher (Floating Above 60px bar) -->
+        <button class="mobile-consult-launcher" title="1:1 상담센터">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+        </button>
+
+        <!-- Mobile Sticky Bottom Bar (60px, 3 Equal Buttons) -->
+        <div class="mobile-bottom-bar">
+          <button class="mobile-bar-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+            </svg>
+            카톡
+          </button>
+          <a href="tel:010-2222-4183" class="mobile-bar-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+            전화
+          </a>
+          <button class="mobile-bar-btn primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+            </svg>
+            문의
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: Detailed Close-up Specs of 3 Floating Elements -->
+  <section class="section-container">
+    <h2 class="section-headline">
+      2. Component Close-up & Interaction Specs
+      <span class="sub">개별 컴포넌트의 상세 규격, 호버 상태 및 오픈 챗 패널 UI</span>
+    </h2>
+
+    <div class="detail-specs-grid">
+
+      <!-- DETAIL 1: Bottom Bar Spec -->
+      <div class="detail-card">
+        <div class="detail-badge">Component 01</div>
+        <h3 class="detail-title">하단 스티키 바 (Sticky Bottom Bar)</h3>
+
+        <div class="detail-preview-box" style="flex-direction:column; gap:16px;">
+          <!-- Desktop Version Preview -->
+          <div style="font-size:11px; color:#94A3B8; width:100%;">[데스크톱 64px] 컨테이너 1152px 센터링</div>
+          <div class="zoom-bottom-bar-preview">
+            <div class="zoom-bar-row">
+              <div style="display:flex; flex-direction:column;">
+                <span style="font-size:13px; font-weight:700; color:#fff;">지금 바로 정책 받아보기</span>
+                <span style="font-size:11px; color:#9CA3AF;">매일 아침 정책표를 먼저 보내드립니다</span>
+              </div>
+              <div style="display:flex; gap:6px;">
+                <span style="border:1px solid rgba(255,255,255,0.3); border-radius:4px; padding:6px 10px; font-size:11px; color:#fff;">카카오톡</span>
+                <span style="border:1px solid rgba(255,255,255,0.3); border-radius:4px; padding:6px 10px; font-size:11px; color:#fff;">010-2222-4183</span>
+                <span style="background:var(--orange); border-radius:4px; padding:6px 12px; font-size:11px; color:#fff; font-weight:700;">정책 문의</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile Version Preview -->
+          <div style="font-size:11px; color:#94A3B8; width:100%; margin-top:8px;">[모바일 60px] 균등 3분할 탭 (카톡 / 전화 / 문의)</div>
+          <div style="width:100%; height:50px; background:var(--ink); border-radius:6px; display:flex; border:1px solid rgba(255,255,255,0.1); overflow:hidden;">
+            <div style="flex:1; display:flex; align-items:center; justify-content:center; color:#fff; font-size:12px; border-right:1px solid rgba(255,255,255,0.08); gap:4px;">
+              <span>💬</span> 카톡
+            </div>
+            <div style="flex:1; display:flex; align-items:center; justify-content:center; color:#fff; font-size:12px; border-right:1px solid rgba(255,255,255,0.08); gap:4px;">
+              <span>📞</span> 전화
+            </div>
+            <div style="flex:1; display:flex; align-items:center; justify-content:center; color:#fff; font-size:12px; font-weight:700; background:var(--orange); gap:4px;">
+              <span>📋</span> 문의
+            </div>
+          </div>
+        </div>
+
+        <ul class="detail-spec-list">
+          <li><strong>트리거:</strong> 페이지 히어로(Hero) 구간 스크롤 통과 시 하단에서 슬라이드 업(`transform: translateY(0)`).</li>
+          <li><strong>데스크톱:</strong> 높이 64px, 배경 잉크 `#10182B`, 내부 1152px 그리드 센터링.</li>
+          <li><strong>액션 버튼:</strong> 44px 높이, 6px 곡률. 아웃라인 버튼 2종(카톡, 전화 직통) + 솔리드 오렌지 `#E36B2C` 정책 문의(모달 오픈 트리거).</li>
+          <li><strong>모바일:</strong> 60px 높이, 3개 균등 분할 터치 타깃으로 변환하여 엄지 조작성 최적화.</li>
+        </ul>
+      </div>
+
+      <!-- DETAIL 2: Right Quick Menu Spec -->
+      <div class="detail-card">
+        <div class="detail-badge">Component 02</div>
+        <h3 class="detail-title">우측 퀵메뉴 (Right Quick Menu)</h3>
+
+        <div class="detail-preview-box">
+          <div class="zoom-quick-menu-compare">
+            <!-- Normal State -->
+            <div class="compare-col">
+              <span class="col-label">기본 (Normal)</span>
+              <div style="width:64px; background:#FBF8F4; border:1px solid var(--line); border-radius:8px; overflow:hidden;">
+                <div style="height:56px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                  <span style="font-size:10px; color:var(--ink); font-weight:600;">카톡</span>
+                </div>
+                <div style="height:56px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                  <span style="font-size:10px; color:var(--ink); font-weight:600;">전화</span>
+                </div>
+                <div style="height:1px; background:var(--line); margin:0 6px;"></div>
+                <div style="height:36px; display:flex; align-items:center; justify-content:center; font-size:10px; color:var(--grey); font-weight:700;">
+                  TOP ↑
+                </div>
+              </div>
+            </div>
+
+            <!-- Hover State -->
+            <div class="compare-col">
+              <span class="col-label" style="color:var(--orange);">호버 (Hover Active)</span>
+              <div style="width:64px; background:#FBF8F4; border:1px solid var(--line); border-radius:8px; overflow:hidden;">
+                <!-- Hovered Item -->
+                <div style="height:56px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; background:var(--orange-light);">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                  <span style="font-size:10px; color:var(--orange); font-weight:700;">카톡</span>
+                </div>
+                <div style="height:56px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                  <span style="font-size:10px; color:var(--ink); font-weight:600;">전화</span>
+                </div>
+                <div style="height:1px; background:var(--line); margin:0 6px;"></div>
+                <div style="height:36px; display:flex; align-items:center; justify-content:center; font-size:10px; color:var(--grey); font-weight:700;">
+                  TOP ↑
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ul class="detail-spec-list">
+          <li><strong>배치:</strong> 데스크톱 전용, 뷰포트 우측 가장자리 수직 중앙 정렬 (`top: 50%; transform: translateY(-50%)`).</li>
+          <li><strong>외형:</strong> 너비 64px, 배경 `#FBF8F4`, 1px 테두리 `#E9E3DA`, 8px 곡률, 무섀도우 플랫 스타일.</li>
+          <li><strong>아이콘 세트:</strong> 24px 라인아트 (카톡 말풍선, 전화 핸드셋, 서류 연필, 헤드셋) + 11px 레이블.</li>
+          <li><strong>인터랙션:</strong> 호버 시 아이콘/텍스트 오렌지 `#E36B2C`, 배경 연한 오렌지 `#FBE9DE` 전환. 하단 얇은 구분선 후 `TOP ↑` 버튼 배치.</li>
+        </ul>
+      </div>
+
+      <!-- DETAIL 3: 1:1 Consulting Launcher & Chat Panel -->
+      <div class="detail-card">
+        <div class="detail-badge">Component 03</div>
+        <h3 class="detail-title">1:1 상담 런처 & 오픈 챗 패널 UI</h3>
+
+        <div class="detail-preview-box" style="padding: 12px;">
+          <!-- 360x520 Chat Panel Spec Frame -->
+          <div class="chat-panel-container">
+            <!-- Header -->
+            <div class="chat-header">
+              <div>
+                <div class="chat-header-title">
+                  <span class="online-indicator"></span>
+                  ENTER 1:1 상담센터
+                </div>
+                <div class="chat-header-sub">AI 상담원이 먼저 안내해 드립니다</div>
+              </div>
+              <button class="chat-close-btn" title="닫기">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Body -->
+            <div class="chat-body">
+              <div class="chat-timestamp">오늘 오전 9:40</div>
+
+              <!-- Assistant Greeting Bubble -->
+              <div class="assistant-msg-row">
+                <div class="assistant-avatar">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2 2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"></path>
+                    <path d="M4 11v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6"></path>
+                    <path d="M9 16h6"></path>
+                  </svg>
+                </div>
+                <div class="assistant-bubble">
+                  안녕하세요! 엔터 유선통신 도매 지원팀입니다. 원하시는 업무를 선택하시면 즉시 안내해 드립니다.
+                </div>
+              </div>
+
+              <!-- Quick Reply Chips -->
+              <div class="quick-chips-wrap">
+                <span class="chips-title">자주 묻는 질문 바로가기</span>
+                <button class="quick-chip">
+                  <span>정책 받기</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+                <button class="quick-chip">
+                  <span>거래 시작 방법</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+                <button class="quick-chip">
+                  <span>정산일 문의</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Footer Input -->
+            <div class="chat-footer">
+              <input type="text" class="chat-input" placeholder="궁금하신 내용을 입력해주세요..." readonly>
+              <button class="chat-send-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13"></line>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <ul class="detail-spec-list">
+          <li><strong>런처 외형:</strong> 60px 오렌지(`#E36B2C`) 원형 + 화이트 라인 채팅 아이콘, 좌측에 "1:1 상담센터" 알약 라벨 배치.</li>
+          <li><strong>비간섭 z-index 계층:</strong> 하단 스티키 바(64px) 상단 여백(`bottom: 84px`)에 배치하여 스티키 바의 버튼과 물리적 겹침 방지.</li>
+          <li><strong>오픈 패널 규격:</strong> 360×520px, 배경 `#FBF8F4`, 8px 곡률, 잉크 헤더 + 온라인 인디케이터.</li>
+          <li><strong>내부 컴포넌트:</strong> 어시스턴트 기본 환영 버블, 3개 퀵 리플라이 칩(`정책 받기`, `거래 시작 방법`, `정산일 문의`), 하단 인풋 & 전송 버튼.</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Interaction & Layout Integrity Rules -->
+    <div class="rule-banner">
+      <strong>상호 비간섭 레이아웃 및 디자인 규칙 준수 확인:</strong><br>
+      1. <strong>수직/수평 충돌 방지:</strong> 우측 퀵메뉴는 화면 세로 중앙(`top: 50%`)에 위치하며, 1:1 상담 런처는 하단 스티키 바(64px)보다 20px 위에 위치하여 스크롤 중에도 어떤 요소도 서로 가리거나 겹치지 않습니다.<br>
+      2. <strong>컬러 및 심볼 규칙:</strong> 지정된 6개 팔레트(`#FBF8F4`, `#10182B`, `#6B7280`, `#E9E3DA`, `#E36B2C`, `#FBE9DE`)만을 엄격히 사용하고, 외부 서드파티 로고 없이 1.5px~1.8px 순수 라인아트 아이콘으로 완성되었습니다.
+    </div>
+  </section>
+
+</body>
+</html>

@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ENTER 정책 받기 모달 디자인 사양 (Desktop & Mobile 3-States)</title>
+  <!-- Pretendard Font CDN -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'Roboto', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              ink: '#10182B',
+              bg: '#FBF8F4',
+              grey: '#6B7280',
+              line: '#E9E3DA',
+              orange: '#E36B2C',
+              error: '#C4561D',
+            }
+          },
+          boxShadow: {
+            'modal': '0 24px 64px rgba(16, 24, 43, 0.18)',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * {
+      word-break: keep-all;
+      -webkit-font-smoothing: antialiased;
+    }
+    body {
+      font-family: 'Pretendard', sans-serif;
+      background-color: #0d1322;
+      color: #10182B;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      height: 8px;
+      width: 8px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="min-h-screen text-slate-800 antialiased py-8 px-4 sm:px-8 selection:bg-[#E36B2C]/20 selection:text-[#E36B2C]">
+
+  <!-- Top Global Header / Design Specs Context -->
+  <header class="max-w-[1720px] mx-auto mb-10 pb-6 border-b border-white/10 flex flex-wrap items-end justify-between gap-4">
+    <div>
+      <div class="flex items-center gap-3 mb-2">
+        <span class="inline-flex items-center px-2.5 py-1 rounded text-xs font-semibold tracking-wider bg-[#E36B2C] text-white uppercase">ENTER Design System</span>
+        <span class="text-xs text-slate-400 font-mono">Modal & Bottom Sheet Specification</span>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">유선통신 도매 브랜드 ENTER — ‘정책 받기’ 모달 UI</h1>
+      <p class="text-sm text-slate-400 mt-1 max-w-2xl leading-relaxed">
+        매일 아침 발송되는 일일 정책표 신청 모달 컴포넌트입니다. 데스크톱 중앙 480px 모달과 모바일 390px 바텀시트 전용 레이아웃을 3가지 상태(기본 빈 상태, 입력값 에러, 접수 완료)로 한눈에 비교 검토할 수 있도록 구성되었습니다.
+      </p>
+    </div>
+
+    <!-- State View Selector / Legend -->
+    <div class="flex items-center gap-4 text-xs text-slate-300">
+      <div class="flex items-center gap-2 bg-white/5 border border-white/10 px-3.5 py-2 rounded-lg backdrop-blur-sm">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#E9E3DA]"></span>
+        <span class="font-medium text-slate-200">State 1: 기본 (미입력)</span>
+      </div>
+      <div class="flex items-center gap-2 bg-white/5 border border-white/10 px-3.5 py-2 rounded-lg backdrop-blur-sm">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#C4561D]"></span>
+        <span class="font-medium text-slate-200">State 2: 유효성 에러</span>
+      </div>
+      <div class="flex items-center gap-2 bg-white/5 border border-white/10 px-3.5 py-2 rounded-lg backdrop-blur-sm">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#E36B2C]"></span>
+        <span class="font-medium text-slate-200">State 3: 접수 완료</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-[1720px] mx-auto space-y-16">
+
+    <!-- ========================================== -->
+    <!-- SECTION 1: DESKTOP 1440px CONTEXT (3 STATES) -->
+    <!-- ========================================== -->
+    <section>
+      <div class="flex items-center justify-between mb-6">
+        <div class="flex items-baseline gap-3">
+          <h2 class="text-xl font-bold text-white tracking-tight">Desktop Viewport (1440px Grid)</h2>
+          <span class="text-xs font-mono text-slate-400">Modal Width: 480px · Backdrop: #10182B @ 40% · Radius: 8px · Padding: 40px</span>
+        </div>
+        <span class="text-xs text-slate-400 bg-white/5 px-2.5 py-1 rounded border border-white/10">3 States Side by Side</span>
+      </div>
+
+      <!-- Desktop 3-Columns Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+        <!-- ----------------------------------------- -->
+        <!-- STATE 1: Desktop Empty State               -->
+        <!-- ----------------------------------------- -->
+        <div class="flex flex-col">
+          <div class="flex items-center justify-between px-3 py-2 bg-black/40 border border-white/10 rounded-t-xl text-xs font-medium text-slate-300">
+            <span class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-[#E9E3DA]"></span>
+              State 1: 기본 빈 폼 (Disabled Button)
+            </span>
+            <span class="text-slate-500 font-mono">초기 렌더링 상태</span>
+          </div>
+
+          <!-- Simulated Desktop Backdrop Container -->
+          <div class="relative w-full min-h-[740px] rounded-b-xl overflow-hidden border border-t-0 border-white/10 flex items-center justify-center p-6"
+               style="background-color: rgba(16, 24, 43, 0.40); background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03) 0%, transparent 80%);">
+            
+            <!-- Contextual Dimmed Background Mock Wireframe -->
+            <div class="absolute inset-0 pointer-events-none opacity-20 p-8 flex flex-col justify-between">
+              <div class="flex justify-between items-center border-b border-white/20 pb-4">
+                <span class="font-bold text-lg text-white tracking-tight">ENTER TELECOM</span>
+                <div class="flex gap-4 text-xs text-white"><span>통신정책</span><span>단가표</span><span>상담센터</span></div>
+              </div>
+              <div class="text-center text-white/50 text-xs font-mono">ENTER WIRED WHOLESALE DASHBOARD BG</div>
+              <div class="h-8"></div>
+            </div>
+
+            <!-- MODAL CARD: 480px, bg #FBF8F4, r: 8px, p: 40px -->
+            <div class="relative w-full max-w-[480px] bg-[#FBF8F4] rounded-[8px] p-10 shadow-[0_24px_64px_rgba(16,24,43,0.18)] border border-[#E9E3DA]/60">
+              
+              <!-- Close Button -->
+              <button type="button" aria-label="닫기" class="absolute top-6 right-6 w-8 h-8 flex items-center justify-center text-[#10182B] hover:opacity-70 transition-opacity text-2xl font-light leading-none focus:outline-none">
+                &times;
+              </button>
+
+              <!-- Header Content -->
+              <div class="mb-7">
+                <!-- Small Orange Label -->
+                <span class="inline-block text-[#E36B2C] text-xs font-semibold tracking-wider mb-2.5">정책 받기</span>
+                
+                <!-- Title (28px, bold, ink, 2 lines) -->
+                <h3 class="text-[28px] font-bold text-[#10182B] leading-[1.3] tracking-[-0.02em] mb-2.5">
+                  매일 아침 정책표를<br>먼저 보내드립니다.
+                </h3>
+                
+                <!-- Sub (15px, grey #6B7280) -->
+                <p class="text-[15px] text-[#6B7280] leading-relaxed">
+                  상호명과 연락처만 남겨주시면 담당자가 확인 후 연락드립니다.
+                </p>
+              </div>
+
+              <!-- Form Body -->
+              <form class="space-y-4" onsubmit="event.preventDefault();">
+                <!-- Field 1: 상호명 -->
+                <div>
+                  <label for="desktop-s1-company" class="block text-xs font-semibold text-[#10182B] mb-2 tracking-tight">
+                    상호명
+                  </label>
+                  <input
+                    id="desktop-s1-company"
+                    type="text"
+                    placeholder="예) 엔터모바일 강남점"
+                    class="w-full h-[52px] bg-white border border-[#E9E3DA] rounded-[6px] px-4 text-[16px] text-[#10182B] placeholder:text-[#6B7280]/50 transition-colors focus:outline-none focus:border-[1.5px] focus:border-[#E36B2C]"
+                  />
+                </div>
+
+                <!-- Field 2: 연락 가능한 번호 -->
+                <div>
+                  <label for="desktop-s1-phone" class="block text-xs font-semibold text-[#10182B] mb-2 tracking-tight">
+                    연락 가능한 번호
+                  </label>
+                  <input
+                    id="desktop-s1-phone"
+                    type="tel"
+                    inputmode="numeric"
+                    placeholder="010-0000-0000"
+                    class="w-full h-[52px] bg-white border border-[#E9E3DA] rounded-[6px] px-4 text-[16px] text-[#10182B] placeholder:text-[#6B7280]/50 transition-colors focus:outline-none focus:border-[1.5px] focus:border-[#E36B2C]"
+                  />
+                </div>
+
+                <!-- Consent Row -->
+                <div class="pt-2">
+                  <div class="flex items-center justify-between text-[13px] leading-tight">
+                    <label class="flex items-center gap-2 cursor-pointer select-none text-[#10182B]">
+                      <input
+                        type="checkbox"
+                        class="w-4 h-4 rounded border-[#E9E3DA] text-[#E36B2C] focus:ring-0 cursor-pointer accent-[#E36B2C]"
+                      />
+                      <span>개인정보 수집·이용에 동의합니다 <span class="font-medium">(필수)</span></span>
+                    </label>
+                    <a href="#view-terms" class="text-[#6B7280] underline underline-offset-2 hover:text-[#10182B] text-xs">
+                      내용 보기
+                    </a>
+                  </div>
+                  <!-- Notice Microcopy -->
+                  <p class="text-[11px] text-[#6B7280] leading-[1.4] mt-2 pl-6">
+                    수집 항목: 상호명, 연락처 · 이용 목적: 정책 안내 및 거래 상담 · 보관 기간: 상담 종료 후 1년
+                  </p>
+                </div>
+
+                <!-- Submit Button: Disabled Look -->
+                <div class="pt-2">
+                  <button
+                    type="button"
+                    disabled
+                    class="w-full h-[52px] bg-[#E9E3DA] text-[#6B7280] font-bold rounded-[6px] text-[16px] tracking-tight cursor-not-allowed transition-all select-none flex items-center justify-center"
+                  >
+                    정책 받기 신청
+                  </button>
+                </div>
+
+                <!-- Quick Call Line -->
+                <div class="text-center pt-2">
+                  <p class="text-[13px] text-[#6B7280]">
+                    급하시면 전화 <a href="tel:010-2222-4183" class="underline underline-offset-2 hover:text-[#10182B] font-medium text-[#10182B]">010-2222-4183</a>
+                  </p>
+                </div>
+              </form>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- ----------------------------------------- -->
+        <!-- STATE 2: Desktop Error State               -->
+        <!-- ----------------------------------------- -->
+        <div class="flex flex-col">
+          <div class="flex items-center justify-between px-3 py-2 bg-black/40 border border-white/10 rounded-t-xl text-xs font-medium text-slate-300">
+            <span class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-[#C4561D]"></span>
+              State 2: 입력값 오류 (Validation Error)
+            </span>
+            <span class="text-[#C4561D] font-mono">border #C4561D / 에러문구 표기</span>
+          </div>
+
+          <!-- Simulated Desktop Backdrop Container -->
+          <div class="relative w-full min-h-[740px] rounded-b-xl overflow-hidden border border-t-0 border-white/10 flex items-center justify-center p-6"
+               style="background-color: rgba(16, 24, 43, 0.40); background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03) 0%, transparent 80%);">
+            
+            <!-- MODAL CARD -->
+            <div class="relative w-full max-w-[480px] bg-[#FBF8F4] rounded-[8px] p-10 shadow-[0_24px_64px_rgba(16,24,43,0.18)] border border-[#E9E3DA]/60">
+              
+              <!-- Close Button -->
+              <button type="button" aria-label="닫기" class="absolute top-6 right-6 w-8 h-8 flex items-center justify-center text-[#10182B] hover:opacity-70 transition-opacity text-2xl font-light leading-none focus:outline-none">
+                &times;
+              </button>
+
+              <!-- Header Content -->
+              <div class="mb-7">
+                <span class="inline-block text-[#E36B2C] text-xs font-semibold tracking-wider mb-2.5">정책 받기</span>
+                <h3 class="text-[28px] font-bold text-[#10182B] leading-[1.3] tracking-[-0.02em] mb-2.5">
+                  매일 아침 정책표를<br>먼저 보내드립니다.
+                </h3>
+                <p class="text-[15px] text-[#6B7280] leading-relaxed">
+                  상호명과 연락처만 남겨주시면 담당자가 확인 후 연락드립니다.
+                </p>
+              </div>
+
+              <!-- Form Body with Error Validation -->
+              <form class="space-y-4" onsubmit="event.preventDefault();">
+                <!-- Field 1: 상호명 (Filled) -->
+                <div>
+                  <label for="desktop-s2-company" class="block text-xs font-semibold text-[#10182B] mb-2 tracking-tight">
+                    상호명
+                  </label>
+                  <input
+                    id="desktop-s2-company"
+                    type="text"
+                    value="엔터통신 테헤란로점"
+                    class="w-full h-[52px] bg-white border border-[#E9E3DA] rounded-[6px] px-4 text-[16px] text-[#10182B] font-medium transition-colors focus:outline-none focus:border-[1.5px] focus:border-[#E36B2C]"
+                  />
+                </div>
+
+                <!-- Field 2: 연락 가능한 번호 (ERROR STATE: 1.5px border #C4561D) -->
+                <div>
+                  <label for="desktop-s2-phone" class="block text-xs font-semibold text-[#10182B] mb-2 tracking-tight">
+                    연락 가능한 번호
+                  </label>
+                  <input
+                    id="desktop-s2-phone"
+                    type="tel"
+                    inputmode="numeric"
+                    value="010-234-56"
+                    aria-invalid="true"
+                    aria-describedby="phone-error-desc"
+                    class="w-full h-[52px] bg-white border-[1.5px] border-[#C4561D] rounded-[6px] px-4 text-[16px] text-[#10182B] font-medium transition-colors focus:outline-none"
+                  />
+                  <!-- Error Message text below in #C4561D -->
+                  <p id="phone-error-desc" class="text-[13px] text-[#C4561D] font-medium mt-1.5 flex items-center gap-1">
+                    번호를 다시 확인해주세요
+                  </p>
+                </div>
+
+                <!-- Consent Row (Checked) -->
+                <div class="pt-2">
+                  <div class="flex items-center justify-between text-[13px] leading-tight">
+                    <label class="flex items-center gap-2 cursor-pointer select-none text-[#10182B]">
+                      <input
+                        type="checkbox"
+                        checked
+                        class="w-4 h-4 rounded border-[#E9E3DA] text-[#E36B2C] focus:ring-0 cursor-pointer accent-[#E36B2C]"
+                      />
+                      <span class="font-medium">개인정보 수집·이용에 동의합니다 (필수)</span>
+                    </label>
+                    <a href="#view-terms" class="text-[#6B7280] underline underline-offset-2 hover:text-[#10182B] text-xs">
+                      내용 보기
+                    </a>
+                  </div>
+                  <p class="text-[11px] text-[#6B7280] leading-[1.4] mt-2 pl-6">
+                    수집 항목: 상호명, 연락처 · 이용 목적: 정책 안내 및 거래 상담 · 보관 기간: 상담 종료 후 1년
+                  </p>
+                </div>
+
+                <!-- Submit Button: Active Orange State -->
+                <div class="pt-2">
+                  <button
+                    type="button"
+                    class="w-full h-[52px] bg-[#E36B2C] hover:bg-[#c9591f] text-white font-bold rounded-[6px] text-[16px] tracking-tight transition-all select-none flex items-center justify-center active:scale-[0.99]"
+                  >
+                    정책 받기 신청
+                  </button>
+                </div>
+
+                <!-- Quick Call Line -->
+                <div class="text-center pt-2">
+                  <p class="text-[13px] text-[#6B7280]">
+                    급하시면 전화 <a href="tel:010-2222-4183" class="underline underline-offset-2 hover:text-[#10182B] font-medium text-[#10182B]">010-2222-4183</a>
+                  </p>
+                </div>
+              </form>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- ----------------------------------------- -->
+        <!-- STATE 3: Desktop Success State             -->
+        <!-- ----------------------------------------- -->
+        <div class="flex flex-col">
+          <div class="flex items-center justify-between px-3 py-2 bg-black/40 border border-white/10 rounded-t-xl text-xs font-medium text-slate-300">
+            <span class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-[#E36B2C]"></span>
+              State 3: 접수 성공 (Success Dialog)
+            </span>
+            <span class="text-emerald-400 font-mono">라인아트 체크 / 확인 버튼</span>
+          </div>
+
+          <!-- Simulated Desktop Backdrop Container -->
+          <div class="relative w-full min-h-[740px] rounded-b-xl overflow-hidden border border-t-0 border-white/10 flex items-center justify-center p-6"
+               style="background-color: rgba(16, 24, 43, 0.40); background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03) 0%, transparent 80%);">
+            
+            <!-- MODAL CARD (Same modal container: 480px, #FBF8F4, r:8px, p:40px) -->
+            <div class="relative w-full max-w-[480px] bg-[#FBF8F4] rounded-[8px] p-10 shadow-[0_24px_64px_rgba(16,24,43,0.18)] border border-[#E9E3DA]/60 flex flex-col items-center text-center">
+              
+              <!-- Close Button -->
+              <button type="button" aria-label="닫기" class="absolute top-6 right-6 w-8 h-8 flex items-center justify-center text-[#10182B] hover:opacity-70 transition-opacity text-2xl font-light leading-none focus:outline-none">
+                &times;
+              </button>
+
+              <div class="w-full py-8 flex flex-col items-center">
+                <!-- Thin orange check mark in a circle (line art, no fill) -->
+                <div class="w-16 h-16 rounded-full border-[1.5px] border-[#E36B2C] flex items-center justify-center mb-6 text-[#E36B2C]">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E36B2C" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </div>
+
+                <!-- Title (28px, bold, ink) -->
+                <h3 class="text-[26px] sm:text-[28px] font-bold text-[#10182B] tracking-[-0.02em] mb-3">
+                  신청이 접수되었습니다.
+                </h3>
+
+                <!-- Sub (15px, grey #6B7280) -->
+                <p class="text-[15px] text-[#6B7280] leading-relaxed max-w-[340px] mb-8">
+                  영업일 기준 당일 중 담당자가 연락드립니다.
+                </p>
+
+                <!-- One Ink Button: 52px, full width, bg #10182B, white text "확인" -->
+                <button
+                  type="button"
+                  class="w-full h-[52px] bg-[#10182B] hover:bg-[#1a253e] text-white font-bold rounded-[6px] text-[16px] tracking-tight transition-colors active:scale-[0.99]"
+                >
+                  확인
+                </button>
+
+                <!-- Under-action quiet guide -->
+                <p class="text-xs text-[#6B7280] mt-5">
+                  도매 정책표는 승인 후 카카오톡 또는 문자로 발송됩니다.
+                </p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECTION 2: MOBILE 390px VIEWPORT CONTEXT  -->
+    <!-- ========================================== -->
+    <section class="pt-6 border-t border-white/10">
+      <div class="flex items-center justify-between mb-6">
+        <div class="flex items-baseline gap-3">
+          <h2 class="text-xl font-bold text-white tracking-tight">Mobile Viewport (390px Bottom Sheet)</h2>
+          <span class="text-xs font-mono text-slate-400">Width: 390px · Full-Width Bottom Sheet · Radius: Top-only 12px · Backdrop: #10182B @ 40%</span>
+        </div>
+        <span class="text-xs text-slate-400 bg-white/5 px-2.5 py-1 rounded border border-white/10">iOS / Android Mobile Standard</span>
+      </div>
+
+      <!-- Mobile 3-Columns Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center lg:place-items-stretch">
+
+        <!-- ----------------------------------------- -->
+        <!-- MOBILE STATE 1: Empty Bottom Sheet        -->
+        <!-- ----------------------------------------- -->
+        <div class="w-full max-w-[390px] flex flex-col mx-auto">
+          <div class="flex items-center justify-between px-3 py-2 bg-black/40 border border-white/10 rounded-t-xl text-xs font-medium text-slate-300">
+            <span class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-[#E9E3DA]"></span>
+              Mobile 1: 기본 바텀시트
+            </span>
+            <span class="text-slate-500 font-mono">390 × 844</span>
+          </div>
+
+          <!-- Simulated Mobile Phone Frame (390px wide) -->
+          <div class="relative w-full h-[780px] bg-[#1a2336] rounded-b-2xl border border-t-0 border-white/10 overflow-hidden flex flex-col justify-end"
+               style="background-color: rgba(16, 24, 43, 0.40);">
+            
+            <!-- Mobile Backdrop Content Mock -->
+            <div class="absolute inset-0 p-5 opacity-20 pointer-events-none">
+              <div class="h-6 w-24 bg-white/40 rounded mb-6"></div>
+              <div class="h-32 bg-white/20 rounded-xl mb-4"></div>
+              <div class="h-24 bg-white/15 rounded-xl mb-4"></div>
+              <div class="h-24 bg-white/10 rounded-xl"></div>
+            </div>
+
+            <!-- Mobile Bottom Sheet: full width, rounded 12px top corners only, bg #FBF8F4 -->
+            <div class="relative w-full bg-[#FBF8F4] rounded-t-[12px] p-6 shadow-[0_-12px_40px_rgba(16,24,43,0.18)] border-t border-[#E9E3DA]/80">
+              
+              <!-- Sheet Handle Indicator -->
+              <div class="w-10 h-1 bg-[#10182B]/15 rounded-full mx-auto -mt-2 mb-4"></div>
+
+              <!-- Close Button -->
+              <button type="button" aria-label="닫기" class="absolute top-4 right-5 w-8 h-8 flex items-center justify-center text-[#10182B] text-2xl font-light leading-none focus:outline-none">
+                &times;
+              </button>
+
+              <!-- Header Content -->
+              <div class="mb-5 pr-6">
+                <span class="inline-block text-[#E36B2C] text-xs font-semibold tracking-wider mb-1.5">정책 받기</span>
+                <h3 class="text-[22px] font-bold text-[#10182B] leading-[1.3] tracking-[-0.02em] mb-2">
+                  매일 아침 정책표를<br>먼저 보내드립니다.
+                </h3>
+                <p class="text-[13px] text-[#6B7280] leading-relaxed">
+                  상호명과 연락처만 남겨주시면 담당자가 확인 후 연락드립니다.
+                </p>
+              </div>
+
+              <!-- Mobile Form -->
+              <form class="space-y-3.5" onsubmit="event.preventDefault();">
+                <div>
+                  <label for="mobile-s1-company" class="block text-xs font-semibold text-[#10182B] mb-1.5">상호명</label>
+                  <input
+                    id="mobile-s1-company"
+                    type="text"
+                    placeholder="예) 엔터모바일 강남점"
+                    class="w-full h-[52px] bg-white border border-[#E9E3DA] rounded-[6px] px-4 text-[16px] text-[#10182B] placeholder:text-[#6B7280]/50 focus:outline-none focus:border-[1.5px] focus:border-[#E36B2C]"
+                  />
+                </div>
+
+                <div>
+                  <label for="mobile-s1-phone" class="block text-xs font-semibold text-[#10182B] mb-1.5">연락 가능한 번호</label>
+                  <!-- Numeric keypad on mobile: type="tel" pattern="[0-9]*" inputmode="numeric" -->
+                  <input
+                    id="mobile-s1-phone"
+                    type="tel"
+                    inputmode="numeric"
+                    pattern="[0-9]*"
+                    placeholder="010-0000-0000"
+                    class="w-full h-[52px] bg-white border border-[#E9E3DA] rounded-[6px] px-4 text-[16px] text-[#10182B] placeholder:text-[#6B7280]/50 focus:outline-none focus:border-[1.5px] focus:border-[#E36B2C]"
+                  />
+                </div>
+
+                <!-- Consent -->
+                <div class="pt-1">
+                  <div class="flex items-center justify-between text-xs leading-tight">
+                    <label class="flex items-center gap-2 cursor-pointer select-none text-[#10182B]">
+                      <input type="checkbox" class="w-4 h-4 rounded border-[#E9E3DA] text-[#E36B2C] accent-[#E36B2C]" />
+                      <span>개인정보 수집·이용에 동의 (필수)</span>
+                    </label>
+                    <a href="#view-terms" class="text-[#6B7280] underline text-[11px]">내용 보기</a>
+                  </div>
+                  <p class="text-[10px] text-[#6B7280] leading-[1.3] mt-1.5 pl-6">
+                    수집: 상호명, 연락처 · 목적: 정책 안내 · 보관: 상담 종료 후 1년
+                  </p>
+                </div>
+
+                <!-- Submit Button Disabled -->
+                <div class="pt-1">
+                  <button type="button" disabled class="w-full h-[52px] bg-[#E9E3DA] text-[#6B7280] font-bold rounded-[6px] text-[15px] select-none">
+                    정책 받기 신청
+                  </button>
+                </div>
+
+                <!-- Fast Contact -->
+                <div class="text-center pb-2">
+                  <p class="text-xs text-[#6B7280]">
+                    급하시면 전화 <a href="tel:010-2222-4183" class="underline font-medium text-[#10182B]">010-2222-4183</a>
+                  </p>
+                </div>
+              </form>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- ----------------------------------------- -->
+        <!-- MOBILE STATE 2: Validation Error          -->
+        <!-- ----------------------------------------- -->
+        <div class="w-full max-w-[390px] flex flex-col mx-auto">
+          <div class="flex items-center justify-between px-3 py-2 bg-black/40 border border-white/10 rounded-t-xl text-xs font-medium text-slate-300">
+            <span class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-[#C4561D]"></span>
+              Mobile 2: 입력값 에러 바텀시트
+            </span>
+            <span class="text-[#C4561D] font-mono">Validation active</span>
+          </div>
+
+          <!-- Frame -->
+          <div class="relative w-full h-[780px] bg-[#1a2336] rounded-b-2xl border border-t-0 border-white/10 overflow-hidden flex flex-col justify-end"
+               style="background-color: rgba(16, 24, 43, 0.40);">
+            
+            <div class="relative w-full bg-[#FBF8F4] rounded-t-[12px] p-6 shadow-[0_-12px_40px_rgba(16,24,43,0.18)] border-t border-[#E9E3DA]/80">
+              
+              <div class="w-10 h-1 bg-[#10182B]/15 rounded-full mx-auto -mt-2 mb-4"></div>
+
+              <button type="button" aria-label="닫기" class="absolute top-4 right-5 w-8 h-8 flex items-center justify-center text-[#10182B] text-2xl font-light leading-none">
+                &times;
+              </button>
+
+              <div class="mb-5 pr-6">
+                <span class="inline-block text-[#E36B2C] text-xs font-semibold tracking-wider mb-1.5">정책 받기</span>
+                <h3 class="text-[22px] font-bold text-[#10182B] leading-[1.3] tracking-[-0.02em] mb-2">
+                  매일 아침 정책표를<br>먼저 보내드립니다.
+                </h3>
+                <p class="text-[13px] text-[#6B7280] leading-relaxed">
+                  상호명과 연락처만 남겨주시면 담당자가 확인 후 연락드립니다.
+                </p>
+              </div>
+
+              <form class="space-y-3.5" onsubmit="event.preventDefault();">
+                <div>
+                  <label for="mobile-s2-company" class="block text-xs font-semibold text-[#10182B] mb-1.5">상호명</label>
+                  <input
+                    id="mobile-s2-company"
+                    type="text"
+                    value="대성네트웍스 대전점"
+                    class="w-full h-[52px] bg-white border border-[#E9E3DA] rounded-[6px] px-4 text-[16px] text-[#10182B] font-medium focus:outline-none"
+                  />
+                </div>
+
+                <!-- Error Field: Mobile Numeric Keypad Activated -->
+                <div>
+                  <label for="mobile-s2-phone" class="block text-xs font-semibold text-[#10182B] mb-1.5">연락 가능한 번호</label>
+                  <input
+                    id="mobile-s2-phone"
+                    type="tel"
+                    inputmode="numeric"
+                    pattern="[0-9]*"
+                    value="010-888-99"
+                    class="w-full h-[52px] bg-white border-[1.5px] border-[#C4561D] rounded-[6px] px-4 text-[16px] text-[#10182B] font-medium focus:outline-none"
+                  />
+                  <p class="text-[12px] text-[#C4561D] font-medium mt-1">
+                    번호를 다시 확인해주세요
+                  </p>
+                </div>
+
+                <!-- Consent Checked -->
+                <div class="pt-1">
+                  <div class="flex items-center justify-between text-xs leading-tight">
+                    <label class="flex items-center gap-2 cursor-pointer select-none text-[#10182B]">
+                      <input type="checkbox" checked class="w-4 h-4 rounded border-[#E9E3DA] text-[#E36B2C] accent-[#E36B2C]" />
+                      <span class="font-medium">개인정보 수집·이용에 동의 (필수)</span>
+                    </label>
+                    <a href="#view-terms" class="text-[#6B7280] underline text-[11px]">내용 보기</a>
+                  </div>
+                  <p class="text-[10px] text-[#6B7280] leading-[1.3] mt-1.5 pl-6">
+                    수집: 상호명, 연락처 · 목적: 정책 안내 · 보관: 상담 종료 후 1년
+                  </p>
+                </div>
+
+                <!-- Active Button -->
+                <div class="pt-1">
+                  <button type="button" class="w-full h-[52px] bg-[#E36B2C] text-white font-bold rounded-[6px] text-[15px] select-none">
+                    정책 받기 신청
+                  </button>
+                </div>
+
+                <div class="text-center pb-2">
+                  <p class="text-xs text-[#6B7280]">
+                    급하시면 전화 <a href="tel:010-2222-4183" class="underline font-medium text-[#10182B]">010-2222-4183</a>
+                  </p>
+                </div>
+              </form>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- ----------------------------------------- -->
+        <!-- MOBILE STATE 3: Success Bottom Sheet      -->
+        <!-- ----------------------------------------- -->
+        <div class="w-full max-w-[390px] flex flex-col mx-auto">
+          <div class="flex items-center justify-between px-3 py-2 bg-black/40 border border-white/10 rounded-t-xl text-xs font-medium text-slate-300">
+            <span class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-[#E36B2C]"></span>
+              Mobile 3: 완료 바텀시트
+            </span>
+            <span class="text-emerald-400 font-mono">Complete State</span>
+          </div>
+
+          <!-- Frame -->
+          <div class="relative w-full h-[780px] bg-[#1a2336] rounded-b-2xl border border-t-0 border-white/10 overflow-hidden flex flex-col justify-end"
+               style="background-color: rgba(16, 24, 43, 0.40);">
+            
+            <div class="relative w-full bg-[#FBF8F4] rounded-t-[12px] p-6 shadow-[0_-12px_40px_rgba(16,24,43,0.18)] border-t border-[#E9E3DA]/80 flex flex-col items-center text-center">
+              
+              <div class="w-10 h-1 bg-[#10182B]/15 rounded-full mx-auto -mt-2 mb-4"></div>
+
+              <button type="button" aria-label="닫기" class="absolute top-4 right-5 w-8 h-8 flex items-center justify-center text-[#10182B] text-2xl font-light leading-none">
+                &times;
+              </button>
+
+              <div class="w-full py-6 flex flex-col items-center">
+                <!-- Checkmark Icon Circle -->
+                <div class="w-14 h-14 rounded-full border-[1.5px] border-[#E36B2C] flex items-center justify-center mb-5 text-[#E36B2C]">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E36B2C" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </div>
+
+                <h3 class="text-[22px] font-bold text-[#10182B] tracking-[-0.02em] mb-2">
+                  신청이 접수되었습니다.
+                </h3>
+
+                <p class="text-[13px] text-[#6B7280] leading-relaxed max-w-[280px] mb-8">
+                  영업일 기준 당일 중 담당자가 연락드립니다.
+                </p>
+
+                <!-- Full-width Ink Button -->
+                <button
+                  type="button"
+                  class="w-full h-[52px] bg-[#10182B] text-white font-bold rounded-[6px] text-[15px] tracking-tight transition-colors active:scale-[0.99]"
+                >
+                  확인
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECTION 3: DESIGN TOKENS & SPECS AUDIT    -->
+    <!-- ========================================== -->
+    <section class="bg-white/5 border border-white/10 rounded-2xl p-6 sm:p-8 text-white">
+      <h3 class="text-base font-bold uppercase tracking-wider text-slate-300 mb-6 flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-[#E36B2C]"></span>
+        Strict Brand Token & Interaction Specifications
+      </h3>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 text-xs">
+        <div class="p-3.5 rounded-lg border border-white/10 bg-white/5">
+          <span class="block text-slate-400 font-mono text-[10px] mb-1">Background</span>
+          <div class="flex items-center gap-2">
+            <span class="w-4 h-4 rounded border border-white/20" style="background-color: #FBF8F4;"></span>
+            <span class="font-mono font-semibold">#FBF8F4</span>
+          </div>
+          <span class="text-slate-500 text-[10px] mt-1 block">모달/시트 기본 배경</span>
+        </div>
+
+        <div class="p-3.5 rounded-lg border border-white/10 bg-white/5">
+          <span class="block text-slate-400 font-mono text-[10px] mb-1">Ink (Main Text)</span>
+          <div class="flex items-center gap-2">
+            <span class="w-4 h-4 rounded border border-white/20" style="background-color: #10182B;"></span>
+            <span class="font-mono font-semibold">#10182B</span>
+          </div>
+          <span class="text-slate-500 text-[10px] mt-1 block">타이틀 & 딤 배경 (40%)</span>
+        </div>
+
+        <div class="p-3.5 rounded-lg border border-white/10 bg-white/5">
+          <span class="block text-slate-400 font-mono text-[10px] mb-1">Accent Orange</span>
+          <div class="flex items-center gap-2">
+            <span class="w-4 h-4 rounded border border-white/20" style="background-color: #E36B2C;"></span>
+            <span class="font-mono font-semibold">#E36B2C</span>
+          </div>
+          <span class="text-slate-500 text-[10px] mt-1 block">버튼, 포커스(1.5px), 태그</span>
+        </div>
+
+        <div class="p-3.5 rounded-lg border border-white/10 bg-white/5">
+          <span class="block text-slate-400 font-mono text-[10px] mb-1">Error Accent</span>
+          <div class="flex items-center gap-2">
+            <span class="w-4 h-4 rounded border border-white/20" style="background-color: #C4561D;"></span>
+            <span class="font-mono font-semibold">#C4561D</span>
+          </div>
+          <span class="text-slate-500 text-[10px] mt-1 block">보더 & 오류 안내 텍스트</span>
+        </div>
+
+        <div class="p-3.5 rounded-lg border border-white/10 bg-white/5">
+          <span class="block text-slate-400 font-mono text-[10px] mb-1">Grey Subtext</span>
+          <div class="flex items-center gap-2">
+            <span class="w-4 h-4 rounded border border-white/20" style="background-color: #6B7280;"></span>
+            <span class="font-mono font-semibold">#6B7280</span>
+          </div>
+          <span class="text-slate-500 text-[10px] mt-1 block">설명문, 약관 안내문</span>
+        </div>
+
+        <div class="p-3.5 rounded-lg border border-white/10 bg-white/5">
+          <span class="block text-slate-400 font-mono text-[10px] mb-1">Lines & Border</span>
+          <div class="flex items-center gap-2">
+            <span class="w-4 h-4 rounded border border-white/20" style="background-color: #E9E3DA;"></span>
+            <span class="font-mono font-semibold">#E9E3DA</span>
+          </div>
+          <span class="text-slate-500 text-[10px] mt-1 block">1px 인풋 보더 & 비활성 버튼</span>
+        </div>
+      </div>
+
+      <div class="mt-6 pt-6 border-t border-white/10 grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-slate-400 leading-relaxed">
+        <div>
+          <strong class="text-slate-200 block mb-1">데스크톱 모달 규격</strong>
+          가로 480px 고정, 패딩 40px, 코너 곡률 8px. 백드롭은 Ink(#10182B) 컬러의 40% 불투명도 적용. 그림자는 0 24px 64px rgba(16,24,43,.18)의 부드러운 단일 섀도우를 사용합니다.
+        </div>
+        <div>
+          <strong class="text-slate-200 block mb-1">모바일 바텀시트 변환</strong>
+          폭 390px 뷰포트에서 하단 밀착 바텀시트로 자동 전환. 상단 코너만 12px 라운딩 처리하며, 전화번호 인풋은 모바일 숫자 키패드(`inputmode="numeric"`)가 트리거됩니다.
+        </div>
+        <div>
+          <strong class="text-slate-200 block mb-1">타이포그래피 및 카피 규칙</strong>
+          Pretendard 서체 기반, `word-break: keep-all` 적용으로 한글 단어 끊김 방지. 지정된 모든 문구(상호명 예시, 약관 상세, 직통 전화 링크)를 오탈자 없이 완벽히 유지합니다.
+        </div>
+      </div>
+    </section>
+
+  </main>
+</body>
+</html>

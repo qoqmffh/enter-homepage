@@ -1,0 +1,92 @@
+/* 정책 받기 신청 팝업(지시서 2026-11-13) — static/lead-modal.js 짝, templates/partials/lead_modal.html.
+   데스크톱: 가운데 480px 카드. 1023px 이하: 아래에서 올라오는 바텀시트(위쪽만 12px 모서리). */
+.lm-backdrop{
+  position:fixed; inset:0; z-index:100;
+  background:rgba(16,24,43,.4);
+  display:flex; align-items:center; justify-content:center;
+  opacity:0; transition:opacity .25s ease;
+  padding:24px;
+}
+.lm-backdrop[hidden]{ display:none; }
+.lm-backdrop.is-open{ opacity:1; }
+
+.lm-modal{
+  position:relative; width:480px; max-width:100%; max-height:90vh; overflow-y:auto;
+  background:var(--hp-white); border-radius:var(--radius-card);
+  padding:40px;
+  box-shadow:0 24px 64px rgba(16,24,43,.18);
+  transform:translateY(12px); transition:transform .25s ease;
+}
+.lm-backdrop.is-open .lm-modal{ transform:translateY(0); }
+
+.lm-handle{ display:none; }
+
+.lm-close{
+  position:absolute; top:24px; right:24px; width:28px; height:28px;
+  display:flex; align-items:center; justify-content:center;
+  background:none; border:0; color:var(--hp-ink); font-size:24px; font-weight:300; line-height:1;
+  cursor:pointer; padding:0;
+}
+.lm-close:hover{ opacity:.7; }
+
+.lm-label{ display:block; font-size:12px; font-weight:700; color:var(--hp-accent); letter-spacing:.02em; margin-bottom:10px; }
+.lm-title{ font-size:28px; font-weight:800; color:var(--hp-ink); letter-spacing:-.01em; line-height:1.35; margin:0 0 12px; }
+.lm-title--center{ text-align:center; }
+.lm-sub{ font-size:15px; color:var(--hp-grey); line-height:1.6; margin:0 0 28px; }
+.lm-sub--center{ text-align:center; }
+
+.lm-field{ margin-bottom:16px; }
+.lm-field label{ display:block; font-size:13px; font-weight:600; color:var(--hp-ink); margin-bottom:8px; }
+.lm-field input{
+  width:100%; height:52px; box-sizing:border-box; padding:0 16px;
+  background:#fff; border:1px solid var(--hp-line); border-radius:var(--radius-btn);
+  font-size:16px; font-family:inherit; color:var(--hp-ink);
+  transition:border-color .15s ease, border-width .15s ease;
+}
+.lm-field input::placeholder{ color:#B9B2A5; }
+.lm-field input:focus{ outline:none; border-color:var(--hp-accent); border-width:1.5px; }
+.lm-field input.is-error{ border-color:var(--hp-accent-text); border-width:1.5px; }
+.lm-error{ margin:8px 0 0; font-size:12.5px; color:var(--hp-accent-text); }
+
+/* 스팸 방지 허니팟 — 화면 밖으로 치워서 실제 사용자 눈/탭 순서에는 안 걸린다 */
+.lm-honeypot{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
+
+.lm-consent{ margin-bottom:24px; }
+.lm-consent-row{ display:flex; align-items:flex-start; gap:8px; font-size:13px; color:var(--hp-ink); cursor:pointer; }
+.lm-consent-row input{ margin-top:2px; width:16px; height:16px; accent-color:var(--hp-accent); flex:0 0 auto; }
+.lm-consent-more{ display:block; background:none; border:0; padding:0; margin:6px 0 0 24px; font-size:12px; color:var(--hp-grey); text-decoration:underline; cursor:pointer; font-family:inherit; }
+.lm-consent-detail{ margin:10px 0 0 24px; font-size:11.5px; color:var(--hp-grey); line-height:1.6; }
+
+.lm-submit{
+  display:block; width:100%; height:52px; border:0; border-radius:var(--radius-btn);
+  background:var(--hp-accent); color:#fff; font-size:16px; font-weight:700; font-family:inherit;
+  cursor:pointer; transition:background .15s ease;
+}
+.lm-submit:hover:not(:disabled){ background:var(--hp-ink); }
+.lm-submit:disabled{ background:var(--hp-line); color:#A39D90; cursor:default; }
+
+.lm-foot{ margin:16px 0 0; text-align:center; font-size:13px; color:var(--hp-grey); }
+.lm-foot a{ color:var(--hp-grey); text-decoration:underline; }
+
+.lm-check{
+  width:64px; height:64px; margin:0 auto 24px; border-radius:50%;
+  border:1.5px solid var(--hp-accent); color:var(--hp-accent);
+  display:flex; align-items:center; justify-content:center;
+}
+
+html.lm-scroll-lock, html.lm-scroll-lock body{ overflow:hidden; height:100%; }
+
+@media (max-width:1023px){
+  .lm-backdrop{ align-items:flex-end; padding:0; }
+  .lm-modal{
+    width:100%; max-width:none; border-radius:12px 12px 0 0;
+    padding:28px 24px calc(24px + env(safe-area-inset-bottom, 0px));
+    max-height:85vh;
+  }
+  .lm-handle{ display:block; width:36px; height:4px; border-radius:2px; background:var(--hp-line); margin:0 auto 16px; }
+  .lm-close{ top:16px; right:16px; }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .lm-backdrop, .lm-modal{ transition:none; }
+}

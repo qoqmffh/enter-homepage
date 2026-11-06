@@ -20,8 +20,14 @@
         <p class="sp-hero-label">● {{ data.label }}</p>
         <h1 class="sp-hero-headline">{% for line in data.headline %}{{ line }}{% if not loop.last %}<br>{% endif %}{% endfor %}</h1>
         {% if data.subline %}<p class="sp-hero-sub">{{ data.subline | safe }}</p>{% endif %}
+        {# 정책 받기 팝업(지시서 2026-11-13) — "카카오톡"이 들어간 라벨만 카톡 커서 + kakao_url로
+           직행하고, 나머지는 팝업을 연다. FAQ 히어로의 "전화로 묻기"만 원래대로 CTA 띠로
+           스크롤만 한다(세 가지 버튼 이름에 안 들어맞고, 전화 상담을 바로 유도하는 문구라서
+           팝업으로 가로채지 않기로 했다 — 판단 근거는 보고 시 알림). #}
+        {% set is_kakao_btn = '카카오톡' in data.cta_primary %}
+        {% set is_phone_ask = data.cta_primary == '전화로 묻기' %}
         <div class="sp-hero-ctas">
-          <a class="hp-pill {% if sk %}hp-pill--primary{% else %}hp-pill--inverted{% endif %}" href="#cta">{{ data.cta_primary }}</a>
+          <a class="hp-pill {% if sk %}hp-pill--primary{% else %}hp-pill--inverted{% endif %}" href="#lead"{% if is_kakao_btn %} data-cursor="kakao"{% endif %}{% if not is_phone_ask %} data-lead-trigger{% endif %}>{{ data.cta_primary }}</a>
           {% if variant == 'tall' %}<a class="hp-pill {% if sk %}hp-pill--secondary{% else %}hp-pill--outline{% endif %}" href="#faq">{{ data.cta_secondary }}</a>{% endif %}
         </div>
       </div>

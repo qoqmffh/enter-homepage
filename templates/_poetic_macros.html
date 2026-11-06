@@ -1,7 +1,10 @@
 {# ENTER 홈 — POETIC 버전 전용 Jinja 매크로. home.html에서만 import한다. #}
 
+{# kakao=True는 "정책 받기 팝업" 계열 버튼이라는 뜻(지시서 2026-11-13) — 라벨에 "카카오톡"이
+   있으면 카톡 커서를 달고 그대로 kakao_url로, 없으면(정책 받기 등) 팝업을 연다. 이때 href는
+   호출부가 뭘 넘기든 무시하고 "#lead"로 고정한다(모든 정책 버튼이 같은 착지점을 쓰게). #}
 {% macro pill(label, href, variant='primary', icon_dot=False, kakao=False) %}
-<a href="{{ href }}" class="hp-pill hp-pill--{{ variant }}"{% if kakao %} data-cursor="kakao"{% endif %}>{% if icon_dot %}<span class="hp-pill-dot"></span>{% endif %}{{ label }}</a>
+<a href="{{ '#lead' if kakao else href }}" class="hp-pill hp-pill--{{ variant }}"{% if kakao %}{% if '카카오톡' in label %} data-cursor="kakao"{% endif %} data-lead-trigger{% endif %}>{% if icon_dot %}<span class="hp-pill-dot"></span>{% endif %}{{ label }}</a>
 {% endmacro %}
 
 {% macro section_label(text) %}

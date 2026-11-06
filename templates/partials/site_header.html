@@ -34,7 +34,7 @@
     </nav>
     <div class="hp-header-right">
       {% if slug == 'why' %}<a href="index.html?intro=1" class="hp-replay-link">{{ site.ad_replay_label }}</a>{% endif %}
-      <a class="hp-pill hp-pill--primary" href="#" id="hpHeaderCta" data-cursor="kakao">{{ site.header_cta }}</a>
+      <a class="hp-pill hp-pill--primary" href="#lead" id="hpHeaderCta" data-lead-trigger>{{ site.header_cta }}</a>
       <label for="hpNavToggle" class="hp-nav-toggle" aria-label="메뉴">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </label>
@@ -74,7 +74,7 @@
               <span class="hp-mega-cta-sub" id="hpMegaCtaSub">{{ site.header_menu_cta.sub }}</span>
             </div>
             <div class="hp-mega-cta-actions">
-              <a class="hp-mega-cta-btn" href="#" data-cursor="kakao">{{ site.header_menu_cta.button }}</a>
+              <a class="hp-mega-cta-btn" href="#lead" data-cursor="kakao" data-lead-trigger>{{ site.header_menu_cta.button }}</a>
               <a class="hp-mega-cta-tel" href="tel:{{ site.phone }}">전화 {{ site.phone }}</a>
             </div>
           </div>
@@ -97,7 +97,7 @@
     {% endfor %}
     {% if slug == 'why' %}<a href="index.html?intro=1" class="hp-nav-mobile-sub">{{ site.ad_replay_label }}</a>{% endif %}
     <div class="hp-nav-mobile-cta">
-      <a class="hp-pill hp-pill--primary" href="#" data-cursor="kakao">{{ site.header_menu_cta.button }}</a>
+      <a class="hp-pill hp-pill--primary" href="#lead" data-cursor="kakao" data-lead-trigger>{{ site.header_menu_cta.button }}</a>
       <a class="hp-nav-mobile-tel" href="tel:{{ site.phone }}">전화 {{ site.phone }}</a>
     </div>
   </nav>
