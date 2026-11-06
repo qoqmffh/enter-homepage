@@ -21,7 +21,10 @@
 .sp-hero-tint{ position:absolute; inset:0; background:rgba(11,13,18,.55); }
 .sp-hero-body{ position:relative; z-index:1; height:100%; padding:32px; display:flex; flex-direction:column; justify-content:space-between; color:var(--hp-white); }
 .sp-hero-label{ font-size:12px; color:rgba(255,255,250,.7); letter-spacing:.08em; margin:0 0 12px; font-weight:600; text-transform:uppercase; }
-.sp-hero-headline{ font-size:var(--fs-h1); font-weight:800; line-height:1.15; letter-spacing:-.01em; margin:0 0 16px; }
+/* 헤드라인-소개 문구 간격(2026-11-12) — 모바일 28px, 데스크톱(1024px~) 40px(아래 미디어쿼리).
+   헤드라인 자체의 margin-bottom이라 소개 문구가 없는 blog·faq에서도 헤드라인→버튼 간격이
+   똑같이 적용된다(소개 문구는 pages.json에 없으면 아예 렌더링 안 됨). */
+.sp-hero-headline{ font-size:var(--fs-h1); font-weight:800; line-height:1.15; letter-spacing:-.01em; margin:0 0 28px; }
 .sp-hero-headline br{ content:''; }
 .sp-hero-sub{ font-size:15px; color:rgba(255,255,250,.8); max-width:560px; line-height:1.55; margin:0 0 20px; }
 .sp-hero-ctas{ display:flex; flex-wrap:wrap; gap:10px; }
@@ -184,7 +187,7 @@
   .sp-hero--compact .sp-hero-frame{ height:360px; }
   .sp-hero-body{ padding:64px; }
   .sp-hero-label{ font-size:12px; }
-  .sp-hero-headline{ margin-bottom:20px; letter-spacing:-.02em; }
+  .sp-hero-headline{ letter-spacing:-.02em; }
   .sp-hero-sub{ font-size:18px; max-width:620px; }
   .sp-hero-fact-value{ font-size:32px; }
   .sp-cards{ grid-template-columns:repeat(3,1fr); gap:24px; }
@@ -228,6 +231,7 @@
   .sp-hero-sketch{ width:180%; max-width:none; }
 }
 @media (min-width:1024px){
+  .sp-hero-headline{ margin-bottom:40px; }
   .sp-hero--sketch .sp-hero-body{ padding-top:110px; }
   .sp-hero--sketch .sp-hero-body > div:first-child{ max-width:560px; padding-bottom:0; min-height:376px; box-sizing:border-box; }
   .sp-hero--has-facts.sp-hero--sketch .sp-hero-body > div:first-child{ padding-bottom:104px; min-height:472px; }
