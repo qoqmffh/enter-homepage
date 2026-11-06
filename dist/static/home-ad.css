@@ -109,6 +109,55 @@ html.ad-pending .hp-ad-stage{ display:block; }
 }
 .hp-ad-skip:hover{ color:rgba(255,255,250,1); }
 
+/* ---------- 스크롤 안내(2026-11-12) ----------
+   가운데 아래, 건너뛰기(오른쪽 아래)·진행 막대(맨 아래 2px)와 안 겹치는 자리.
+   static/home-ad.js가 우주 화면 시작 1s 뒤 --in을 붙여 0.6s 페이드인하고, 스크롤
+   진행도가 2% 이상 되면 --in을 떼서(이 규칙 자체의 .4s로) 페이드아웃한다 — 한 번
+   사라지면 다시 안 붙인다. 커스텀 커서·휠 스크롤·드래그 선택을 막지 않도록 통째로
+   pointer-events:none. */
+.hp-ad-scroll-hint{
+  position:absolute; left:50%; bottom:40px; z-index:4;
+  transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:10px;
+  opacity:0; pointer-events:none;
+  transition:opacity .4s ease;
+}
+.hp-ad-scroll-hint--in{ opacity:1; transition:opacity .6s ease; }
+.hp-ad-scroll-hint--bounce{ animation:hpAdScrollHintBounce .5s ease; }
+@keyframes hpAdScrollHintBounce{
+  0%, 100%{ transform:translateX(-50%) translateY(0); }
+  30%{ transform:translateX(-50%) translateY(-6px); }
+  60%{ transform:translateX(-50%) translateY(2px); }
+}
+
+.hp-ad-scroll-hint-mouse{
+  width:22px; height:34px; border-radius:11px; border:1.5px solid rgba(255,255,250,.9);
+  position:relative; box-sizing:border-box;
+}
+.hp-ad-scroll-hint-dot{
+  position:absolute; left:50%; top:6px; width:3px; height:6px; border-radius:1.5px;
+  background:rgba(255,255,250,.9); transform:translateX(-50%);
+  animation:hpAdScrollHintDot 1.6s ease infinite;
+}
+@keyframes hpAdScrollHintDot{
+  0%{ opacity:1; transform:translateX(-50%) translateY(0); }
+  70%, 100%{ opacity:0; transform:translateX(-50%) translateY(14px); }
+}
+
+.hp-ad-scroll-hint-touch-icon{
+  display:none; font-size:22px; line-height:1; color:rgba(255,255,250,.9);
+}
+.hp-ad-scroll-hint-label{ font-size:12px; color:rgba(255,255,250,.7); letter-spacing:.04em; white-space:nowrap; }
+.hp-ad-scroll-hint-label--touch{ display:none; }
+
+/* 모바일·터치 기기: 마우스 휠 아이콘 대신 위로 쓸어 올리는 화살표 */
+@media (hover:none), (pointer:coarse){
+  .hp-ad-scroll-hint-mouse{ display:none; }
+  .hp-ad-scroll-hint-touch-icon{ display:block; }
+  .hp-ad-scroll-hint-label--mouse{ display:none; }
+  .hp-ad-scroll-hint-label--touch{ display:block; }
+}
+
 /* ---------- 막 걷힘: 주황 띠 와이프 3장(인트로와 같은 색/타이밍) ---------- */
 .hp-ad-wipe{ position:absolute; inset:0; z-index:6; pointer-events:none; }
 .hp-ad-wipe-layer{ position:absolute; inset:0; transform:translateX(-100%); }
@@ -145,4 +194,8 @@ html.ad-pending .hp-ad-stage{ display:block; }
 @media (prefers-reduced-motion:reduce){
   html.ad-pending .hp-ad-stage{ display:none !important; }
   html.ad-pending body, html.ad-pending{ overflow:visible !important; height:auto !important; }
+  /* 스크롤 안내도 2차 방어선: 위에서 이미 display:none이라 실제로는 안 보이지만,
+     혹시 모를 경우에도 휠 점 애니메이션·튕김은 켜지지 않고 정적인 아이콘·글자만 남는다. */
+  .hp-ad-scroll-hint-dot{ animation:none; opacity:1; }
+  .hp-ad-scroll-hint--bounce{ animation:none; }
 }

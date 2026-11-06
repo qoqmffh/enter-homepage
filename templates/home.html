@@ -111,6 +111,18 @@
   </div>
   <div class="hp-ad-progress"><span class="hp-ad-progress-fill" data-ad-progress></span></div>
 
+  {# 스크롤 안내(2026-11-12) — "갑자기 우주만 떠 있어서 뭔지 모르겠다" 피드백 대응.
+     마우스/터치 아이콘 둘 다 마크업에 넣어두고 CSS(pointer:coarse)로 하나만 보인다 —
+     기기 판정에 JS를 안 써서 static/home-ad.js는 보이기/숨기기 타이밍만 맡는다. #}
+  <div class="hp-ad-scroll-hint" data-ad-scroll-hint aria-hidden="true">
+    <span class="hp-ad-scroll-hint-mouse">
+      <span class="hp-ad-scroll-hint-dot"></span>
+    </span>
+    <span class="hp-ad-scroll-hint-touch-icon">↑</span>
+    <span class="hp-ad-scroll-hint-label hp-ad-scroll-hint-label--mouse">스크롤해서 보기</span>
+    <span class="hp-ad-scroll-hint-label hp-ad-scroll-hint-label--touch">위로 넘겨서 보기</span>
+  </div>
+
   <button type="button" class="hp-ad-skip" data-ad-skip>{{ ad.skip_label }}</button>
 
   <div class="hp-ad-wipe" data-ad-wipe>

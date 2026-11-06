@@ -90,6 +90,7 @@ import * as THREE from './vendor/three.module.min.js';
   var dots = Array.prototype.slice.call(stage.querySelectorAll('[data-ad-dot]'));
   var progressFill = safeGet('[data-ad-progress]');
   var skipBtn = safeGet('[data-ad-skip]');
+  var scrollHint = safeGet('[data-ad-scroll-hint]');
   var wipeLayers = Array.prototype.slice.call(stage.querySelectorAll('.hp-ad-wipe-layer'));
 
   // ================= 장면 시간표: 러프(초) <-> 진행도(%) 변환 =================
@@ -124,6 +125,14 @@ import * as THREE from './vendor/three.module.min.js';
   var latestProgress = 0;
   var lastApplied = -1;
   var virtualLength = (isMobile ? 4 : 5) * window.innerHeight;
+
+  // 스크롤 안내(2026-11-12) — "갑자기 우주만 떠 있어서 뭔지 모르겠다" 피드백 대응.
+  var hintHidden = false;
+  var hintBounceCount = 0;
+  var hintBounceTimer = null;
+  var lastHintInputTime = 0;
+  var HINT_IDLE_MS = 3000;
+  var HINT_MAX_BOUNCES = 3;
 
   // ================= Three.js 장면 =================
   var renderer, scene, camera, points, uniforms, clock, raf;
@@ -453,8 +462,44 @@ import * as THREE from './vendor/three.module.min.js';
     }
   }
 
+  // ================= 스크롤 안내 보이기/숨기기/튕기기 =================
+  function resetHintIdle() { lastHintInputTime = performance.now(); }
+
+  function bounceHint() {
+    hintBounceCount++;
+    scrollHint.classList.remove('hp-ad-scroll-hint--bounce');
+    void scrollHint.offsetWidth; // 리플로우로 같은 애니메이션 클래스를 다시 트리거
+    scrollHint.classList.add('hp-ad-scroll-hint--bounce');
+  }
+
+  function checkHintIdle() {
+    if (hintHidden || hintBounceCount >= HINT_MAX_BOUNCES) {
+      clearInterval(hintBounceTimer); hintBounceTimer = null; return;
+    }
+    if (performance.now() - lastHintInputTime >= HINT_IDLE_MS) {
+      bounceHint();
+      lastHintInputTime = performance.now(); // 튕긴 뒤 다시 3초 무입력을 기다린다
+      if (hintBounceCount >= HINT_MAX_BOUNCES) { clearInterval(hintBounceTimer); hintBounceTimer = null; }
+    }
+  }
+
+  function showScrollHint() {
+    if (!scrollHint) return;
+    scrollHint.classList.add('hp-ad-scroll-hint--in');
+    resetHintIdle();
+    hintBounceTimer = setInterval(checkHintIdle, 500);
+  }
+
+  function hideScrollHint() {
+    if (hintHidden || !scrollHint) return;
+    hintHidden = true;
+    scrollHint.classList.remove('hp-ad-scroll-hint--in');
+    if (hintBounceTimer) { clearInterval(hintBounceTimer); hintBounceTimer = null; }
+  }
+
   function applyProgress(p) {
     uniforms.uProgress.value = p;
+    if (!hintHidden && p >= 0.02) hideScrollHint(); // 진행도 2% 이상 -> 페이드아웃, 다시 안 보임
 
     // 장면 1
     var h1Op = seg(p, gAbs(3.0), gAbs(3.6)) * (1 - seg(p, gAbs(6.0), gAbs(6.8)));
@@ -548,12 +593,14 @@ import * as THREE from './vendor/three.module.min.js';
   var touchY = 0;
   function onWheel(e) {
     e.preventDefault();
+    resetHintIdle();
     if (!introDone || transitioning) return;
     latestProgress = clamp01(latestProgress + e.deltaY / virtualLength);
   }
-  function onTouchStart(e) { touchY = e.touches[0].clientY; }
+  function onTouchStart(e) { touchY = e.touches[0].clientY; resetHintIdle(); }
   function onTouchMove(e) {
     e.preventDefault();
+    resetHintIdle();
     if (!introDone || transitioning) return;
     var y = e.touches[0].clientY;
     var dy = touchY - y;
@@ -561,6 +608,7 @@ import * as THREE from './vendor/three.module.min.js';
     latestProgress = clamp01(latestProgress + dy / virtualLength);
   }
   function onKey(e) {
+    resetHintIdle();
     if (!introDone || transitioning) return;
     var step = 0.06;
     if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
@@ -598,12 +646,14 @@ import * as THREE from './vendor/three.module.min.js';
     }, 700 + 1100 + 700);
     setTimeout(function () {
       introDone = true;
+      showScrollHint(); // 우주 화면 시작(위 두 번째 setTimeout) 1s 뒤 = 바로 이 시점
     }, 700 + 1100 + 700 + 1000);
   }
 
   function stopThree() {
     stopLoop();
     clearTimeout(resizeTimer);
+    if (hintBounceTimer) { clearInterval(hintBounceTimer); hintBounceTimer = null; }
     visObserver.disconnect();
     document.removeEventListener('visibilitychange', onVisibilityChange);
     if (renderer) {
