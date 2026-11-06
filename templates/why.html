@@ -28,6 +28,7 @@
 <script src="static/home-poetic-cards.js" defer></script>
 <script src="static/wipe-reveal.js" defer></script>
 <script src="static/why-carousels.js" defer></script>
+<script src="static/why-chart.js" defer></script>
 {% endblock %}
 
 {% block content %}
@@ -61,8 +62,27 @@
       {% else %}
       <div class="hp-hairline"></div>
       {% endif %}
-      <div class="hp-stats" id="stats">
-        {% for s in p.stats %}{{ m.stat_card(s.num, s.label) }}{% endfor %}
+      {# 내려가는 막대 그래프(2026-11-10) — 4,000건(100%) → 3,000곳(80%) → 16년(50%) → 0회(0%)
+         순서로 계단식. 숫자·라벨을 잉크/흰 두 겹으로 겹쳐 흰 겹만 막대 높이만큼
+         clip-path로 잘라서, 막대(어두운 부분) 위에 걸친 글자만 흰색으로 보이게 한다
+         (static/why-chart.js가 IntersectionObserver로 한 번만 --bar-h를 채운다). #}
+      <div class="sp-chart-row" id="stats" data-chart-container>
+        {% set heights = [100, 80, 50, 0] %}
+        {% for s in p.stats %}
+        {% set h = heights[loop.index0] %}
+        <div class="sp-chart-card{% if h == 0 %} sp-chart-card--zero{% endif %}" data-chart-card data-bar-h="{{ h }}" data-delay="{{ (loop.index0 * 0.08) | round(2) }}" style="--bar-h:0%">
+          <div class="sp-chart-bar"></div>
+          {% if h == 0 %}<div class="sp-chart-zero-line"></div>{% endif %}
+          <div class="sp-chart-text sp-chart-text--ink">
+            <span class="sp-chart-value">{{ s.num }}</span>
+            <span class="sp-chart-label">{{ s.label }}</span>
+          </div>
+          <div class="sp-chart-text sp-chart-text--white" aria-hidden="true">
+            <span class="sp-chart-value">{{ s.num }}</span>
+            <span class="sp-chart-label">{{ s.label }}</span>
+          </div>
+        </div>
+        {% endfor %}
       </div>
     </div>
   </div>

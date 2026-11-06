@@ -8,14 +8,6 @@
 <span class="hp-label"><span class="hp-label-dot"></span>{{ text }}</span>
 {% endmacro %}
 
-{% macro stat_card(num, label) %}
-<div class="hp-stat-card hp-trail-host" data-trail="green">
-  <div class="hp-trail" aria-hidden="true"></div>
-  <span class="hp-stat-num">{{ num }}</span>
-  <span class="hp-stat-label">{{ label }}</span>
-</div>
-{% endmacro %}
-
 {% macro icon(name) %}
 {% if name == 'badge' %}
 <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M8.5 14.5 7 22l5-2.5 5 2.5-1.5-7.5"/></svg>

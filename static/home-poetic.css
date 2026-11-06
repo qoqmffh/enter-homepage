@@ -12,30 +12,53 @@
 /* word-break:keep-all은 body에서 상속되므로 전 요소에 적용됨(blockquote 포함) — 한글이 글자 단위로 끊기지 않게 */
 
 /* ---------- 타이포 스케일 ---------- */
-.hp-display-xl{ font-weight:800; font-size:44px; line-height:1.04; letter-spacing:-.02em; margin:0; display:flex; flex-direction:column; text-wrap:balance; }
+.hp-display-xl{ font-weight:800; font-size:var(--fs-display); line-height:1.15; letter-spacing:-.02em; margin:0; display:flex; flex-direction:column; text-wrap:balance; }
 .hp-display-xl .hp-headline-line{ display:block; }
 .hp-display-lg{ font-weight:800; font-size:36px; line-height:1.17; letter-spacing:-.02em; margin:0 0 32px; text-wrap:balance; }
-.hp-headline-lg{ font-weight:800; font-size:28px; line-height:1.3; letter-spacing:-.02em; margin:0; text-wrap:balance; }
+.hp-headline-lg{ font-weight:800; font-size:var(--fs-h2); line-height:1.3; letter-spacing:-.02em; margin:0; text-wrap:balance; }
 .hp-headline-md{ font-weight:800; font-size:22px; line-height:1.35; letter-spacing:-.01em; margin:16px 0 0; text-wrap:balance; }
 .hp-body-xl{ font-size:16px; line-height:1.65; color:var(--hp-grey); margin:0; }
 .hp-body-lg{ font-size:15px; line-height:1.6; }
 .hp-strong{ font-weight:600; }
 
 /* ---------- 히어로 ---------- */
-.hp-hero{ padding-top:24px; }
+.hp-hero{ padding-top:32px; }
 /* poetic.com 실제 비율: 헤더-헤드라인 위 여백 + hp-hero-top의 min-height로
    헤드라인+부제가 첫 화면 가운데쯤 오고, 문단(hp-hero-below)이 화면 아래쪽에
    살짝 걸쳐 보이게(스크롤 유도) 한다. 고정 gap 대신 뷰포트 기준으로 맞춘다.
    위아래 여백이 너무 휑하다는 피드백으로 위/아래 모두 절반 수준으로 축소. */
 .hp-hero-top{ display:flex; flex-direction:column; justify-content:center; min-height:calc(100vh - 280px); }
-.hp-hero-subhead{ margin:28px 0 0; font-size:22px; line-height:1.4; color:var(--hp-grey); font-weight:400; }
-.hp-hero-sub{ font-size:20px; line-height:1.5; color:var(--hp-ink); font-weight:600; margin:0 0 20px; max-width:620px; }
+.hp-hero-subhead{ margin:28px 0 0; font-size:var(--fs-lead); line-height:1.4; color:var(--hp-grey); font-weight:400; }
+.hp-hero-sub{ font-size:var(--fs-body); line-height:1.6; color:var(--hp-ink); font-weight:600; margin:24px 0 28px; max-width:620px; }
 .hp-hero-ctas{ display:flex; flex-wrap:wrap; gap:12px; margin-bottom:28px; }
 .hp-hairline{ height:1px; background:var(--hp-line); margin:0 0 28px; }
-.hp-stats{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
-.hp-stat-card{ position:relative; overflow:hidden; background:var(--hp-black); color:var(--hp-white); border:1px solid var(--hp-line-dark); border-radius:var(--radius-card); padding:20px; min-height:150px; display:flex; flex-direction:column; justify-content:space-between; }
-.hp-stat-num{ font-size:34px; font-weight:800; letter-spacing:-.02em; line-height:1; font-variant-numeric:tabular-nums; }
-.hp-stat-label{ font-size:12px; color:rgba(255,255,250,.82); font-weight:600; margin-top:12px; }
+/* ---------- 내려가는 막대 그래프(2026-11-10) — 4,000건/3,000곳/16년/0회 계단식 ----------
+   @property로 --bar-h(퍼센트)를 애니메이션 가능한 값으로 등록해 둔다 — 막대 높이와
+   흰 글자 겹의 clip-path가 같은 값을 보고 움직이므로 저절로 같이 움직인다(지시서 §4).
+   흰 글자 겹(.sp-chart-text--white)은 position:absolute;inset:0으로 카드 전체 높이를
+   그대로 차지해야 clip-path의 %가 막대 높이 %와 같은 기준이 된다 — padding은 안쪽에서
+   따로 준다(여기에 inset:20px 같은 식으로 박스 자체를 줄이면 두 % 기준이 어긋난다). */
+@property --bar-h{ syntax:'<percentage>'; inherits:true; initial-value:0%; }
+.sp-chart-row{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+.sp-chart-card{
+  --bar-h:0%;
+  position:relative; overflow:hidden; isolation:isolate;
+  background:var(--hp-card-bg); border:1px solid var(--hp-line); border-radius:var(--radius-card);
+  height:150px;
+  transition:--bar-h .9s cubic-bezier(.16,1,.3,1);
+}
+.sp-chart-bar{ position:absolute; left:0; right:0; bottom:0; height:var(--bar-h); background:var(--hp-ink); }
+.sp-chart-zero-line{ position:absolute; left:0; right:0; bottom:0; height:2px; background:var(--hp-accent); transform:scaleX(0); transform-origin:left; transition:transform .4s ease .9s; }
+.sp-chart-card--zero.is-in .sp-chart-zero-line{ transform:scaleX(1); }
+.sp-chart-text{ position:absolute; inset:0; padding:20px; box-sizing:border-box; display:flex; flex-direction:column; justify-content:space-between; }
+.sp-chart-text--ink{ color:var(--hp-ink); }
+.sp-chart-text--white{ color:var(--hp-white); clip-path:inset(calc(100% - var(--bar-h)) 0 0 0); }
+.sp-chart-value{ font-size:26px; font-weight:800; letter-spacing:-.02em; line-height:1; font-variant-numeric:tabular-nums; }
+.sp-chart-label{ font-size:12px; font-weight:600; margin-top:12px; }
+@media (prefers-reduced-motion:reduce){
+  .sp-chart-card{ transition:none; }
+  .sp-chart-zero-line{ transition:none; }
+}
 
 /* ---------- 브랜드 스테이트먼트(통계 근거 + 사진) ---------- */
 .hp-statement{ text-align:center; }
@@ -83,6 +106,9 @@
 .hp-feature-card{ position:relative; overflow:hidden; background:var(--hp-black); color:var(--hp-white); border:1px solid var(--hp-line-dark); border-radius:var(--radius-card); padding:28px 20px; margin-bottom:20px; }
 .hp-feature-card-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
 .hp-feature-card-head h3{ color:var(--hp-white); font-weight:600; }
+/* 카드 제목은 화면 크기와 무관하게 --fs-h3(20px) 고정 — .hp-headline-lg(섹션 제목용, 최대
+   32px)를 여기서만 좁혀서 쓴다(2026-11-10 타이포 축소). */
+.hp-feature-card-head .hp-headline-lg{ font-size:var(--fs-h3); line-height:1.3; }
 .hp-feature-index{ font-size:14px; color:rgba(255,255,250,.4); font-weight:600; white-space:nowrap; }
 .hp-feature-card-foot{ border-top:1px solid rgba(255,255,255,.1); padding-top:18px; margin-top:4px; }
 .hp-feature-card-foot p{ color:rgba(255,255,250,.82); font-size:14px; line-height:1.6; margin:0; }
@@ -234,7 +260,6 @@
 .hp-trail{ position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:0; }
 /* statement 사진 블록은 자식이 이미 position:absolute/relative라 DOM 순서(trail이 첫 자식)만으로
    충분히 위에 쌓인다 — 아래 규칙은 일반 flow 콘텐츠를 쓰는 다른 호스트에만 필요하다. */
-.hp-stat-card > :not(.hp-trail),
 .hp-feature-card > :not(.hp-trail),
 .hp-promise > :not(.hp-trail),
 .hp-carriers > :not(.hp-trail),
@@ -260,18 +285,12 @@
   .hp-wrap{ padding:0 40px; }
   .hp-section{ padding:120px 0; }
 
-  .hp-display-xl{ font-size:72px; }
   .hp-display-lg{ font-size:56px; line-height:1.1; }
-  .hp-headline-lg{ font-size:40px; line-height:1.2; }
+  .hp-headline-lg{ line-height:1.2; }
   .hp-headline-md{ font-size:28px; line-height:1.3; }
   .hp-body-xl{ font-size:19px; }
-  .hp-hero{ padding-top:48px; }
+  .hp-hero{ padding-top:56px; }
   .hp-hero-top{ min-height:calc(100vh - 400px); }
-
-  .hp-stats{ grid-template-columns:repeat(4,1fr); gap:16px; }
-  .hp-stat-card{ min-height:220px; padding:28px; }
-  .hp-stat-num{ font-size:52px; }
-  .hp-stat-label{ font-size:13px; }
 
   .hp-photo-block{ min-height:440px; border-radius:var(--radius-card); margin-top:48px; }
   .hp-photo-corner{ font-size:11px; }
@@ -299,12 +318,18 @@
 }
 
 @media (min-width:1024px){
-  .hp-display-xl{ font-size:84px; }
   .hp-hero-sub{ max-width:none; white-space:nowrap; }
+
+  /* 모바일(1023px 이하)은 2x2, 여기부터 4장 한 줄(계단식이 보이려면 가로로 나란해야 함). */
+  .sp-chart-row{ grid-template-columns:repeat(4,1fr); gap:16px; }
+  .sp-chart-card{ height:220px; }
+  .sp-chart-text{ padding:28px; }
+  .sp-chart-value{ font-size:40px; }
+  .sp-chart-label{ font-size:13px; }
 }
 
 @media (min-width:1281px){
-  .hp-hero{ padding-top:64px; }
+  .hp-hero{ padding-top:88px; }
   .hp-hero-top{ min-height:calc(100vh - 480px); }
 }
 
@@ -347,7 +372,6 @@
 @media (min-width:1024px){
   .hp-feature-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; align-items:stretch; }
   .hp-feature-grid .hp-feature-card{ margin:0; padding:36px 32px; min-height:560px; border-radius:var(--radius-card); }
-  .hp-feature-grid .hp-feature-card-head .hp-headline-lg{ font-size:28px; line-height:1.25; }
   .hp-feature-grid .hp-mockup,
   .hp-feature-grid .hp-mockup--ledger{ max-width:100%; width:100%; margin:28px 0; padding:18px 16px; border-radius:var(--radius-card); }
   .hp-feature-grid{ --hp-ledger-row-h:36px; --hp-ledger-cols:74px 20px 46px 1fr 62px; }
@@ -379,7 +403,6 @@
   .hp-feature-grid .hp-mockup--chat .hp-chat-list{ margin-top:auto; }
   .hp-feature-grid .hp-mockup--chat .hp-chat-list{ min-height:0; overflow:hidden; justify-content:flex-end; -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 36px); mask-image:linear-gradient(to bottom, transparent 0, #000 36px); }
   .hp-feature-grid .hp-mockup--chat .hp-mockup-head{ position:relative; z-index:1; }
-  .hp-feature-grid .hp-feature-card-head .hp-headline-lg{ font-size:26px; }
 }
 
 /* 왜 ENTER 히어로 — 회사 분류 선 스케치(2026-11-02). 그림의 바닥선 = 구분선. */

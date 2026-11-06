@@ -35,6 +35,23 @@
      woff2 dynamic subset(static/fonts/pretendard/)로 교체. base.html이
      pretendard-dynamic-subset.css를 common.css보다 먼저 불러온다. */
   --font-sans:'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+
+  /* 타이포 크기 토큰(2026-11-10) — 화면이 꽉 차 보인다는 피드백으로 헤드 타이포를
+     전체적으로 한 단계 줄인다. home-poetic.css·sub.css·megamenu.css가 이 토큰을 쓴다.
+     --fs-display만 명시된 clamp 공식을 쓰고(1440px에서 약 64px), 나머지는 기존 사이트의
+     768/1024px 2단 breakpoint 체계에 맞춰 최대값을 아래에서 단계적으로 올린다. */
+  --fs-display:clamp(40px, 4.4vw, 64px); /* 왜 ENTER 히어로 헤드라인 */
+  --fs-h1:32px;   /* 서브페이지 스케치 히어로 헤드라인, 최대 48px */
+  --fs-h2:24px;   /* 섹션 제목(HOW WE WORK·근거 띠 제목 등), 최대 32px */
+  --fs-h3:20px;   /* 카드 제목 — 전부 데스크톱에서도 20px 고정 */
+  --fs-lead:18px; /* 히어로 부제 */
+  --fs-body:16px; /* 히어로 본문 */
+}
+@media (min-width:768px){
+  :root{ --fs-h1:40px; --fs-h2:28px; }
+}
+@media (min-width:1024px){
+  :root{ --fs-h1:48px; --fs-h2:32px; }
 }
 
 body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; overflow-wrap:break-word; }

@@ -21,7 +21,7 @@
 .sp-hero-tint{ position:absolute; inset:0; background:rgba(11,13,18,.55); }
 .sp-hero-body{ position:relative; z-index:1; height:100%; padding:32px; display:flex; flex-direction:column; justify-content:space-between; color:var(--hp-white); }
 .sp-hero-label{ font-size:12px; color:rgba(255,255,250,.7); letter-spacing:.08em; margin:0 0 12px; font-weight:600; text-transform:uppercase; }
-.sp-hero-headline{ font-size:32px; font-weight:800; line-height:1.15; letter-spacing:-.01em; margin:0 0 16px; }
+.sp-hero-headline{ font-size:var(--fs-h1); font-weight:800; line-height:1.15; letter-spacing:-.01em; margin:0 0 16px; }
 .sp-hero-headline br{ content:''; }
 .sp-hero-sub{ font-size:15px; color:rgba(255,255,250,.8); max-width:560px; line-height:1.55; margin:0 0 20px; }
 .sp-hero-ctas{ display:flex; flex-wrap:wrap; gap:10px; }
@@ -46,29 +46,28 @@
    오게 한다. 다른 .sp-section 사이 간격은 그대로 둔다. */
 .sp-proof + .sp-section{ margin-top:64px; }
 .sp-proof-grid{ display:flex; flex-direction:column; gap:28px; }
-.sp-proof-title{ font-size:24px; font-weight:800; line-height:1.3; letter-spacing:-.01em; margin:0; }
+.sp-proof-title{ font-size:var(--fs-h2); font-weight:800; line-height:1.3; letter-spacing:-.01em; margin:0; }
 .sp-proof-facts{ display:grid; grid-template-columns:1fr; gap:28px; }
-.sp-proof-fact-value{ display:block; font-size:32px; font-weight:800; line-height:1; letter-spacing:-.01em; font-variant-numeric:tabular-nums; color:var(--hp-ink); }
+.sp-proof-fact-value{ display:block; font-size:24px; font-weight:800; line-height:1; letter-spacing:-.01em; font-variant-numeric:tabular-nums; color:var(--hp-ink); }
 .sp-proof-fact-label{ display:block; font-size:13px; color:var(--hp-grey); margin-top:8px; }
 .sp-proof-fact-desc{ font-size:15px; color:var(--hp-ink); line-height:1.6; margin:8px 0 0; }
 @media (min-width:1024px){
   .sp-proof{ padding:40px 24px 48px; }
   .sp-proof-grid{ display:grid; grid-template-columns:40% 60%; gap:40px; align-items:start; }
-  .sp-proof-title{ font-size:34px; }
   .sp-proof-facts{ grid-template-columns:repeat(3,1fr); gap:32px; }
-  .sp-proof-fact-value{ font-size:40px; }
+  .sp-proof-fact-value{ font-size:30px; }
 }
 
 /* ---------- 3. 검은 카드 3장 ---------- */
 .sp-cards{ display:grid; grid-template-columns:1fr; gap:16px; }
 .sp-card{ background:var(--hp-black); color:var(--hp-white); border-radius:var(--radius-card); padding:28px 24px; min-height:320px; display:flex; flex-direction:column; justify-content:space-between; gap:20px; }
 .sp-card-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
-.sp-card-head h3{ font-size:20px; font-weight:600; margin:0; }
+.sp-card-head h3{ font-size:var(--fs-h3); font-weight:600; margin:0; }
 .sp-card-index{ font-size:15px; color:var(--hp-grey); font-variant-numeric:tabular-nums; }
 .sp-card-desc{ font-size:13px; color:rgba(255,255,250,.7); line-height:1.6; margin:0; }
-.sp-card-big{ font-size:40px; font-weight:800; letter-spacing:-.02em; line-height:1; color:var(--hp-white); }
+.sp-card-big{ font-size:30px; font-weight:800; letter-spacing:-.02em; line-height:1; color:var(--hp-white); }
 .sp-card-big--green{ color:#F2A16E; }
-.sp-card-big-prefix{ font-size:18px; font-weight:600; vertical-align:middle; }
+.sp-card-big-prefix{ font-size:14px; font-weight:600; vertical-align:middle; }
 .sp-card-bullets{ margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:8px; }
 .sp-card-bullets li{ font-size:13px; color:rgba(255,255,250,.85); line-height:1.5; padding-left:14px; position:relative; }
 .sp-card-bullets li::before{ content:'·'; position:absolute; left:0; color:#F2A16E; font-weight:800; }
@@ -185,12 +184,11 @@
   .sp-hero--compact .sp-hero-frame{ height:360px; }
   .sp-hero-body{ padding:64px; }
   .sp-hero-label{ font-size:12px; }
-  .sp-hero-headline{ font-size:56px; margin-bottom:20px; letter-spacing:-.02em; }
+  .sp-hero-headline{ margin-bottom:20px; letter-spacing:-.02em; }
   .sp-hero-sub{ font-size:18px; max-width:620px; }
   .sp-hero-fact-value{ font-size:32px; }
   .sp-cards{ grid-template-columns:repeat(3,1fr); gap:24px; }
   .sp-card{ min-height:420px; padding:36px 32px; }
-  .sp-card-head h3{ font-size:26px; }
   .sp-detail-head h2{ font-size:36px; }
   .sp-row-title{ font-size:20px; }
   .sp-cta h2{ font-size:40px; letter-spacing:-.02em; }
@@ -201,8 +199,7 @@
 }
 
 @media (min-width:1280px){
-  .sp-hero-headline{ font-size:68px; }
-  .sp-card-big{ font-size:60px; }
+  .sp-card-big{ font-size:45px; }
 }
 
 /* ---------- 분류별 선 스케치 히어로 (2026-11-02, 회사 분류부터) ----------
@@ -235,16 +232,12 @@
   .sp-hero--sketch .sp-hero-body > div:first-child{ max-width:560px; padding-bottom:0; min-height:376px; box-sizing:border-box; }
   .sp-hero--has-facts.sp-hero--sketch .sp-hero-body > div:first-child{ padding-bottom:104px; min-height:472px; }
   .sp-hero--sketch .sp-hero-facts{ gap:64px; }
-  .sp-hero--sketch .sp-hero-headline{ font-size:52px; }
   /* 헤드라인만 글 영역보다 넓게: 정산·창업자·회사소개 2줄 헤드라인이 560px 안에서
      한 번 더 줄바꿈되어 3줄이 되는 걸 막는다. sub(소개 문구)는 폭 그대로 두고
      헤드라인만 넓힌다 — 오른쪽 스케치와 살짝 겹쳐도 무방(지시서 기준).
      max-width만으로는 부모(div:first-child, 560px)보다 넓어지지 않으므로
      width를 직접 지정해 부모 박스 밖으로 벗어나게 한다(부모는 overflow:visible). */
   .sp-hero--sketch .sp-hero-headline{ width:780px; max-width:none; }
-}
-@media (min-width:1280px){
-  .sp-hero--sketch .sp-hero-headline{ font-size:56px; }
 }
 /* 게시판형(FAQ·블로그): 원래부터 숫자 줄이 없어 높이만 낮다(땅은 위의 공통 규칙으로 이미 bottom:0) */
 @media (min-width:1024px){
