@@ -21,6 +21,7 @@
       items.forEach(function (el, i) {
         el.classList.toggle(opts.activeClass, i === index);
       });
+      if (opts.onShow) opts.onShow(items[index]); // 롤링 차례가 된 장을 그때 받는다(지시서 2026-11-14)
       if (opts.counter) {
         opts.counter.textContent = pad2(index + 1) + ' / ' + pad2(items.length);
       }
@@ -67,9 +68,36 @@
     });
   }
 
+  /* 본사 사진 지연 로드(지시서 2026-11-14 "최적화" §2) — 1장만 처음부터 src가 있고
+     2~4장은 data-src로 비워 둔다. 박스가 화면 근처(rootMargin 400px)에 오면 전부
+     받고(observer), 그 전에 롤링이 먼저 그 장 차례가 되면 render()의 onShow가 그
+     한 장만 먼저 받는다 — 둘 중 먼저 오는 쪽이 이긴다(ensureLoaded는 멱등). */
+  function ensureLoaded(img) {
+    if (img && img.dataset && img.dataset.src) {
+      img.src = img.dataset.src;
+      delete img.dataset.src;
+    }
+  }
+
+  function setupLazyPhotos(photoRoot) {
+    var imgs = Array.prototype.slice.call(photoRoot.querySelectorAll('.hp-photo-img'));
+    function loadAll() { imgs.forEach(ensureLoaded); }
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) { loadAll(); observer.disconnect(); }
+        });
+      }, { rootMargin: '400px' });
+      observer.observe(photoRoot);
+    } else {
+      loadAll(); // IntersectionObserver 없는 아주 오래된 브라우저는 그냥 바로 다 받는다
+    }
+  }
+
   function init() {
     var photoRoot = document.querySelector('[data-photo-carousel]');
     if (photoRoot) {
+      setupLazyPhotos(photoRoot);
       setupCarousel(photoRoot, {
         itemSelector: '.hp-photo-img',
         activeClass: 'is-active',
@@ -77,6 +105,7 @@
         prevBtn: photoRoot.querySelector('[data-photo-prev]'),
         nextBtn: photoRoot.querySelector('[data-photo-next]'),
         counter: photoRoot.querySelector('[data-photo-counter]'),
+        onShow: ensureLoaded,
       });
       makeBoxClickable(photoRoot, photoRoot.querySelector('[data-photo-next]'));
     }

@@ -17,7 +17,7 @@
 <link rel="apple-touch-icon" href="static/brand/apple-touch-icon.png">
 <link rel="stylesheet" href="static/fonts/pretendard/pretendard-dynamic-subset.css?v=2973bcae">
 <link rel="stylesheet" href="static/common.css?v=78461a7a">
-<link rel="stylesheet" href="static/site.css?v=1b469d7e">
+<link rel="stylesheet" href="static/site.css?v=8862ea29">
 <link rel="stylesheet" href="static/megamenu.css?v=eef58f9a">
 
 <link rel="stylesheet" href="static/reveal.css?v=46ce769e">
@@ -66,18 +66,14 @@
   } catch (e) {}
 })();
 </script>
-<link rel="stylesheet" href="static/home-poetic.css?v=078a5c4e">
+<link rel="stylesheet" href="static/home-poetic.css?v=a2827ae8">
 <link rel="stylesheet" href="static/sub.css?v=1a3ee258">
-<!-- 홈 전체 스크롤 인터랙션은 비활성 상태 유지(팀장 요청 2026-10-29) — 다시 켜려면 아래 주석 해제
-<script src="static/vendor/gsap.min.js?v=dd7dc87e" defer></script>
-<script src="static/vendor/ScrollTrigger.min.js?v=ba6ffe7b" defer></script>
-<script src="static/home-poetic-scroll.js?v=f31d6b0f" defer></script>
--->
+
 <script src="static/home-poetic.js?v=52827905" defer></script>
 <script src="static/home-poetic-trail.js?v=831e5287" defer></script>
 <script src="static/home-poetic-cards.js?v=74dc3f33" defer></script>
 <script src="static/wipe-reveal.js?v=5a6bc517" defer></script>
-<script src="static/why-carousels.js?v=3ba6afd9" defer></script>
+<script src="static/why-carousels.js?v=d4fab76a" defer></script>
 <script src="static/why-chart.js?v=fb36a866" defer></script>
 
 </head>
@@ -327,7 +323,8 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       </div>
       
       
-      <div class="hp-hairline hp-ground"><img class="hp-hero-sketch" src="static/photos/hero/hero-company.webp" alt="" aria-hidden="true"></div>
+      
+      <div class="hp-hairline hp-ground"><img class="hp-hero-sketch" src="static/photos/hero/hero-company.webp" width="1672" height="820" fetchpriority="high" alt="" aria-hidden="true"></div>
       
       
       <div class="sp-chart-row" id="stats" data-chart-container>
@@ -387,13 +384,14 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       <div class="hp-trail" aria-hidden="true"></div>
       <div class="hp-photo-stage">
         
-        <img class="hp-photo-img is-active" src="static/photos/Headquarters/1.webp" alt="ENTER 전주 본사 도매정산·개통운영센터 업무 현장 1" loading="eager">
         
-        <img class="hp-photo-img" src="static/photos/Headquarters/2.webp" alt="ENTER 전주 본사 도매정산·개통운영센터 업무 현장 2" loading="lazy">
+        <img class="hp-photo-img is-active" src="static/photos/Headquarters/1.webp" loading="eager" width="1600" height="900" alt="ENTER 전주 본사 도매정산·개통운영센터 업무 현장 1">
         
-        <img class="hp-photo-img" src="static/photos/Headquarters/3.webp" alt="ENTER 전주 본사 도매정산·개통운영센터 업무 현장 3" loading="lazy">
+        <img class="hp-photo-img" data-src="static/photos/Headquarters/2.webp" loading="lazy" decoding="async" width="1600" height="900" alt="ENTER 전주 본사 도매정산·개통운영센터 업무 현장 2">
         
-        <img class="hp-photo-img" src="static/photos/Headquarters/4.webp" alt="ENTER 전주 본사 도매정산·개통운영센터 업무 현장 4" loading="lazy">
+        <img class="hp-photo-img" data-src="static/photos/Headquarters/3.webp" loading="lazy" decoding="async" width="1600" height="900" alt="ENTER 전주 본사 도매정산·개통운영센터 업무 현장 3">
+        
+        <img class="hp-photo-img" data-src="static/photos/Headquarters/4.webp" loading="lazy" decoding="async" width="1600" height="900" alt="ENTER 전주 본사 도매정산·개통운영센터 업무 현장 4">
         
       </div>
       <div class="hp-photo-overlay"></div>
