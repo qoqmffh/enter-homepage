@@ -9,8 +9,13 @@
    -> 흩어진 별이 지도로 "모이는" 순간만큼은 위치를 보간하지 않고 스냅(hard cut)한다
       (아래 vertex shader의 step(0.5, revealOn) 참고) — 짧게 사그라들고 다른 자리에 켜지는
       것처럼 보이게 해서, 날아와서 모이는 움직임 자체가 생기지 않게 막았다.
-      반대로 장면3의 "펼쳐짐"은 모양을 만드는 게 아니라 흩어지는 움직임이라 허용(v8 승인됨). */
-import * as THREE from './vendor/three.module.min.js';
+      반대로 장면3의 "펼쳐짐"은 모양을 만드는 게 아니라 흩어지는 움직임이라 허용(v8 승인됨).
+
+   Three.js는 정적 import 대신 동적 import로 가져온다(지시서 2026-11-14 "최적화" §1) —
+   reduced-motion·1시간 재방문 생략·WebGL 불가로 광고를 아예 안 틀 때는 469KB짜리
+   three-lite.min.js(static/vendor, scripts/build-three-lite.mjs로 생성)조차 받지 않게
+   하려는 것. 아래 bailOut() 분기들이 THREE를 쓰기 전에 먼저 return하므로, import()는
+   그 분기를 다 통과한 뒤(§ "시작" 구간)에만 실행한다. */
 
 (function () {
   'use strict';
@@ -135,6 +140,7 @@ import * as THREE from './vendor/three.module.min.js';
   var HINT_MAX_BOUNCES = 3;
 
   // ================= Three.js 장면 =================
+  var THREE; // 동적 import로 채워짐(아래 "시작" 구간) — 그 전까지는 쓰지 않는다.
   var renderer, scene, camera, points, uniforms, clock, raf;
   var isVisible = true;
 
@@ -697,13 +703,19 @@ import * as THREE from './vendor/three.module.min.js';
     });
   }
 
-  // ================= 시작: 지도 데이터 로드 후 Three.js 초기화 =================
+  // ================= 시작: Three.js(동적 import) + 지도 데이터를 같이 받은 뒤 초기화 =================
   cancelHardTimeout();
 
-  fetch('static/data/korea-points.json')
-    .then(function (r) { if (!r.ok) throw new Error('korea-points fetch failed'); return r.json(); })
-    .then(function (data) {
-      initThree(data.points);
+  Promise.all([
+    import('./vendor/three-lite.min.js'),
+    fetch('static/data/korea-points.json').then(function (r) {
+      if (!r.ok) throw new Error('korea-points fetch failed');
+      return r.json();
+    })
+  ])
+    .then(function (results) {
+      THREE = results[0];
+      initThree(results[1].points);
       startLoop();
       playIntro();
     })

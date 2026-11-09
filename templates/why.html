@@ -18,11 +18,9 @@
 </script>
 <link rel="stylesheet" href="static/home-poetic.css">
 <link rel="stylesheet" href="static/sub.css">
-<!-- 홈 전체 스크롤 인터랙션은 비활성 상태 유지(팀장 요청 2026-10-29) — 다시 켜려면 아래 주석 해제
-<script src="static/vendor/gsap.min.js" defer></script>
-<script src="static/vendor/ScrollTrigger.min.js" defer></script>
-<script src="static/home-poetic-scroll.js" defer></script>
--->
+{# 홈 전체 스크롤 인터랙션(gsap/ScrollTrigger/home-poetic-scroll.js)은 팀장 요청(2026-10-29)으로
+   꺼둔 채 오래 썼고, 쓰지도 않는 세 파일이 저장소에만 남아 있어 최적화(2026-11-14) 때
+   git rm으로 지웠다 — 다시 켜려면 세 파일을 되살리고 아래에 <script> 태그로 다시 넣는다. #}
 <script src="static/home-poetic.js" defer></script>
 <script src="static/home-poetic-trail.js" defer></script>
 <script src="static/home-poetic-cards.js" defer></script>
@@ -57,8 +55,12 @@
         {{ m.pill(p.hero.cta_tel, 'tel:' ~ site.phone, 'secondary') }}
       </div>
       {% if p.hero.sketch %}
-      {# 회사 분류 선 스케치 — 그림 맨 아래 선이 곧 이 구분선(땅). 버튼은 땅 위, 숫자 카드는 땅 아래. #}
-      <div class="hp-hairline hp-ground"><img class="hp-hero-sketch" src="static/photos/hero/hero-{{ p.hero.sketch }}.webp" alt="" aria-hidden="true"></div>
+      {# 회사 분류 선 스케치 — 그림 맨 아래 선이 곧 이 구분선(땅). 버튼은 땅 위, 숫자 카드는 땅 아래.
+         width/height는 실제 webp 픽셀 크기(지시서 2026-11-14 "최적화" §2) — CSS가 width:100%;
+         height:auto로 키우지만, 이 속성으로 브라우저가 로드 전에도 세로 비율을 알아서 레이아웃
+         흔들림이 없다. 첫 화면에 바로 보이는 이미지라 fetchpriority="high". #}
+      {% set sk_dims = {'company': [1672, 820], 'trade': [1672, 793], 'info': [1672, 816]} %}
+      <div class="hp-hairline hp-ground"><img class="hp-hero-sketch" src="static/photos/hero/hero-{{ p.hero.sketch }}.webp" width="{{ sk_dims[p.hero.sketch][0] }}" height="{{ sk_dims[p.hero.sketch][1] }}" fetchpriority="high" alt="" aria-hidden="true"></div>
       {% else %}
       <div class="hp-hairline"></div>
       {% endif %}
@@ -95,8 +97,13 @@
     <div class="hp-photo-block hp-trail-host" data-photo-carousel data-interval="5000" data-trail="green" data-cursor="swipe" data-reveal>
       <div class="hp-trail" aria-hidden="true"></div>
       <div class="hp-photo-stage">
+        {# 1장만 바로 받고 2~4장은 data-src로 비워 둔다 — static/why-carousels.js가
+           박스가 화면 근처(rootMargin 400px)에 오거나 롤링 차례가 되면 src로 옮긴다
+           (지시서 2026-11-14 "최적화" §2). width/height는 실제 webp 크기(1600x900)로
+           object-fit:cover 박스 자체는 CSS가 고정 높이로 잡아 흔들림은 원래도 없었지만,
+           속성값은 맞춰 둔다. #}
         {% for src in p.statement.photos %}
-        <img class="hp-photo-img{% if loop.first %} is-active{% endif %}" src="{{ src }}" alt="ENTER {{ p.statement.photo_caption }} 업무 현장 {{ loop.index }}" {% if loop.first %}loading="eager"{% else %}loading="lazy"{% endif %}>
+        <img class="hp-photo-img{% if loop.first %} is-active{% endif %}" {% if loop.first %}src="{{ src }}" loading="eager"{% else %}data-src="{{ src }}" loading="lazy" decoding="async"{% endif %} width="1600" height="900" alt="ENTER {{ p.statement.photo_caption }} 업무 현장 {{ loop.index }}">
         {% endfor %}
       </div>
       <div class="hp-photo-overlay"></div>

@@ -63,7 +63,6 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
 .hp-two-tone-block{ display:flex; flex-direction:column; gap:4px; }
 .hp-ink{ color:var(--hp-ink); }
 .hp-green{ color:var(--hp-green); }
-.hp-green-text{ color:var(--hp-green); }
 .hp-muted{ color:var(--hp-grey); }
 .hp-mono-muted{ font-size:11px; letter-spacing:.04em; color:var(--hp-grey); text-transform:uppercase; }
 .hp-mono-green{ font-size:11px; letter-spacing:.04em; color:var(--hp-accent-text); text-transform:uppercase; }

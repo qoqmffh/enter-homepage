@@ -5,11 +5,13 @@
 {% macro render(variant, data) %}
 {% set sk = data.sketch %}
 {% set has_facts = variant == 'tall' and data.facts %}
+{% set sk_dims = {'company': [1672, 820], 'trade': [1672, 793], 'info': [1672, 816]} %}
 <div class="sp-hero sp-hero--{{ variant }}{% if sk %} sp-hero--sketch{% endif %}{% if has_facts %} sp-hero--has-facts{% endif %}">
   {% if sk %}
-  {# 분류별 공통 선 스케치 히어로(회사/거래/정보) — static/photos/hero/hero-<분류>.webp (투명 배경, 맨 아래 선이 땅) #}
+  {# 분류별 공통 선 스케치 히어로(회사/거래/정보) — static/photos/hero/hero-<분류>.webp (투명 배경, 맨 아래 선이 땅).
+     width/height·fetchpriority: why.html의 hp-hero-sketch와 같은 이유(지시서 2026-11-14 "최적화" §2). #}
   <div class="sp-hero-frame">
-    <img class="sp-hero-sketch" src="static/photos/hero/hero-{{ sk }}.webp" alt="" aria-hidden="true">
+    <img class="sp-hero-sketch" src="static/photos/hero/hero-{{ sk }}.webp" width="{{ sk_dims[sk][0] }}" height="{{ sk_dims[sk][1] }}" fetchpriority="high" alt="" aria-hidden="true">
   {% else %}
   <div class="sp-hero-frame" style="background-image:url('static/photos/hero-{{ data.photo }}.jpg')">
     {# 사진 분위기(교체용 참고): {{ data.photo_mood }} #}

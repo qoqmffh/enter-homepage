@@ -6,6 +6,7 @@ sitemap.xml · robots.txt 도 이 스크립트가 자동으로 만듭니다.
 
 실행: python build.py
 """
+import glob
 import hashlib
 import json
 import os
@@ -67,6 +68,35 @@ def add_cache_busting(html):
             return match.group(0)
         return f"{prefix}{rel_path}?v={_asset_hash(rel_path)}{suffix}"
     return _ASSET_REF_RE.sub(repl, html)
+
+
+def _load_reference_text():
+    """templates/*.html(partials 포함) + content/*.json 전체를 이어 붙인 문자열 —
+    어떤 static 파일 경로가 실제로 쓰이는지 찾는 용도(아래 ignore_unreferenced_png)."""
+    chunks = []
+    for pattern in (os.path.join(TEMPLATES_DIR, "**", "*.html"), os.path.join(CONTENT_DIR, "*.json")):
+        for path in glob.glob(pattern, recursive=True):
+            with open(path, encoding="utf-8") as f:
+                chunks.append(f.read())
+    return "\n".join(chunks)
+
+
+def make_png_ignore_fn(static_dir, reference_text):
+    """static/ -> dist/static/ 복사 시 쓰는 shutil.copytree ignore 콜백(지시서 2026-11-14
+    "최적화" §5) — 원본 *.png 중 어느 템플릿·content에도 경로가 안 나오는 파일만 뺀다
+    (예: static/photos/Headquarters/1.png — 실제로는 같은 자리의 .webp만 쓴다).
+    favicon-32.png·apple-touch-icon.png·evidence/*.png처럼 실제로 참조되는 png는
+    그대로 복사된다(경로 문자열이 reference_text에 있으므로)."""
+    def ignore(dir_path, names):
+        skipped = []
+        for name in names:
+            full_path = os.path.join(dir_path, name)
+            if name.lower().endswith(".png") and os.path.isfile(full_path):
+                rel = os.path.relpath(full_path, static_dir).replace(os.sep, "/")
+                if rel not in reference_text:
+                    skipped.append(name)
+        return skipped
+    return ignore
 
 
 def build_menu_summaries(site, pages, blog_posts):
@@ -131,8 +161,9 @@ def main():
         shutil.rmtree(DIST_DIR)
     os.makedirs(DIST_DIR)
 
-    # static/ 통째로 복사
-    shutil.copytree(STATIC_DIR, os.path.join(DIST_DIR, "static"))
+    # static/ 통째로 복사 — 단, 어디서도 참조 안 하는 원본 png는 뺀다(지시서 2026-11-14 §5)
+    reference_text = _load_reference_text()
+    shutil.copytree(STATIC_DIR, os.path.join(DIST_DIR, "static"), ignore=make_png_ignore_fn(STATIC_DIR, reference_text))
 
     sitemap_entries = []
 

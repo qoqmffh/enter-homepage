@@ -1,0 +1,16 @@
+{
+  "name": "enter-site-build-scripts",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ENTER 홈페이지 정적 자산 빌드 스크립트 모음(사이트 본체와 별개의 Node 도구).",
+  "type": "module",
+  "scripts": {
+    "build:three-lite": "node build-three-lite.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  },
+  "dependencies": {
+    "three": "0.169.0"
+  }
+}
