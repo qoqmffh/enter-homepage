@@ -30,14 +30,14 @@
 
     "guide-dealer-vs-reseller": {
       "template": "guide_chapter.html",
-      "title": "대리점과 판매점의 차이 — 창업 가이드 | ENTER",
+      "title": "판매점으로 시작하기 — 창업 가이드 1/5 | ENTER",
       "meta_description": "이동통신 유통구조는 직영점·대리점·판매점으로 나뉩니다. 휴대폰 매장 창업 전에 알아야 할 대리점과 판매점의 차이를 정리했습니다.",
       "date_published": "2026-10-21",
-      "date_modified": "2026-10-21",
+      "date_modified": "2026-11-10",
       "author": "park-taejun",
       "category": "opening",
       "eyebrow": "창업 준비 · 1/5",
-      "h1": "대리점과 판매점의 차이",
+      "h1": "판매점으로 시작하기",
       "intro": "휴대폰 매장을 열기 전에, 내가 '대리점'으로 시작하는지 '판매점'으로 시작하는지부터 알아야 합니다.",
       "concept_heading": "핵심 개념",
       "concept_body": [
@@ -60,6 +60,11 @@
         "공급처가 여러 통신사 상품을 함께 취급하는지 확인하기 (한 곳에서 비교 가능)"
       ],
       "summary": "휴대폰 매장 창업은 대부분 '판매점'으로 시작합니다. 중요한 건 간판이 아니라, 어떤 공급처에서 정책을 받느냐입니다.",
+      "cross_link": {
+        "prefix": "대리점·판매점·총판 차이를 자세히 보려면",
+        "text": "대리점 판매점 차이, 창업한다면 어느 쪽?",
+        "slug": "blog-dealer-reseller-summary"
+      },
       "next_slug": "guide-wholesale-selection",
       "next_label": "도매 거래처 선정 기준"
     },

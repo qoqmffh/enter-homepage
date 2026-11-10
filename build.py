@@ -88,6 +88,39 @@ def date_fmt(value):
     return str(value).replace("-", ".")
 
 
+_MD_LINK_RE = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
+_MD_BOLD_RE = re.compile(r"\*\*(.+?)\*\*")
+_MD_ITALIC_RE = re.compile(r"(?<!\*)\*([^*]+?)\*(?!\*)")
+
+
+def md_inline(text):
+    """블로그 글 원고의 가벼운 인라인 마크다운(**굵게**·*기울임*·[글자](주소)만 지원)을
+    안전하게 렌더링한다(블로그 글 3편 반영 지시서 2026-11-10). 먼저 markupsafe.escape로
+    원문을 이스케이프한 뒤, 그 이스케이프된 문자열 위에서만 정규식으로 허용된 태그를
+    되살려 붙이므로 원고에 <script> 등이 섞여 있어도 그대로 출력되지 않는다."""
+    from markupsafe import Markup, escape
+
+    if text is None:
+        return Markup("")
+    s = str(escape(str(text)))
+    s = _MD_LINK_RE.sub(lambda m: f'<a href="{m.group(2)}">{m.group(1)}</a>', s)
+    s = _MD_BOLD_RE.sub(r"<strong>\1</strong>", s)
+    s = _MD_ITALIC_RE.sub(r"<em>\1</em>", s)
+    return Markup(s)
+
+
+def faq_main_entity(items):
+    """faq 블록 items([{q,a}])를 FAQPage JSON-LD의 mainEntity 배열로 바꾼다."""
+    return [
+        {
+            "@type": "Question",
+            "name": it["q"],
+            "acceptedAnswer": {"@type": "Answer", "text": it["a"]},
+        }
+        for it in (items or [])
+    ]
+
+
 _git_date_cache = {}
 
 
@@ -260,6 +293,8 @@ def main():
     env.filters["countable"] = is_countable
     env.filters["compact"] = compact
     env.filters["date_fmt"] = date_fmt
+    env.filters["md_inline"] = md_inline
+    env.filters["faq_main_entity"] = faq_main_entity
     # A30-1/A30-2(마케팅 P0 2026-11-10) — tojson 기본값(ensure_ascii=True)이면
     # JSON-LD 속 한글이 \uXXXX로 이스케이프된다. 사람이 읽을 수 있게 끈다.
     env.policies["json.dumps_kwargs"] = {"ensure_ascii": False, "indent": 2}

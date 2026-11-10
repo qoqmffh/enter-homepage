@@ -3245,7 +3245,7 @@
         "chapters": [
           {
             "slug": "guide-dealer-vs-reseller",
-            "title": "대리점과 판매점의 차이"
+            "title": "판매점으로 시작하기"
           },
           {
             "slug": "guide-wholesale-selection",
@@ -3371,7 +3371,7 @@
     "date_modified": "2026-10-30",
     "eyebrow": "블로그",
     "h1": "판매점 사장님이 궁금한 것들",
-    "lead": "8편 발행 완료, 이후 주 1편.",
+    "lead": "9편 발행 완료, 이후 주 1편.",
     "sub": {
       "board_type": "blog",
       "hero": {
@@ -3408,6 +3408,21 @@
     },
     "posts": [
       {
+        "title": "온라인 휴대폰 판매점 창업, 매장 없이 시작해도 될까",
+        "tag": "온라인셀러",
+        "slug": "blog-online-phone-store-startup"
+      },
+      {
+        "title": "대리점 판매점 차이, 창업한다면 어느 쪽으로 시작할까",
+        "tag": "창업",
+        "slug": "blog-dealer-reseller-summary"
+      },
+      {
+        "title": "휴대폰 판매점 창업 비용, 어디에 들고 어디서 버나",
+        "tag": "창업",
+        "slug": "blog-startup-cost"
+      },
+      {
         "title": "통신판매업신고 방법 — 온라인 셀러가 처음 막히는 곳",
         "tag": "셀러",
         "slug": "blog-online-seller-registration"
@@ -3423,19 +3438,9 @@
         "slug": "blog-startup-overview"
       },
       {
-        "title": "휴대폰 매장 창업 비용과 수익 구조",
-        "tag": "창업",
-        "slug": "blog-startup-cost"
-      },
-      {
         "title": "판매점이 인터넷·TV까지 하면 달라지는 것",
         "tag": "창업",
         "slug": "blog-wireline-addon"
-      },
-      {
-        "title": "대리점·판매점·총판, 차이 한 번에 정리",
-        "tag": "창업",
-        "slug": "blog-dealer-reseller-summary"
       },
       {
         "title": "유선 도매처 고를 때 정산 주기부터 봐야 하는 이유",

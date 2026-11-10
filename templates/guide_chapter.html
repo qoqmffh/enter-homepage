@@ -142,6 +142,10 @@
     {% if page.cta %}
     <p style="margin-top:20px"><a class="btn btn-primary" href="#lead" data-lead-trigger>{{ page.cta }}</a></p>
     {% endif %}
+
+    {% if page.cross_link %}
+    <p class="lead" style="margin-top:14px">{{ page.cross_link.prefix }} → 「<a class="more-link" href="{{ page.cross_link.slug }}.html">{{ page.cross_link.text }}</a>」</p>
+    {% endif %}
   </div>
 </section>
 

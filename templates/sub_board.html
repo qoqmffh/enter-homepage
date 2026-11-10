@@ -43,7 +43,7 @@
       <span class="sp-board-row-body">
         <span class="sp-board-tag">[{{ '업계 질문' if p.tag == '업계' else p.tag }}]</span>
         <span class="sp-board-title">{{ p.title }}{% if not p.slug %} <span class="hp-muted" style="font-size:11px">(준비 중)</span>{% endif %}</span>
-        {% if post %}<span class="sp-board-excerpt">{{ post.intro }}</span>{% endif %}
+        {% if post %}<span class="sp-board-excerpt">{{ post.intro | md_inline }}</span>{% endif %}
       </span>
       {% if post %}<span class="sp-board-date">{{ post.date_published }}</span>{% endif %}
     </a>
