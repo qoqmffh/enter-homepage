@@ -128,6 +128,8 @@ html:not(.ad-pending) #hpHeaderCta:hover{ background:var(--hp-ink); }
 .hp-footer-col a{ font-size:13px; color:var(--hp-grey); }
 .hp-footer-col a:hover{ color:var(--hp-ink); }
 .hp-footer-bottom{ padding-top:24px; border-top:1px solid var(--hp-line); font-size:11px; color:var(--hp-grey); line-height:1.7; display:flex; flex-direction:column; gap:6px; }
+.hp-footer-bottom a{ text-decoration:underline; }
+.hp-footer-bottom a:hover{ color:var(--hp-ink); }
 
 @media (min-width:768px){
   .hp-header-inner{ padding:0 40px; }

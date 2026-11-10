@@ -25,17 +25,23 @@
 <link rel="stylesheet" href="static/floatnav.css">
 {% endif %}
 <link rel="stylesheet" href="static/cursor.css">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "ENTER",
-  "legalName": "(유)위드컴퍼니",
-  "url": "{{ site.base_url }}/",
-  "telephone": "{{ site.phone }}",
-  "foundingDate": "2010"
-}
-</script>
+{# A30-1(마케팅 P0 2026-11-10) — site.org의 빈 값(logo·sameAs 등)은 compact 필터가 JSON-LD에서 뺀다. #}
+{% set org_ld = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  'name': site.site_name,
+  'legalName': site.org.legalName,
+  'alternateName': ['엔터', '위드컴퍼니'],
+  'url': site.base_url ~ '/',
+  'telephone': site.phone,
+  'foundingDate': site.org.foundingDate,
+  'taxID': site.org.taxID,
+  'address': {'@type': 'PostalAddress', 'streetAddress': site.org.address} if site.org.address else None,
+  'email': site.org.email,
+  'logo': site.org.logo,
+  'sameAs': site.org.sameAs
+} %}
+<script type="application/ld+json">{{ org_ld | compact | tojson(indent=2) }}</script>
 {% if slug != 'index' %}
 <script src="static/reveal.js" defer></script>
 <script>

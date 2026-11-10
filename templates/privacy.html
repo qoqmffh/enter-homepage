@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+<section style="padding-top:28px">
+  <div class="wrap">
+    <div class="eyebrow">정책</div>
+    <h1>개인정보처리방침</h1>
+    <p class="lead">ENTER(엔터) 유선전문총판은 아래와 같이 개인정보를 처리합니다.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>수집 항목</h2>
+    <p>상호명, 연락처</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>이용 목적</h2>
+    <p>정책 안내 및 거래 상담</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>보관 기간</h2>
+    <p>상담 종료 후 1년</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>파기 방법</h2>
+    <p>보관 기간이 지나면 복구할 수 없는 방법으로 지체 없이 파기합니다. 전자 파일 형태는 기술적 방법으로 삭제합니다.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>운영자 정보</h2>
+    <p>
+      {{ site.org.legalName or "추후 표기" }}{% if site.org.representative %} · 대표 {{ site.org.representative }}{% endif %}<br>
+      {% if site.org.address %}{{ site.org.address }}<br>{% endif %}
+      {% if site.org.taxID %}사업자등록번호 {{ site.org.taxID }}<br>{% endif %}
+      {% if site.org.mailOrderSalesNumber %}통신판매업신고 {{ site.org.mailOrderSalesNumber }}{% if site.org.mailOrderSalesDate %} ({{ site.org.mailOrderSalesDate }} 신고){% endif %}{% endif %}
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>문의처</h2>
+    <p>전화 <a href="tel:{{ site.phone }}">{{ site.phone }}</a></p>
+  </div>
+</section>
+{% endblock %}

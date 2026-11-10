@@ -1,10 +1,30 @@
 {% extends "base.html" %}
+{% set author = (site.authors | selectattr('id', 'equalto', page.author) | first) if page.author else none %}
+{% block extra_head %}
+{# A30-2(마케팅 P0 2026-11-10) — BlogPosting JSON-LD. author는 글에 author가 지정돼 있고
+   site.authors에서 찾아지면 Person, 아니면 Organization(발행처)으로 넣는다. #}
+{% set article_ld = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  'headline': page.h1,
+  'description': page.meta_description,
+  'datePublished': page.date_published,
+  'dateModified': page.date_modified,
+  'mainEntityOfPage': {'@type': 'WebPage', '@id': site.base_url ~ '/' ~ slug ~ '.html'},
+  'publisher': {'@type': 'Organization', 'name': site.site_name},
+  'author': ({'@type': 'Person', 'name': author.name} if author else {'@type': 'Organization', 'name': site.site_name})
+} %}
+<script type="application/ld+json">{{ article_ld | compact | tojson(indent=2) }}</script>
+{% endblock %}
 {% block content %}
 <section style="padding-top:28px">
   <div class="wrap">
     <p class="lead" style="margin-bottom:4px"><a class="more-link" href="blog.html">← 블로그</a></p>
     <div class="eyebrow">{{ page.eyebrow }}</div>
     <h1>{{ page.h1 }}</h1>
+    {% if page.date_published %}
+    <p class="post-date">작성 {{ page.date_published | date_fmt }} · 수정 {{ page.date_modified | date_fmt }}</p>
+    {% endif %}
     <p class="lead">{{ page.intro }}</p>
   </div>
 </section>
@@ -18,6 +38,16 @@
 {% endif %}
 
 {% for s in page.sections %}
+{% if loop.index == 2 and page.cta_mid %}
+<section>
+  <div class="wrap">
+    <div class="mid-cta">
+      <p>{{ page.cta_mid.text }}</p>
+      <a class="btn btn-primary" href="#lead" data-lead-trigger>{{ page.cta_mid.button }}</a>
+    </div>
+  </div>
+</section>
+{% endif %}
 <section>
   <div class="wrap">
     <h2>{{ s.heading }}</h2>
@@ -48,4 +78,15 @@
     {% endif %}
   </div>
 </section>
+
+{% if author %}
+<section>
+  <div class="wrap">
+    <div class="author-box">
+      <span class="author-name">{{ author.name }}</span>
+      <span class="author-title">{{ author.title }}{% if author.career %} · {{ author.career }}{% endif %}</span>
+    </div>
+  </div>
+</section>
+{% endif %}
 {% endblock %}

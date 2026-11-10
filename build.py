@@ -12,6 +12,8 @@ import json
 import os
 import re
 import shutil
+import subprocess
+import xml.sax.saxutils as xml_escape
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -68,6 +70,82 @@ def add_cache_busting(html):
             return match.group(0)
         return f"{prefix}{rel_path}?v={_asset_hash(rel_path)}{suffix}"
     return _ASSET_REF_RE.sub(repl, html)
+
+
+def compact(d):
+    """dict에서 빈 값(None·""·[]·{})을 뺀다(마케팅 P0 지시서 2026-11-10 A30-1/A30-2) —
+    JSON-LD에서 운영자 정보가 아직 안 채워진 키(logo 등)를 조용히 빼는 용도.
+    템플릿에서 {{ some_dict | compact | tojson }}로 쓴다."""
+    if not isinstance(d, dict):
+        return d
+    return {k: v for k, v in d.items() if v not in (None, "", [], {})}
+
+
+def date_fmt(value):
+    """'2026-10-22' -> '2026.10.22'(A16-1 날짜 줄 표기). 형식이 다르면 원문 그대로 둔다."""
+    if not value or not re.match(r"^\d{4}-\d{2}-\d{2}$", str(value)):
+        return value
+    return str(value).replace("-", ".")
+
+
+_git_date_cache = {}
+
+
+def git_last_modified_date(rel_path):
+    """content 파일의 git 마지막 커밋 날짜(YYYY-MM-DD) — 개별 글에 date_modified가 없을 때
+    쓰는 대체값(A01-4). 항목별로 git blame까지 뜨는 건 너무 느려서, "이 항목이 들어있는
+    content 파일 전체의 마지막 커밋일"로 근사한다 — 보통 글 하나만 고쳐도 파일 전체가
+    커밋되는 구조라 실제로도 거의 정확하다. git이 없거나 커밋 이력이 없으면 None(빈 값)."""
+    if rel_path in _git_date_cache:
+        return _git_date_cache[rel_path]
+    date = None
+    try:
+        out = subprocess.run(
+            ["git", "log", "-1", "--format=%cs", "--", rel_path],
+            cwd=BASE_DIR, capture_output=True, text=True, timeout=5,
+        )
+        if out.returncode == 0 and out.stdout.strip():
+            date = out.stdout.strip()
+    except Exception:
+        date = None
+    _git_date_cache[rel_path] = date
+    return date
+
+
+_FORBIDDEN_WORDS = ["온라인 대비 3배", "3배", "국대폰", "업계 1위", "1위"]
+_TAG_STRIP_RE = re.compile(r"<[^>]+>")
+
+
+def check_forbidden_words(dist_dir):
+    """dist/*.html 텍스트에서 금지어를 찾는다(E-02). 빌드는 막지 않고 경고만 출력한다."""
+    findings = []
+    for path in sorted(glob.glob(os.path.join(dist_dir, "*.html"))):
+        with open(path, encoding="utf-8") as f:
+            html = f.read()
+        text = _TAG_STRIP_RE.sub(" ", html)
+        name = os.path.basename(path)
+        for word in _FORBIDDEN_WORDS:
+            idx = text.find(word)
+            if idx != -1:
+                snippet = text[max(0, idx - 20):idx + len(word) + 20].strip()
+                snippet = re.sub(r"\s+", " ", snippet)
+                findings.append((name, word, snippet))
+    return findings
+
+
+def find_orphan_pages(dist_dir, all_slugs):
+    """어느 dist 페이지에서도 안 걸리는(= 내부 링크가 없는) 페이지를 찾는다(A34-2).
+    sitemap.xml·robots.txt는 페이지가 아니라서 링크 대상에서 뺀다. 루트에서 시작하는
+    링크만 셀 수 있지만, 여기서는 "전체 dist 안 어디서도 href로 한 번도 안 걸린 slug"를
+    보수적으로 찾는다(한 군데서라도 걸리면 고아 아님)."""
+    linked = set()
+    href_re = re.compile(r'href="([a-zA-Z0-9_-]+)\.html(?:#[^"]*)?"')
+    for path in glob.glob(os.path.join(dist_dir, "*.html")):
+        with open(path, encoding="utf-8") as f:
+            html = f.read()
+        for m in href_re.finditer(html):
+            linked.add(m.group(1))
+    return sorted(s for s in all_slugs if s not in linked)
 
 
 def _load_reference_text():
@@ -143,18 +221,48 @@ def main():
     site = load_json("site.json")
     pages = load_json("pages.json")
 
+    # 사이트맵 3분리(A01-3)용 — 어느 content 파일에서 왔는지(= 어느 사이트맵에 들어갈지)
+    # pages.update()로 섞이기 전에 미리 적어 둔다. content_file은 A01-4 git 대체 lastmod에도 쓴다.
+    page_categories = {}
+    page_source_file = {}
+    for slug in pages:
+        page_categories[slug] = "pages"
+        page_source_file[slug] = "content/pages.json"
+
     # 창업 가이드 챕터(guide.json)도 같은 방식으로 합쳐서 렌더링
     guide = load_json("guide.json")
     pages.update(guide["pages"])
+    for slug in guide["pages"]:
+        page_categories[slug] = "guide"
+        page_source_file[slug] = "content/guide.json"
 
     # 블로그 포스트(blog_posts.json)도 같은 방식으로 합쳐서 렌더링
     blog_posts = load_json("blog_posts.json")
     pages.update(blog_posts["pages"])
+    for slug in blog_posts["pages"]:
+        page_categories[slug] = "blog"
+        page_source_file[slug] = "content/blog_posts.json"
+
+    # 개인정보처리방침(A26-3) — 전용 content 파일 없이 여기서 바로 한 페이지 추가
+    pages["privacy"] = {
+        "template": "privacy.html",
+        "title": "개인정보처리방침 | ENTER",
+        "meta_description": "ENTER(엔터) 유선전문총판의 개인정보처리방침 — 수집 항목, 이용 목적, 보관 기간, 파기 방법, 문의처를 안내합니다.",
+        "date_published": "2026-11-10",
+        "date_modified": "2026-11-10",
+    }
+    page_categories["privacy"] = "pages"
+    page_source_file["privacy"] = "build.py"
 
     menu_summaries = build_menu_summaries(site, pages, blog_posts)
 
     env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
     env.filters["countable"] = is_countable
+    env.filters["compact"] = compact
+    env.filters["date_fmt"] = date_fmt
+    # A30-1/A30-2(마케팅 P0 2026-11-10) — tojson 기본값(ensure_ascii=True)이면
+    # JSON-LD 속 한글이 \uXXXX로 이스케이프된다. 사람이 읽을 수 있게 끈다.
+    env.policies["json.dumps_kwargs"] = {"ensure_ascii": False, "indent": 2}
 
     # dist/ 비우고 다시 생성
     if os.path.exists(DIST_DIR):
@@ -165,7 +273,8 @@ def main():
     reference_text = _load_reference_text()
     shutil.copytree(STATIC_DIR, os.path.join(DIST_DIR, "static"), ignore=make_png_ignore_fn(STATIC_DIR, reference_text))
 
-    sitemap_entries = []
+    sitemap_entries = []  # (slug, lastmod, category)
+    all_slugs = list(pages.keys())
 
     for slug, page in pages.items():
         template = env.get_template(page["template"])
@@ -175,21 +284,73 @@ def main():
         out_path = os.path.join(DIST_DIR, f"{slug}.html")
         with open(out_path, "w", encoding="utf-8") as f:
             f.write(html)
-        sitemap_entries.append((slug, page.get("date_modified", "")))
+        # A01-4: date_modified가 없으면 이 항목이 들어있는 content 파일의 git 마지막 커밋일로 대체
+        lastmod = page.get("date_modified") or git_last_modified_date(page_source_file[slug]) or ""
+        sitemap_entries.append((slug, lastmod, page_categories[slug]))
         print(f"  생성: {slug}.html")
 
-    # sitemap.xml
-    sitemap_lines = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
-    for slug, lastmod in sitemap_entries:
-        sitemap_lines.append("  <url>")
-        sitemap_lines.append(f"    <loc>{site['base_url']}/{slug}.html</loc>")
-        if lastmod:
-            sitemap_lines.append(f"    <lastmod>{lastmod}</lastmod>")
-        sitemap_lines.append("  </url>")
-    sitemap_lines.append("</urlset>")
-    with open(os.path.join(DIST_DIR, "sitemap.xml"), "w", encoding="utf-8") as f:
-        f.write("\n".join(sitemap_lines))
-    print("  생성: sitemap.xml")
+    # 사이트맵 3분리 + 인덱스(A01-3)
+    def write_sitemap(filename, entries):
+        lines = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+        for slug, lastmod, _cat in entries:
+            lines.append("  <url>")
+            lines.append(f"    <loc>{site['base_url']}/{slug}.html</loc>")
+            if lastmod:
+                lines.append(f"    <lastmod>{lastmod}</lastmod>")
+            lines.append("  </url>")
+        lines.append("</urlset>")
+        with open(os.path.join(DIST_DIR, filename), "w", encoding="utf-8") as f:
+            f.write("\n".join(lines))
+        print(f"  생성: {filename} ({len(entries)}개)")
+
+    sitemap_files = {
+        "pages": "sitemap-pages.xml",
+        "guide": "sitemap-guide.xml",
+        "blog": "sitemap-blog.xml",
+    }
+    today = __import__("datetime").date.today().isoformat()
+    index_lines = ['<?xml version="1.0" encoding="UTF-8"?>', '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for cat, filename in sitemap_files.items():
+        cat_entries = [e for e in sitemap_entries if e[2] == cat]
+        write_sitemap(filename, cat_entries)
+        index_lines.append("  <sitemap>")
+        index_lines.append(f"    <loc>{site['base_url']}/{filename}</loc>")
+        index_lines.append(f"    <lastmod>{today}</lastmod>")
+        index_lines.append("  </sitemap>")
+    index_lines.append("</sitemapindex>")
+    with open(os.path.join(DIST_DIR, "sitemap_index.xml"), "w", encoding="utf-8") as f:
+        f.write("\n".join(index_lines))
+    print("  생성: sitemap_index.xml")
+
+    # RSS(A01-6) — 블로그 글만, 네이버 서치어드바이저 제출용
+    rss_items = []
+    for slug, bp in blog_posts["pages"].items():
+        link = f"{site['base_url']}/{slug}.html"
+        pub = bp.get("date_published", "")
+        rss_items.append((pub, (
+            "    <item>\n"
+            f"      <title>{xml_escape.escape(bp.get('h1', bp.get('title', '')))}</title>\n"
+            f"      <link>{xml_escape.escape(link)}</link>\n"
+            f"      <guid>{xml_escape.escape(link)}</guid>\n"
+            f"      <description>{xml_escape.escape(bp.get('meta_description', ''))}</description>\n"
+            f"      <pubDate>{pub}</pubDate>\n"
+            "    </item>"
+        )))
+    rss_items.sort(key=lambda t: t[0], reverse=True)  # 최신 글 먼저
+    rss_xml = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<rss version="2.0">\n'
+        "  <channel>\n"
+        f"    <title>{xml_escape.escape(site['site_name'])} 블로그</title>\n"
+        f"    <link>{xml_escape.escape(site['base_url'])}/blog.html</link>\n"
+        f"    <description>{xml_escape.escape(site.get('site_tagline', ''))}</description>\n"
+        + "\n".join(item for _pub, item in rss_items) + "\n"
+        "  </channel>\n"
+        "</rss>\n"
+    )
+    with open(os.path.join(DIST_DIR, "rss.xml"), "w", encoding="utf-8") as f:
+        f.write(rss_xml)
+    print(f"  생성: rss.xml ({len(rss_items)}개 글)")
 
     # robots.txt — 실제 존재하지 않는 /admin/ 같은 경로를 막을 필요가 없으므로 전체 허용 + sitemap만
     # site.noindex가 true면(실도메인 확정 전 임시 호스팅 단계) 크롤링 자체를 막음
@@ -199,14 +360,34 @@ def main():
         robots = (
             "User-agent: *\n"
             "Allow: /\n"
-            f"Sitemap: {site['base_url']}/sitemap.xml\n"
+            f"Sitemap: {site['base_url']}/sitemap_index.xml\n"
         )
     with open(os.path.join(DIST_DIR, "robots.txt"), "w", encoding="utf-8") as f:
         f.write(robots)
     print("  생성: robots.txt")
 
-    print(f"\n완료: {len(sitemap_entries)}개 페이지 + sitemap.xml + robots.txt -> dist/")
+    print(f"\n완료: {len(sitemap_entries)}개 페이지 + sitemap 4개 + rss.xml + robots.txt -> dist/")
     print("주의: site.json의 base_url이 아직 placeholder입니다. 실제 도메인 확정되면 교체 후 재빌드하세요.")
+
+    # E-02: 금지어 빌드 검사(경고만, 빌드는 안 막음)
+    findings = check_forbidden_words(DIST_DIR)
+    if findings:
+        print(f"\n[경고] 금지어 {len(findings)}건 발견:")
+        for name, word, snippet in findings:
+            print(f"  - {name}: '{word}' … {snippet}")
+    else:
+        print("\n금지어 검사: 이상 없음")
+
+    # A34-2: 고아 페이지(내부 링크 없는 dist 페이지) 검사
+    orphans = find_orphan_pages(DIST_DIR, all_slugs)
+    # index는 모든 페이지가 '정상적으로' 링크 안 할 수 있는 시작점이라 제외하지 않고 그대로 보고하되,
+    # 실제로는 헤더 로고(a.hp-brand)가 모든 페이지에서 index.html로 링크하므로 보통 고아가 아니다.
+    if orphans:
+        print(f"\n[참고] 어디서도 안 걸린(고아) 페이지 {len(orphans)}개:")
+        for s in orphans:
+            print(f"  - {s}.html")
+    else:
+        print("고아 페이지 검사: 이상 없음")
 
 
 if __name__ == "__main__":

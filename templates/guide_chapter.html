@@ -1,10 +1,29 @@
 {% extends "base.html" %}
+{% set author = (site.authors | selectattr('id', 'equalto', page.author) | first) if page.author else none %}
+{% block extra_head %}
+{# A30-2(마케팅 P0 2026-11-10) — 가이드는 BlogPosting이 아니라 일반 Article. #}
+{% set article_ld = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  'headline': page.h1,
+  'description': page.meta_description,
+  'datePublished': page.date_published,
+  'dateModified': page.date_modified,
+  'mainEntityOfPage': {'@type': 'WebPage', '@id': site.base_url ~ '/' ~ slug ~ '.html'},
+  'publisher': {'@type': 'Organization', 'name': site.site_name},
+  'author': ({'@type': 'Person', 'name': author.name} if author else {'@type': 'Organization', 'name': site.site_name})
+} %}
+<script type="application/ld+json">{{ article_ld | compact | tojson(indent=2) }}</script>
+{% endblock %}
 {% block content %}
 <section style="padding-top:28px">
   <div class="wrap">
     <p class="lead" style="margin-bottom:4px"><a class="more-link" href="startup.html">← 창업 가이드</a></p>
     <div class="eyebrow">{{ page.eyebrow }}</div>
     <h1>{{ page.h1 }}</h1>
+    {% if page.date_published %}
+    <p class="post-date">작성 {{ page.date_published | date_fmt }} · 수정 {{ page.date_modified | date_fmt }}</p>
+    {% endif %}
     <p class="lead">{{ page.intro }}</p>
   </div>
 </section>
@@ -72,6 +91,20 @@
 </section>
 {% endif %}
 
+{# A22-1(마케팅 P0 2026-11-10) — 가이드는 h2 배열이 페이지마다 달라 "2번째 h2 앞"을 그대로
+   맞출 수 없어서, 모든 챕터가 공통으로 갖는 자리인 "자주 하는 실수" 섹션 앞(본문 중간)을
+   고정 삽입 지점으로 썼다. #}
+{% if page.cta_mid %}
+<section>
+  <div class="wrap">
+    <div class="mid-cta">
+      <p>{{ page.cta_mid.text }}</p>
+      <a class="btn btn-primary" href="#lead" data-lead-trigger>{{ page.cta_mid.button }}</a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
 {% if page.mistake_body %}
 <section>
   <div class="wrap">
@@ -111,4 +144,15 @@
     {% endif %}
   </div>
 </section>
+
+{% if author %}
+<section>
+  <div class="wrap">
+    <div class="author-box">
+      <span class="author-name">{{ author.name }}</span>
+      <span class="author-title">{{ author.title }}{% if author.career %} · {{ author.career }}{% endif %}</span>
+    </div>
+  </div>
+</section>
+{% endif %}
 {% endblock %}

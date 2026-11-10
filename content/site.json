@@ -6,8 +6,29 @@
   "phone": "010-2222-4183",
   "kakao_url": "",
   "lead_endpoint": "",
-  "legal_footer": "(유)위드컴퍼니 도매영업팀이 운영하는 유선 전문 브랜드 ENTER · 사업자정보/주소 추후 표기 · 010-2222-4183",
-  "legal_footer_about": "ENTER는 (유)위드컴퍼니 도매영업팀이 운영하는 유선 전문 브랜드입니다. · 010-2222-4183",
+  "legal_footer": "유한회사 위드컴퍼니(ENTER 유선전문총판) · 대표 박솔아 · 전북특별자치도 전주시 완산구 쑥고개로 315, 6층 · 사업자등록번호 398-81-01808 · 통신판매업신고 제2020-전주완산-0309호 · 010-2222-4183",
+  "legal_footer_about": "ENTER(엔터) 유선전문총판은 유한회사 위드컴퍼니가 운영하는 브랜드입니다. · 대표 박솔아 · 전북특별자치도 전주시 완산구 쑥고개로 315, 6층 · 사업자등록번호 398-81-01808 · 통신판매업신고 제2020-전주완산-0309호 · 010-2222-4183",
+  "authors": [
+    {
+      "id": "park-taejun",
+      "name": "박태준",
+      "title": "영업지원팀 팀장",
+      "career": "통신 유통 10년 차",
+      "url": ""
+    }
+  ],
+  "org": {
+    "legalName": "유한회사 위드컴퍼니",
+    "representative": "박솔아",
+    "taxID": "398-81-01808",
+    "mailOrderSalesNumber": "제2020-전주완산-0309호",
+    "mailOrderSalesDate": "2020-03-30",
+    "foundingDate": "2020-03-26",
+    "address": "전북특별자치도 전주시 완산구 쑥고개로 315, 6층",
+    "email": "oztop2@naver.com",
+    "logo": "",
+    "sameAs": []
+  },
   "header_cta": "정책 받기",
   "ad_replay_label": "광고 다시 보기",
   "header_menu": [
