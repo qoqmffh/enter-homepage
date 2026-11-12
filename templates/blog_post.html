@@ -12,7 +12,7 @@
   'dateModified': page.date_modified,
   'mainEntityOfPage': {'@type': 'WebPage', '@id': site.base_url ~ '/' ~ slug ~ '.html'},
   'publisher': {'@type': 'Organization', 'name': site.site_name},
-  'author': ({'@type': 'Person', 'name': author.name} if author else {'@type': 'Organization', 'name': site.site_name})
+  'author': ({'@type': 'Person', 'name': author.name, 'jobTitle': author.title, 'worksFor': {'@type': 'Organization', 'name': site.site_name}} if author else {'@type': 'Organization', 'name': site.site_name})
 } %}
 <script type="application/ld+json">{{ article_ld | compact | tojson(indent=2) }}</script>
 {# 블로그 글 3편 반영 지시서(2026-11-10) — faq 블록이 하나라도 있으면 FAQPage JSON-LD를 같이 낸다. #}

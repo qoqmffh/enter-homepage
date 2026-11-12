@@ -109,13 +109,24 @@ def md_inline(text):
     return Markup(s)
 
 
+def strip_md(text):
+    """표기 통일 지시서(2026-11-12) A30-3 — JSON-LD 같은 순수 텍스트 필드에는 원고의
+    [글자](주소) 링크 문법을 빼고 글자만 남긴다(화면 표시는 md_inline으로 그대로 링크 유지)."""
+    if text is None:
+        return text
+    s = _MD_LINK_RE.sub(r"\1", str(text))
+    s = _MD_BOLD_RE.sub(r"\1", s)
+    s = _MD_ITALIC_RE.sub(r"\1", s)
+    return s
+
+
 def faq_main_entity(items):
     """faq 블록 items([{q,a}])를 FAQPage JSON-LD의 mainEntity 배열로 바꾼다."""
     return [
         {
             "@type": "Question",
-            "name": it["q"],
-            "acceptedAnswer": {"@type": "Answer", "text": it["a"]},
+            "name": strip_md(it["q"]),
+            "acceptedAnswer": {"@type": "Answer", "text": strip_md(it["a"])},
         }
         for it in (items or [])
     ]
@@ -145,7 +156,7 @@ def git_last_modified_date(rel_path):
     return date
 
 
-_FORBIDDEN_WORDS = ["온라인 대비 3배", "3배", "국대폰", "업계 1위", "1위"]
+_FORBIDDEN_WORDS = ["온라인 대비 3배", "3배", "국대폰", "업계 1위", "1위", "15년", "2010년 설립"]
 _TAG_STRIP_RE = re.compile(r"<[^>]+>")
 
 
