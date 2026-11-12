@@ -51,6 +51,7 @@
 .sp-proof-grid{ display:flex; flex-direction:column; gap:28px; }
 .sp-proof-title{ font-size:var(--fs-h2); font-weight:800; line-height:1.3; letter-spacing:-.01em; margin:0; }
 .sp-proof-facts{ display:grid; grid-template-columns:1fr; gap:28px; }
+.sp-proof-note{ font-size:12px; margin-top:18px; }
 .sp-proof-fact-value{ display:block; font-size:24px; font-weight:800; line-height:1; letter-spacing:-.01em; font-variant-numeric:tabular-nums; color:var(--hp-ink); }
 .sp-proof-fact-label{ display:block; font-size:13px; color:var(--hp-grey); margin-top:8px; }
 .sp-proof-fact-desc{ font-size:15px; color:var(--hp-ink); line-height:1.6; margin:8px 0 0; }
