@@ -258,7 +258,7 @@ def build_menu_summaries(site, pages, blog_posts):
             if slug == "why":
                 numbers = [{"value": s["num"], "label": s["label"]} for s in page["poetic"]["stats"][:2]]
             elif slug == "stories":
-                special_text = "실제 발언을 모으고 있습니다"
+                special_text = "거래처 대표님 인터뷰"
             elif slug == "blog":
                 count = len(blog_posts["pages"])
                 numbers = [{"value": f"{count}편", "label": "발행된 글"}]

@@ -15,13 +15,34 @@
 
 {{ hero_mod.render('tall', s.hero, bc_mod.render(crumb_items)) }}
 
-{# 실제 거래처 발언이 모이면 이 자리를 채운다 — 지어낸 후기는 넣지 않는다. #}
+{# 후기 지시서(2026-11-13) A — 실제 인터뷰 2건. 지어낸 후기·별점·사진·Review 스키마는 넣지 않는다. #}
+{% if page.quotes %}
+<section class="sp-section" id="stories">
+  <div class="sp-statement" data-reveal>
+    <h2><span class="hp-ink">{{ page.h1 }}</span></h2>
+  </div>
+  <div class="story-quotes">
+    {% for q in page.quotes %}
+    <div data-reveal>
+      <span class="hp-mono-muted story-quote-label">질문: {{ q.asked }}</span>
+      <blockquote class="quote-box">
+        {% for line in q.lines %}<p>{{ line }}</p>{% endfor %}
+        <cite>— {{ q.who }} · {{ q.since }}</cite>
+      </blockquote>
+      {% if q.note %}<p class="hp-muted story-quote-note">{{ q.note }}</p>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% if page.interview_note %}<p class="hp-muted story-interview-note">{{ page.interview_note }}</p>{% endif %}
+</section>
+{% else %}
 <section class="sp-section sp-section--center" id="stories">
   <div class="sp-statement" data-reveal>
     <h2><span class="hp-ink">{{ page.h1 }}</span></h2>
     <p>{{ page.placeholder_text | safe }}</p>
   </div>
 </section>
+{% endif %}
 
 {{ cta_mod.render(s.cta) }}
 {% endblock %}
