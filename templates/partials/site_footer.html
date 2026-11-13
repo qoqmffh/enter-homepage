@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="hp-footer-bottom">
-      <span>{{ legal_text }} · <a href="privacy.html">개인정보처리방침</a></span>
+      <span>{{ legal_text }}{% if site.domain_display %} · {{ site.domain_display }}{% endif %} · <a href="privacy.html">개인정보처리방침</a></span>
       <span>© 2026 ENTER. All rights reserved.</span>
     </div>
   </div>

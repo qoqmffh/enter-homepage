@@ -431,8 +431,17 @@ def main():
         f.write(robots)
     print("  생성: robots.txt")
 
+    # CNAME(실도메인 연결 지시서 2026-11-12) — GitHub Pages가 base_url의 퓨니코드 호스트를
+    # 커스텀 도메인으로 인식하게 한다. base_url이 아직 placeholder면 만들지 않는다.
+    if "REPLACE-WITH-REAL-DOMAIN" not in site["base_url"]:
+        domain_host = site["base_url"].split("://", 1)[-1]
+        with open(os.path.join(DIST_DIR, "CNAME"), "w", encoding="utf-8") as f:
+            f.write(domain_host + "\n")
+        print(f"  생성: CNAME ({domain_host})")
+
     print(f"\n완료: {len(sitemap_entries)}개 페이지 + sitemap 4개 + rss.xml + robots.txt -> dist/")
-    print("주의: site.json의 base_url이 아직 placeholder입니다. 실제 도메인 확정되면 교체 후 재빌드하세요.")
+    if "REPLACE-WITH-REAL-DOMAIN" in site["base_url"]:
+        print("주의: site.json의 base_url이 아직 placeholder입니다. 실제 도메인 확정되면 교체 후 재빌드하세요.")
 
     # E-02: 금지어 빌드 검사(경고만, 빌드는 안 막음)
     findings = check_forbidden_words(DIST_DIR)

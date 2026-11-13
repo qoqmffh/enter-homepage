@@ -1,8 +1,9 @@
 {
   "site_name": "ENTER",
   "site_tagline": "유선 전문 총판 · (유)위드컴퍼니",
-  "base_url": "https://REPLACE-WITH-REAL-DOMAIN.kr",
-  "noindex": true,
+  "base_url": "https://xn--hq1b59iy0gstg.kr",
+  "noindex": false,
+  "domain_display": "유선도매.kr",
   "phone": "010-2222-4183",
   "kakao_url": "",
   "lead_endpoint": "",
