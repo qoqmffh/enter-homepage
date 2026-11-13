@@ -1,7 +1,14 @@
 {% extends "base.html" %}
+{% import "partials/breadcrumb.html" as bc_mod %}
+{% set crumb_items = [{'label': '홈', 'href': 'index.html'}, {'label': '개인정보처리방침', 'href': 'privacy.html'}] %}
+
+{% block extra_head %}
+<script type="application/ld+json">{{ crumb_items | breadcrumb_ld(site.base_url) | tojson(indent=2) }}</script>
+{% endblock %}
 {% block content %}
 <section style="padding-top:28px">
   <div class="wrap">
+    {{ bc_mod.render(crumb_items) }}
     <div class="eyebrow">정책</div>
     <h1>개인정보처리방침</h1>
     <p class="lead">ENTER(엔터) 유선전문총판은 아래와 같이 개인정보를 처리합니다.</p>

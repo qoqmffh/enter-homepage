@@ -1,8 +1,8 @@
 {
   "index": {
     "template": "home.html",
-    "title": "ENTER — 유선 전문 총판 · 정책부터 접수까지 카톡 한 번",
-    "meta_description": "초대형 유선전문도매 ENTER. 정책부터 접수까지 카톡 한 번, 서류 없이 시작하세요. 거래처 3,000곳, 월 평균 4,000건의 유선(인터넷·IPTV) 전문 총판입니다.",
+    "title": "ENTER 유선전문총판 — 정책부터 접수까지 카톡 한 번 | ENTER 유선전문총판",
+    "meta_description": "ENTER(엔터)는 판매점과 온라인 셀러에게 인터넷·IPTV를 공급하는 유선전문총판입니다. 거래처 3,000곳, 월 평균 4,000건, 매주 금요일 정산. 서류 없이 접수부터 시작하세요.",
     "date_published": "2026-10-19",
     "date_modified": "2026-10-30",
     "eyebrow": "ENTER · 유선 도매",
@@ -397,8 +397,8 @@
   },
   "why": {
     "template": "why.html",
-    "title": "왜 ENTER — 정책부터 정산까지, 숫자로 보여드립니다 | ENTER 유선 전문 총판",
-    "meta_description": "거래처 3,000곳, 월 평균 4,000건, 정산 지연 0회. 전국 유선회선 순증의 5% 이상을 차지하는 물량과 실제 정산 장부·하드마킹 DB보호까지, ENTER를 써야 하는 이유를 숫자로 보여드립니다.",
+    "title": "유선 도매 정책 비교, 왜 ENTER인가 — 숫자로 보는 정책·정산 | ENTER 유선전문총판",
+    "meta_description": "유선 도매처는 정책·정산·답변 속도로 비교합니다. 거래처 3,000곳, 월 평균 4,000건, 정산 지연 0회 — ENTER를 고르는 이유를 숫자로 보여드립니다.",
     "date_published": "2026-10-19",
     "date_modified": "2026-10-30",
     "eyebrow": "왜 ENTER",
@@ -1971,8 +1971,8 @@
   },
   "start": {
     "template": "sub_intro.html",
-    "title": "거래 시작하기 — 서류 없이, 접수부터 | ENTER 유선 전문 총판",
-    "meta_description": "서류 없이 접수·개통부터 먼저 하세요. 접수 후 청약까지 보통 1시간, 빠르면 3분. 서류는 첫 정산 전에만 내시면 됩니다.",
+    "title": "유선 도매 거래 시작 — 서류 없이 접수부터 | ENTER 유선전문총판",
+    "meta_description": "ENTER와 거래는 서류 없이 접수·개통부터 시작합니다. 접수 후 청약까지 보통 1시간, 서류는 첫 정산 전에만 내시면 됩니다. 보증금·담보도 받지 않습니다.",
     "date_published": "2026-10-19",
     "date_modified": "2026-10-30",
     "sub": {
@@ -2148,8 +2148,8 @@
   },
   "settlement": {
     "template": "sub_intro.html",
-    "title": "정산·DB보호 — 정산 지연 0회 | ENTER 유선 전문 총판",
-    "meta_description": "매주 수요일 정산서 발송, 금요일 입금. 실제 정산 기록상 늦게 처리된 적 0회입니다. 고객 정보는 하드마킹으로 보호합니다.",
+    "title": "ENTER 정산·DB보호 — 매주 금요일 정산, 하드마킹 | ENTER 유선전문총판",
+    "meta_description": "매주 수요일 정산서를 보내고 금요일에 입금합니다. 실제 정산 기록상 늦게 처리된 적 0회. 고객 정보는 하드마킹으로 보호해 실적 가로채기를 막습니다.",
     "date_published": "2026-10-19",
     "date_modified": "2026-10-30",
     "sub": {
@@ -2884,8 +2884,8 @@
   },
   "products": {
     "template": "sub_intro.html",
-    "title": "취급상품 — 인터넷부터 유심까지 한 곳에서 | ENTER 유선 전문 총판",
-    "meta_description": "인터넷·IPTV·CCTV·가전렌탈·유심까지, SKT·KT·LG U+ 등 통신사 6곳의 유선 상품을 ENTER 한 곳에서 접수합니다.",
+    "title": "인터넷 도매, 판매점용 유선 상품 한 곳에서 | ENTER 유선전문총판",
+    "meta_description": "인터넷·IPTV·CCTV·가전렌탈·유심까지, 통신사 6곳의 유선 상품을 ENTER 한 곳에서 접수합니다. 판매점·온라인 셀러용 도매 정책으로 공급합니다.",
     "date_published": "2026-10-19",
     "date_modified": "2026-10-30",
     "sub": {
@@ -3038,8 +3038,8 @@
   },
   "startup": {
     "template": "sub_intro.html",
-    "title": "창업자 가이드 — 휴대폰 매장 창업, 유선까지 챙기세요 | ENTER 유선 전문 총판",
-    "meta_description": "휴대폰 매장 창업 체크리스트부터, 유선 겸업으로 건당 40만원 더 버는 방법까지. ENTER가 안내합니다.",
+    "title": "휴대폰 창업 가이드 — 매장 열기 전 5단계, 유선까지 | ENTER 유선전문총판",
+    "meta_description": "휴대폰 창업은 판매점으로 시작해 거래처·개통 준비·매장 시설·개업 체크 순서로 준비합니다. 유선까지 함께 하면 같은 손님에게서 수익이 하나 더 생깁니다.",
     "sub": {
       "hero": {
         "label": "창업자 가이드",
@@ -3144,7 +3144,13 @@
           }
         ],
         "more_link": "창업 가이드 5챕터 보기 →",
-        "more_link_href": "guide-dealer-vs-reseller.html"
+        "more_link_href": "guide-dealer-vs-reseller.html",
+        "extra_links": [
+          {
+            "text": "휴대폰 매장 창업 순서와 도매 거래처 정하는 법 →",
+            "href": "blog-startup-overview.html"
+          }
+        ]
       },
       "faq": [
         {
@@ -3285,8 +3291,8 @@
   },
   "faq": {
     "template": "sub_board.html",
-    "title": "FAQ — ENTER 유선 전문 총판",
-    "meta_description": "거래 시작 서류, 정산 주기, 접수 방법까지 — 판매점 사장님들이 ENTER에 가장 많이 묻는 질문에 답합니다.",
+    "title": "유선 도매 자주 묻는 질문 — 정산·접수·거래 서류 | ENTER 유선전문총판",
+    "meta_description": "정산은 언제 들어오는지, 접수는 어떻게 하는지, 거래 시작에 서류가 필요한지 — 판매점 사장님들이 ENTER에 가장 많이 묻는 질문에 답합니다.",
     "date_published": "2026-10-19",
     "date_modified": "2026-10-30",
     "eyebrow": "FAQ",
@@ -3365,8 +3371,8 @@
   },
   "blog": {
     "template": "sub_board.html",
-    "title": "블로그 — ENTER 유선 전문 총판",
-    "meta_description": "유선 도매 창업, 통신판매업신고, 정산·DB보호까지 — 판매점·온라인셀러를 위한 ENTER의 실무 가이드입니다.",
+    "title": "판매점 창업·운영 블로그 | ENTER 유선전문총판",
+    "meta_description": "휴대폰 매장 창업 비용, 대리점과 판매점 차이, 통신판매업신고, 정산 주기까지 — 판매점·온라인 셀러가 실제로 막히는 것을 정리합니다.",
     "date_published": "2026-10-19",
     "date_modified": "2026-10-30",
     "eyebrow": "블로그",
@@ -3408,6 +3414,11 @@
     },
     "posts": [
       {
+        "title": "휴대폰 매장 창업, 도매 거래처는 언제 어떻게 정하나",
+        "tag": "창업",
+        "slug": "blog-startup-overview"
+      },
+      {
         "title": "온라인 휴대폰 판매점 창업, 매장 없이 시작해도 될까",
         "tag": "온라인셀러",
         "slug": "blog-online-phone-store-startup"
@@ -3428,27 +3439,22 @@
         "slug": "blog-online-seller-registration"
       },
       {
-        "title": "스마트스토어 셀러가 인터넷 상품을 같이 파는 법",
+        "title": "스마트스토어 인터넷 상품 판매, 셀러의 유선 겸업 시작법",
         "tag": "셀러",
         "slug": "blog-smartstore-wireline"
       },
       {
-        "title": "휴대폰판매점 창업, 정책 공급처부터 정하세요",
-        "tag": "창업",
-        "slug": "blog-startup-overview"
-      },
-      {
-        "title": "판매점이 인터넷·TV까지 하면 달라지는 것",
+        "title": "휴대폰 판매점 인터넷·TV 겸업, 매출이 어떻게 달라지나",
         "tag": "창업",
         "slug": "blog-wireline-addon"
       },
       {
-        "title": "유선 도매처 고를 때 정산 주기부터 봐야 하는 이유",
+        "title": "도매처 정산 주기, 정책보다 먼저 봐야 하는 이유",
         "tag": "업계",
         "slug": "blog-settlement-cycle"
       },
       {
-        "title": "접수한 건이 사라졌다? 불법TM과 DB 보호",
+        "title": "불법TM 실적 가로채기, 접수한 건이 사라지는 이유",
         "slug": "blog-illegal-tm",
         "tag": "업계"
       },
@@ -3460,8 +3466,8 @@
   },
   "stories": {
     "template": "stories.html",
-    "title": "거래처 이야기 — ENTER 유선 전문 총판",
-    "meta_description": "ENTER와 함께하는 판매점 사장님들의 실제 이야기를 준비하고 있습니다.",
+    "title": "유선 도매 거래처 후기 — 사장님들의 실제 말 | ENTER 유선전문총판",
+    "meta_description": "ENTER와 거래하는 판매점·온라인 셀러 사장님들이 실제로 한 말을 그대로 옮깁니다. \"엔터로만 접수합니다\"라고 말하는 이유를 들어 보세요.",
     "date_published": "2026-10-19",
     "date_modified": "2026-10-19",
     "eyebrow": "거래처 이야기",
@@ -3505,8 +3511,8 @@
   },
   "about": {
     "template": "sub_intro.html",
-    "title": "회사소개 — 2010년부터, 유선 전문 총판 | ENTER",
-    "meta_description": "2010년부터 16년, 거래처 3,000곳과 함께하는 ENTER((유)위드컴퍼니). 메인비즈·ISO9001 인증, LG U+ 공식 대리점 화승의 수상 실적을 소개합니다.",
+    "title": "ENTER 회사소개 — 2010년부터 16년, 유선 한 길 | ENTER 유선전문총판",
+    "meta_description": "ENTER는 (유)위드컴퍼니가 운영하는 유선전문총판입니다. 2010년 LG U+ 대리점으로 시작해 16년, 거래처 3,000곳과 함께합니다. 인증과 수상 실적을 소개합니다.",
     "date_published": "2026-10-19",
     "date_modified": "2026-10-30",
     "sub": {

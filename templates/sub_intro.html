@@ -1,16 +1,21 @@
 {% extends "base.html" %}
 {% import "partials/hero.html" as hero_mod %}
 {% import "partials/cta_band.html" as cta_mod with context %}
+{% import "partials/breadcrumb.html" as bc_mod %}
+{# 마케팅 마무리 지시서(2026-11-12) D — 서브페이지는 2단: 홈 › 페이지명.
+   block 안에서 set하면 다른 block에서 안 보이므로 템플릿 최상위에서 설정한다. #}
+{% set crumb_items = [{'label': '홈', 'href': 'index.html'}, {'label': page.eyebrow, 'href': slug ~ '.html'}] %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="static/site.css">
 <link rel="stylesheet" href="static/sub.css">
+<script type="application/ld+json">{{ crumb_items | breadcrumb_ld(site.base_url) | tojson(indent=2) }}</script>
 {% endblock %}
 
 {% block content %}
 {% set s = page.sub %}
 
-{{ hero_mod.render('tall', s.hero) }}
+{{ hero_mod.render('tall', s.hero, bc_mod.render(crumb_items)) }}
 
 {# 근거 띠 — 히어로 숫자 줄 + 가운데 문구 섹션을 하나로 합쳤다(지시서 2026-11-02 [B]).
    statement는 더 안 쓰지만 데이터는 pages.json에 남겨 둔다. #}
@@ -154,6 +159,13 @@
   <div class="sp-detail-foot">
     <a href="{{ s.detail.more_link_href }}">{{ s.detail.more_link }}</a>
   </div>
+  {% endif %}
+  {% if s.detail.extra_links %}
+  {% for l in s.detail.extra_links %}
+  <div class="sp-detail-foot">
+    <a href="{{ l.href }}">{{ l.text }}</a>
+  </div>
+  {% endfor %}
   {% endif %}
 </section>
 {% endif %}

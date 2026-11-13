@@ -120,6 +120,24 @@ def strip_md(text):
     return s
 
 
+def breadcrumb_ld(items, base_url):
+    """브레드크럼 items([{label,href}, ...])를 BreadcrumbList JSON-LD로 바꾼다
+    (마케팅 마무리 지시서 2026-11-12 D)."""
+    return {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": i + 1,
+                "name": it["label"],
+                "item": base_url + "/" + it["href"],
+            }
+            for i, it in enumerate(items)
+        ],
+    }
+
+
 def faq_main_entity(items):
     """faq 블록 items([{q,a}])를 FAQPage JSON-LD의 mainEntity 배열로 바꾼다."""
     return [
@@ -306,6 +324,7 @@ def main():
     env.filters["date_fmt"] = date_fmt
     env.filters["md_inline"] = md_inline
     env.filters["faq_main_entity"] = faq_main_entity
+    env.filters["breadcrumb_ld"] = breadcrumb_ld
     # A30-1/A30-2(마케팅 P0 2026-11-10) — tojson 기본값(ensure_ascii=True)이면
     # JSON-LD 속 한글이 \uXXXX로 이스케이프된다. 사람이 읽을 수 있게 끈다.
     env.policies["json.dumps_kwargs"] = {"ensure_ascii": False, "indent": 2}

@@ -1,6 +1,9 @@
 {% extends "base.html" %}
+{% import "partials/breadcrumb.html" as bc_mod %}
 {% set author = (site.authors | selectattr('id', 'equalto', page.author) | first) if page.author else none %}
+{% set crumb_items = [{'label': '홈', 'href': 'index.html'}, {'label': '블로그', 'href': 'blog.html'}, {'label': page.h1, 'href': slug ~ '.html'}] %}
 {% block extra_head %}
+<script type="application/ld+json">{{ crumb_items | breadcrumb_ld(site.base_url) | tojson(indent=2) }}</script>
 {# A30-2(마케팅 P0 2026-11-10) — BlogPosting JSON-LD. author는 글에 author가 지정돼 있고
    site.authors에서 찾아지면 Person, 아니면 Organization(발행처)으로 넣는다. #}
 {% set article_ld = {
@@ -36,7 +39,7 @@
 {% block content %}
 <section style="padding-top:28px">
   <div class="wrap">
-    <p class="lead" style="margin-bottom:4px"><a class="more-link" href="blog.html">← 블로그</a></p>
+    {{ bc_mod.render(crumb_items) }}
     <div class="eyebrow">{{ page.eyebrow }}</div>
     <h1>{{ page.h1 }}</h1>
     {% if page.date_published %}

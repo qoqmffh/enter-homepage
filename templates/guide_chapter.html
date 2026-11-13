@@ -1,6 +1,9 @@
 {% extends "base.html" %}
+{% import "partials/breadcrumb.html" as bc_mod %}
 {% set author = (site.authors | selectattr('id', 'equalto', page.author) | first) if page.author else none %}
+{% set crumb_items = [{'label': '홈', 'href': 'index.html'}, {'label': '창업자 가이드', 'href': 'startup.html'}, {'label': page.h1, 'href': slug ~ '.html'}] %}
 {% block extra_head %}
+<script type="application/ld+json">{{ crumb_items | breadcrumb_ld(site.base_url) | tojson(indent=2) }}</script>
 {# A30-2(마케팅 P0 2026-11-10) — 가이드는 BlogPosting이 아니라 일반 Article. #}
 {% set article_ld = {
   '@context': 'https://schema.org',
@@ -18,7 +21,7 @@
 {% block content %}
 <section style="padding-top:28px">
   <div class="wrap">
-    <p class="lead" style="margin-bottom:4px"><a class="more-link" href="startup.html">← 창업 가이드</a></p>
+    {{ bc_mod.render(crumb_items) }}
     <div class="eyebrow">{{ page.eyebrow }}</div>
     <h1>{{ page.h1 }}</h1>
     {% if page.date_published %}

@@ -30,8 +30,8 @@
 
     "guide-dealer-vs-reseller": {
       "template": "guide_chapter.html",
-      "title": "판매점으로 시작하기 — 창업 가이드 1/5 | ENTER",
-      "meta_description": "이동통신 유통구조는 직영점·대리점·판매점으로 나뉩니다. 휴대폰 매장 창업 전에 알아야 할 대리점과 판매점의 차이를 정리했습니다.",
+      "title": "판매점 사전승낙, 판매점으로 시작하기 — 창업 가이드 1/5 | ENTER 유선전문총판",
+      "meta_description": "휴대폰 매장 창업은 대부분 판매점으로 시작하고, 영업하려면 사전승낙을 받아야 합니다. ICT마켓 신청과 판매점으로 시작할 때 알아둘 점을 정리했습니다.",
       "date_published": "2026-10-21",
       "date_modified": "2026-11-10",
       "author": "park-taejun",
@@ -71,8 +71,8 @@
 
     "guide-wholesale-selection": {
       "template": "guide_chapter.html",
-      "title": "도매 거래처 선정 기준 — 창업 가이드 | ENTER",
-      "meta_description": "휴대폰 판매점이 도매 공급처(대리점·총판)를 고를 때 확인해야 할 기준 — 정책, 정산, DB보호를 정리했습니다.",
+      "title": "휴대폰 판매점 도매 거래처, 고르는 기준 3가지 — 창업 가이드 2/5 | ENTER 유선전문총판",
+      "meta_description": "휴대폰 판매점의 수익은 어느 도매 거래처에서 정책을 받느냐로 갈립니다. 정산·정책·답변 속도, 거래처를 고르는 기준 3가지를 정리했습니다.",
       "date_published": "2026-10-21",
       "date_modified": "2026-10-21",
       "author": "park-taejun",
@@ -109,8 +109,8 @@
 
     "guide-activation-prep": {
       "template": "guide_chapter.html",
-      "title": "개통 준비 — 창업 가이드 | ENTER",
-      "meta_description": "휴대폰 판매점이 실제로 개통 업무를 시작하기 전에 준비해야 할 전산·서류를 정리했습니다.",
+      "title": "휴대폰 판매점 개통 준비 — 창업 가이드 3/5 | ENTER 유선전문총판",
+      "meta_description": "거래처가 정해졌다면 접수와 개통을 처리할 전산과 서류를 준비할 차례입니다. 휴대폰 판매점이 개통 업무 전에 갖출 것을 정리했습니다.",
       "date_published": "2026-10-21",
       "date_modified": "2026-10-21",
       "author": "park-taejun",
@@ -147,8 +147,8 @@
 
     "guide-store-setup": {
       "template": "guide_chapter.html",
-      "title": "매장 시설 — 창업 가이드 | ENTER",
-      "meta_description": "휴대폰 판매점 매장을 꾸릴 때 꼭 필요한 시설과, 없어도 되는 것을 구분해서 정리했습니다.",
+      "title": "휴대폰 매장 시설, 꼭 필요한 것과 없어도 되는 것 — 창업 가이드 4/5 | ENTER 유선전문총판",
+      "meta_description": "휴대폰 매장은 인테리어보다 전산 장비와 인터넷 회선이 먼저입니다. 꼭 필요한 시설과 나중에 해도 되는 것을 구분해 정리했습니다.",
       "date_published": "2026-10-21",
       "date_modified": "2026-10-21",
       "author": "park-taejun",
@@ -182,8 +182,8 @@
 
     "guide-opening-checklist": {
       "template": "guide_chapter.html",
-      "title": "개업 체크리스트 — 창업 가이드 | ENTER",
-      "meta_description": "휴대폰 매장 개업 전 확인해야 할 전체 체크리스트 — 창업 준비부터 첫 개통까지 한눈에 정리했습니다.",
+      "title": "휴대폰 매장 개업 체크리스트 — 창업 가이드 5/5 | ENTER 유선전문총판",
+      "meta_description": "휴대폰 매장 개업 전에 확인할 것을 창업 준비부터 첫 개통까지 한 장에 정리했습니다. 빠진 것이 없는지 순서대로 점검하세요.",
       "date_published": "2026-10-21",
       "date_modified": "2026-10-21",
       "author": "park-taejun",

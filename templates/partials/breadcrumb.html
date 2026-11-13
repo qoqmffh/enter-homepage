@@ -1,0 +1,8 @@
+{# 브레드크럼(마케팅 마무리 지시서 2026-11-12 D) — items: [{label, href}, ...], 마지막 항목은
+   현재 페이지라 링크를 달지 않는다. BreadcrumbList JSON-LD는 호출하는 쪽에서
+   items | breadcrumb_ld(site.base_url) 로 따로 출력한다. #}
+{% macro render(items) %}
+<nav class="breadcrumb" aria-label="브레드크럼">
+  {% for item in items %}{% if not loop.last %}<a href="{{ item.href }}">{{ item.label }}</a><span aria-hidden="true">›</span>{% else %}<span aria-current="page">{{ item.label }}</span>{% endif %}{% endfor %}
+</nav>
+{% endmacro %}

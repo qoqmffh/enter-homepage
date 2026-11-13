@@ -1,16 +1,31 @@
 {% extends "base.html" %}
 {% import "partials/hero.html" as hero_mod %}
 {% import "partials/cta_band.html" as cta_mod with context %}
+{% import "partials/breadcrumb.html" as bc_mod %}
+{# 마케팅 마무리 지시서(2026-11-12) D — block 안에서 set하면 다른 block에서 안 보이므로
+   템플릿 최상위에서 설정한다. #}
+{% set crumb_items = [{'label': '홈', 'href': 'index.html'}, {'label': page.eyebrow, 'href': slug ~ '.html'}] %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="static/site.css">
 <link rel="stylesheet" href="static/sub.css">
+<script type="application/ld+json">{{ crumb_items | breadcrumb_ld(site.base_url) | tojson(indent=2) }}</script>
+{# C — FAQ 페이지(page.items가 있는 보드)만 FAQPage 출력.
+   블로그 목록(board_type=='blog')은 page.posts만 쓰고 page.items가 없어 자연히 제외된다. #}
+{% if 'items' in page %}
+{% set faq_ld = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  'mainEntity': page['items'] | faq_main_entity
+} %}
+<script type="application/ld+json">{{ faq_ld | tojson(indent=2) }}</script>
+{% endif %}
 {% endblock %}
 
 {% block content %}
 {% set s = page.sub %}
 
-{{ hero_mod.render('compact', s.hero) }}
+{{ hero_mod.render('compact', s.hero, bc_mod.render(crumb_items)) }}
 
 <section class="sp-section" id="board">
   <div class="sp-board-tabs" data-board-tabs role="tablist">

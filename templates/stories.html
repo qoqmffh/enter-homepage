@@ -1,16 +1,19 @@
 {% extends "base.html" %}
 {% import "partials/hero.html" as hero_mod %}
 {% import "partials/cta_band.html" as cta_mod with context %}
+{% import "partials/breadcrumb.html" as bc_mod %}
+{% set crumb_items = [{'label': '홈', 'href': 'index.html'}, {'label': page.eyebrow, 'href': slug ~ '.html'}] %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="static/site.css">
 <link rel="stylesheet" href="static/sub.css">
+<script type="application/ld+json">{{ crumb_items | breadcrumb_ld(site.base_url) | tojson(indent=2) }}</script>
 {% endblock %}
 
 {% block content %}
 {% set s = page.sub %}
 
-{{ hero_mod.render('tall', s.hero) }}
+{{ hero_mod.render('tall', s.hero, bc_mod.render(crumb_items)) }}
 
 {# 실제 거래처 발언이 모이면 이 자리를 채운다 — 지어낸 후기는 넣지 않는다. #}
 <section class="sp-section sp-section--center" id="stories">

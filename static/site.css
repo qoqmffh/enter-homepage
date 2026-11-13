@@ -9,9 +9,11 @@
      "정책 받기" 버튼 하나뿐이다(메가 메뉴가 열렸을 때만 보이는 CTA 카드,
      왜 ENTER 숫자 카드의 막대 3장은 예외 — 각각 2026-11-03/11-11에 허용됨).
      --hp-accent-text는 16px 미만 작은 글자 전용(밝은 바탕 위 대비 확보), --hp-accent-tint는
-     hover 등 아주 좁은 면적 전용 — 둘 다 넓은 배경에는 쓰지 않는다. */
+     hover 등 아주 좁은 면적 전용 — 둘 다 넓은 배경에는 쓰지 않는다.
+     접근성(마케팅 마무리 지시서 2026-11-12 F) — #C4561D는 배경 #FBF8F4 위 4.22:1,
+     카드 #F3EEE7 위 3.87:1로 WCAG AA(4.5:1) 미달이라 #B04C18로 교체(각각 5.10/4.67). */
   --hp-accent:#E36B2C;
-  --hp-accent-text:#C4561D;
+  --hp-accent-text:#B04C18;
   --hp-accent-tint:#FBE9DE;
 
   --hp-white:#FBF8F4;
@@ -64,6 +66,12 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
 .hp-ink{ color:var(--hp-ink); }
 .hp-green{ color:var(--hp-green); }
 .hp-muted{ color:var(--hp-grey); }
+/* 브레드크럼(마케팅 마무리 지시서 2026-11-12 D) — site.css는 모든 페이지(블로그·가이드·
+   서브페이지)에 공통으로 로드되므로 여기 한 곳에만 둔다. */
+.breadcrumb{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; font-size:13px; color:var(--hp-grey); margin-bottom:10px; }
+.breadcrumb a{ color:var(--hp-grey); text-decoration:none; }
+.breadcrumb a:hover{ color:var(--hp-ink); text-decoration:underline; }
+.breadcrumb span[aria-current]{ color:var(--hp-ink); }
 .hp-mono-muted{ font-size:11px; letter-spacing:.04em; color:var(--hp-grey); text-transform:uppercase; }
 .hp-mono-green{ font-size:11px; letter-spacing:.04em; color:var(--hp-accent-text); text-transform:uppercase; }
 

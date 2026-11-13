@@ -2,7 +2,7 @@
    Stitch 시안의 외부(구글) 이미지는 쓰지 않는다. static/photos/hero-<data.photo>.jpg가
    있으면 쓰고, 없으면 CSS background-color(#2a2d33)만 보인다 — 사진 분위기는
    data.photo_mood 주석으로 옆에 남겨 실제 사진 교체 시 참고한다. #}
-{% macro render(variant, data) %}
+{% macro render(variant, data, breadcrumb=none) %}
 {% set sk = data.sketch %}
 {% set has_facts = variant == 'tall' and data.facts %}
 {% set sk_dims = {'company': [1672, 820], 'trade': [1672, 793], 'info': [1672, 816]} %}
@@ -19,6 +19,7 @@
   {% endif %}
     <div class="sp-hero-body">
       <div>
+        {% if breadcrumb %}{{ breadcrumb }}{% endif %}
         <p class="sp-hero-label">● {{ data.label }}</p>
         <h1 class="sp-hero-headline">{% for line in data.headline %}{{ line }}{% if not loop.last %}<br>{% endif %}{% endfor %}</h1>
         {% if data.subline %}<p class="sp-hero-sub">{{ data.subline | safe }}</p>{% endif %}
