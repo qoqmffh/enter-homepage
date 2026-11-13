@@ -21,6 +21,10 @@ html.ad-pending .hp-nav-toggle{ color:var(--hp-white); }
 /* 메가 패널이 열려있는 동안은 megamenu.css의 mega-open 규칙이 흰 바탕/잉크 글자로
    되돌리므로(!important) 여기서 더 손대지 않는다. */
 html.ad-pending .hp-header-right .hp-pill--primary{ background:var(--hp-white); color:var(--hp-black); }
+/* 메뉴·헤더 정리(2026-11-13) D-2/D-3 — 투명 헤더에서는 로고 아래 업종 문구·전화 링크도 흰색. */
+html.ad-pending .hp-header .hp-brand-sub{ color:rgba(255,255,250,.6); }
+html.ad-pending .hp-header .hp-header-tel{ color:var(--hp-white); }
+html.ad-pending .hp-header .hp-header-tel:hover{ color:#F2A16E; }
 
 .hp-replay-link{ font-size:12px; color:var(--hp-grey); white-space:nowrap; }
 .hp-replay-link:hover{ color:var(--hp-ink); }

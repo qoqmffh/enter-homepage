@@ -10,7 +10,7 @@
      #hpNavToggle:checked ~ .hp-nav-mobile 형제 선택자가 동작한다. #}
   <input type="checkbox" id="hpNavToggle" class="hp-nav-toggle-input">
   <div class="hp-header-inner">
-    <a class="hp-brand" href="index.html" aria-label="ENTER">
+    <a class="hp-brand" href="index.html" aria-label="ENTER 유선전문총판 홈">
       <svg viewBox="0 0 559 152" class="hp-brand-svg" aria-hidden="true">
         <g transform="translate(32 18)"><g fill="#10182B">
           <path d="M0 6H90V31H29V47H78V71H29V87H90V112H15L0 98Z"/>
@@ -20,6 +20,7 @@
           <path fill-rule="evenodd" d="M401 6H454C478 6 491 20 491 40C491 55 484 66 469 72L495 112H461L438 76H431V112H401Z M431 31V51H450C458 51 462 47 462 41C462 35 458 31 450 31Z"/>
         </g></g>
       </svg>
+      <span class="hp-brand-sub">유선전문총판</span>
     </a>
     {# data-active-group 하나로 초록 글자·인디케이터를 같이 제어한다(지시서 2026-11-03).
        서버 렌더 기본값은 현재 페이지 그룹 — JS 없이도 올바른 그룹이 초록으로 보인다. #}
@@ -34,6 +35,10 @@
     </nav>
     <div class="hp-header-right">
       {% if slug == 'why' %}<a href="index.html?intro=1" class="hp-replay-link">{{ site.ad_replay_label }}</a>{% endif %}
+      <a class="hp-header-tel" href="tel:{{ site.phone }}" aria-label="전화 문의 {{ site.phone }}">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        {{ site.phone }}
+      </a>
       <a class="hp-pill hp-pill--primary" href="#lead" id="hpHeaderCta" data-lead-trigger>{{ site.header_cta }}</a>
       <label for="hpNavToggle" class="hp-nav-toggle" aria-label="메뉴">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
