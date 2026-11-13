@@ -40,6 +40,16 @@
 .sp-statement h2{ font-size:28px; font-weight:800; letter-spacing:-.01em; line-height:1.25; margin:0 0 16px; }
 .sp-statement p{ font-size:15px; color:var(--hp-grey); max-width:560px; margin:0 auto; line-height:1.6; }
 
+/* 거래처 후기 인터뷰 2건(후기 지시서 2026-11-13 A) — 카드는 .quote-box(common.css) 재사용,
+   여기는 2개짜리 그리드 배치만 담당한다. */
+.story-quotes{ display:grid; grid-template-columns:1fr; gap:20px; margin-top:28px; text-align:left; }
+.story-quote-label{ display:block; margin-bottom:10px; }
+.story-quote-note{ font-size:12px; margin-top:8px; }
+.story-interview-note{ font-size:12px; margin-top:28px; text-align:center; }
+@media (min-width:768px){
+  .story-quotes{ grid-template-columns:repeat(2,1fr); }
+}
+
 /* ---------- 2b. 근거 띠(히어로 숫자 줄 + 가운데 문구를 합친 구성, 2026-11-02) ----------
    위쪽 2px 주황 선 — 히어로 그림 바닥선 바로 아래에서 땅선이 이어지는 것처럼 보이게 한다
    (강조색 R2 §4, 2026-11-09). 바탕색은 없음. common.css의 전역 section{border-bottom}은
