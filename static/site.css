@@ -15,12 +15,10 @@
   --hp-accent:#E36B2C;
   --hp-accent-text:#B04C18;
   --hp-accent-tint:#FBE9DE;
-  /* 후기·버튼색 지시서(2026-11-13) B — 흰 글씨가 올라가는 주황 버튼만 이 진한 톤을 쓴다.
-     로고·선·아이콘 같은 장식용 --hp-accent(#E36B2C)는 그대로 둔다. */
-  /* 수정 2차(2026-11-13) §1 — #B04C18이 너무 진해서 한 단계 밝게. #E36B2C와 색조·채도는
-     같고 밝기만 내린 값(흰 글씨 대비 4.51:1, AA 최소 통과). */
-  --hp-accent-strong:#C4551A;
-  --hp-accent-strong-hover:#AE4A16;
+  /* 버튼 색 원복(2026-11-13) — 흰 글씨 주황 버튼을 사이트 주황(--hp-accent)과 통일.
+     접근성 강화 톤(#B04C18→#C4551A)은 사이트 색과 따로 놀아서 되돌렸다. 버튼 쪽
+     규칙(.hp-pill--primary 등)은 이 토큰을 그대로 참조하므로 값만 바꾼다. */
+  --hp-accent-strong:var(--hp-accent);
 
   --hp-white:#FBF8F4;
   --hp-black:#0B0D12;
@@ -87,7 +85,7 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
 .hp-pill{ display:inline-flex; align-items:center; justify-content:center; gap:8px; border-radius:var(--radius-btn); padding:12px 24px; font-size:14px; font-weight:600; white-space:nowrap; transition:background-color .15s ease, color .15s ease, border-color .15s ease; }
 .hp-pill-dot{ width:7px; height:7px; border-radius:50%; background:var(--hp-green); flex:0 0 auto; }
 .hp-pill--primary{ background:var(--hp-accent-strong); color:#FFFFFF; transition:background-color .2s ease, color .2s ease; }
-.hp-pill--primary:hover{ background:var(--hp-accent-strong-hover); }
+.hp-pill--primary:hover{ background:var(--hp-ink); }
 .hp-pill--primary .hp-pill-dot{ background:var(--hp-white); }
 /* "거래 시작하기"(#start)는 카카오톡/정책 받기 버튼이 아니라서 이번 주황 통일에서 빼고
    예전 모습(잉크 바탕, hover만 주황) 그대로 둔다(2026-11-12). */
@@ -96,7 +94,7 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
 /* static/guide_chapter.html 글 하단 CTA는 .hp-pill 체계가 아니라 common.css의 .btn-primary를
    쓰지만 같은 카카오톡 버튼이라 색만 맞춘다. */
 .btn-primary[data-cursor="kakao"]{ background:var(--hp-accent-strong); color:#FFFFFF; transition:background-color .2s ease, color .2s ease; }
-.btn-primary[data-cursor="kakao"]:hover{ background:var(--hp-accent-strong-hover); }
+.btn-primary[data-cursor="kakao"]:hover{ background:var(--hp-ink); }
 .hp-pill--secondary{ background:var(--hp-grey-bg); color:var(--hp-ink); border:1px solid transparent; }
 .hp-pill--secondary:hover{ background:var(--hp-line); border-color:var(--hp-ink); }
 .hp-pill--inverted{ background:var(--hp-white); color:var(--hp-black); }

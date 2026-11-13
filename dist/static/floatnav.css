@@ -29,7 +29,6 @@ body{ transition:padding-bottom .3s ease; }
   font-size:13px; font-weight:600; text-decoration:none;
 }
 .fn-bar-btn--primary{ background:var(--hp-accent-strong); border-color:var(--hp-accent-strong); }
-.fn-bar-btn--primary:hover{ background:var(--hp-accent-strong-hover); border-color:var(--hp-accent-strong-hover); }
 
 .fn-bottombar-mobile{ display:none; }
 
@@ -47,7 +46,6 @@ body{ transition:padding-bottom .3s ease; }
     color:rgba(255,255,250,.75); text-decoration:none; font-size:11px; font-weight:600;
   }
   .fn-mbar-btn--primary{ background:var(--hp-accent-strong); color:var(--hp-white); }
-  .fn-mbar-btn--primary:hover{ background:var(--hp-accent-strong-hover); }
 }
 
 /* ---------- 우측 퀵메뉴(≥1024px) ---------- */
@@ -154,7 +152,7 @@ body{ transition:padding-bottom .3s ease; }
   width:40px; height:40px; border-radius:50%; background:var(--hp-accent-strong); color:#fff;
   border:0; display:flex; align-items:center; justify-content:center; flex:0 0 auto; cursor:pointer;
 }
-.fn-consult-send:hover{ background:var(--hp-accent-strong-hover); }
+.fn-consult-send:hover{ background:var(--hp-ink); }
 
 @media (max-width:1023px){
   .fn-consult-panel{
