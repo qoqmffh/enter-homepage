@@ -40,8 +40,7 @@
       "items": [
         {"slug": "why", "label": "왜 ENTER", "desc": "숫자로 보는 정책·정산"},
         {"slug": "about", "label": "ENTER 소개", "desc": "2010년부터 유선 한 길"},
-        {"slug": "products", "label": "취급상품", "desc": "통신사 6곳 유선 상품"},
-        {"slug": "stories", "label": "거래처 이야기", "desc": "사장님들의 실제 이야기"}
+        {"slug": "products", "label": "취급상품", "desc": "통신사 6곳 유선 상품"}
       ]
     },
     {
@@ -60,7 +59,8 @@
       "items": [
         {"slug": "startup", "label": "창업자 가이드", "desc": "매장 창업 5챕터"},
         {"slug": "blog", "label": "블로그", "desc": "사장님이 궁금한 것들"},
-        {"slug": "faq", "label": "FAQ", "desc": "묻기 전에 답합니다"}
+        {"slug": "faq", "label": "FAQ", "desc": "묻기 전에 답합니다"},
+        {"slug": "stories", "label": "거래처 이야기", "desc": "사장님들의 실제 이야기"}
       ]
     }
   ],
@@ -77,8 +77,7 @@
         "links": [
           {"label": "왜 ENTER", "slug": "why"},
           {"label": "ENTER 소개", "slug": "about"},
-          {"label": "취급상품", "slug": "products"},
-          {"label": "거래처 이야기", "slug": "stories"}
+          {"label": "취급상품", "slug": "products"}
         ]
       },
       {
@@ -93,7 +92,8 @@
         "links": [
           {"label": "창업자 가이드", "slug": "startup"},
           {"label": "FAQ", "slug": "faq"},
-          {"label": "블로그", "slug": "blog"}
+          {"label": "블로그", "slug": "blog"},
+          {"label": "거래처 이야기", "slug": "stories"}
         ]
       }
     ]

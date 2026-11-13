@@ -11,7 +11,10 @@
   <input type="checkbox" id="hpNavToggle" class="hp-nav-toggle-input">
   <div class="hp-header-inner">
     <a class="hp-brand" href="index.html" aria-label="ENTER 유선전문총판 홈">
-      <svg viewBox="0 0 559 152" class="hp-brand-svg" aria-hidden="true">
+      {# 수정 2차(2026-11-13) §2 — "유선전문총판"을 별도 HTML이 아니라 로고 SVG 안
+         <text>로 넣는다. ENTER 글자 영역은 translate(32 18) 기준 x=0~495(path 경계
+         재계산 확인됨) → viewBox 좌표 x=32~527. textLength=495로 E~R 폭에 양끝 정렬한다. #}
+      <svg viewBox="0 0 559 210" class="hp-brand-svg" aria-hidden="true">
         <g transform="translate(32 18)"><g fill="#10182B">
           <path d="M0 6H90V31H29V47H78V71H29V87H90V112H15L0 98Z"/>
           <g class="hp-brand-door" transform="translate(101 0)"><path d="M0 6L32 0V116L0 110Z M65 24L98 14V110L65 102Z"/><path class="hp-brand-door-leaf" fill="#E36B2C" d="M32 12L82 29V102L51 102L58 98V34L32 25Z"/></g>
@@ -19,8 +22,8 @@
           <path d="M312 6H391V31H341V47H383V71H341V87H391V112H312Z"/>
           <path fill-rule="evenodd" d="M401 6H454C478 6 491 20 491 40C491 55 484 66 469 72L495 112H461L438 76H431V112H401Z M431 31V51H450C458 51 462 47 462 41C462 35 458 31 450 31Z"/>
         </g></g>
+        <text x="32" y="185" textLength="495" lengthAdjust="spacing" font-size="52" font-weight="600" font-family="'Pretendard Variable', sans-serif" class="hp-brand-sub-text">유선전문총판</text>
       </svg>
-      <span class="hp-brand-sub">유선전문총판</span>
     </a>
     {# data-active-group 하나로 초록 글자·인디케이터를 같이 제어한다(지시서 2026-11-03).
        서버 렌더 기본값은 현재 페이지 그룹 — JS 없이도 올바른 그룹이 초록으로 보인다. #}
