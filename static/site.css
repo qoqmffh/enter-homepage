@@ -17,8 +17,10 @@
   --hp-accent-tint:#FBE9DE;
   /* 후기·버튼색 지시서(2026-11-13) B — 흰 글씨가 올라가는 주황 버튼만 이 진한 톤을 쓴다.
      로고·선·아이콘 같은 장식용 --hp-accent(#E36B2C)는 그대로 둔다. */
-  --hp-accent-strong:#B04C18;
-  --hp-accent-strong-hover:#963F12;
+  /* 수정 2차(2026-11-13) §1 — #B04C18이 너무 진해서 한 단계 밝게. #E36B2C와 색조·채도는
+     같고 밝기만 내린 값(흰 글씨 대비 4.51:1, AA 최소 통과). */
+  --hp-accent-strong:#C4551A;
+  --hp-accent-strong-hover:#AE4A16;
 
   --hp-white:#FBF8F4;
   --hp-black:#0B0D12;
@@ -115,14 +117,14 @@ html:not(.ad-pending) #hpHeaderCta:hover{ background:var(--hp-ink); }
    여기는 헤더 뼈대(로고·높이·레이아웃)와 알약 버튼만 남는다. */
 .hp-header{ position:sticky; top:0; z-index:40; background:rgba(255,255,250,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--hp-line); transition:background .3s ease, border-color .3s ease; }
 .hp-header-inner{ max-width:1200px; margin:0 auto; padding:0 20px; height:76px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
-.hp-brand{ display:inline-flex; flex-direction:column; align-items:flex-start; gap:2px; flex:0 0 auto; }
-.hp-brand-svg{ height:26px; width:auto; display:block; }
+.hp-brand{ display:inline-flex; align-items:center; flex:0 0 auto; }
+.hp-brand-svg{ height:36px; width:auto; display:block; }
 .hp-brand-door-leaf{ transition:transform .3s ease; transform-box:fill-box; transform-origin:0% 50%; }
 .hp-brand:hover .hp-brand-door-leaf{ transform:scaleX(1.3) skewY(-6deg); }
 @media (prefers-reduced-motion:reduce){ .hp-brand-door-leaf{ transition:none; } }
-/* 메뉴·헤더 정리(2026-11-13) D-2 — 인트로(.hp-ad-intro-sub)의 크기·자간을 헤더 로고
-   스케일(26px)에 맞춰 줄여 참고한다. */
-.hp-brand-sub{ margin-left:2px; font-size:9px; font-weight:600; letter-spacing:.1em; color:var(--hp-grey); }
+/* 수정 2차(2026-11-13) §2 — "유선전문총판"이 로고 SVG 안 <text>로 들어가서(ENTER 폭에
+   양끝 정렬) 별도 HTML 글자색만 여기서 맞춘다. 광고 무대 흰 글자는 home-ad.css. */
+.hp-brand-sub-text{ fill:var(--hp-grey); }
 
 /* D-3 — 헤더 전화번호는 버튼이 아니라 텍스트 링크. 1024px 미만은 메가메뉴·하단 고정바에
    이미 전화가 있어 숨긴다. */
