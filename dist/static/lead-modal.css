@@ -66,6 +66,24 @@
 }
 .lm-submit:hover:not(:disabled){ background:var(--hp-ink); }
 .lm-submit:disabled{ background:var(--hp-line); color:#A39D90; cursor:default; }
+.lm-submit{ text-decoration:none; text-align:center; line-height:52px; box-sizing:border-box; }
+
+/* 전화·문자 임시 연결 안내("contact" 뷰, 지시서 2026-11-16 §2) — 관리자 페이지가 생기기
+   전까지 신청 폼 대신 보여준다. PC에서는 문자 버튼 대신 번호를 크게 보여준다. */
+.lm-contact-actions{ display:flex; flex-direction:column; gap:12px; }
+.lm-submit--outline{
+  background:none; border:1.5px solid var(--hp-accent-strong); color:var(--hp-ink);
+  line-height:49px;
+}
+.lm-submit--outline:hover{ background:var(--hp-grey-bg); }
+.lm-contact-pc-number{
+  display:none; margin:4px 0 0; text-align:center; font-size:20px; color:var(--hp-ink);
+}
+.lm-contact-pc-number strong{ font-weight:800; }
+@media (min-width:1024px){
+  .lm-contact-sms{ display:none; }
+  .lm-contact-pc-number{ display:block; }
+}
 
 .lm-foot{ margin:16px 0 0; text-align:center; font-size:13px; color:var(--hp-grey); }
 .lm-foot a{ color:var(--hp-grey); text-decoration:underline; }

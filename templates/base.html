@@ -4,6 +4,35 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 {% if site.noindex %}<meta name="robots" content="noindex, nofollow">{% endif %}
+{% if site.google_verify %}<meta name="google-site-verification" content="{{ site.google_verify }}">{% endif %}
+{% if site.naver_verify %}<meta name="naver-site-verification" content="{{ site.naver_verify }}">{% endif %}
+{% if site.ga_id %}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ site.ga_id }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', '{{ site.ga_id }}');
+</script>
+{% endif %}
+{# GA4 전환 이벤트(지시서 2026-11-16 §5) — tel: 링크 전부와 문자 신청 버튼을 문서 레벨
+   위임으로 잡는다. 페이지마다 버튼을 일일이 못 박지 않고 "위치" 값은 페이지 slug로
+   통일한다(지시서가 허용한 "버튼 위치 data 속성 또는 페이지명" 중 페이지명 방식). #}
+<script>
+(function () {
+  function track(name, params) {
+    if (typeof gtag === 'function') gtag('event', name, params || {});
+  }
+  document.addEventListener('click', function (e) {
+    if (!e.target || !e.target.closest) return;
+    var tel = e.target.closest('a[href^="tel:"]');
+    if (tel) { track('click_phone', { location: tel.getAttribute('data-ga-location') || '{{ slug }}' }); return; }
+    var sms = e.target.closest('[data-lm-sms]');
+    if (sms) { track('click_sms', { location: '{{ slug }}' }); }
+  });
+  window.ENTER_TRACK = track;
+})();
+</script>
 <title>{{ page.title }}</title>
 <meta name="description" content="{{ page.meta_description }}">
 <link rel="canonical" href="{{ site.base_url }}/{{ slug }}.html">
@@ -50,11 +79,11 @@
 <script src="static/reveal.js" defer></script>
 <script>
   /* 정책 받기 팝업·플로팅 내비(지시서 2026-11-13) 전역 설정값 — site.json에서만 관리.
-     kakao_url·lead_endpoint가 비어 있으면 각 스크립트가 알아서 대체 동작(팝업으로 대신
-     받기/전화 안내)을 한다. */
+     lead_endpoint가 비어 있거나 lead_form_enabled가 false면 각 스크립트가 알아서
+     대체 동작(전화·문자 안내 화면)을 한다(지시서 2026-11-16 §2). */
   window.ENTER_SITE = {
-    kakaoUrl: "{{ site.kakao_url }}",
     leadEndpoint: "{{ site.lead_endpoint }}",
+    leadFormEnabled: {{ 'true' if site.lead_form_enabled else 'false' }},
     phone: "{{ site.phone }}"
   };
 </script>

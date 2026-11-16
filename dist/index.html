@@ -4,6 +4,33 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<meta name="google-site-verification" content="nt_En3bZdbAeOCELge02ilb1QQT6p8wMLYRm82tFxMs">
+<meta name="naver-site-verification" content="f6999f8762d2a9ea61d5dda35cb0c4b5287cd938">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7ZSW55MY3H"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-7ZSW55MY3H');
+</script>
+
+
+<script>
+(function () {
+  function track(name, params) {
+    if (typeof gtag === 'function') gtag('event', name, params || {});
+  }
+  document.addEventListener('click', function (e) {
+    if (!e.target || !e.target.closest) return;
+    var tel = e.target.closest('a[href^="tel:"]');
+    if (tel) { track('click_phone', { location: tel.getAttribute('data-ga-location') || 'index' }); return; }
+    var sms = e.target.closest('[data-lm-sms]');
+    if (sms) { track('click_sms', { location: 'index' }); }
+  });
+  window.ENTER_TRACK = track;
+})();
+</script>
 <title>유선 도매 ENTER 유선전문총판 — 정책부터 접수까지 카톡 한 번</title>
 <meta name="description" content="ENTER(엔터)는 판매점과 온라인 셀러에게 인터넷·IPTV를 공급하는 유선전문총판입니다. 거래처 3,000곳, 월 평균 4,000건, 매주 금요일 정산. 서류 없이 접수부터 시작하세요.">
 <link rel="canonical" href="https://xn--hq1b59iy0gstg.kr/index.html">
@@ -21,10 +48,10 @@
 <link rel="apple-touch-icon" href="static/brand/apple-touch-icon.png">
 <link rel="stylesheet" href="static/fonts/pretendard/pretendard-dynamic-subset.css?v=2973bcae">
 <link rel="stylesheet" href="static/common.css?v=7e39b9aa">
-<link rel="stylesheet" href="static/site.css?v=0a0ca8a9">
+<link rel="stylesheet" href="static/site.css?v=7c742117">
 <link rel="stylesheet" href="static/megamenu.css?v=2522f821">
 
-<link rel="stylesheet" href="static/cursor.css?v=1da95759">
+<link rel="stylesheet" href="static/cursor.css?v=7a63899e">
 
 
 <script type="application/ld+json">{
@@ -84,7 +111,7 @@
 })();
 </script>
 <link rel="stylesheet" href="static/home-ad.css?v=4f851c24">
-<script type="module" src="static/home-ad.js?v=b99d4e50"></script>
+<script type="module" src="static/home-ad.js?v=de150445"></script>
 
 </head>
 <body>
@@ -249,7 +276,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
               <span class="hp-mega-cta-sub" id="hpMegaCtaSub">카톡방으로 먼저 보내드립니다</span>
             </div>
             <div class="hp-mega-cta-actions">
-              <a class="hp-mega-cta-btn" href="#lead" data-cursor="kakao" data-lead-trigger>카카오톡으로 정책 받기</a>
+              <a class="hp-mega-cta-btn" href="#lead" data-lead-trigger>정책표 받아보기</a>
               <a class="hp-mega-cta-tel" href="tel:010-2222-4183">전화 010-2222-4183</a>
             </div>
           </div>
@@ -456,14 +483,14 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     
     
     <div class="hp-nav-mobile-cta">
-      <a class="hp-pill hp-pill--primary" href="#lead" data-cursor="kakao" data-lead-trigger>카카오톡으로 정책 받기</a>
+      <a class="hp-pill hp-pill--primary" href="#lead" data-lead-trigger>정책표 받아보기</a>
       <a class="hp-nav-mobile-tel" href="tel:010-2222-4183">전화 010-2222-4183</a>
     </div>
   </nav>
 </header>
 
 <script src="static/megamenu.js?v=89b66ab9" defer></script>
-<script src="static/cursor.js?v=a33f88a7" defer></script>
+<script src="static/cursor.js?v=425bfe59" defer></script>
 
 <main>
 
@@ -525,7 +552,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
         <h2 class="hp-ad-end-line1" data-ad-s6-line1>비교해 보시면 압니다.</h2>
         <p class="hp-ad-end-line2" data-ad-s6-line2>매일 아침 단가를 받아보세요.</p>
         <div class="hp-ad-end-btns" data-ad-end-btns>
-          <a href="#" class="hp-ad-btn hp-ad-btn--primary" data-cta="kakao" data-cursor="kakao">정책 받아보기</a>
+          <a href="#" class="hp-ad-btn hp-ad-btn--primary" data-ad-cta-primary>정책 받아보기</a>
           <button type="button" class="hp-ad-btn hp-ad-btn--ghost" data-ad-enter-home>홈페이지 둘러보기 →</button>
         </div>
       </div>

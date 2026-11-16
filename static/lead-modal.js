@@ -1,10 +1,10 @@
 /* 정책 받기 신청 팝업(지시서 2026-11-13) — static/lead-modal.css, templates/partials/lead_modal.html.
    사이트 전체의 [data-lead-trigger] 버튼(정책 받기/정책 받아보기/정책 문의 전부)을 한 곳에서
-   위임(document 클릭)으로 받아 이 팝업 하나를 연다. "카카오톡"이 들어간 라벨만 예외로
-   kakao_url로 바로 보낸다(site.kakao_url이 비어 있으면 팝업을 대신 연다 — 아직 연결 전
-   버튼을 눌러도 아무 일도 안 일어나는 상태를 피하려는 것).
+   위임(document 클릭)으로 받아 이 팝업 하나를 연다.
 
-   전송은 site.lead_endpoint로 POST한다. 엔드포인트가 비어 있거나 전송이 실패하면
+   lead_form_enabled=false(지시서 2026-11-16 §2, 관리자 페이지 생기기 전까지)면 신청 폼
+   대신 전화·문자 안내("contact" 뷰)를 먼저 보여준다. true가 되면 원래 신청 폼("form" 뷰)이
+   열리고, 전송은 site.lead_endpoint로 POST한다. 엔드포인트가 비어 있거나 전송이 실패하면
    "접수됨" 화면 대신 전화 안내 화면을 보여준다 — 접수 안 됐는데 됐다고 보이면 안 된다는
    지시서 원칙. */
 (function () {
@@ -16,11 +16,12 @@
   var modal = backdrop.querySelector('[data-lm-modal]');
   var closeBtn = backdrop.querySelector('[data-lm-close]');
   var views = {
+    contact: backdrop.querySelector('[data-lm-view="contact"]'),
     form: backdrop.querySelector('[data-lm-view="form"]'),
     success: backdrop.querySelector('[data-lm-view="success"]'),
     error: backdrop.querySelector('[data-lm-view="error"]')
   };
-  var viewTitleIds = { form: 'lmTitleForm', success: 'lmTitleSuccess', error: 'lmTitleError' };
+  var viewTitleIds = { contact: 'lmTitleContact', form: 'lmTitleForm', success: 'lmTitleSuccess', error: 'lmTitleError' };
   var form = backdrop.querySelector('[data-lm-form]');
   var shopInput = backdrop.querySelector('[data-lm-input="shop"]');
   var phoneInput = backdrop.querySelector('[data-lm-input="phone"]');
@@ -125,12 +126,13 @@
   function open(triggerEl) {
     lastFocused = (triggerEl && triggerEl.focus) ? triggerEl : document.activeElement;
     resetForm();
-    showView('form');
+    showView(SITE.leadFormEnabled ? 'form' : 'contact');
     backdrop.hidden = false;
     requestAnimationFrame(function () { backdrop.classList.add('is-open'); });
     document.documentElement.classList.add('lm-scroll-lock');
     document.addEventListener('keydown', onKeydown);
-    setTimeout(function () { shopInput.focus(); }, 60);
+    if (SITE.leadFormEnabled) setTimeout(function () { shopInput.focus(); }, 60);
+    if (window.ENTER_TRACK) window.ENTER_TRACK('lead_open');
   }
 
   function close() {
@@ -188,17 +190,10 @@
   });
 
   // ---------- 전역 트리거: [data-lead-trigger] 전부 위임으로 받는다 ----------
-  function isKakaoLabel(el) { return (el.textContent || '').indexOf('카카오톡') !== -1; }
-
   document.addEventListener('click', function (e) {
     var trigger = e.target.closest ? e.target.closest('[data-lead-trigger]') : null;
     if (!trigger) return;
     e.preventDefault();
-    if (isKakaoLabel(trigger)) {
-      if (SITE.kakaoUrl) { window.open(SITE.kakaoUrl, '_blank', 'noopener'); return; }
-      // kakao_url 미설정 — 카톡으로 보낼 데가 없으니 팝업으로라도 받는다(그대로 두면 눌러도
-      // 아무 일도 안 일어나게 됨).
-    }
     open(trigger);
   });
 

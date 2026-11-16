@@ -2,13 +2,12 @@
    id="lead"는 정책 받기 팝업(지시서 2026-11-13)의 "JS 없으면 여기로 스크롤" 착지점이라
    바꾸지 않는다 — 바꾸면 사이트 곳곳의 href="#lead"가 전부 깨진다. #}
 {% macro render(data) %}
-{% set is_kakao_btn = '카카오톡' in data.cta_primary %}
 <section class="sp-cta" id="lead" data-fn-cta-band>
   <div class="sp-cta-inner" data-reveal>
     {% if site.cta_brand_line %}<p class="sp-cta-brand">{{ site.cta_brand_line }}</p>{% endif %}
     <h2>{% for line in data.headline %}{{ line }}{% if not loop.last %}<br>{% endif %}{% endfor %}</h2>
     <div class="sp-cta-ctas">
-      <a class="hp-pill hp-pill--inverted" href="#lead" data-lead-trigger{% if is_kakao_btn %} data-cursor="kakao"{% endif %}>{{ data.cta_primary }}</a>
+      <a class="hp-pill hp-pill--inverted" href="#lead" data-lead-trigger>{{ data.cta_primary }}</a>
       <a class="hp-pill hp-pill--outline" href="tel:{{ site.phone }}">{{ data.cta_secondary }}</a>
     </div>
   </div>

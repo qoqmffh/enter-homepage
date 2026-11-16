@@ -25,8 +25,6 @@
   var ICON_SVGS = {
     /* 세모 지붕 + 네모 몸체 + 가운데 작은 문 */
     home: svg('<path d="M4 11 12 4 20 11 M6 10 6 21 18 21 18 10 M10 21 10 15 14 15 14 21"/>', 'miter'),
-    /* 꼬리 달린 타원형 말풍선(둥근 사각형 아님), 꼬리는 왼쪽 아래 */
-    kakao: svg('<ellipse cx="12" cy="10" rx="8" ry="6"/><path d="M7.5 15 4.5 21 11.5 16.3"/>', 'round'),
     /* 옛 전화 수화기 실루엣 */
     phone: svg('<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>', 'round'),
     /* → 이동, 화살촉 각지게 */
@@ -63,7 +61,7 @@
 
   var active = false;
   var started = false;
-  var currentType = null; /* null | 'home' | 'kakao' | 'phone' | 'go' | 'swipe' | 'click' */
+  var currentType = null; /* null | 'home' | 'phone' | 'go' | 'swipe' | 'click' */
 
   function onMouseMove(e) {
     var t = 'translate3d(' + e.clientX + 'px,' + e.clientY + 'px,0)';
@@ -80,14 +78,13 @@
 
   /* ---------- 종류 판단: closest()를 위에서부터 순서대로, 처음 맞는 걸 쓴다 ----------
      (지시서 §2) 헤더의 01/02/03 그룹 버튼은 호버만으로 메가 패널이 열리므로 십자를
-     그대로 유지한다(예외, 최우선 검사). 클릭 포인터 영역 판정은 home·kakao·phone·swipe·go
+     그대로 유지한다(예외, 최우선 검사). 클릭 포인터 영역 판정은 home·phone·swipe·go
      보다 먼저 한다(지시서 2026-11-14 §1) — 같은 버튼이라도 이 영역 안이면 포인터가 이긴다. */
   function determineType(target) {
     if (!target || !target.closest) return null;
     if (target.closest('.hp-nav-group')) return null;
     if (target.closest(CLICK_ZONE_SEL) && target.closest(CLICK_CLICKABLE_SEL)) return 'click';
     if (target.closest('a.hp-brand')) return 'home';
-    if (target.closest('[data-cursor="kakao"]')) return 'kakao';
     if (target.closest('a[href^="tel:"]')) return 'phone';
     if (target.closest('[data-cursor="swipe"]')) return 'swipe';
     if (target.closest('a[href], button, [role="button"], label[for], summary')) return 'go';

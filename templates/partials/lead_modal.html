@@ -7,7 +7,21 @@
     <button type="button" class="lm-close" data-lm-close aria-label="닫기">&times;</button>
     <div class="lm-handle" aria-hidden="true"></div>
 
-    <div data-lm-view="form">
+    {# lead_form_enabled=false(지시서 2026-11-16 §2) — 관리자 페이지가 생기기 전까지는
+       신청 폼 대신 전화·문자 안내만 보여준다. 폼 코드는 지우지 않고 그대로 둔다(나중에
+       true로 다시 켜면 아래 "contact" 뷰 대신 이 "form" 뷰가 먼저 열린다). #}
+    <div data-lm-view="contact" hidden>
+      <span class="lm-label">정책 받기</span>
+      <h2 class="lm-title" id="lmTitleContact">정책표 받아보기</h2>
+      <p class="lm-sub">전화나 문자로 상호명만 알려 주시면, 다음 날 아침부터 정책표를 보내드립니다.</p>
+      <div class="lm-contact-actions">
+        <a class="lm-submit" href="tel:{{ site.phone }}">전화하기 {{ site.phone }}</a>
+        <a class="lm-submit lm-submit--outline lm-contact-sms" href="sms:{{ site.phone | replace('-', '') }}?body={{ '[ENTER 정책 신청] 상호명: / 지역: ' | urlencode }}" data-lm-sms>문자로 신청하기</a>
+        <p class="lm-contact-pc-number">전화 <strong>{{ site.phone }}</strong></p>
+      </div>
+    </div>
+
+    <div data-lm-view="form" hidden>
       <span class="lm-label">정책 받기</span>
       <h2 class="lm-title" id="lmTitleForm">매일 아침 정책표를<br>먼저 보내드립니다.</h2>
       <p class="lm-sub">상호명과 연락처만 남겨주시면 담당자가 확인 후 연락드립니다.</p>

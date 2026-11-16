@@ -4,6 +4,33 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<meta name="google-site-verification" content="nt_En3bZdbAeOCELge02ilb1QQT6p8wMLYRm82tFxMs">
+<meta name="naver-site-verification" content="f6999f8762d2a9ea61d5dda35cb0c4b5287cd938">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7ZSW55MY3H"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-7ZSW55MY3H');
+</script>
+
+
+<script>
+(function () {
+  function track(name, params) {
+    if (typeof gtag === 'function') gtag('event', name, params || {});
+  }
+  document.addEventListener('click', function (e) {
+    if (!e.target || !e.target.closest) return;
+    var tel = e.target.closest('a[href^="tel:"]');
+    if (tel) { track('click_phone', { location: tel.getAttribute('data-ga-location') || 'guide-opening-checklist' }); return; }
+    var sms = e.target.closest('[data-lm-sms]');
+    if (sms) { track('click_sms', { location: 'guide-opening-checklist' }); }
+  });
+  window.ENTER_TRACK = track;
+})();
+</script>
 <title>휴대폰 매장 개업 체크리스트 — 창업 가이드 5/5 | ENTER 유선전문총판</title>
 <meta name="description" content="휴대폰 매장 개업 전에 확인할 것을 창업 준비부터 첫 개통까지 한 장에 정리했습니다. 빠진 것이 없는지 순서대로 점검하세요.">
 <link rel="canonical" href="https://xn--hq1b59iy0gstg.kr/guide-opening-checklist.html">
@@ -21,14 +48,14 @@
 <link rel="apple-touch-icon" href="static/brand/apple-touch-icon.png">
 <link rel="stylesheet" href="static/fonts/pretendard/pretendard-dynamic-subset.css?v=2973bcae">
 <link rel="stylesheet" href="static/common.css?v=7e39b9aa">
-<link rel="stylesheet" href="static/site.css?v=0a0ca8a9">
+<link rel="stylesheet" href="static/site.css?v=7c742117">
 <link rel="stylesheet" href="static/megamenu.css?v=2522f821">
 
 <link rel="stylesheet" href="static/reveal.css?v=46ce769e">
-<link rel="stylesheet" href="static/lead-modal.css?v=d8bf3892">
+<link rel="stylesheet" href="static/lead-modal.css?v=d09c137e">
 <link rel="stylesheet" href="static/floatnav.css?v=2cc5fb93">
 
-<link rel="stylesheet" href="static/cursor.css?v=1da95759">
+<link rel="stylesheet" href="static/cursor.css?v=7a63899e">
 
 
 <script type="application/ld+json">{
@@ -54,15 +81,15 @@
 <script src="static/reveal.js?v=40c463a7" defer></script>
 <script>
   /* 정책 받기 팝업·플로팅 내비(지시서 2026-11-13) 전역 설정값 — site.json에서만 관리.
-     kakao_url·lead_endpoint가 비어 있으면 각 스크립트가 알아서 대체 동작(팝업으로 대신
-     받기/전화 안내)을 한다. */
+     lead_endpoint가 비어 있거나 lead_form_enabled가 false면 각 스크립트가 알아서
+     대체 동작(전화·문자 안내 화면)을 한다(지시서 2026-11-16 §2). */
   window.ENTER_SITE = {
-    kakaoUrl: "",
     leadEndpoint: "",
+    leadFormEnabled: false,
     phone: "010-2222-4183"
   };
 </script>
-<script src="static/lead-modal.js?v=ee092f1a" defer></script>
+<script src="static/lead-modal.js?v=f2036b5e" defer></script>
 <script src="static/floatnav.js?v=c0dfdd6f" defer></script>
 
 
@@ -281,7 +308,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
               <span class="hp-mega-cta-sub" id="hpMegaCtaSub">카톡방으로 먼저 보내드립니다</span>
             </div>
             <div class="hp-mega-cta-actions">
-              <a class="hp-mega-cta-btn" href="#lead" data-cursor="kakao" data-lead-trigger>카카오톡으로 정책 받기</a>
+              <a class="hp-mega-cta-btn" href="#lead" data-lead-trigger>정책표 받아보기</a>
               <a class="hp-mega-cta-tel" href="tel:010-2222-4183">전화 010-2222-4183</a>
             </div>
           </div>
@@ -488,14 +515,14 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     
     
     <div class="hp-nav-mobile-cta">
-      <a class="hp-pill hp-pill--primary" href="#lead" data-cursor="kakao" data-lead-trigger>카카오톡으로 정책 받기</a>
+      <a class="hp-pill hp-pill--primary" href="#lead" data-lead-trigger>정책표 받아보기</a>
       <a class="hp-nav-mobile-tel" href="tel:010-2222-4183">전화 010-2222-4183</a>
     </div>
   </nav>
 </header>
 
 <script src="static/megamenu.js?v=89b66ab9" defer></script>
-<script src="static/cursor.js?v=a33f88a7" defer></script>
+<script src="static/cursor.js?v=425bfe59" defer></script>
 
 <main>
 
@@ -629,7 +656,19 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     <button type="button" class="lm-close" data-lm-close aria-label="닫기">&times;</button>
     <div class="lm-handle" aria-hidden="true"></div>
 
-    <div data-lm-view="form">
+    
+    <div data-lm-view="contact" hidden>
+      <span class="lm-label">정책 받기</span>
+      <h2 class="lm-title" id="lmTitleContact">정책표 받아보기</h2>
+      <p class="lm-sub">전화나 문자로 상호명만 알려 주시면, 다음 날 아침부터 정책표를 보내드립니다.</p>
+      <div class="lm-contact-actions">
+        <a class="lm-submit" href="tel:010-2222-4183">전화하기 010-2222-4183</a>
+        <a class="lm-submit lm-submit--outline lm-contact-sms" href="sms:01022224183?body=%5BENTER%20%EC%A0%95%EC%B1%85%20%EC%8B%A0%EC%B2%AD%5D%20%EC%83%81%ED%98%B8%EB%AA%85%3A%20/%20%EC%A7%80%EC%97%AD%3A%20" data-lm-sms>문자로 신청하기</a>
+        <p class="lm-contact-pc-number">전화 <strong>010-2222-4183</strong></p>
+      </div>
+    </div>
+
+    <div data-lm-view="form" hidden>
       <span class="lm-label">정책 받기</span>
       <h2 class="lm-title" id="lmTitleForm">매일 아침 정책표를<br>먼저 보내드립니다.</h2>
       <p class="lm-sub">상호명과 연락처만 남겨주시면 담당자가 확인 후 연락드립니다.</p>
@@ -695,7 +734,6 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       <span>매일 아침 정책표를 먼저 보내드립니다</span>
     </div>
     <div class="fn-bottombar-actions">
-      
       <a class="fn-bar-btn" href="tel:010-2222-4183">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
         <span>전화 010-2222-4183</span>
@@ -708,7 +746,6 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   </div>
 
   <div class="fn-bottombar-mobile">
-    
     <a class="fn-mbar-btn" href="tel:010-2222-4183">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
       <span>전화</span>
@@ -721,7 +758,6 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 </div>
 
 <aside class="fn-quickmenu" data-fn-quickmenu aria-label="빠른 메뉴">
-  
   <a class="fn-quick-item" href="tel:010-2222-4183">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
     <span>전화</span>
@@ -730,49 +766,13 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
     <span>문의</span>
   </a>
-  <button type="button" class="fn-quick-item" data-fn-consult-open aria-haspopup="dialog" aria-expanded="false">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
-    <span>1:1상담</span>
-  </button>
+  
   <div class="fn-quick-divider" aria-hidden="true"></div>
   <button type="button" class="fn-quick-top" data-fn-top aria-label="맨 위로">TOP ↑</button>
 </aside>
 
 
-<div class="fn-consult" data-fn-consult>
-  <button type="button" class="fn-consult-launcher" data-fn-consult-open aria-haspopup="dialog" aria-expanded="false" aria-label="1:1 상담센터 열기">
-    <span class="fn-consult-label" aria-hidden="true">1:1 상담센터</span>
-    <span class="fn-consult-circle" aria-hidden="true">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-    </span>
-  </button>
-</div>
 
-<div class="fn-consult-panel" role="dialog" aria-modal="false" aria-labelledby="fnConsultTitle" data-fn-consult-panel hidden>
-  <div class="fn-consult-header">
-    <div>
-      <div class="fn-consult-title" id="fnConsultTitle"><span class="fn-online-dot" aria-hidden="true"></span>ENTER 1:1 상담센터</div>
-      <div class="fn-consult-sub">AI 상담원이 먼저 안내해 드립니다</div>
-    </div>
-    <button type="button" class="fn-consult-close" data-fn-consult-close aria-label="닫기">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button>
-  </div>
-  <div class="fn-consult-body" data-fn-consult-body>
-    <div class="fn-consult-msg fn-consult-msg--assistant">안녕하세요! ENTER 유선 도매 지원팀입니다. 궁금하신 내용을 선택하시거나 입력해 주세요.</div>
-    <div class="fn-consult-chips">
-      <button type="button" class="fn-consult-chip" data-fn-chip="lead">정책 받기</button>
-      <a class="fn-consult-chip" href="start.html">거래 시작 방법</a>
-      <a class="fn-consult-chip" href="settlement.html">정산일 문의</a>
-    </div>
-  </div>
-  <form class="fn-consult-footer" data-fn-consult-form>
-    <input type="text" class="fn-consult-input" placeholder="궁금하신 내용을 입력해주세요..." data-fn-consult-input autocomplete="off">
-    <button type="submit" class="fn-consult-send" aria-label="보내기">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-    </button>
-  </form>
-</div>
 
 
 </body>

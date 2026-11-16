@@ -95,10 +95,6 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
    예전 모습(잉크 바탕, hover만 주황) 그대로 둔다(2026-11-12). */
 #start .hp-pill--primary{ background:var(--hp-black); color:var(--hp-white); }
 #start .hp-pill--primary:hover{ background:var(--hp-accent); }
-/* static/guide_chapter.html 글 하단 CTA는 .hp-pill 체계가 아니라 common.css의 .btn-primary를
-   쓰지만 같은 카카오톡 버튼이라 색만 맞춘다. */
-.btn-primary[data-cursor="kakao"]{ background:var(--hp-accent-strong); color:#FFFFFF; transition:background-color .2s ease, color .2s ease; }
-.btn-primary[data-cursor="kakao"]:hover{ background:var(--hp-ink); }
 .hp-pill--secondary{ background:var(--hp-grey-bg); color:var(--hp-ink); border:1px solid transparent; }
 .hp-pill--secondary:hover{ background:var(--hp-line); border-color:var(--hp-ink); }
 .hp-pill--inverted{ background:var(--hp-white); color:var(--hp-black); }
