@@ -21,7 +21,7 @@
 <link rel="apple-touch-icon" href="static/brand/apple-touch-icon.png">
 <link rel="stylesheet" href="static/fonts/pretendard/pretendard-dynamic-subset.css?v=2973bcae">
 <link rel="stylesheet" href="static/common.css?v=7e39b9aa">
-<link rel="stylesheet" href="static/site.css?v=677b866b">
+<link rel="stylesheet" href="static/site.css?v=0a0ca8a9">
 <link rel="stylesheet" href="static/megamenu.css?v=2522f821">
 
 <link rel="stylesheet" href="static/reveal.css?v=46ce769e">
@@ -80,8 +80,8 @@
   } catch (e) {}
 })();
 </script>
-<link rel="stylesheet" href="static/home-poetic.css?v=a2827ae8">
-<link rel="stylesheet" href="static/sub.css?v=8a86dba3">
+<link rel="stylesheet" href="static/home-poetic.css?v=65670872">
+<link rel="stylesheet" href="static/sub.css?v=dfcb7d12">
 
 <script src="static/home-poetic.js?v=52827905" defer></script>
 <script src="static/home-poetic-trail.js?v=831e5287" defer></script>
@@ -89,6 +89,40 @@
 <script src="static/wipe-reveal.js?v=5a6bc517" defer></script>
 <script src="static/why-carousels.js?v=d4fab76a" defer></script>
 <script src="static/why-chart.js?v=fb36a866" defer></script>
+
+
+
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "ENTER 정책은 어떻게 받나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "매일 아침 카카오톡 정책방으로 받습니다. 정책이 바뀌면 바로 다시 공지합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "정산은 언제 들어오나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "월~일 개통분을 다음 주 수요일에 정산서로 보내고 금요일에 입금합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "고객 정보는 어떻게 보호하나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "개통이 끝나면 이름·연락처·주민번호가 자동으로 가려지는 하드마킹을 적용합니다."
+      }
+    }
+  ]
+}</script>
+
 
 </head>
 <body>
@@ -367,7 +401,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     "numbers": [
       {
         "value": "40만원",
-        "label": "건당 차이(500+TV 기준)"
+        "label": "건당 차이(500+TV, 2026년 평균 단가 기준)"
       },
       {
         "value": "0원",
@@ -490,7 +524,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       <p class="hp-hero-subhead">비교해 보시면 압니다. 매일 아침, 정책표를 먼저 받아보세요.</p>
     </div>
     <div class="hp-hero-below">
-      
+      <p class="answer-lead">ENTER는 판매점과 온라인 셀러에게 6개 통신사 유선 정책을 매일 아침 카카오톡으로 보내는 유선 도매(총판)입니다. 월 평균 4,000건(2026년 평균)을 개통하고, 최근 90회 정산(2026.10.08 기준)에서 지급일이 늦어진 적은 0회입니다.</p>
       <div class="hp-hero-ctas">
         
 <a href="#lead" class="hp-pill hp-pill--primary" data-cursor="kakao" data-lead-trigger><span class="hp-pill-dot"></span>카카오톡으로 정책 받기</a>
@@ -545,6 +579,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
         </div>
         
       </div>
+      <p class="hp-muted sp-hero-facts-note">기준: 월 평균 개통·전국 거래처 수는 2026년 평균</p>
     </div>
   </div>
 </section>
@@ -573,8 +608,9 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
         
       </div>
       <div class="hp-photo-overlay"></div>
-      <div class="hp-photo-corner hp-photo-corner--tl">SYS // OPERATIONAL_HUB</div>
-      <div class="hp-photo-corner hp-photo-corner--bl">JEONJU 35.8242° N, 127.1480° E</div>
+      
+      <div class="hp-photo-corner hp-photo-corner--tl" data-corner-text="SYS // OPERATIONAL_HUB"></div>
+      <div class="hp-photo-corner hp-photo-corner--bl" data-corner-text="JEONJU 35.8242° N, 127.1480° E"></div>
       <div class="hp-photo-corner hp-photo-corner--br hp-photo-nav">
         <span class="hp-photo-counter" data-photo-counter>01 / 04</span>
         <div class="hp-carousel-btns hp-carousel-btns--photo">
@@ -630,8 +666,14 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     <p class="hp-kosis-share">정확한 해지율 통계는 공개돼 있지 않지만, 이를 감안해도 ENTER는 전국 순증의 5% 이상을 차지하는 물량입니다. 이 정도인데, 낮은 정책을 받을 수 있을까요?</p>
     
     <div class="hp-kosis-source">
-      <span>출처: 유선통신 가입자 순증 현황 (KOSIS, 2026년 7월)</span>
+      <span>출처: 과학기술정보통신부 「초고속인터넷 사업자별 회선 수」(KOSIS 국가통계포털, 2026년 7월 수록)</span>
       <a href="https://kosis.kr/serviceInfo/newContrainDataDetail.do?boardIdx=1998012&boardOrgId=127" target="_blank" rel="noopener">바로가기 →</a>
+    </div>
+    
+    
+    <div class="hp-kosis-source">
+      <span>보조 출처: 한국통신사업자연합회(KTOA) 통계</span>
+      <a href="http://stat.ktoa.or.kr/02_service/service_03_client.asp" target="_blank" rel="noopener">바로가기 →</a>
     </div>
     
   </div>
@@ -2483,9 +2525,34 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   </div>
 </section>
 
+
+<section class="sp-section" id="faq">
+  <span class="hp-label"><span class="hp-label-dot"></span>FAQ</span>
+  <div style="margin-top:20px">
+    
+    <details class="sp-faq-item" data-reveal open>
+      <summary>ENTER 정책은 어떻게 받나요?</summary>
+      <div class="sp-faq-body">매일 아침 카카오톡 정책방으로 받습니다. 정책이 바뀌면 바로 다시 공지합니다.</div>
+    </details>
+    
+    <details class="sp-faq-item" data-reveal>
+      <summary>정산은 언제 들어오나요?</summary>
+      <div class="sp-faq-body">월~일 개통분을 다음 주 수요일에 정산서로 보내고 금요일에 입금합니다.</div>
+    </details>
+    
+    <details class="sp-faq-item" data-reveal>
+      <summary>고객 정보는 어떻게 보호하나요?</summary>
+      <div class="sp-faq-body">개통이 끝나면 이름·연락처·주민번호가 자동으로 가려지는 하드마킹을 적용합니다.</div>
+    </details>
+    
+  </div>
+</section>
+
+
 <section class="hp-section hp-closing hp-trail-host" id="contact" data-trail="gray" data-fn-cta-band>
   <div class="hp-trail" aria-hidden="true"></div>
   <div class="hp-wrap hp-center">
+    <p class="sp-cta-brand">ENTER 유선전문총판 · 6개 통신사 유선 정책, 매일 아침 카카오톡으로</p>
     <h2 class="hp-display-lg hp-two-tone-block" data-scroll-fill data-reveal>
       <span class="hp-ink">내일 아침, 정책표를</span>
       <span class="hp-green">먼저 받아보세요.</span>

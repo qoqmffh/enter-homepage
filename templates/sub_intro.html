@@ -10,6 +10,16 @@
 <link rel="stylesheet" href="static/site.css">
 <link rel="stylesheet" href="static/sub.css">
 <script type="application/ld+json">{{ crumb_items | breadcrumb_ld(site.base_url) | tojson(indent=2) }}</script>
+{# 본문 SEO·GEO 보강 지시서(2026-11-13) 3 — FAQ 블록(s.faq)이 있는 서브페이지는 전부
+   FAQPage JSON-LD를 같이 낸다. #}
+{% if page.sub.faq %}
+{% set faq_ld = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  'mainEntity': page.sub.faq | faq_main_entity
+} %}
+<script type="application/ld+json">{{ faq_ld | tojson(indent=2) }}</script>
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -21,7 +31,9 @@
    statement는 더 안 쓰지만 데이터는 pages.json에 남겨 둔다. #}
 <section class="sp-proof" id="proof">
   <div class="sp-proof-grid">
+    {% if page.answer_lead %}<p class="answer-lead">{{ page.answer_lead }}</p>{% endif %}
     <h2 class="sp-proof-title" data-reveal><span class="hp-ink">{{ s.proof.headline_ink }}</span><br><span class="hp-green">{{ s.proof.headline_green }}</span></h2>
+    {% if s.proof.subhead %}<p class="sp-proof-subhead">{{ s.proof.subhead }}</p>{% endif %}
     <div class="sp-proof-facts">
       {% for f in s.proof.facts %}
       <div class="sp-proof-fact" data-reveal>
@@ -32,6 +44,7 @@
       {% endfor %}
     </div>
     {% if s.proof.history_note %}<p class="hp-muted sp-proof-note">{{ s.proof.history_note }}</p>{% endif %}
+    {% if s.proof.fact_basis_note %}<p class="hp-muted sp-proof-note">{{ s.proof.fact_basis_note }}</p>{% endif %}
   </div>
 </section>
 
@@ -100,6 +113,7 @@
   <div class="sp-detail-head" data-reveal>
     <span class="hp-label"><span class="hp-label-dot"></span>{{ s.detail.label }}</span>
     <h2>{{ s.detail.headline }}</h2>
+    {% if s.detail.basis_note %}<p class="hp-muted sp-proof-note">{{ s.detail.basis_note }}</p>{% endif %}
   </div>
   {% if s.detail.rows_key %}
     {# 정산 원장형: 90건 전체를 고정 높이 영역 안에 넣고 스크롤한다(펼치기 아코디언 아님) — 지시서 #6. #}

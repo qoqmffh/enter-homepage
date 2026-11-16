@@ -46,6 +46,7 @@
         </div>
         {% endfor %}
       </div>
+      {% if data.facts_note %}<p class="hp-muted sp-hero-facts-note">{{ data.facts_note }}</p>{% endif %}
       {% endif %}
     </div>
     {% if data.photo_caption and not sk %}<span class="sp-hero-caption">{{ data.photo_caption }}</span>{% endif %}

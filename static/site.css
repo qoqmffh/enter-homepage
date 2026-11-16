@@ -73,6 +73,10 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
 /* 브레드크럼(마케팅 마무리 지시서 2026-11-12 D) — site.css는 모든 페이지(블로그·가이드·
    서브페이지)에 공통으로 로드되므로 여기 한 곳에만 둔다. */
 .breadcrumb{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; font-size:13px; color:var(--hp-grey); margin-bottom:10px; }
+
+/* 본문 SEO·GEO 보강 지시서(2026-11-13) 1 — 검색엔진·AI가 읽어 갈 "답 문장". 슬로건형
+   헤드라인은 그대로 두고, 히어로 다음 첫 섹션 맨 위에 2문장 리드만 더한다. */
+.answer-lead{ font-size:clamp(16px,2vw,17px); line-height:1.6; color:var(--hp-grey); max-width:680px; margin:0 0 24px; }
 .breadcrumb a{ color:var(--hp-grey); text-decoration:none; }
 .breadcrumb a:hover{ color:var(--hp-ink); text-decoration:underline; }
 .breadcrumb span[aria-current]{ color:var(--hp-ink); }

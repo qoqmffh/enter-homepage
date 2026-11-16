@@ -79,6 +79,8 @@
 .hp-photo-corner{ position:absolute; z-index:1; font-size:10px; letter-spacing:.06em; color:rgba(255,255,250,.9); text-transform:uppercase; }
 .hp-photo-corner--tl{ top:16px; left:16px; }
 .hp-photo-corner--bl{ bottom:16px; left:16px; }
+/* 본문 SEO·GEO 보강 지시서(2026-11-13) 1-2 — 텍스트 노드 대신 생성 콘텐츠로 그린다. */
+.hp-photo-corner--tl::before, .hp-photo-corner--bl::before{ content:attr(data-corner-text); }
 .hp-photo-corner--br{ bottom:16px; right:16px; letter-spacing:.08em; }
 .hp-photo-nav{ display:flex; align-items:center; gap:10px; }
 .hp-photo-counter{ font-variant-numeric:tabular-nums; }
