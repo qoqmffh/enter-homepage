@@ -172,7 +172,12 @@ def git_last_modified_date(rel_path):
     """content 파일의 git 마지막 커밋 날짜(YYYY-MM-DD) — 개별 글에 date_modified가 없을 때
     쓰는 대체값(A01-4). 항목별로 git blame까지 뜨는 건 너무 느려서, "이 항목이 들어있는
     content 파일 전체의 마지막 커밋일"로 근사한다 — 보통 글 하나만 고쳐도 파일 전체가
-    커밋되는 구조라 실제로도 거의 정확하다. git이 없거나 커밋 이력이 없으면 None(빈 값)."""
+    커밋되는 구조라 실제로도 거의 정확하다. git이 없거나 커밋 이력이 없으면 None(빈 값).
+
+    원칙(기준일 판단 정정 지시서 2026-11-16): date_modified는 git 날짜의 자동 대체에
+    기대지 말고, 본문 내용(답 문장·숫자·FAQ 등)을 실제로 고치는 커밋에서 그 페이지의
+    date_modified도 같은 커밋 안에서 함께 올린다. 브랜드 한 줄(site.cta_brand_line)·CTA
+    버튼 문구처럼 여러 페이지에 공통으로 퍼지는 요소만 바뀐 경우는 올리지 않는다."""
     if rel_path in _git_date_cache:
         return _git_date_cache[rel_path]
     date = None
