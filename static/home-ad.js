@@ -91,7 +91,7 @@
   var s6line2 = safeGet('[data-ad-s6-line2]');
   var s6btns = safeGet('[data-ad-end-btns]');
   var enterHomeBtn = safeGet('[data-ad-enter-home]');
-  var kakaoBtn = safeGet('[data-cta="kakao"]');
+  var ctaPrimaryBtn = safeGet('[data-ad-cta-primary]');
   var dots = Array.prototype.slice.call(stage.querySelectorAll('[data-ad-dot]'));
   var progressFill = safeGet('[data-ad-progress]');
   var skipBtn = safeGet('[data-ad-skip]');
@@ -693,13 +693,10 @@
 
   if (skipBtn) skipBtn.addEventListener('click', beginTransition);
   if (enterHomeBtn) enterHomeBtn.addEventListener('click', beginTransition);
-  if (kakaoBtn) {
-    kakaoBtn.addEventListener('click', function (e) {
-      if (kakaoBtn.getAttribute('href') === '#') e.preventDefault();
-      try {
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({ event: 'ad_cta_kakao_click' });
-      } catch (err) {}
+  if (ctaPrimaryBtn) {
+    ctaPrimaryBtn.addEventListener('click', function (e) {
+      if (ctaPrimaryBtn.getAttribute('href') === '#') e.preventDefault();
+      beginTransition();
     });
   }
 
