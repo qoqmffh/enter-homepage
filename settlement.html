@@ -21,7 +21,7 @@
 <link rel="apple-touch-icon" href="static/brand/apple-touch-icon.png">
 <link rel="stylesheet" href="static/fonts/pretendard/pretendard-dynamic-subset.css?v=2973bcae">
 <link rel="stylesheet" href="static/common.css?v=7e39b9aa">
-<link rel="stylesheet" href="static/site.css?v=677b866b">
+<link rel="stylesheet" href="static/site.css?v=0a0ca8a9">
 <link rel="stylesheet" href="static/megamenu.css?v=2522f821">
 
 <link rel="stylesheet" href="static/reveal.css?v=46ce769e">
@@ -66,8 +66,8 @@
 <script src="static/floatnav.js?v=c0dfdd6f" defer></script>
 
 
-<link rel="stylesheet" href="static/site.css?v=677b866b">
-<link rel="stylesheet" href="static/sub.css?v=8a86dba3">
+<link rel="stylesheet" href="static/site.css?v=0a0ca8a9">
+<link rel="stylesheet" href="static/sub.css?v=dfcb7d12">
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -86,6 +86,56 @@
     }
   ]
 }</script>
+
+
+
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "정산은 언제 되나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "매주 수요일 정산서를 보내고, 금요일에 입금합니다. 공휴일과 겹치면 하루~이틀 먼저 처리합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "정산이 잘못되면요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "정산 내역 검토 중 오지급이나 누락이 확인되면 당일 수정 정산서를 재발행하며, 차액은 확인 즉시 또는 차주 정산 시 최우선 반영하여 소급 지급됩니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "고객 정보는 어디까지 보관하나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "개통이 완료되는 즉시 시스템 단위의 하드마킹 암호화 처리가 적용되어 이름, 연락처, 주민번호 등 민감 개인정보는 완전히 마스킹되며 영구 보관되지 않습니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "정산이 밀린 적이 있나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "최근 90회 정산(2026.10.08 기준)에서 지급일이 늦어진 적은 0회입니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "정책을 놓치면 어떻게 되나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "1~2분 차이로 놓친 정책은 대부분 소급합니다. 환수는 통신사 기준을 따르며 자체 패널티는 없습니다."
+      }
+    }
+  ]
+}</script>
+
 
 </head>
 <body>
@@ -364,7 +414,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     "numbers": [
       {
         "value": "40만원",
-        "label": "건당 차이(500+TV 기준)"
+        "label": "건당 차이(500+TV, 2026년 평균 단가 기준)"
       },
       {
         "value": "0원",
@@ -508,7 +558,9 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 <section class="sp-proof" id="proof">
   <div class="sp-proof-grid">
+    <p class="answer-lead">ENTER는 월~일 개통분을 다음 주 수요일에 정산서로 보내고 금요일에 입금합니다. 개통이 끝나면 고객 이름·연락처·주민번호가 자동으로 가려지는 하드마킹을 적용합니다.</p>
     <h2 class="sp-proof-title" data-reveal><span class="hp-ink">약속은 말이 아니라</span><br><span class="hp-green">날짜로 지킵니다.</span></h2>
+    
     <div class="sp-proof-facts">
       
       <div class="sp-proof-fact" data-reveal>
@@ -530,6 +582,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       </div>
       
     </div>
+    
     
   </div>
 </section>
@@ -602,6 +655,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   <div class="sp-detail-head" data-reveal>
     <span class="hp-label"><span class="hp-label-dot"></span>SETTLEMENT LEDGER</span>
     <h2>실제 정산 기록, 90회</h2>
+    <p class="hp-muted sp-proof-note">기준: 2026.10.08까지 최근 90회, 건수는 회차별 정산 건수입니다. 휴일이 낀 주는 수·목요일에 앞당겨 입금했습니다.</p>
   </div>
   
     
@@ -1180,6 +1234,16 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       <div class="sp-faq-body">개통이 완료되는 즉시 시스템 단위의 하드마킹 암호화 처리가 적용되어 이름, 연락처, 주민번호 등 민감 개인정보는 완전히 마스킹되며 영구 보관되지 않습니다.</div>
     </details>
     
+    <details class="sp-faq-item" data-reveal>
+      <summary>정산이 밀린 적이 있나요?</summary>
+      <div class="sp-faq-body">최근 90회 정산(2026.10.08 기준)에서 지급일이 늦어진 적은 0회입니다.</div>
+    </details>
+    
+    <details class="sp-faq-item" data-reveal>
+      <summary>정책을 놓치면 어떻게 되나요?</summary>
+      <div class="sp-faq-body">1~2분 차이로 놓친 정책은 대부분 소급합니다. 환수는 통신사 기준을 따르며 자체 패널티는 없습니다.</div>
+    </details>
+    
   </div>
 </section>
 
@@ -1187,6 +1251,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 <section class="sp-cta" id="lead" data-fn-cta-band>
   <div class="sp-cta-inner" data-reveal>
+    <p class="sp-cta-brand">ENTER 유선전문총판 · 6개 통신사 유선 정책, 매일 아침 카카오톡으로</p>
     <h2>정해진 날 받는 정산,<br>직접 확인해 보세요.</h2>
     <div class="sp-cta-ctas">
       <a class="hp-pill hp-pill--inverted" href="#lead" data-lead-trigger data-cursor="kakao">카카오톡으로 정책 받기</a>
