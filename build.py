@@ -483,21 +483,17 @@ def main():
         f.write(rss_xml)
     print(f"  생성: rss.xml ({len(rss_items)}개 글)")
 
-    # robots.txt — AI 검색 대응 지시서(2026-11-16) §1: 검색·AI 크롤러를 봇별로 따로 허용한다.
-    # /staff/는 실제로 없지만 나중에 생길 관리자 페이지를 미리 막아 둔다.
+    # robots.txt — 전체허용(2026-11-16 수정 지시). 검색·AI 크롤러를 봇별로 따로 묶을 필요
+    # 없이 User-agent: * 한 줄로 전부 허용한다(Disallow 없음).
     # site.noindex가 true면(실도메인 확정 전 임시 호스팅 단계) 크롤링 자체를 막음
     if site.get("noindex"):
         robots = "User-agent: *\nDisallow: /\n"
     else:
-        bots = [
-            "*", "Googlebot", "Google-Extended", "Yeti", "Bingbot",
-            "GPTBot", "OAI-SearchBot", "ChatGPT-User",
-            "ClaudeBot", "Claude-User", "Claude-SearchBot", "anthropic-ai",
-            "PerplexityBot", "Perplexity-User",
-            "Applebot", "Applebot-Extended", "CCBot", "Meta-ExternalAgent",
-        ]
-        groups = [f"User-agent: {bot}\nAllow: /\nDisallow: /staff/" for bot in bots]
-        robots = "\n\n".join(groups) + f"\n\nSitemap: {site['base_url']}/sitemap_index.xml\n"
+        robots = (
+            "User-agent: *\n"
+            "Allow: /\n"
+            f"\nSitemap: {site['base_url']}/sitemap_index.xml\n"
+        )
     with open(os.path.join(DIST_DIR, "robots.txt"), "w", encoding="utf-8") as f:
         f.write(robots)
     print("  생성: robots.txt")
