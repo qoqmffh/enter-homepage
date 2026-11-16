@@ -2,6 +2,7 @@
 {% import "partials/hero.html" as hero_mod %}
 {% import "partials/cta_band.html" as cta_mod with context %}
 {% import "partials/breadcrumb.html" as bc_mod %}
+{% import "partials/confirm_box.html" as confirm_mod %}
 {# 마케팅 마무리 지시서(2026-11-12) D — block 안에서 set하면 다른 block에서 안 보이므로
    템플릿 최상위에서 설정한다. #}
 {% set crumb_items = [{'label': '홈', 'href': 'index.html'}, {'label': page.eyebrow, 'href': slug ~ '.html'}] %}
@@ -20,12 +21,25 @@
 } %}
 <script type="application/ld+json">{{ faq_ld | tojson(indent=2) }}</script>
 {% endif %}
+{# AI 검색 대응 지시서(2026-11-16) §3 — faq.html만 서비스 페이지라 기준일·WebPage dateModified
+   대상. blog.html(목록)은 개별 글이 아니라 빼둔다. #}
+{% if page.sub.board_type == 'faq' %}
+{% set webpage_ld = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  'name': page.title,
+  'description': page.meta_description,
+  'url': site.base_url ~ '/' ~ slug ~ '.html',
+  'dateModified': date_modified
+} %}
+<script type="application/ld+json">{{ webpage_ld | compact | tojson(indent=2) }}</script>
+{% endif %}
 {% endblock %}
 
 {% block content %}
 {% set s = page.sub %}
 
-{{ hero_mod.render('compact', s.hero, bc_mod.render(crumb_items)) }}
+{{ hero_mod.render('compact', s.hero, bc_mod.render(crumb_items), date_modified if s.board_type == 'faq' else none) }}
 
 <section class="sp-section" id="board">
   <div class="sp-board-tabs" data-board-tabs role="tablist">
@@ -87,6 +101,12 @@
   </div>
   {% endif %}
 </section>
+
+{% if s.board_type == 'faq' %}
+<section class="sp-section" style="margin-top:40px">
+  {{ confirm_mod.render(page.confirm_sources) }}
+</section>
+{% endif %}
 
 {{ cta_mod.render(s.cta) }}
 

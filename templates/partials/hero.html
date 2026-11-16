@@ -2,7 +2,7 @@
    Stitch 시안의 외부(구글) 이미지는 쓰지 않는다. static/photos/hero-<data.photo>.jpg가
    있으면 쓰고, 없으면 CSS background-color(#2a2d33)만 보인다 — 사진 분위기는
    data.photo_mood 주석으로 옆에 남겨 실제 사진 교체 시 참고한다. #}
-{% macro render(variant, data, breadcrumb=none) %}
+{% macro render(variant, data, breadcrumb=none, date_modified=none) %}
 {% set sk = data.sketch %}
 {% set has_facts = variant == 'tall' and data.facts %}
 {% set sk_dims = {'company': [1672, 820], 'trade': [1672, 793], 'info': [1672, 816]} %}
@@ -22,6 +22,7 @@
         {% if breadcrumb %}{{ breadcrumb }}{% endif %}
         <p class="sp-hero-label">● {{ data.label }}</p>
         <h1 class="sp-hero-headline">{% for line in data.headline %}{{ line }}{% if not loop.last %}<br>{% endif %}{% endfor %}</h1>
+        {% if date_modified %}<p class="post-date page-basis-date">기준일 {{ date_modified | date_fmt_kr }} · ENTER 영업지원팀 확인</p>{% endif %}
         {% if data.subline %}<p class="sp-hero-sub">{{ data.subline | safe }}</p>{% endif %}
         {# 정책 받기 팝업(지시서 2026-11-13) — FAQ 히어로의 "전화로 묻기"만 원래대로 CTA 띠로
            스크롤만 한다(전화 상담을 바로 유도하는 문구라서 팝업으로 가로채지 않기로 했다 —

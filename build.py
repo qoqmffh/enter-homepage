@@ -6,6 +6,7 @@ sitemap.xml · robots.txt 도 이 스크립트가 자동으로 만듭니다.
 
 실행: python build.py
 """
+import datetime
 import glob
 import hashlib
 import json
@@ -15,6 +16,7 @@ import shutil
 import subprocess
 import xml.sax.saxutils as xml_escape
 
+import lxml.html
 from jinja2 import Environment, FileSystemLoader
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -86,6 +88,19 @@ def date_fmt(value):
     if not value or not re.match(r"^\d{4}-\d{2}-\d{2}$", str(value)):
         return value
     return str(value).replace("-", ".")
+
+
+_DATE_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})$")
+
+
+def date_fmt_kr(value):
+    """'2026-11-16' -> '2026년 11월 16일'(AI 검색 대응 지시서 2026-11-16 §3, 페이지
+    "기준일" 표기용). 형식이 다르면 원문 그대로 둔다."""
+    m = _DATE_RE.match(str(value or ""))
+    if not m:
+        return value
+    y, mo, d = m.groups()
+    return f"{y}년 {int(mo)}월 {int(d)}일"
 
 
 _MD_LINK_RE = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
@@ -210,6 +225,40 @@ def find_orphan_pages(dist_dir, all_slugs):
     return sorted(s for s in all_slugs if s not in linked)
 
 
+_MAIN_TEXT_DROP_XPATHS = [
+    ".//*[@data-lead-trigger]",
+    ".//a[starts-with(@href, 'tel:')]",
+    ".//a[starts-with(@href, 'sms:')]",
+    ".//*[contains(concat(' ', normalize-space(@class), ' '), ' hp-pill ')]",
+    ".//*[contains(concat(' ', normalize-space(@class), ' '), ' btn ')]",
+    ".//*[contains(concat(' ', normalize-space(@class), ' '), ' confirm-box ')]",
+    ".//*[contains(concat(' ', normalize-space(@class), ' '), ' breadcrumb ')]",
+    ".//*[contains(concat(' ', normalize-space(@class), ' '), ' page-basis-date ')]",
+]
+
+
+def extract_main_text(html):
+    """<main> 안의 사람이 읽는 본문만 뽑는다(AI 검색 대응 지시서 2026-11-16 §2,
+    llms-full.txt용) — 메뉴·푸터는 <main> 밖이라 이미 빠지고, 버튼·tel/sms 링크·
+    breadcrumb·확인 기준 상자·기준일 표기는 위 드롭 목록으로 걷어낸다."""
+    try:
+        doc = lxml.html.fromstring(html)
+    except Exception:
+        return ""
+    mains = doc.xpath("//main")
+    if not mains:
+        return ""
+    main = mains[0]
+    for xp in _MAIN_TEXT_DROP_XPATHS:
+        for el in main.xpath(xp):
+            el.drop_tree()
+    text = main.text_content()
+    lines = [ln.strip() for ln in text.splitlines()]
+    text = "\n".join(ln for ln in lines if ln)
+    text = re.sub(r"\n{2,}", "\n", text)
+    return text.strip()
+
+
 def _load_reference_text():
     """templates/*.html(partials 포함) + content/*.json 전체를 이어 붙인 문자열 —
     어떤 static 파일 경로가 실제로 쓰이는지 찾는 용도(아래 ignore_unreferenced_png)."""
@@ -316,12 +365,25 @@ def main():
     page_categories["privacy"] = "pages"
     page_source_file["privacy"] = "build.py"
 
+    # 편집 원칙(AI 검색 대응 지시서 2026-11-16 §4) — privacy.html과 같은 방식으로,
+    # 전용 content 파일 없이 여기서 바로 추가. 메뉴에는 안 넣고 푸터에만 링크한다.
+    pages["editorial"] = {
+        "template": "editorial.html",
+        "title": "콘텐츠 편집 원칙 | ENTER",
+        "meta_description": "ENTER(엔터) 유선전문총판이 숫자와 절차를 확인하고 고치는 기준 — 편집 원칙 5가지.",
+        "date_published": "2026-11-16",
+        "date_modified": "2026-11-16",
+    }
+    page_categories["editorial"] = "pages"
+    page_source_file["editorial"] = "build.py"
+
     menu_summaries = build_menu_summaries(site, pages, blog_posts)
 
     env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
     env.filters["countable"] = is_countable
     env.filters["compact"] = compact
     env.filters["date_fmt"] = date_fmt
+    env.filters["date_fmt_kr"] = date_fmt_kr
     env.filters["md_inline"] = md_inline
     env.filters["faq_main_entity"] = faq_main_entity
     env.filters["breadcrumb_ld"] = breadcrumb_ld
@@ -340,17 +402,21 @@ def main():
 
     sitemap_entries = []  # (slug, lastmod, category)
     all_slugs = list(pages.keys())
+    main_text_map = {}  # slug -> <main> 본문 텍스트(llms-full.txt용)
 
     for slug, page in pages.items():
+        # A01-4: date_modified가 없으면 이 항목이 들어있는 content 파일의 git 마지막 커밋일로 대체.
+        # AI 검색 대응 지시서 2026-11-16 §3 — 렌더링 전에 미리 구해서 템플릿의 "기준일" 표기·
+        # Article/WebPage 스키마 dateModified가 사이트맵 lastmod와 항상 같은 값을 쓰게 한다.
+        lastmod = page.get("date_modified") or git_last_modified_date(page_source_file[slug]) or ""
         template = env.get_template(page["template"])
         legal_text = site["legal_footer_about"] if slug == "about" else site["legal_footer"]
-        html = template.render(site=site, page=page, slug=slug, legal_text=legal_text, blog_posts=blog_posts["pages"], menu_summaries=menu_summaries)
+        html = template.render(site=site, page=page, slug=slug, legal_text=legal_text, blog_posts=blog_posts["pages"], menu_summaries=menu_summaries, date_modified=lastmod)
         html = add_cache_busting(html)
         out_path = os.path.join(DIST_DIR, f"{slug}.html")
         with open(out_path, "w", encoding="utf-8") as f:
             f.write(html)
-        # A01-4: date_modified가 없으면 이 항목이 들어있는 content 파일의 git 마지막 커밋일로 대체
-        lastmod = page.get("date_modified") or git_last_modified_date(page_source_file[slug]) or ""
+        main_text_map[slug] = extract_main_text(html)
         sitemap_entries.append((slug, lastmod, page_categories[slug]))
         print(f"  생성: {slug}.html")
 
@@ -373,7 +439,7 @@ def main():
         "guide": "sitemap-guide.xml",
         "blog": "sitemap-blog.xml",
     }
-    today = __import__("datetime").date.today().isoformat()
+    today = datetime.date.today().isoformat()
     index_lines = ['<?xml version="1.0" encoding="UTF-8"?>', '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for cat, filename in sitemap_files.items():
         cat_entries = [e for e in sitemap_entries if e[2] == cat]
@@ -417,19 +483,83 @@ def main():
         f.write(rss_xml)
     print(f"  생성: rss.xml ({len(rss_items)}개 글)")
 
-    # robots.txt — 실제 존재하지 않는 /admin/ 같은 경로를 막을 필요가 없으므로 전체 허용 + sitemap만
+    # robots.txt — AI 검색 대응 지시서(2026-11-16) §1: 검색·AI 크롤러를 봇별로 따로 허용한다.
+    # /staff/는 실제로 없지만 나중에 생길 관리자 페이지를 미리 막아 둔다.
     # site.noindex가 true면(실도메인 확정 전 임시 호스팅 단계) 크롤링 자체를 막음
     if site.get("noindex"):
         robots = "User-agent: *\nDisallow: /\n"
     else:
-        robots = (
-            "User-agent: *\n"
-            "Allow: /\n"
-            f"Sitemap: {site['base_url']}/sitemap_index.xml\n"
-        )
+        bots = [
+            "*", "Googlebot", "Google-Extended", "Yeti", "Bingbot",
+            "GPTBot", "OAI-SearchBot", "ChatGPT-User",
+            "ClaudeBot", "Claude-User", "Claude-SearchBot", "anthropic-ai",
+            "PerplexityBot", "Perplexity-User",
+            "Applebot", "Applebot-Extended", "CCBot", "Meta-ExternalAgent",
+        ]
+        groups = [f"User-agent: {bot}\nAllow: /\nDisallow: /staff/" for bot in bots]
+        robots = "\n\n".join(groups) + f"\n\nSitemap: {site['base_url']}/sitemap_index.xml\n"
     with open(os.path.join(DIST_DIR, "robots.txt"), "w", encoding="utf-8") as f:
         f.write(robots)
     print("  생성: robots.txt")
+
+    # llms.txt + llms-full.txt(AI 검색 대응 지시서 2026-11-16 §2) — 손으로 쓰지 않고
+    # site.json·pages·guide·blog_posts 데이터와 위에서 모은 main_text_map에서 그대로 만든다.
+    date_modified_map = {s: lm for s, lm, _cat in sitemap_entries}
+
+    llms_lines = [
+        f"# {site['site_name']} 유선전문총판 ({site['domain_display']})",
+        "",
+        f"> {site['site_name']} 유선전문총판은 (유)위드컴퍼니 도매영업팀이 운영하는 유선 도매 브랜드입니다. "
+        "2010년부터 SKT·SK브로드밴드·LG U+·KT·스카이라이프·LG헬로비전 6개 통신사의 인터넷·IPTV·CCTV·가전렌탈·"
+        "유심 상품을 전국 판매점과 온라인 셀러 3,000곳에 공급하고, 월 평균 4,000건을 개통합니다(2026년 평균).",
+        "",
+        "판매점·온라인 셀러(사업자) 대상 B2B 서비스입니다. 일반 소비자 가입 상담은 하지 않습니다.",
+        "정책 단가는 시간 단위로 바뀌어 사이트에 공개하지 않고, 거래처 정책방으로 매일 아침 안내합니다.",
+        "",
+        "## 핵심 페이지",
+    ]
+    for group in site["header_menu"]:
+        for item in group["items"]:
+            s = item["slug"]
+            llms_lines.append(f"- [{item['label']}]({site['base_url']}/{s}.html): {pages[s].get('meta_description', '')}")
+
+    llms_lines += ["", "## 창업자 가이드"]
+    for s, p in guide["pages"].items():
+        llms_lines.append(f"- [{p.get('h1', '')}]({site['base_url']}/{s}.html): {p.get('meta_description', '')}")
+
+    llms_lines += ["", "## 블로그"]
+    for s, p in sorted(blog_posts["pages"].items(), key=lambda kv: kv[1].get("date_published", ""), reverse=True):
+        llms_lines.append(f"- [{p.get('h1', '')}]({site['base_url']}/{s}.html): {p.get('meta_description', '')} ({p.get('date_published', '')})")
+
+    llms_lines += [
+        "",
+        "## 회사 정보",
+        f"- 운영: {site['legal_footer']}",
+        "- 정산: 월~일 개통분을 다음 주 수요일 정산서, 금요일 입금. 최근 90회 정산 지연 0회(2026.10.08 기준)",
+        f"- 문의: 전화 {site['phone']}",
+        f"- [편집 원칙]({site['base_url']}/editorial.html): 콘텐츠 확인 기준과 정정 절차",
+        "",
+        "## 기준일",
+        f"- 이 파일 생성일: {today}",
+    ]
+    llms_txt = "\n".join(llms_lines) + "\n"
+    with open(os.path.join(DIST_DIR, "llms.txt"), "w", encoding="utf-8") as f:
+        f.write(llms_txt)
+    print("  생성: llms.txt")
+
+    llms_full_lines = [llms_txt, "---", ""]
+    for s, p in pages.items():
+        llms_full_lines.append(f"## {p.get('title', s)}")
+        llms_full_lines.append(f"URL: {site['base_url']}/{s}.html")
+        if date_modified_map.get(s):
+            llms_full_lines.append(f"기준일: {date_modified_map[s]}")
+        llms_full_lines.append("")
+        llms_full_lines.append(main_text_map.get(s, ""))
+        llms_full_lines.append("")
+    llms_full_txt = "\n".join(llms_full_lines)
+    with open(os.path.join(DIST_DIR, "llms-full.txt"), "w", encoding="utf-8") as f:
+        f.write(llms_full_txt)
+    print(f"  생성: llms-full.txt ({len(llms_full_txt):,}자)")
 
     # CNAME(실도메인 연결 지시서 2026-11-12) — GitHub Pages가 base_url의 퓨니코드 호스트를
     # 커스텀 도메인으로 인식하게 한다. base_url이 아직 placeholder면 만들지 않는다.
@@ -439,7 +569,7 @@ def main():
             f.write(domain_host + "\n")
         print(f"  생성: CNAME ({domain_host})")
 
-    print(f"\n완료: {len(sitemap_entries)}개 페이지 + sitemap 4개 + rss.xml + robots.txt -> dist/")
+    print(f"\n완료: {len(sitemap_entries)}개 페이지 + sitemap 4개 + rss.xml + robots.txt + llms.txt + llms-full.txt -> dist/")
     if "REPLACE-WITH-REAL-DOMAIN" in site["base_url"]:
         print("주의: site.json의 base_url이 아직 placeholder입니다. 실제 도메인 확정되면 교체 후 재빌드하세요.")
 

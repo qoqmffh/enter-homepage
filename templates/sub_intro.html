@@ -2,6 +2,7 @@
 {% import "partials/hero.html" as hero_mod %}
 {% import "partials/cta_band.html" as cta_mod with context %}
 {% import "partials/breadcrumb.html" as bc_mod %}
+{% import "partials/confirm_box.html" as confirm_mod %}
 {# 마케팅 마무리 지시서(2026-11-12) D — 서브페이지는 2단: 홈 › 페이지명.
    block 안에서 set하면 다른 block에서 안 보이므로 템플릿 최상위에서 설정한다. #}
 {% set crumb_items = [{'label': '홈', 'href': 'index.html'}, {'label': page.eyebrow, 'href': slug ~ '.html'}] %}
@@ -10,6 +11,17 @@
 <link rel="stylesheet" href="static/site.css">
 <link rel="stylesheet" href="static/sub.css">
 <script type="application/ld+json">{{ crumb_items | breadcrumb_ld(site.base_url) | tojson(indent=2) }}</script>
+{# AI 검색 대응 지시서(2026-11-16) §3 — 사이트맵 lastmod와 같은 date_modified를 WebPage
+   스키마에도 넣는다. #}
+{% set webpage_ld = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  'name': page.title,
+  'description': page.meta_description,
+  'url': site.base_url ~ '/' ~ slug ~ '.html',
+  'dateModified': date_modified
+} %}
+<script type="application/ld+json">{{ webpage_ld | compact | tojson(indent=2) }}</script>
 {# 본문 SEO·GEO 보강 지시서(2026-11-13) 3 — FAQ 블록(s.faq)이 있는 서브페이지는 전부
    FAQPage JSON-LD를 같이 낸다. #}
 {% if page.sub.faq %}
@@ -25,7 +37,7 @@
 {% block content %}
 {% set s = page.sub %}
 
-{{ hero_mod.render('tall', s.hero, bc_mod.render(crumb_items)) }}
+{{ hero_mod.render('tall', s.hero, bc_mod.render(crumb_items), date_modified) }}
 
 {# 근거 띠 — 히어로 숫자 줄 + 가운데 문구 섹션을 하나로 합쳤다(지시서 2026-11-02 [B]).
    statement는 더 안 쓰지만 데이터는 pages.json에 남겨 둔다. #}
@@ -194,6 +206,10 @@
     </details>
     {% endfor %}
   </div>
+</section>
+
+<section class="sp-section" style="margin-top:40px">
+  {{ confirm_mod.render(page.confirm_sources) }}
 </section>
 
 {{ cta_mod.render(s.cta) }}

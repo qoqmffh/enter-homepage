@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% import "partials/breadcrumb.html" as bc_mod %}
+{% import "partials/confirm_box.html" as confirm_mod %}
 {% set author = (site.authors | selectattr('id', 'equalto', page.author) | first) if page.author else none %}
 {% set crumb_items = [{'label': '홈', 'href': 'index.html'}, {'label': '블로그', 'href': 'blog.html'}, {'label': page.h1, 'href': slug ~ '.html'}] %}
 {% block extra_head %}
@@ -12,7 +13,7 @@
   'headline': page.h1,
   'description': page.meta_description,
   'datePublished': page.date_published,
-  'dateModified': page.date_modified,
+  'dateModified': date_modified,
   'mainEntityOfPage': {'@type': 'WebPage', '@id': site.base_url ~ '/' ~ slug ~ '.html'},
   'publisher': {'@type': 'Organization', 'name': site.site_name},
   'author': ({'@type': 'Person', 'name': author.name, 'jobTitle': author.title, 'worksFor': {'@type': 'Organization', 'name': site.site_name}} if author else {'@type': 'Organization', 'name': site.site_name})
@@ -42,9 +43,7 @@
     {{ bc_mod.render(crumb_items) }}
     <div class="eyebrow">{{ page.eyebrow }}</div>
     <h1>{{ page.h1 }}</h1>
-    {% if page.date_published %}
-    <p class="post-date">작성 {{ page.date_published | date_fmt }} · 수정 {{ page.date_modified | date_fmt }}</p>
-    {% endif %}
+    {% if date_modified %}<p class="post-date page-basis-date">기준일 {{ date_modified | date_fmt_kr }} · ENTER 영업지원팀 확인</p>{% endif %}
     <p class="lead">{{ page.intro | md_inline }}</p>
     {% if page.basis %}<div class="basis-box">{{ page.basis | md_inline }}</div>{% endif %}
   </div>
@@ -132,6 +131,7 @@
 {% if page.final_cta %}
 <section>
   <div class="wrap">
+    {{ confirm_mod.render(page.confirm_sources) }}
     <div class="final-cta">
       <p>{{ page.final_cta | md_inline }}</p>
       <div class="final-cta-actions">

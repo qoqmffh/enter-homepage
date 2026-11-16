@@ -1,0 +1,14 @@
+{# "확인 기준" 상자(AI 검색 대응 지시서 2026-11-16 §4) — 서비스·가이드·블로그 페이지의
+   닫는 CTA 위에 공통으로 넣는다. sources는 있는 페이지만(지금은 why.html의
+   page.confirm_sources) 링크를 보여주고, 없으면 고정 문구 + 편집 원칙 링크만 나온다. #}
+{% macro render(sources=none) %}
+<div class="confirm-box">
+  <p class="confirm-box-text">이 페이지의 숫자와 절차는 ENTER 영업지원팀이 사내 정산 기록·접수 기록과 통신사 공식 안내를 대조해 확인합니다.</p>
+  {% if sources %}
+  <ul class="confirm-box-sources">
+    {% for s in sources %}<li><a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.label }}</a></li>{% endfor %}
+  </ul>
+  {% endif %}
+  <a class="confirm-box-link" href="editorial.html">편집 원칙 →</a>
+</div>
+{% endmacro %}

@@ -2,18 +2,28 @@
 {% import "partials/hero.html" as hero_mod %}
 {% import "partials/cta_band.html" as cta_mod with context %}
 {% import "partials/breadcrumb.html" as bc_mod %}
+{% import "partials/confirm_box.html" as confirm_mod %}
 {% set crumb_items = [{'label': '홈', 'href': 'index.html'}, {'label': page.eyebrow, 'href': slug ~ '.html'}] %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="static/site.css">
 <link rel="stylesheet" href="static/sub.css">
 <script type="application/ld+json">{{ crumb_items | breadcrumb_ld(site.base_url) | tojson(indent=2) }}</script>
+{% set webpage_ld = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  'name': page.title,
+  'description': page.meta_description,
+  'url': site.base_url ~ '/' ~ slug ~ '.html',
+  'dateModified': date_modified
+} %}
+<script type="application/ld+json">{{ webpage_ld | compact | tojson(indent=2) }}</script>
 {% endblock %}
 
 {% block content %}
 {% set s = page.sub %}
 
-{{ hero_mod.render('tall', s.hero, bc_mod.render(crumb_items)) }}
+{{ hero_mod.render('tall', s.hero, bc_mod.render(crumb_items), date_modified) }}
 
 {# 후기 지시서(2026-11-13) A — 실제 인터뷰 2건. 지어낸 후기·별점·사진·Review 스키마는 넣지 않는다. #}
 {% if page.quotes %}
@@ -43,6 +53,10 @@
   </div>
 </section>
 {% endif %}
+
+<section class="sp-section" style="margin-top:40px">
+  {{ confirm_mod.render(page.confirm_sources) }}
+</section>
 
 {{ cta_mod.render(s.cta) }}
 {% endblock %}

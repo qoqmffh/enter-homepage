@@ -286,6 +286,17 @@ table th{color:var(--muted); font-weight:600; font-size:11.5px; letter-spacing:.
 .ol-list li{counter-increment:ol-list}
 .ol-list li::before{content:counter(ol-list) "."; position:absolute; left:0; top:0; font-weight:700; color:var(--blue)}
 
+/* "확인 기준" 상자(AI 검색 대응 지시서 2026-11-16 §4) — partials/confirm_box.html 짝,
+   common.css 토큰이라 site.css/sub.css만 쓰는 페이지에서도 그대로 보인다(common.css는
+   모든 페이지에 항상 실린다). */
+.confirm-box{margin-top:24px; padding:14px 16px; border:1px solid var(--line); border-radius:var(--radius-card); background:var(--paper-dim)}
+.confirm-box-text{margin:0; font-size:12.5px; color:var(--muted); line-height:1.6; word-break:keep-all}
+.confirm-box-sources{list-style:none; margin:8px 0 0; padding:0; display:flex; flex-direction:column; gap:4px}
+.confirm-box-sources a{font-size:12px; color:var(--muted); text-decoration:underline}
+.confirm-box-sources a:hover{color:var(--ink)}
+.confirm-box-link{display:inline-block; margin-top:8px; font-size:12px; color:var(--muted); text-decoration:underline}
+.confirm-box-link:hover{color:var(--ink)}
+
 .final-cta{margin-top:18px; padding:20px; background:var(--paper-dim); border-radius:var(--radius-card); display:flex; flex-direction:column; gap:14px}
 .final-cta p{margin:0; font-size:15px; font-weight:600; color:var(--ink); word-break:keep-all}
 .final-cta-actions{display:flex; flex-wrap:wrap; gap:10px}
