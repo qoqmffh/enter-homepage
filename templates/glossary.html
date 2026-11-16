@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% import "partials/hero.html" as hero_mod %}
+{% import "partials/cta_band.html" as cta_mod with context %}
+{% import "partials/breadcrumb.html" as bc_mod %}
+{% import "partials/confirm_box.html" as confirm_mod %}
+{# 용어 사전 지시서(2026-11-16) — "정보마당"은 실제 페이지가 없는 메뉴 그룹 라벨이라
+   중간 크럼은 blog.html(그룹 안에서 가장 허브에 가까운 페이지)로 링크한다. #}
+{% set crumb_items = [{'label': '홈', 'href': 'index.html'}, {'label': '정보마당', 'href': 'blog.html'}, {'label': '용어 사전', 'href': 'glossary.html'}] %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="static/site.css">
+<link rel="stylesheet" href="static/sub.css">
+<script type="application/ld+json">{{ crumb_items | breadcrumb_ld(site.base_url) | tojson(indent=2) }}</script>
+{% set webpage_ld = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  'name': page.title,
+  'description': page.meta_description,
+  'url': site.base_url ~ '/glossary.html',
+  'dateModified': date_modified
+} %}
+<script type="application/ld+json">{{ webpage_ld | compact | tojson(indent=2) }}</script>
+{% set ns = namespace(terms_ld=[]) %}
+{% for t in page.terms %}
+{% set _ = ns.terms_ld.append({
+  '@type': 'DefinedTerm',
+  'name': t.term,
+  'description': t.definition,
+  'url': site.base_url ~ '/glossary.html#' ~ t.slug,
+  'inDefinedTermSet': site.base_url ~ '/glossary.html'
+}) %}
+{% endfor %}
+{% set term_set_ld = {
+  '@context': 'https://schema.org',
+  '@type': 'DefinedTermSet',
+  'name': '유선 도매 용어 사전',
+  'url': site.base_url ~ '/glossary.html',
+  'hasDefinedTerm': ns.terms_ld
+} %}
+<script type="application/ld+json">{{ term_set_ld | tojson(indent=2) }}</script>
+{% endblock %}
+
+{% block content %}
+{% set s = page.sub %}
+
+{{ hero_mod.render('compact', s.hero, bc_mod.render(crumb_items), date_modified) }}
+
+<section class="sp-section">
+  <p class="answer-lead">{{ page.answer_lead }}</p>
+  <nav class="glossary-toc" aria-label="용어 목차">
+    <ul class="doclist">
+      {% for t in page.terms %}<li><a href="#{{ t.slug }}">{{ t.term }}</a></li>{% endfor %}
+    </ul>
+  </nav>
+</section>
+
+<section class="sp-section">
+  {% for t in page.terms %}
+  <div class="glossary-term" id="{{ t.slug }}">
+    <h2>{{ t.term }}</h2>
+    <p>{{ t.definition }}{% if t.source_label %} <a href="{{ t.source_url }}" target="_blank" rel="noopener">{{ t.source_label }}</a>{% endif %}{% if t.more_link %} <a class="more-link" href="{{ t.more_link }}.html">자세히 →</a>{% endif %}</p>
+  </div>
+  {% endfor %}
+</section>
+
+<section class="sp-section" style="margin-top:40px">
+  {{ confirm_mod.render(page.confirm_sources) }}
+</section>
+
+{{ cta_mod.render(s.cta) }}
+{% endblock %}

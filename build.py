@@ -15,6 +15,7 @@ import re
 import shutil
 import subprocess
 import xml.sax.saxutils as xml_escape
+from html.parser import HTMLParser
 
 import lxml.html
 from jinja2 import Environment, FileSystemLoader
@@ -264,6 +265,117 @@ def extract_main_text(html):
     return text.strip()
 
 
+_GLOSSARY_VOID_ELEMENTS = {
+    "area", "base", "br", "col", "embed", "hr", "img", "input",
+    "link", "meta", "param", "source", "track", "wbr",
+}
+_GLOSSARY_EXCLUDE_TAGS = {"h1", "h2", "h3", "a", "button", "script", "style", "summary", "nav"}
+_GLOSSARY_EXCLUDE_CLASSES = {"confirm-box", "breadcrumb", "sp-cta-brand", "page-basis-date"}
+
+
+class _GlossaryLinker(HTMLParser):
+    """용어 사전 자동 링크(용어 사전 지시서 2026-11-16 §4) — <main> 안의 순수 텍스트에서
+    용어가 처음 나올 때 한 번만 glossary.html#slug로 링크할 위치를 찾는다. lxml로 파싱해
+    통째로 다시 직렬화하면 viewBox 같은 SVG 대소문자 속성이 깨지는 걸 실제로 확인해서
+    (라운드트립 테스트 2026-11-16), 원본 문자열은 절대 건드리지 않고 html.parser로 위치만
+    찾은 뒤 정확한 글자 위치에 <a> 문자열만 끼워 넣는 방식으로 바꿨다."""
+
+    def __init__(self, raw, terms):
+        super().__init__(convert_charrefs=False)
+        self.raw = raw
+        self._line_offsets = [0]
+        off = 0
+        for ln in raw.split("\n")[:-1]:
+            off += len(ln) + 1
+            self._line_offsets.append(off)
+        self.tag_stack = []
+        self.in_main = False
+        self.candidates = []
+        for t in terms:
+            for alias in t["term"].split(" / "):
+                alias = alias.strip()
+                if alias:
+                    self.candidates.append((alias, t["slug"]))
+        self.linked = set()
+        self.insertions = []  # (start, end, slug, alias)
+
+    def _abs_offset(self):
+        line, col = self.getpos()
+        return self._line_offsets[line - 1] + col
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "main":
+            self.in_main = True
+        if tag in _GLOSSARY_VOID_ELEMENTS:
+            return
+        classes = set()
+        for k, v in attrs:
+            if k == "class" and v:
+                classes = set(v.split())
+        self.tag_stack.append((tag, classes))
+
+    def handle_startendtag(self, tag, attrs):
+        if tag == "main":
+            self.in_main = True
+
+    def handle_endtag(self, tag):
+        if tag == "main":
+            self.in_main = False
+        if tag in _GLOSSARY_VOID_ELEMENTS:
+            return
+        for i in range(len(self.tag_stack) - 1, -1, -1):
+            if self.tag_stack[i][0] == tag:
+                del self.tag_stack[i:]
+                return
+
+    def _excluded(self):
+        if not self.in_main:
+            return True
+        for tag, classes in self.tag_stack:
+            if tag in _GLOSSARY_EXCLUDE_TAGS:
+                return True
+            if classes & _GLOSSARY_EXCLUDE_CLASSES:
+                return True
+        return False
+
+    def handle_data(self, data):
+        if not data or not data.strip() or self._excluded():
+            return
+        start_abs = self._abs_offset()
+        search_from = 0
+        while True:
+            best = None
+            for alias, slug in self.candidates:
+                if slug in self.linked:
+                    continue
+                idx = data.find(alias, search_from)
+                if idx == -1:
+                    continue
+                if best is None or idx < best[0] or (idx == best[0] and len(alias) > len(best[1])):
+                    best = (idx, alias, slug)
+            if not best:
+                return
+            idx, alias, slug = best
+            self.insertions.append((start_abs + idx, start_abs + idx + len(alias), slug, alias))
+            self.linked.add(slug)
+            search_from = idx + len(alias)
+
+
+def auto_link_glossary_terms(html_str, terms):
+    """html_str의 <main> 안에서 용어 사전 용어를 찾아 첫 등장에만 링크를 끼워 넣는다.
+    (수정한 HTML, 링크가 걸린 slug 목록) 튜플을 돌려준다."""
+    parser = _GlossaryLinker(html_str, terms)
+    parser.feed(html_str)
+    parser.close()
+    if not parser.insertions:
+        return html_str, []
+    out = html_str
+    for start, end, slug, alias in sorted(parser.insertions, key=lambda x: -x[0]):
+        link = f'<a href="glossary.html#{slug}" class="glossary-term-link">{alias}</a>'
+        out = out[:start] + link + out[end:]
+    return out, sorted({ins[2] for ins in parser.insertions})
+
+
 def _load_reference_text():
     """templates/*.html(partials 포함) + content/*.json 전체를 이어 붙인 문자열 —
     어떤 static 파일 경로가 실제로 쓰이는지 찾는 용도(아래 ignore_unreferenced_png)."""
@@ -319,6 +431,8 @@ def build_menu_summaries(site, pages, blog_posts):
             elif slug == "faq":
                 count = len(page["items"])
                 numbers = [{"value": f"{count}개", "label": "자주 묻는 질문"}]
+            elif slug == "glossary":
+                numbers = [{"value": "15개", "label": "유선 용어"}]
             else:
                 facts = page["sub"]["proof"]["facts"][:2]
                 numbers = [{"value": f["value"], "label": f["label"]} for f in facts]
@@ -409,6 +523,13 @@ def main():
     all_slugs = list(pages.keys())
     main_text_map = {}  # slug -> <main> 본문 텍스트(llms-full.txt용)
 
+    # 용어 사전 자동 링크(지시서 2026-11-16 §4) — 서비스 페이지(아래 8개)·가이드·블로그
+    # 본문에서만 건다. index(광고 무대, 텍스트 거의 없음)·privacy·editorial·blog.html(목록)·
+    # glossary 자신은 대상이 아니다.
+    _GLOSSARY_LINK_SERVICE_SLUGS = {"why", "about", "products", "start", "settlement", "startup", "faq", "stories"}
+    glossary_terms = pages["glossary"]["terms"]
+    glossary_link_stats = {}  # slug -> 링크된 term slug 목록
+
     for slug, page in pages.items():
         # A01-4: date_modified가 없으면 이 항목이 들어있는 content 파일의 git 마지막 커밋일로 대체.
         # AI 검색 대응 지시서 2026-11-16 §3 — 렌더링 전에 미리 구해서 템플릿의 "기준일" 표기·
@@ -417,6 +538,10 @@ def main():
         template = env.get_template(page["template"])
         legal_text = site["legal_footer_about"] if slug == "about" else site["legal_footer"]
         html = template.render(site=site, page=page, slug=slug, legal_text=legal_text, blog_posts=blog_posts["pages"], menu_summaries=menu_summaries, date_modified=lastmod)
+        if slug != "glossary" and (slug in _GLOSSARY_LINK_SERVICE_SLUGS or page_categories.get(slug) in ("guide", "blog")):
+            html, linked_slugs = auto_link_glossary_terms(html, glossary_terms)
+            if linked_slugs:
+                glossary_link_stats[slug] = linked_slugs
         html = add_cache_busting(html)
         out_path = os.path.join(DIST_DIR, f"{slug}.html")
         with open(out_path, "w", encoding="utf-8") as f:
@@ -424,6 +549,10 @@ def main():
         main_text_map[slug] = extract_main_text(html)
         sitemap_entries.append((slug, lastmod, page_categories[slug]))
         print(f"  생성: {slug}.html")
+
+    if glossary_link_stats:
+        total_links = sum(len(v) for v in glossary_link_stats.values())
+        print(f"  용어 사전 자동 링크: {len(glossary_link_stats)}개 페이지, 총 {total_links}개")
 
     # 사이트맵 3분리 + 인덱스(A01-3)
     def write_sitemap(filename, entries):

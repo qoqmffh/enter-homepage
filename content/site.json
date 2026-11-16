@@ -64,6 +64,7 @@
         {"slug": "startup", "label": "창업자 가이드", "desc": "매장 창업 5챕터"},
         {"slug": "blog", "label": "블로그", "desc": "사장님이 궁금한 것들"},
         {"slug": "faq", "label": "FAQ", "desc": "묻기 전에 답합니다"},
+        {"slug": "glossary", "label": "용어 사전", "desc": "매집·딜러·총판 등 15개"},
         {"slug": "stories", "label": "거래처 이야기", "desc": "사장님들의 실제 이야기"}
       ]
     }
@@ -98,6 +99,7 @@
           {"label": "창업자 가이드", "slug": "startup"},
           {"label": "FAQ", "slug": "faq"},
           {"label": "블로그", "slug": "blog"},
+          {"label": "용어 사전", "slug": "glossary"},
           {"label": "거래처 이야기", "slug": "stories"}
         ]
       }
