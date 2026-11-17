@@ -106,6 +106,16 @@ A near-monochrome ink-on-white base carries the page; four accent hues are assig
 
 **The One Yellow Rule.** Yellow appears only on components that trigger an action (primary buttons, the hero CTA, footer-bar hover). It is never used as a label, tag, or decorative fill.
 
+### Sub-page system (`--hp-*` tokens — `static/site.css`, used by the 22 pages above, not the home/header/footer system)
+This is a separate, undocumented-until-now palette for why/about/products/start/settlement/startup/faq/stories and the floating nav/mega menu. Color temperature pass (2026-11-17) warmed every cool-toned value in it; orange and the home ad-intro stage were left untouched.
+- **Ink** (`--hp-ink`, `#1F1A17`, was `#10182B` navy): headline/body text, logo wordmark. Also used for small dark UI accents (pill hover states, inverted-pill text) — these were on `--hp-black` before and now read as warm ink instead.
+- **Grey** (`--hp-grey`, `#6E6259`, was `#6B7280` cool grey): captions/labels. 5.6:1 on cream `--hp-white` (#FBF8F4), 5.8:1 on the new card face — both clear AA. The old WCAG-driven `#5F6673` override on `.hp-mega-card-en` is gone; the warmed grey passes on its own now.
+- **Brown** (`--hp-brown`, new, `#2A211B`): large dark surfaces — the "약속/보안/성실" promise cards and section, the carriers section, dark `.sp-card`/`.sp-cta`/`.sp-carriers`, the floating bottom bar and 1:1 consult header. Distinct from `--hp-black` (`#0B0D12`, unchanged) which stays reserved for the home ad-intro stage only — don't repoint ad-intro styles at `--hp-brown`.
+- **Card face** (`--hp-card-bg`, `#FFFDFB`, was `#F3EEE7`) + **card border** (`--hp-card-border`, new, `rgba(31,26,23,.08)`): the why-page stat cards and mega-menu group cards.
+- **Accent** (`--hp-accent` `#E36B2C`, `--hp-accent-text` `#B04C18`, `--hp-accent-tint` `#FBE9DE`): unchanged. Orange stays reserved for the single primary CTA color, exactly as before.
+- **Stat-card rule (why.html `.sp-chart-card`):** only the 1st of the 4 cards keeps the full orange bar + white fade-in text. Cards 2–3 use a light-orange bar (`#FBE3D3`) with always-visible dark text (value `#C4561D`, label the warm ink) instead of the white-fade animation; the 4th (zero) card is unchanged (white card, ink text, no bar).
+- **Section rhythm:** on why/about/products/start/settlement/startup/faq, the non-hero/non-dark/non-final-CTA sections alternate cream and a light-orange tint (`#FBEFE6`), via `.hp-bg-tint` (full-bleed, for the home-poetic `.hp-section` family) or `.sp-bg-tint` (a `::before` full-bleed overlay, for the centered `.sp-section`/`.sp-proof` boxes in sub.css). Blog posts, guide chapters, and stories.html keep a single cream background.
+
 ## Typography
 
 **Display/Body Font:** ONE Mobile (Light 300 / Regular 400 / Bold 700), with `-apple-system, sans-serif` fallback.

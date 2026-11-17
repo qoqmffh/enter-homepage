@@ -39,9 +39,16 @@
 
 {{ hero_mod.render('tall', s.hero, bc_mod.render(crumb_items), date_modified) }}
 
+{# 색 온도 정리(2026-11-17) §3 — 히어로·어두운 섹션(검은 카드형 detail)·마지막 CTA는
+   빼고, 그 사이 일반 섹션만 세면서 번갈아 크림/연한 주황을 칠한다. 페이지마다 detail이
+   carriers(어두운) 스타일인지에 따라 개수가 달라지므로 고정 목록이 아니라 실제로 렌더링된
+   섹션만 센다. #}
+{% set rhythm = namespace(i=-1) %}
+
 {# 근거 띠 — 히어로 숫자 줄 + 가운데 문구 섹션을 하나로 합쳤다(지시서 2026-11-02 [B]).
    statement는 더 안 쓰지만 데이터는 pages.json에 남겨 둔다. #}
-<section class="sp-proof" id="proof">
+{% set rhythm.i = rhythm.i + 1 %}
+<section class="sp-proof{% if rhythm.i % 2 == 1 %} sp-bg-tint{% endif %}" id="proof">
   <div class="sp-proof-grid">
     {% if page.answer_lead %}<p class="answer-lead">{{ page.answer_lead }}</p>{% endif %}
     <h2 class="sp-proof-title" data-reveal><span class="hp-ink">{{ s.proof.headline_ink }}</span><br><span class="hp-green">{{ s.proof.headline_green }}</span></h2>
@@ -60,7 +67,8 @@
   </div>
 </section>
 
-<section class="sp-section" id="cards">
+{% set rhythm.i = rhythm.i + 1 %}
+<section class="sp-section{% if rhythm.i % 2 == 1 %} sp-bg-tint{% endif %}" id="cards">
   <div class="sp-cards">
     {% for card in s.cards %}
     <div class="sp-card" data-reveal>
@@ -121,7 +129,8 @@
   </div>
 </section>
 {% else %}
-<section class="sp-section" id="detail">
+{% set rhythm.i = rhythm.i + 1 %}
+<section class="sp-section{% if rhythm.i % 2 == 1 %} sp-bg-tint{% endif %}" id="detail">
   <div class="sp-detail-head" data-reveal>
     <span class="hp-label"><span class="hp-label-dot"></span>{{ s.detail.label }}</span>
     <h2>{{ s.detail.headline }}</h2>
@@ -196,7 +205,8 @@
 </section>
 {% endif %}
 
-<section class="sp-section" id="faq">
+{% set rhythm.i = rhythm.i + 1 %}
+<section class="sp-section{% if rhythm.i % 2 == 1 %} sp-bg-tint{% endif %}" id="faq">
   <span class="hp-label"><span class="hp-label-dot"></span>FAQ</span>
   <div style="margin-top:20px">
     {% for item in s.faq %}
@@ -208,7 +218,8 @@
   </div>
 </section>
 
-<section class="sp-section" style="margin-top:40px">
+{% set rhythm.i = rhythm.i + 1 %}
+<section class="sp-section{% if rhythm.i % 2 == 1 %} sp-bg-tint{% endif %}" style="margin-top:40px">
   {{ confirm_mod.render(page.confirm_sources) }}
 </section>
 

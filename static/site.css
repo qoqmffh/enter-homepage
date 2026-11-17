@@ -11,7 +11,9 @@
      --hp-accent-text는 16px 미만 작은 글자 전용(밝은 바탕 위 대비 확보), --hp-accent-tint는
      hover 등 아주 좁은 면적 전용 — 둘 다 넓은 배경에는 쓰지 않는다.
      접근성(마케팅 마무리 지시서 2026-11-12 F) — #C4561D는 배경 #FBF8F4 위 4.22:1,
-     카드 #F3EEE7 위 3.87:1로 WCAG AA(4.5:1) 미달이라 #B04C18로 교체(각각 5.10/4.67). */
+     카드 #F3EEE7 위 3.87:1로 WCAG AA(4.5:1) 미달이라 #B04C18로 교체(각각 5.10/4.67).
+     색 온도 정리(2026-11-17)로 카드 배경이 더 밝은 --hp-card-bg(#FFFDFB)로 바뀌어서
+     대비는 더 여유로워졌다 — 이 교체 결정 자체는 그대로 유효하다. */
   --hp-accent:#E36B2C;
   --hp-accent-text:#B04C18;
   --hp-accent-tint:#FBE9DE;
@@ -21,13 +23,19 @@
   --hp-accent-strong:var(--hp-accent);
 
   --hp-white:#FBF8F4;
+  /* 색 온도 정리(2026-11-17) — --hp-black(#0B0D12)은 홈 광고 인트로 전용으로 그대로
+     둔다(static/home-ad.css·templates/home.html이 쓴다, "그대로 둘 것" §4). 다른
+     어두운 면(why 약속·성실 카드, 하단 고정바, 통신사 섹션, CTA 띠 등)은 전부 새
+     토큰 --hp-brown(짙은 갈색)으로 옮겼다 — 같은 "검정"이어도 역할이 다르다. */
   --hp-black:#0B0D12;
-  --hp-ink:#10182B;
-  --hp-grey:#6B7280;
+  --hp-brown:#2A211B;
+  --hp-ink:#1F1A17;
+  --hp-grey:#6E6259;
   --hp-grey-bg:#F0F0EB;
-  --hp-card-bg:#F3EEE7;
+  --hp-card-bg:#FFFDFB;
+  --hp-card-border:rgba(31,26,23,.08);
   --hp-line:#E9E3DA;
-  --hp-line-dark:#1E222B;
+  --hp-line-dark:rgba(255,253,251,.12);
   /* 옛 이름은 새 토큰을 가리키는 별칭으로만 남긴다 — 코드에서 "green"이라는 이름은
      더 이상 새로 쓰지 않는다(2026-11-09 강조색 교체). */
   --hp-green:var(--hp-accent);
@@ -61,7 +69,7 @@
   :root{ --fs-h1:48px; --fs-h2:32px; }
 }
 
-body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; overflow-wrap:break-word; }
+body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; overflow-wrap:break-word; overflow-x:hidden; }
 .hp-wrap{ max-width:1200px; margin:0 auto; padding:0 20px; }
 .hp-wrap--narrow{ max-width:900px; }
 
@@ -93,11 +101,11 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
 .hp-pill--primary .hp-pill-dot{ background:var(--hp-white); }
 /* "거래 시작하기"(#start)는 카카오톡/정책 받기 버튼이 아니라서 이번 주황 통일에서 빼고
    예전 모습(잉크 바탕, hover만 주황) 그대로 둔다(2026-11-12). */
-#start .hp-pill--primary{ background:var(--hp-black); color:var(--hp-white); }
+#start .hp-pill--primary{ background:var(--hp-brown); color:var(--hp-white); }
 #start .hp-pill--primary:hover{ background:var(--hp-accent); }
 .hp-pill--secondary{ background:var(--hp-grey-bg); color:var(--hp-ink); border:1px solid transparent; }
 .hp-pill--secondary:hover{ background:var(--hp-line); border-color:var(--hp-ink); }
-.hp-pill--inverted{ background:var(--hp-white); color:var(--hp-black); }
+.hp-pill--inverted{ background:var(--hp-white); color:var(--hp-ink); }
 .hp-pill--inverted:hover{ background:var(--hp-green-tint); }
 .hp-pill--outline{ background:transparent; color:var(--hp-white); border:1px solid rgba(255,255,250,.8); }
 .hp-pill--outline:hover{ background:rgba(255,255,255,.1); }

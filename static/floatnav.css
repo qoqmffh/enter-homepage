@@ -7,7 +7,7 @@ body{ transition:padding-bottom .3s ease; }
 /* ---------- 하단 스티키 바 ---------- */
 .fn-bottombar{
   position:fixed; left:0; right:0; bottom:0; z-index:35;
-  background:var(--hp-ink);
+  background:var(--hp-brown);
   transform:translateY(100%); transition:transform .3s ease;
 }
 .fn-bottombar.is-visible{ transform:translateY(0); }
@@ -116,7 +116,7 @@ body{ transition:padding-bottom .3s ease; }
 
 .fn-consult-header{
   display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
-  padding:18px 20px; background:var(--hp-ink); color:var(--hp-white); flex:0 0 auto;
+  padding:18px 20px; background:var(--hp-brown); color:var(--hp-white); flex:0 0 auto;
 }
 .fn-consult-title{ display:flex; align-items:center; gap:7px; font-size:14px; font-weight:700; }
 .fn-online-dot{ width:7px; height:7px; border-radius:50%; background:var(--hp-accent); flex:0 0 auto; }

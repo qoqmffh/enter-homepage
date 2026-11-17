@@ -2,8 +2,17 @@
    공통 토큰·헤더·푸터·알약은 static/site.css. 여기는 소개형/게시판형 템플릿이
    공유하는 부품(이미지 히어로, 검은 카드 3장, 상세목록, FAQ 아코디언, CTA 띠)만. */
 
-.sp-section{ max-width:1200px; margin:160px auto 0; padding:0 24px; }
+.sp-section{ max-width:1200px; margin:160px auto 0; padding:0 24px; border-bottom:none; }
 .sp-section--center{ text-align:center; }
+
+/* 색 온도 정리(2026-11-17) §3 — .sp-section·.sp-proof는 가운데 정렬된 1200px 박스라
+   배경을 바로 칠하면 좁은 사각형만 물든다. 레이아웃(폭·여백)은 그대로 두고, ::before를
+   뷰포트 전체 너비로 깔아 화면 끝까지 칠한다. */
+.sp-bg-tint{ position:relative; }
+.sp-bg-tint::before{
+  content:""; position:absolute; left:50%; top:0; bottom:0; width:100vw;
+  transform:translateX(-50%); background:#FBEFE6; z-index:-1;
+}
 
 /* ---------- 1. 이미지 히어로(tall/compact) ----------
    Stitch가 넣은 구글 서버 이미지 URL은 쓰지 않는다 — 페이지별 static/photos/hero-<page>.jpg
@@ -78,7 +87,7 @@
 
 /* ---------- 3. 검은 카드 3장 ---------- */
 .sp-cards{ display:grid; grid-template-columns:1fr; gap:16px; }
-.sp-card{ background:var(--hp-black); color:var(--hp-white); border-radius:var(--radius-card); padding:28px 24px; min-height:320px; display:flex; flex-direction:column; justify-content:space-between; gap:20px; }
+.sp-card{ background:var(--hp-brown); color:var(--hp-white); border-radius:var(--radius-card); padding:28px 24px; min-height:320px; display:flex; flex-direction:column; justify-content:space-between; gap:20px; }
 .sp-card-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
 .sp-card-head h3{ font-size:var(--fs-h3); font-weight:600; margin:0; }
 .sp-card-index{ font-size:15px; color:var(--hp-grey); font-variant-numeric:tabular-nums; }
@@ -140,7 +149,7 @@
 .sp-row-scroll::-webkit-scrollbar-thumb{ background:var(--hp-line); border-radius:999px; }
 
 /* ---------- 4b. 검은 통신사 쇼케이스(상세 목록의 carriers 변형, 취급상품 페이지) ---------- */
-.sp-carriers{ margin-top:160px; background:var(--hp-black); color:var(--hp-white); padding:64px 24px; }
+.sp-carriers{ margin-top:160px; background:var(--hp-brown); color:var(--hp-white); padding:64px 24px; }
 .sp-carriers-head{ max-width:1200px; margin:0 auto; }
 .sp-carriers-head h2{ font-size:28px; font-weight:800; letter-spacing:-.01em; margin:10px 0 0; }
 .sp-carriers-eyebrow{ font-size:12px; color:#F2A16E; font-weight:600; margin:14px 0 0; }
@@ -165,7 +174,7 @@
 .sp-faq-body{ padding:0 0 18px; font-size:14px; color:var(--hp-grey); line-height:1.6; max-width:760px; }
 
 /* ---------- 6. CTA 띠(검은 통 섹션) ---------- */
-.sp-cta{ margin-top:160px; background:var(--hp-black); padding:72px 24px; text-align:center; color:var(--hp-white); }
+.sp-cta{ margin-top:160px; background:var(--hp-brown); padding:72px 24px; text-align:center; color:var(--hp-white); }
 /* 본문 SEO·GEO 보강 지시서(2026-11-13) 2 — 페이지 끝 브랜드 한 줄. */
 .sp-cta-brand{ font-size:13px; font-weight:600; letter-spacing:.04em; color:rgba(255,255,250,.6); margin:0 0 12px; }
 .sp-cta-inner{ max-width:1200px; margin:0 auto; }
@@ -175,10 +184,10 @@
 /* ---------- 게시판형: 탭 + 검색 + 목록 ---------- */
 .sp-board-tabs{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
 .sp-board-tab{ padding:9px 16px; border-radius:var(--radius-btn); font-size:13px; font-weight:600; color:var(--hp-grey); background:var(--hp-grey-bg); border:1px solid transparent; cursor:pointer; font-family:inherit; }
-.sp-board-tab.is-active{ background:var(--hp-black); color:var(--hp-white); }
+.sp-board-tab.is-active{ background:var(--hp-brown); color:var(--hp-white); }
 .sp-board-search{ width:100%; max-width:320px; padding:10px 14px; border-radius:var(--radius-btn); border:1px solid var(--hp-line); font-size:13px; font-family:inherit; margin-bottom:28px; }
 .sp-board-featured{ display:grid; grid-template-columns:1fr; gap:16px; margin-bottom:32px; }
-.sp-board-feature-card{ display:flex; flex-direction:column; gap:14px; background:var(--hp-black); color:var(--hp-white); border-radius:var(--radius-card); padding:24px; min-height:180px; text-decoration:none; justify-content:space-between; }
+.sp-board-feature-card{ display:flex; flex-direction:column; gap:14px; background:var(--hp-brown); color:var(--hp-white); border-radius:var(--radius-card); padding:24px; min-height:180px; text-decoration:none; justify-content:space-between; }
 .sp-board-feature-card .sp-board-tag{ color:#F2A16E; }
 .sp-board-feature-title{ font-size:18px; font-weight:600; line-height:1.4; }
 .sp-board-feature-foot{ display:flex; justify-content:space-between; font-size:12px; color:rgba(255,255,250,.6); }
@@ -196,7 +205,7 @@
 .sp-board-foot{ display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; margin-top:28px; }
 .sp-board-pages{ display:flex; gap:6px; }
 .sp-board-page{ width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center; border-radius:999px; font-size:13px; color:var(--hp-grey); }
-.sp-board-page.is-active{ background:var(--hp-black); color:var(--hp-white); }
+.sp-board-page.is-active{ background:var(--hp-brown); color:var(--hp-white); }
 .sp-board-contact{ background:var(--hp-grey-bg); border-radius:var(--radius-card); padding:18px 20px; font-size:13px; color:var(--hp-ink); }
 
 @media (min-width:768px){

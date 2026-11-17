@@ -94,7 +94,7 @@
         {% set heights = [100, 100, 100, 0] %}
         {% for s in p.stats %}
         {% set h = heights[loop.index0] %}
-        <div class="sp-chart-card{% if h == 0 %} sp-chart-card--zero{% endif %}" data-chart-card data-bar-h="{{ h }}" data-delay="{{ (loop.index0 * 0.08) | round(2) }}" style="--bar-h:0%">
+        <div class="sp-chart-card{% if h == 0 %} sp-chart-card--zero{% elif loop.index0 > 0 %} sp-chart-card--light{% endif %}" data-chart-card data-bar-h="{{ h }}" data-delay="{{ (loop.index0 * 0.08) | round(2) }}" style="--bar-h:0%">
           <div class="sp-chart-bar"></div>
           <div class="sp-chart-text">
             <span class="sp-chart-value"{% if s.num | countable %} data-count data-count-manual{% endif %}>{{ s.num }}</span>
@@ -150,7 +150,7 @@
 </section>
 
 {% if r.market_table %}
-<section class="hp-section" id="kosis">
+<section class="hp-section hp-bg-tint" id="kosis">
   <div class="hp-wrap hp-wrap--narrow">
     <div class="sp-detail-head" data-reveal>
       <span class="hp-label"><span class="hp-label-dot"></span>MARKET DATA</span>
@@ -358,7 +358,7 @@
   </div>
 </section>
 
-<section class="hp-section hp-start hp-trail-host" id="start" data-trail="gray">
+<section class="hp-section hp-bg-tint hp-start hp-trail-host" id="start" data-trail="gray">
   <div class="hp-trail" aria-hidden="true"></div>
   <div class="hp-wrap hp-wrap--narrow">
     <div class="hp-center hp-start-head" data-reveal>
@@ -415,7 +415,7 @@
 </section>
 
 {% if page.faq_mini %}
-<section class="sp-section" id="faq">
+<section class="sp-section sp-bg-tint" id="faq">
   <span class="hp-label"><span class="hp-label-dot"></span>FAQ</span>
   <div style="margin-top:20px">
     {% for item in page.faq_mini %}
