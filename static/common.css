@@ -60,9 +60,10 @@ h1{font-family:var(--font-sans); font-weight:800; font-size:clamp(26px,6.5vw,40p
 h2{font-family:var(--font-sans); font-weight:800; font-size:20px; margin:0 0 10px; word-break:keep-all; overflow-wrap:break-word}
 p{margin:0 0 10px; color:#2B2E3A}
 .lead{font-size:15px; color:var(--muted)}
-/* 블로그·가이드 글 작성/수정일 한 줄(마케팅 P0 A16-1, 2026-11-10) — #6B7280은 사이트 쪽
-   --hp-grey와 같은 값(이 common.css 쪽엔 --muted #6b6b6b로 토큰이 따로 있어 그대로는 못 씀). */
-.post-date{font-size:12px; color:#6B7280; margin:6px 0 0}
+/* 블로그·가이드 글 작성/수정일 한 줄(마케팅 P0 A16-1, 2026-11-10) — 사이트 쪽 --hp-grey와
+   같은 값을 쓴다(이 common.css 쪽엔 --muted #6b6b6b로 토큰이 따로 있어 그대로는 못 씀).
+   색 온도 정리(2026-11-17) — #6B7280(푸른 회색) → #6E6259(따뜻한 회색). */
+.post-date{font-size:12px; color:#6E6259; margin:6px 0 0}
 
 /* ---------- 섹션 헤드 (번호 와이파인딩 — 긴 싱글 페이지 스캔용) ---------- */
 .section-head{display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:20px; padding-bottom:12px; border-bottom:1px solid var(--line)}
