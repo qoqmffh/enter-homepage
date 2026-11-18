@@ -2,7 +2,10 @@
    Stitch 시안의 외부(구글) 이미지는 쓰지 않는다. static/photos/hero-<data.photo>.jpg가
    있으면 쓰고, 없으면 CSS background-color(#2a2d33)만 보인다 — 사진 분위기는
    data.photo_mood 주석으로 옆에 남겨 실제 사진 교체 시 참고한다. #}
-{% macro render(variant, data, breadcrumb=none, date_modified=none) %}
+{% macro render(variant, data, breadcrumb=none, date_modified=none, h1_override=none) %}
+{# h1_override(문구 SEO·GEO 지시서 2026-11-18 §1) — 지정된 페이지만 실제 <h1>을 라벨 자리의
+   작은 줄로 옮기고(eyebrow 크기 그대로), 기존 헤드라인은 같은 클래스를 유지한 채 <p>로
+   내려서 화면에 그대로 보이게 한다. 지정 안 하면 기존 구조(라벨=p, 헤드라인=h1) 그대로. #}
 {% set sk = data.sketch %}
 {% set has_facts = variant == 'tall' and data.facts %}
 {% set sk_dims = {'company': [1672, 820], 'trade': [1672, 793], 'info': [1672, 816]} %}
@@ -20,8 +23,13 @@
     <div class="sp-hero-body">
       <div>
         {% if breadcrumb %}{{ breadcrumb }}{% endif %}
+        {% if h1_override %}
+        <h1 class="sp-hero-label">● {{ h1_override }}</h1>
+        <p class="sp-hero-headline">{% for line in data.headline %}{{ line }}{% if not loop.last %}<br>{% endif %}{% endfor %}</p>
+        {% else %}
         <p class="sp-hero-label">● {{ data.label }}</p>
         <h1 class="sp-hero-headline">{% for line in data.headline %}{{ line }}{% if not loop.last %}<br>{% endif %}{% endfor %}</h1>
+        {% endif %}
         {% if date_modified %}<p class="post-date page-basis-date">기준일 {{ date_modified | date_fmt_kr }} · ENTER 영업지원팀 확인</p>{% endif %}
         {% if data.subline %}<p class="sp-hero-sub">{{ data.subline | safe }}</p>{% endif %}
         {# 정책 받기 팝업(지시서 2026-11-13) — FAQ 히어로의 "전화로 묻기"만 원래대로 CTA 띠로

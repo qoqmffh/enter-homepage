@@ -68,9 +68,12 @@
   <div class="hp-trail" aria-hidden="true"></div>
   <div class="hp-wrap">
     <div class="hp-hero-top">
-      <h1 class="hp-display-xl" data-scroll-headline>
+      {# 문구 SEO·GEO 지시서(2026-11-18) §1 — 실제 H1은 슬로건 바로 위 작은 줄(eyebrow
+         크기)로, 기존 헤드라인은 글자 크기·위치 그대로 두고 <p> 태그만 바꾼다. #}
+      <h1 class="hp-label" data-reveal><span class="hp-label-dot"></span>{{ page.h1_question }}</h1>
+      <p class="hp-display-xl" data-scroll-headline>
         {% for line in p.hero.headline %}<span class="hp-headline-line">{% for word in line.split(' ') %}<span class="hp-word">{{ word }}</span>{{ ' ' if not loop.last else '' }}{% endfor %}</span>{% endfor %}
-      </h1>
+      </p>
       {% if date_modified %}<p class="post-date page-basis-date">기준일 {{ date_modified | date_fmt_kr }} · ENTER 영업지원팀 확인</p>{% endif %}
       <p class="hp-hero-subhead">{{ p.hero.subhead }}</p>
     </div>
@@ -115,9 +118,8 @@
 <section class="hp-section hp-statement hp-trail-host" id="statement" data-trail="gray">
   <div class="hp-trail" aria-hidden="true"></div>
   <div class="hp-wrap hp-wrap--narrow">
-    <h2 class="hp-headline-lg hp-center hp-two-tone" data-reveal>
-      <span class="hp-ink">{{ p.statement.headline_ink }}</span><br><span class="hp-green">{{ p.statement.headline_green }}</span>
-    </h2>
+    <h2 class="hp-headline-lg hp-center hp-two-tone" data-reveal>{{ p.statement.question }}</h2>
+    <p class="hp-slogan-sub hp-center">{{ p.statement.headline_ink }} {{ p.statement.headline_green }}</p>
     <p class="hp-statement-desc hp-center" data-reveal>{{ p.statement.desc }}</p>
   </div>
   <div class="hp-wrap">
@@ -192,9 +194,8 @@
   <div class="hp-wrap">
     <div class="hp-center hp-features-head" data-reveal>
       {{ m.section_label(p.features.label) }}
-      <h2 class="hp-headline-lg hp-two-tone">
-        <span class="hp-ink">{{ p.features.headline_ink }}</span><span class="hp-green">{{ p.features.headline_green }}</span>
-      </h2>
+      <h2 class="hp-headline-lg hp-two-tone">{{ p.features.question }}</h2>
+      <p class="hp-slogan-sub">{{ p.features.headline_ink }}{{ p.features.headline_green }}</p>
     </div>
 
     <div class="hp-feature-grid">
@@ -202,9 +203,10 @@
     <div class="hp-feature-card hp-trail-host" data-trail="green" data-reveal>
       <div class="hp-trail" aria-hidden="true"></div>
       <div class="hp-feature-card-head">
-        <h3 class="hp-headline-lg">{{ card.title }}</h3>
+        <h3 class="hp-headline-lg">{{ card.question }}</h3>
         <span class="hp-feature-index">/ {{ card.index }}</span>
       </div>
+      <p class="hp-slogan-sub">{{ card.title }}</p>
 
       {% if card.mockup == 'ledger' %}
       {% set ticker_rows = (page.evidence_summary.ticker_rows | reverse | list) %}
@@ -321,7 +323,8 @@
 
     </div>
     <div class="hp-center hp-features-foot" data-reveal>
-      <h3 class="hp-headline-md">{{ p.features.closing_line }}</h3>
+      <h3 class="hp-headline-md">{{ p.features.closing_question }}</h3>
+      <p class="hp-slogan-sub">{{ p.features.closing_line }}</p>
       {{ m.pill(p.features.cta_kakao, '#', 'primary', True, True) }}
     </div>
   </div>
@@ -367,9 +370,8 @@
   <div class="hp-wrap hp-wrap--narrow">
     <div class="hp-center hp-start-head" data-reveal>
       {{ m.section_label(p.start.label) }}
-      <h2 class="hp-headline-lg hp-two-tone">
-        <span class="hp-ink">{{ p.start.headline_ink }}</span><span class="hp-green">{{ p.start.headline_green }}</span>
-      </h2>
+      <h2 class="hp-headline-lg hp-two-tone">{{ p.start.question }}</h2>
+      <p class="hp-slogan-sub">{{ p.start.headline_ink }}{{ p.start.headline_green }}</p>
     </div>
     <div class="hp-start-list">
       {% for step in p.start.steps %}
@@ -390,7 +392,8 @@
   <div class="hp-trail" aria-hidden="true"></div>
   <div class="hp-wrap">
     {{ m.section_label(p.trust.label) }}
-    <h2 class="hp-headline-lg" data-reveal>{{ p.trust.headline }}</h2>
+    <h2 class="hp-headline-lg" data-reveal>{{ p.trust.question }}</h2>
+    <p class="hp-slogan-sub">{{ p.trust.headline }}</p>
     <p class="hp-body-xl hp-trust-body" data-reveal>{{ p.trust.body }}</p>
     <div class="hp-trust-badges">
       {% for b in p.trust.badges %}

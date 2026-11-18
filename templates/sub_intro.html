@@ -37,7 +37,7 @@
 {% block content %}
 {% set s = page.sub %}
 
-{{ hero_mod.render('tall', s.hero, bc_mod.render(crumb_items), date_modified) }}
+{{ hero_mod.render('tall', s.hero, bc_mod.render(crumb_items), date_modified, page.h1_question) }}
 
 {# 색 온도 정리(2026-11-17) §3 — 히어로·어두운 섹션(검은 카드형 detail)·마지막 CTA는
    빼고, 그 사이 일반 섹션만 세면서 번갈아 크림/연한 주황을 칠한다. 페이지마다 detail이
@@ -51,7 +51,18 @@
 <section class="sp-proof{% if rhythm.i % 2 == 1 %} sp-bg-tint{% endif %}" id="proof">
   <div class="sp-proof-grid">
     {% if page.answer_lead %}<p class="answer-lead">{{ page.answer_lead }}</p>{% endif %}
+    {# 문구 SEO·GEO 지시서(2026-11-18) §1 — h2_proof_question이 있으면 질문형 문장을
+       실제 <h2>로 쓰고, 기존 투톤 슬로건은 화면에 그대로 보이는 보조 줄로 내린다. #}
+    {% if page.h2_proof_question %}
+    {# sp-proof-grid가 1024px+에서 2열 그리드라 자식 개수가 그대로여야 칸이 안 밀린다
+       (원래 h2 자리 하나를 h2+보조줄 묶음 div 하나로만 치환). #}
+    <div>
+      <h2 class="sp-proof-title" data-reveal>{{ page.h2_proof_question }}</h2>
+      <p class="hp-slogan-sub">{{ s.proof.headline_ink }} {{ s.proof.headline_green }}</p>
+    </div>
+    {% else %}
     <h2 class="sp-proof-title" data-reveal><span class="hp-ink">{{ s.proof.headline_ink }}</span><br><span class="hp-green">{{ s.proof.headline_green }}</span></h2>
+    {% endif %}
     {% if s.proof.subhead %}<p class="sp-proof-subhead">{{ s.proof.subhead }}</p>{% endif %}
     <div class="sp-proof-facts">
       {% for f in s.proof.facts %}
@@ -73,9 +84,14 @@
     {% for card in s.cards %}
     <div class="sp-card" data-reveal>
       <div class="sp-card-head">
+        {% if card.h3_question %}
+        <h3>{{ card.h3_question }}</h3>
+        {% else %}
         <h3>{{ card.title }}</h3>
+        {% endif %}
         <span class="sp-card-index">/{{ card.index }}</span>
       </div>
+      {% if card.h3_question %}<p class="hp-slogan-sub">{{ card.title }}</p>{% endif %}
 
       {% if card.mockup == 'week_strip' %}
       <div class="sp-week">

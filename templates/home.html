@@ -61,7 +61,11 @@
 
   <div class="hp-ad-overlay">
     <div class="hp-ad-scene" data-ad-scene="1">
-      <h1 class="hp-ad-line hp-ad-line--1" data-ad-s1-line1>{{ ad.scene1.line1 }}</h1>
+      {# 문구 SEO·GEO 지시서(2026-11-18) §1 — 실제 H1은 슬로건 바로 위 작은 줄, 기존
+         대형 카피는 같은 클래스로 <p>만 바꿔 화면에 그대로 보이게 둔다. 투명도는
+         home-ad.js가 line1과 같은 타이밍으로 맞춘다. #}
+      <h1 class="hp-ad-eyebrow hp-ad-s3-label" data-ad-s1-eyebrow>{{ ad.scene1.eyebrow }}</h1>
+      <p class="hp-ad-line hp-ad-line--1" data-ad-s1-line1>{{ ad.scene1.line1 }}</p>
       <p class="hp-ad-line hp-ad-line--2" data-ad-s1-line2>{{ ad.scene1.line2 }}</p>
     </div>
 
@@ -96,7 +100,10 @@
 
     <div class="hp-ad-scene" data-ad-scene="6">
       <div class="hp-ad-center">
-        <h2 class="hp-ad-end-line1" data-ad-s6-line1>{{ ad.scene6.line1 }}</h2>
+        {# 문구 SEO·GEO 지시서(2026-11-18) §1 — 질문형 문장이 실제 H2, 기존 카피는
+           바로 아래 보조 줄(line2와 같은 클래스)로 내린다. #}
+        <h2 class="hp-ad-end-line1" data-ad-s6-heading>{{ ad.scene6.heading }}</h2>
+        <p class="hp-ad-end-line2" data-ad-s6-line1>{{ ad.scene6.line1 }}</p>
         <p class="hp-ad-end-line2" data-ad-s6-line2>{{ ad.scene6.line2 }}</p>
         <div class="hp-ad-end-btns" data-ad-end-btns>
           <a href="#" class="hp-ad-btn hp-ad-btn--primary" data-ad-cta-primary>{{ ad.scene6.cta_kakao }}</a>
