@@ -246,7 +246,6 @@
 /* ---------- 약속 섹션 ---------- */
 .hp-promise{ position:relative; overflow:hidden; background:var(--hp-brown); color:var(--hp-white); }
 .hp-promise .hp-label{ color:var(--hp-green); }
-.hp-promise .hp-label-dot{ border-radius:2px; }
 .hp-quote{ font-size:20px; font-weight:600; line-height:1.4; letter-spacing:-.015em; margin:0 0 36px; max-width:760px; }
 .hp-quote span{ display:block; }
 /* 인용문 5개 롤링 — 그리드 스태킹으로 전부 같은 칸에 겹쳐서 가장 긴 문구 기준으로
@@ -258,15 +257,17 @@
   .hp-quote-item{ transition:none; }
 }
 .hp-promise-grid{ display:flex; flex-direction:column; gap:32px; }
-.hp-promise-photo-col{ width:100%; }
-.hp-promise-photo-lg{
-  width:100%; aspect-ratio:4/5; max-width:360px; margin:0 auto;
-  background-color:var(--hp-brown); background-size:cover; background-position:center top;
-  filter:grayscale(1) saturate(0);
-  transform:scaleX(-1);
-  -webkit-mask-image:radial-gradient(ellipse 78% 82% at 50% 42%, black 58%, transparent 100%);
-  mask-image:radial-gradient(ellipse 78% 82% at 50% 42%, black 58%, transparent 100%);
+/* 디자인 정리 지시서(2026-11-18) §5 — 누끼(director-cutout.webp, 배경 투명)를 섹션
+   바닥선에 딱 맞춰 붙인다. .hp-promise가 overflow:hidden이라, 섹션 padding(80px/768px+
+   120px)만큼 margin-bottom을 당겨도 그 지점에서 정확히 잘려 바닥과 맞아떨어진다.
+   박스 배경·그림자·테두리는 없애고, 사진 뒤에 아주 옅은 빛 번짐만 둔다. */
+.hp-promise-photo-col{ width:100%; position:relative; display:flex; justify-content:center; align-items:flex-end; margin-bottom:-80px; }
+.hp-promise-photo-col::before{
+  content:""; position:absolute; left:50%; bottom:0; width:160%; max-width:640px; aspect-ratio:1/1;
+  transform:translateX(-50%); border-radius:50%; pointer-events:none;
+  background:radial-gradient(ellipse at center, rgba(255,240,225,.06), transparent 70%);
 }
+.hp-promise-photo-lg{ position:relative; display:block; width:80%; max-width:300px; height:auto; }
 .hp-promise-content{ flex:1; min-width:0; }
 .hp-promise-foot{ display:flex; flex-direction:column; gap:28px; border-top:1px solid rgba(255,255,255,.1); padding-top:28px; }
 .hp-promise-person{ display:flex; gap:18px; align-items:flex-start; }
@@ -294,7 +295,6 @@
 /* ---------- 통신사 섹션 ---------- */
 .hp-carriers{ position:relative; overflow:hidden; background:var(--hp-brown); color:var(--hp-white); }
 .hp-carriers-label .hp-label{ color:rgba(255,255,250,.6); }
-.hp-carriers-label .hp-label-dot{ border-radius:2px; background:var(--hp-green); }
 .hp-carriers-names{ position:relative; z-index:1; font-size:40px; font-weight:800; letter-spacing:-.02em; line-height:1.15; margin:16px 0 24px; }
 .hp-carriers-body{ color:rgba(255,255,250,.8); max-width:420px; margin:0 0 20px; }
 
@@ -364,8 +364,8 @@
 
   .hp-quote{ font-size:32px; max-width:900px; }
   .hp-promise-grid{ flex-direction:row; align-items:stretch; gap:56px; }
-  .hp-promise-photo-col{ width:40%; flex:0 0 40%; }
-  .hp-promise-photo-lg{ max-width:none; height:100%; }
+  .hp-promise-photo-col{ width:40%; flex:0 0 40%; margin-bottom:-120px; }
+  .hp-promise-photo-lg{ width:100%; max-width:360px; }
   .hp-promise-content{ display:flex; flex-direction:column; justify-content:center; }
   .hp-promise-foot{ flex-direction:row; justify-content:space-between; align-items:flex-end; }
   .hp-promise-person{ align-items:center; }
