@@ -3,6 +3,10 @@
 {% import "partials/confirm_box.html" as confirm_mod %}
 
 {% block extra_head %}
+{# 속도(모바일 전면 최적화 2026-11-17 §3) — LCP 요소(히어로 선 스케치)가 실측에서
+   느린 회선 흉내(1.6Mbps)에서 3.9s에야 렌더됐다. 브라우저가 CSS 파싱을 기다리지
+   않고 바로 받아 가게 preload 힌트를 준다. #}
+<link rel="preload" as="image" href="static/photos/hero/hero-{{ page.poetic.hero.sketch }}.webp" fetchpriority="high">
 <script>
 (function () {
   try {
@@ -82,7 +86,7 @@
          height:auto로 키우지만, 이 속성으로 브라우저가 로드 전에도 세로 비율을 알아서 레이아웃
          흔들림이 없다. 첫 화면에 바로 보이는 이미지라 fetchpriority="high". #}
       {% set sk_dims = {'company': [1672, 820], 'trade': [1672, 793], 'info': [1672, 816]} %}
-      <div class="hp-hairline hp-ground"><img class="hp-hero-sketch" src="static/photos/hero/hero-{{ p.hero.sketch }}.webp" width="{{ sk_dims[p.hero.sketch][0] }}" height="{{ sk_dims[p.hero.sketch][1] }}" fetchpriority="high" alt="" aria-hidden="true"></div>
+      <div class="hp-hairline hp-ground"><img class="hp-hero-sketch" src="static/photos/hero/hero-{{ p.hero.sketch }}.webp" width="{{ sk_dims[p.hero.sketch][0] }}" height="{{ sk_dims[p.hero.sketch][1] }}" loading="eager" fetchpriority="high" alt="" aria-hidden="true"></div>
       {% else %}
       <div class="hp-hairline"></div>
       {% endif %}
