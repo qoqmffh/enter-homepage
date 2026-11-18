@@ -42,8 +42,8 @@
 .sp-hero-fact{ border-left:1px solid rgba(255,255,250,.2); padding:0 18px; }
 .sp-hero-fact:first-child{ border-left:none; padding-left:0; }
 .sp-hero-fact-value{ display:block; font-size:24px; font-weight:800; line-height:1; font-variant-numeric:tabular-nums; }
-.sp-hero-fact-label{ display:block; font-size:11px; color:rgba(255,255,250,.7); margin-top:6px; }
-.sp-hero-caption{ position:absolute; right:16px; bottom:12px; z-index:1; font-size:10px; color:rgba(255,255,250,.5); }
+.sp-hero-fact-label{ display:block; font-size:12px; color:rgba(255,255,250,.7); margin-top:6px; }
+.sp-hero-caption{ position:absolute; right:16px; bottom:12px; z-index:1; font-size:12px; color:rgba(255,255,250,.5); }
 
 /* ---------- 2. 선언(두 톤 제목, 레거시 — 더 이상 어느 페이지에서도 쓰지 않지만
    콘텐츠는 pages.json에 남아 있어 스타일도 지우지 않는다) ---------- */
@@ -101,18 +101,18 @@
 
 /* 카드 미니 UI — 주 스트립 */
 .sp-week{ background:#1A1C22; border:1px solid rgba(255,255,255,.05); border-radius:var(--radius-card); padding:14px; font-family:inherit; }
-.sp-week-row{ display:flex; align-items:center; justify-content:space-between; font-size:10px; color:rgba(255,255,250,.6); margin-bottom:6px; }
+.sp-week-row{ display:flex; align-items:center; justify-content:space-between; font-size:12px; color:rgba(255,255,250,.6); margin-bottom:6px; }
 .sp-week-row + .sp-week-row{ margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,.05); }
 .sp-week-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:4px; }
-.sp-week-day{ text-align:center; padding:4px 0; border-radius:4px; font-size:10px; font-weight:600; color:rgba(255,255,250,.5); }
-.sp-week-day span{ display:block; font-size:8px; font-weight:600; margin-top:2px; }
+.sp-week-day{ text-align:center; padding:4px 0; border-radius:4px; font-size:12px; font-weight:600; color:rgba(255,255,250,.5); }
+.sp-week-day span{ display:block; font-size:12px; font-weight:600; margin-top:2px; }
 .sp-week-day--mid{ background:rgba(227,107,44,.18); border:1px solid rgba(227,107,44,.4); color:var(--hp-white); }
 .sp-week-day--out{ background:var(--hp-green); color:var(--hp-white); }
 
 /* 카드 미니 UI — 고객 레코드(하드마킹) */
 .sp-record{ background:var(--hp-white); color:var(--hp-ink); border-radius:var(--radius-card); padding:14px; }
-.sp-record-tag{ font-size:10px; font-weight:600; color:var(--hp-accent-text); display:block; margin-bottom:10px; }
-.sp-record-row{ display:flex; justify-content:space-between; font-size:11px; padding-bottom:6px; margin-bottom:6px; border-bottom:1px solid var(--hp-line); }
+.sp-record-tag{ font-size:12px; font-weight:600; color:var(--hp-accent-text); display:block; margin-bottom:10px; }
+.sp-record-row{ display:flex; justify-content:space-between; font-size:12px; padding-bottom:6px; margin-bottom:6px; border-bottom:1px solid var(--hp-line); }
 .sp-record-row:last-child{ border-bottom:none; margin-bottom:0; padding-bottom:0; }
 .sp-record-row span:first-child{ color:var(--hp-grey); }
 .sp-record-row span:last-child{ font-weight:600; }
@@ -124,7 +124,7 @@
 .sp-row:last-child{ border-bottom:1px solid var(--hp-line); }
 .sp-row-title{ font-size:16px; font-weight:600; color:var(--hp-ink); font-variant-numeric:tabular-nums; }
 .sp-row-desc{ font-size:13px; color:var(--hp-grey); }
-.sp-row-tag{ font-size:11px; font-weight:600; color:var(--hp-accent-text); text-transform:uppercase; letter-spacing:.04em; }
+.sp-row-tag{ font-size:12px; font-weight:600; color:var(--hp-accent-text); text-transform:uppercase; letter-spacing:.04em; }
 /* 가운데 열(설명) 정렬: flex+space-between은 제목 길이에 따라 설명 시작 x가 행마다
    들쭉날쭉했다 — 데스크톱은 3열 그리드로 고정해 모든 행의 설명이 같은 시작선에서
    왼쪽 정렬되게 한다(창업 체크리스트·인증과 수상·제출 서류 4종 공통 부품). */
@@ -198,7 +198,7 @@
 .sp-board-row--pending{ cursor:default; opacity:.6; }
 .sp-board-thumb{ width:88px; height:64px; flex:0 0 auto; border-radius:var(--radius-card); background:var(--hp-grey-bg); background-size:cover; background-position:center; }
 .sp-board-row-body{ flex:1 1 auto; min-width:0; }
-.sp-board-tag{ display:block; font-size:11px; font-weight:600; color:var(--hp-accent-text); text-transform:uppercase; letter-spacing:.04em; }
+.sp-board-tag{ display:block; font-size:12px; font-weight:600; color:var(--hp-accent-text); text-transform:uppercase; letter-spacing:.04em; }
 .sp-board-title{ display:block; font-size:16px; font-weight:600; color:var(--hp-ink); margin:4px 0; }
 .sp-board-excerpt{ display:block; font-size:13px; color:var(--hp-grey); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .sp-board-date{ font-size:12px; color:var(--hp-grey); flex:0 0 auto; }
@@ -253,8 +253,12 @@
   max-width:none; grid-auto-columns:max-content; gap:28px; }
 .sp-hero--sketch .sp-hero-fact{ border-left:0; padding-left:0; }
 .sp-hero--sketch .sp-hero-fact-label{ color:var(--hp-grey); }
-@media (max-width:1023px){
-  .sp-hero-sketch{ width:180%; max-width:none; }
+/* 모바일 전면 최적화(2026-11-17) 1·7 — 180% 확대가 프레임 밖으로 그림을 밀어내
+   가로 스크롤을 만들었다(stories.html에서 실측 확인, 문서 폭 382px). 화면 폭에
+   맞춰 축소한다. 숫자 줄도 max-content 3열이 좁은 화면에서 넘쳐 1fr로 되돌린다. */
+@media (max-width:767px){
+  .sp-hero-sketch{ width:100%; max-width:100%; }
+  .sp-hero--sketch .sp-hero-facts{ grid-auto-columns:1fr; gap:12px; }
 }
 @media (min-width:1024px){
   .sp-hero-headline{ margin-bottom:40px; }
@@ -273,4 +277,18 @@
 @media (min-width:1024px){
   .sp-hero--compact.sp-hero--sketch .sp-hero-body{ padding-top:72px; }
   .sp-hero--compact.sp-hero--sketch .sp-hero-body > div:first-child{ min-height:400px; }
+}
+
+/* 모바일 전면 최적화(2026-11-17) §2 — 캡션류 글자를 12px 미만에서 12px로 올렸다(위 각
+   규칙 본문). PC(1024px 이상)는 바꾸지 않기 위해 원래 값으로 여기서 되돌린다. */
+@media (min-width:1024px){
+  .sp-hero-fact-label{ font-size:11px; }
+  .sp-hero-caption{ font-size:10px; }
+  .sp-week-row{ font-size:10px; }
+  .sp-week-day{ font-size:10px; }
+  .sp-week-day span{ font-size:8px; }
+  .sp-record-tag{ font-size:10px; }
+  .sp-record-row{ font-size:11px; }
+  .sp-row-tag{ font-size:11px; }
+  .sp-board-tag{ font-size:11px; }
 }

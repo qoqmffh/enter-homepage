@@ -33,6 +33,12 @@
    살짝 걸쳐 보이게(스크롤 유도) 한다. 고정 gap 대신 뷰포트 기준으로 맞춘다.
    위아래 여백이 너무 휑하다는 피드백으로 위/아래 모두 절반 수준으로 축소. */
 .hp-hero-top{ display:flex; flex-direction:column; justify-content:center; min-height:calc(100vh - 280px); }
+/* 모바일 전면 최적화(2026-11-17) 2 — vh 기반 강제 중앙정렬이 375px에서 히어로를
+   1,320px까지 늘렸다(헤드라인 아래 빈 공간 실측). 첫 화면 안에 H1+답 문장+버튼이
+   오도록 모바일은 내용 높이만큼만 차지하게 한다. */
+@media (max-width:767px){
+  .hp-hero-top{ min-height:0; justify-content:flex-start; }
+}
 .hp-hero-subhead{ margin:28px 0 0; font-size:var(--fs-lead); line-height:1.4; color:var(--hp-grey); font-weight:400; }
 .hp-hero-sub{ font-size:var(--fs-body); line-height:1.6; color:var(--hp-ink); font-weight:600; margin:24px 0 28px; max-width:620px; }
 /* hp-hero-sub를 지운 경우(2026-11-12, pages.json의 why.poetic.hero.sub를 빈 값으로)
@@ -85,7 +91,7 @@
 .hp-photo-img{ grid-area:1 / 1; width:100%; height:100%; object-fit:cover; opacity:0; visibility:hidden; transition:opacity .8s ease, visibility 0s linear .8s; }
 .hp-photo-img.is-active{ opacity:1; visibility:visible; transition:opacity .8s ease, visibility 0s linear 0s; }
 .hp-photo-overlay{ position:absolute; inset:0; background:rgba(11,13,18,.55); }
-.hp-photo-corner{ position:absolute; z-index:1; font-size:10px; letter-spacing:.06em; color:rgba(255,255,250,.9); text-transform:uppercase; }
+.hp-photo-corner{ position:absolute; z-index:1; font-size:12px; letter-spacing:.06em; color:rgba(255,255,250,.9); text-transform:uppercase; }
 .hp-photo-corner--tl{ top:16px; left:16px; }
 .hp-photo-corner--bl{ bottom:16px; left:16px; }
 /* 본문 SEO·GEO 보강 지시서(2026-11-13) 1-2 — 텍스트 노드 대신 생성 콘텐츠로 그린다. */
@@ -105,9 +111,22 @@
 }
 
 /* ---------- KOSIS 통계 근거(지시서 §1 — 서브페이지 상세목록 행 스타일과 맞춤, static/sub.css의 .sp-row 참고) ---------- */
-.hp-kosis-table-wrap{ overflow-x:auto; margin-top:24px; -webkit-overflow-scrolling:touch; }
+.hp-kosis-table-wrap{ position:relative; overflow-x:auto; margin-top:24px; -webkit-overflow-scrolling:touch; }
+/* 모바일 전면 최적화(2026-11-17) 3 — 표 오른쪽 열(순증·증감률)이 잘려 보인다는 실측
+   지적. 가로 스크롤은 이미 있었지만 더 볼 게 있다는 힌트가 없었다. 오른쪽에 옅은
+   그라데이션 + "옆으로 밀기" 문구를 모바일에만 추가한다. */
+@media (max-width:767px){
+  .hp-kosis-table-wrap{ padding-bottom:22px; }
+  .hp-kosis-table-wrap::after{
+    content:"옆으로 밀어 더 보기 →"; position:absolute; right:0; bottom:0; top:0;
+    width:88px; display:flex; align-items:center; justify-content:flex-end;
+    padding-right:4px; font-size:12px; color:var(--hp-grey); text-align:right; line-height:1.3;
+    background:linear-gradient(to right, rgba(251,239,230,0), #FBEFE6 70%);
+    pointer-events:none;
+  }
+}
 .hp-kosis-table{ width:100%; border-collapse:collapse; font-size:13px; white-space:nowrap; }
-.hp-kosis-table th{ text-align:left; padding:10px 12px; font-size:11px; color:var(--hp-grey); font-weight:600; border-top:1px solid var(--hp-line); border-bottom:1px solid var(--hp-line); }
+.hp-kosis-table th{ text-align:left; padding:10px 12px; font-size:12px; color:var(--hp-grey); font-weight:600; border-top:1px solid var(--hp-line); border-bottom:1px solid var(--hp-line); }
 .hp-kosis-table td{ padding:14px 12px; border-top:1px solid var(--hp-line); color:var(--hp-ink); font-variant-numeric:tabular-nums; }
 .hp-kosis-table tr:last-child td{ border-bottom:1px solid var(--hp-line); }
 .hp-kosis-table td:first-child{ font-weight:600; }
@@ -135,7 +154,7 @@
 .hp-mockup-head{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; border-bottom:1px solid var(--hp-line); padding-bottom:12px; margin-bottom:12px; }
 .hp-mockup-head-left{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
 .hp-mockup-title{ font-size:15px; font-weight:600; }
-.hp-chip{ font-size:10px; font-weight:600; padding:3px 9px; border-radius:var(--radius-btn); display:inline-block; }
+.hp-chip{ font-size:12px; font-weight:600; padding:3px 9px; border-radius:var(--radius-btn); display:inline-block; }
 .hp-chip--tint{ background:var(--hp-green-tint); color:var(--hp-accent-text); }
 
 /* ---------- 정산 장부 티커 (CSS 애니메이션, JS는 호버 밖 일시정지 보조만) ---------- */
@@ -145,11 +164,30 @@
   display:grid; grid-template-columns:var(--hp-ledger-cols); gap:8px; align-items:center;
 }
 .hp-ledger-head{
-  font-size:9px; letter-spacing:.05em; text-transform:uppercase; color:var(--hp-grey); font-weight:600;
+  font-size:12px; letter-spacing:.05em; text-transform:uppercase; color:var(--hp-grey); font-weight:600;
   padding:0 2px 8px; border-bottom:1px solid var(--hp-line); margin-bottom:2px;
 }
 .hp-ledger-head span:nth-child(n+3), .hp-ledger-row .hp-num{ text-align:right; }
 .hp-ledger-row .hp-num{ font-variant-numeric:tabular-nums; }
+/* 모바일 전면 최적화(2026-11-17) 4 — 입금액 열이 잘리고 상태 칩이 밀려 안 보였다.
+   모바일은 정산일·요일·건수·상태를 한 줄에, 입금액은 그 아래 작은 글씨 줄로 뺀다. */
+@media (max-width:767px){
+  :root{ --hp-ledger-row-h:62px; }
+  .hp-ledger-head{ grid-template-columns:76px 30px 1fr 56px; }
+  .hp-ledger-head > span{ white-space:nowrap; }
+  .hp-ledger-head > span:nth-child(4){ display:none; }
+  .hp-ledger-row{
+    display:grid; grid-template-columns:76px 30px 1fr 56px;
+    grid-template-rows:auto auto; grid-template-areas:"date dow count status" "amount amount amount amount";
+    row-gap:4px; align-items:center; align-content:center;
+    border-bottom-color:var(--hp-ink); padding:6px 2px;
+  }
+  .hp-ledger-row > span:nth-child(1){ grid-area:date; text-align:left; white-space:nowrap; }
+  .hp-ledger-row > span:nth-child(2){ grid-area:dow; text-align:left; }
+  .hp-ledger-row > span:nth-child(3){ grid-area:count; }
+  .hp-ledger-row > span:nth-child(4){ grid-area:amount; text-align:left; font-size:12px; font-weight:600; color:var(--hp-grey); padding-top:4px; border-top:1px dashed var(--hp-line); }
+  .hp-ledger-row > span:nth-child(5){ grid-area:status; justify-self:end; }
+}
 .hp-ledger-viewport{
   position:relative; overflow:hidden; height:calc(var(--hp-ledger-row-h) * 5.5);
   mask-image:linear-gradient(to bottom, transparent, black 14%, black 86%, transparent);
@@ -163,7 +201,7 @@
 .hp-ledger-viewport.hp-ledger-offscreen .hp-ledger-track{ animation-play-state:paused; }
 .hp-ledger-row{ font-size:12px; padding:9px 2px; border-bottom:1px solid var(--hp-line); height:var(--hp-ledger-row-h); box-sizing:border-box; }
 .hp-chip-label{ display:none; }
-.hp-ledger-reduced-note{ display:none; font-size:11px; color:var(--hp-grey); margin:10px 0 0; }
+.hp-ledger-reduced-note{ display:none; font-size:12px; color:var(--hp-grey); margin:10px 0 0; }
 @keyframes hp-ledger-scroll{ from{ transform:translateY(0); } to{ transform:translateY(-50%); } }
 
 @media (prefers-reduced-motion:reduce){
@@ -174,7 +212,7 @@
 
 .hp-crm-grid{ display:grid; grid-template-columns:1fr; gap:10px; }
 .hp-crm-field{ background:#F6F6F1; border:1px solid var(--hp-line); border-radius:var(--radius-card); padding:12px; display:flex; flex-direction:column; gap:4px; }
-.hp-field-label{ font-size:10px; letter-spacing:.04em; text-transform:uppercase; color:var(--hp-grey); }
+.hp-field-label{ font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:var(--hp-grey); }
 .hp-field-value{ font-size:14px; font-weight:600; letter-spacing:.02em; }
 .hp-mockup-foot{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px; border-top:1px solid var(--hp-line); padding-top:12px; margin-top:14px; }
 .hp-crm-badges{ display:flex; align-items:center; gap:6px; }
@@ -185,12 +223,12 @@
 .hp-chat-bubble{ background:#F6F6F1; border:1px solid var(--hp-line); border-radius:var(--radius-card); border-top-left-radius:4px; padding:12px 14px; max-width:100%; transition:opacity .4s ease, transform .4s ease; }
 .hp-chat-bubble--accent{ background:rgba(251,233,222,.5); border-color:rgba(227,107,44,.2); }
 .hp-chat-bubble--sheet{ padding:0; overflow:hidden; background:var(--hp-white); }
-.hp-chat-label{ display:block; font-size:11px; font-weight:600; color:var(--hp-accent-text); margin-bottom:4px; }
+.hp-chat-label{ display:block; font-size:12px; font-weight:600; color:var(--hp-accent-text); margin-bottom:4px; }
 .hp-chat-text{ font-size:13px; line-height:1.55; margin:0; font-weight:600; }
 
 .hp-policy-sheet{ padding:12px 14px; }
 .hp-policy-sheet-head{ display:flex; justify-content:space-between; align-items:center; font-size:12px; font-weight:600; padding-bottom:8px; margin-bottom:8px; border-bottom:1px solid var(--hp-line); }
-.hp-policy-sheet-row{ display:grid; grid-template-columns:54px 1fr auto; gap:8px; align-items:center; font-size:11px; padding:5px 0; }
+.hp-policy-sheet-row{ display:grid; grid-template-columns:54px 1fr auto; gap:8px; align-items:center; font-size:12px; padding:5px 0; }
 .hp-policy-sheet-row span:first-child{ font-weight:600; }
 .hp-policy-sheet-price{ font-weight:600; filter:blur(4px); -webkit-filter:blur(4px); user-select:none; }
 
@@ -248,7 +286,7 @@
 .hp-trust-badges{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; padding-top:24px; border-top:1px solid var(--hp-line); }
 .hp-badge{ background:#F6F6F1; border:1px solid var(--hp-line); border-radius:var(--radius-card); padding:16px; display:flex; flex-direction:column; justify-content:space-between; gap:14px; min-height:120px; color:var(--hp-ink); }
 .hp-badge h4{ font-size:14px; font-weight:600; margin:0; }
-.hp-badge p{ font-size:11px; color:var(--hp-grey); margin:3px 0 0; }
+.hp-badge p{ font-size:12px; color:var(--hp-grey); margin:3px 0 0; }
 
 /* ---------- 통신사 섹션 ---------- */
 .hp-carriers{ position:relative; overflow:hidden; background:var(--hp-brown); color:var(--hp-white); }
@@ -411,3 +449,17 @@
 .hp-hero-sketch{ position:absolute; right:0; bottom:-1px; width:100%; height:auto; z-index:0; pointer-events:none; user-select:none; }
 .hp-hero .hp-hero-top, .hp-hero .hp-hero-sub, .hp-hero .hp-hero-ctas{ position:relative; z-index:1; }
 .hp-hero:has(.hp-ground) .hp-hero-sub{ max-width:560px; white-space:normal; }
+
+/* 모바일 전면 최적화(2026-11-17) §2 — 캡션류 글자를 12px 미만에서 12px로 올렸다(위 각
+   규칙 본문). PC(1024px 이상)는 바꾸지 않기 위해 원래 값으로 여기서 되돌린다. */
+@media (min-width:1024px){
+  .hp-photo-corner{ font-size:10px; }
+  .hp-kosis-table th{ font-size:11px; }
+  .hp-chip{ font-size:10px; }
+  .hp-ledger-head{ font-size:9px; }
+  .hp-ledger-reduced-note{ font-size:11px; }
+  .hp-field-label{ font-size:10px; }
+  .hp-chat-label{ font-size:11px; }
+  .hp-policy-sheet-row{ font-size:11px; }
+  .hp-badge p{ font-size:11px; }
+}
