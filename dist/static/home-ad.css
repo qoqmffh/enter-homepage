@@ -112,6 +112,17 @@ html.ad-pending .hp-ad-stage{ display:block; }
   cursor:pointer; padding:8px; font-family:inherit;
 }
 .hp-ad-skip:hover{ color:rgba(255,255,250,1); }
+/* 모바일 전면 최적화(2026-11-17) 10 — 별가루 인트로만 보이고 "건너뛰기"가 너무 옅어서
+   눈에 안 띈다는 지적. 모바일은 터치 영역을 키우고 알약 배경을 줘서 바로 보이게 한다. */
+@media (max-width:767px){
+  .hp-ad-skip{
+    right:16px; bottom:16px; min-height:44px; padding:0 18px;
+    display:flex; align-items:center;
+    font-size:14px; font-weight:600; color:#FFFFFA;
+    background:rgba(255,255,250,.14); border-radius:999px;
+    border:1px solid rgba(255,255,250,.3);
+  }
+}
 
 /* ---------- 스크롤 안내(2026-11-12) ----------
    가운데 아래, 건너뛰기(오른쪽 아래)·진행 막대(맨 아래 2px)와 안 겹치는 자리.

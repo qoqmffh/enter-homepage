@@ -86,12 +86,13 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
    헤드라인은 그대로 두고, 히어로 다음 첫 섹션 맨 위에 2문장 리드만 더한다. */
 .answer-lead{ font-size:clamp(16px,2vw,17px); line-height:1.6; color:var(--hp-grey); max-width:680px; margin:0 0 24px; }
 .breadcrumb a{ color:var(--hp-grey); text-decoration:none; }
+@media (max-width:1023px){ .breadcrumb a{ display:inline-block; padding:10px 0; margin:-10px 0; } }
 .breadcrumb a:hover{ color:var(--hp-ink); text-decoration:underline; }
 .breadcrumb span[aria-current]{ color:var(--hp-ink); }
-.hp-mono-muted{ font-size:11px; letter-spacing:.04em; color:var(--hp-grey); text-transform:uppercase; }
-.hp-mono-green{ font-size:11px; letter-spacing:.04em; color:var(--hp-accent-text); text-transform:uppercase; }
+.hp-mono-muted{ font-size:12px; letter-spacing:.04em; color:var(--hp-grey); text-transform:uppercase; }
+.hp-mono-green{ font-size:12px; letter-spacing:.04em; color:var(--hp-accent-text); text-transform:uppercase; }
 
-.hp-label{ display:inline-flex; align-items:center; gap:7px; font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--hp-grey); margin-bottom:12px; }
+.hp-label{ display:inline-flex; align-items:center; gap:7px; font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--hp-grey); margin-bottom:12px; }
 .hp-label-dot{ width:7px; height:7px; border-radius:50%; background:var(--hp-green); flex:0 0 auto; }
 
 .hp-pill{ display:inline-flex; align-items:center; justify-content:center; gap:8px; border-radius:var(--radius-btn); padding:12px 24px; font-size:14px; font-weight:600; white-space:nowrap; transition:background-color .15s ease, color .15s ease, border-color .15s ease; }
@@ -124,6 +125,7 @@ html:not(.ad-pending) #hpHeaderCta:hover{ background:var(--hp-ink); }
 .hp-header{ position:sticky; top:0; z-index:40; background:rgba(255,255,250,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--hp-line); transition:background .3s ease, border-color .3s ease; }
 .hp-header-inner{ max-width:1200px; margin:0 auto; padding:0 20px; height:76px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
 .hp-brand{ display:inline-flex; align-items:center; flex:0 0 auto; }
+@media (max-width:1023px){ .hp-brand{ min-height:44px; } }
 .hp-brand-svg{ height:36px; width:auto; display:block; }
 .hp-brand-door-leaf{ transition:transform .3s ease; transform-box:fill-box; transform-origin:0% 50%; }
 .hp-brand:hover .hp-brand-door-leaf{ transform:scaleX(1.3) skewY(-6deg); }
@@ -153,10 +155,11 @@ html:not(.ad-pending) #hpHeaderCta:hover{ background:var(--hp-ink); }
 .hp-footer-brand p{ color:var(--hp-grey); font-size:13px; margin-top:10px; max-width:320px; }
 .hp-footer-cols{ display:grid; grid-template-columns:repeat(2,1fr); gap:28px; }
 .hp-footer-col{ display:flex; flex-direction:column; gap:10px; }
-.hp-footer-heading{ font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--hp-ink); font-weight:600; margin-bottom:2px; }
+.hp-footer-heading{ font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--hp-ink); font-weight:600; margin-bottom:2px; }
 .hp-footer-col a{ font-size:13px; color:var(--hp-grey); }
+@media (max-width:1023px){ .hp-footer-col a{ display:inline-block; padding:10px 0; margin:-10px 0; } }
 .hp-footer-col a:hover{ color:var(--hp-ink); }
-.hp-footer-bottom{ padding-top:24px; border-top:1px solid var(--hp-line); font-size:11px; color:var(--hp-grey); line-height:1.7; display:flex; flex-direction:column; gap:6px; }
+.hp-footer-bottom{ padding-top:24px; border-top:1px solid var(--hp-line); font-size:12px; color:var(--hp-grey); line-height:1.7; display:flex; flex-direction:column; gap:6px; }
 .hp-footer-bottom a{ text-decoration:underline; }
 .hp-footer-bottom a:hover{ color:var(--hp-ink); }
 
@@ -188,3 +191,13 @@ html.wipe-pending .hp-page-wipe-layer{ transform:translateX(0); }
 .hp-page-wipe-layer--1{ background:#E36B2C; }
 .hp-page-wipe-layer--2{ background:#EA864D; }
 .hp-page-wipe-layer--3{ background:#F2A16E; }
+
+/* 모바일 전면 최적화(2026-11-17) §2 — 캡션류 글자를 12px 미만에서 12px로 올렸다(위 각
+   규칙 본문). PC(1024px 이상)는 바꾸지 않기 위해 원래 값으로 여기서 되돌린다. */
+@media (min-width:1024px){
+  .hp-mono-muted{ font-size:11px; }
+  .hp-mono-green{ font-size:11px; }
+  .hp-label{ font-size:11px; }
+  .hp-footer-heading{ font-size:11px; }
+  .hp-footer-bottom{ font-size:11px; }
+}
