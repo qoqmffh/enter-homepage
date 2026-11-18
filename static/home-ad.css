@@ -65,6 +65,9 @@ html.ad-pending .hp-ad-stage{ display:block; }
 }
 .hp-ad-line--1{ top:20%; left:6%; font-size:40px; }
 .hp-ad-line--2{ bottom:26%; right:6%; text-align:right; font-size:40px; }
+/* 문구 SEO·GEO 지시서(2026-11-18) §1 — 실제 H1(작은 줄). hp-ad-line--1 바로 위,
+   수평 위치는 같게. 텍스트 스타일은 hp-ad-s3-label과 같이 쓴다(복합 클래스). */
+.hp-ad-eyebrow{ position:absolute; top:13%; left:6%; margin:0; max-width:80vw; opacity:0; }
 
 .hp-ad-scene--s2{ display:flex; align-items:center; justify-content:flex-end; }
 .hp-ad-s2-box{ position:absolute; right:6%; top:50%; transform:translateY(-50%); text-align:right; opacity:0; will-change:opacity, transform; max-width:70vw; }
@@ -183,6 +186,7 @@ html.ad-pending .hp-ad-stage{ display:block; }
 @media (min-width:768px){
   .hp-ad-intro-logo{ height:56px; }
   .hp-ad-line--1{ top:18%; left:7%; font-size:72px; }
+  .hp-ad-eyebrow{ top:11%; left:7%; }
   .hp-ad-line--2{ bottom:26%; right:7%; font-size:72px; }
   .hp-ad-s2-kpi{ font-size:52px; }
   .hp-ad-s2-note{ font-size:13px; }
@@ -198,6 +202,7 @@ html.ad-pending .hp-ad-stage{ display:block; }
 
 @media (min-width:1280px){
   .hp-ad-line--1{ left:80px; font-size:88px; }
+  .hp-ad-eyebrow{ left:80px; }
   .hp-ad-line--2{ right:80px; font-size:88px; }
   .hp-ad-s3-big, .hp-ad-s4-big{ font-size:150px; }
   .hp-ad-carrier{ font-size:120px; }

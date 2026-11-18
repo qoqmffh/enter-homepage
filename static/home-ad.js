@@ -72,6 +72,7 @@
   // ================= DOM refs =================
   var introEl = safeGet('[data-ad-intro]');
   var canvas = safeGet('[data-ad-canvas]');
+  var s1Eyebrow = safeGet('[data-ad-s1-eyebrow]'); // 문구 SEO·GEO 지시서(2026-11-18) §1
   var line1 = safeGet('[data-ad-s1-line1]');
   var line2 = safeGet('[data-ad-s1-line2]');
   var s2box = safeGet('[data-ad-s2-box]');
@@ -87,6 +88,7 @@
   var s4note = safeGet('[data-ad-s4-note]');
   var carrierEls = Array.prototype.slice.call(stage.querySelectorAll('[data-ad-carrier]'));
   var s5slogan = safeGet('[data-ad-s5-slogan]');
+  var s6heading = safeGet('[data-ad-s6-heading]'); // 문구 SEO·GEO 지시서(2026-11-18) §1
   var s6line1 = safeGet('[data-ad-s6-line1]');
   var s6line2 = safeGet('[data-ad-s6-line2]');
   var s6btns = safeGet('[data-ad-end-btns]');
@@ -511,6 +513,7 @@
     var h1Op = seg(p, gAbs(3.0), gAbs(3.6)) * (1 - seg(p, gAbs(6.0), gAbs(6.8)));
     var h1Ty = (1 - seg(p, gAbs(3.0), gAbs(3.6))) * 30 - seg(p, gAbs(6.0), gAbs(6.8)) * 60;
     if (line1) { line1.style.opacity = h1Op; line1.style.transform = 'translateY(' + h1Ty + 'px)'; }
+    if (s1Eyebrow) { s1Eyebrow.style.opacity = h1Op; s1Eyebrow.style.transform = 'translateY(' + h1Ty + 'px)'; }
     var h2Op = seg(p, gAbs(3.4), gAbs(4.0)) * (1 - seg(p, gAbs(6.0), gAbs(6.8)));
     var h2Ty = (1 - seg(p, gAbs(3.4), gAbs(4.0))) * 30 + seg(p, gAbs(6.0), gAbs(6.8)) * 60;
     if (line2) { line2.style.opacity = h2Op; line2.style.transform = 'translateY(' + h2Ty + 'px)'; }
@@ -559,6 +562,7 @@
     if (s5slogan) s5slogan.style.opacity = slogOp;
 
     // 장면 6
+    if (s6heading) s6heading.style.opacity = seg(p, gAbs(26.4), gAbs(27.0));
     if (s6line1) s6line1.style.opacity = seg(p, gAbs(26.4), gAbs(27.0));
     if (s6line2) {
       s6line2.style.opacity = seg(p, gAbs(27.0), gAbs(27.5));
