@@ -48,8 +48,13 @@
 
   /* 폰트 토큰(2026-11-02) — ONE Mobile(TTF, 약 12MB) → Pretendard Variable
      woff2 dynamic subset(static/fonts/pretendard/)로 교체. base.html이
-     pretendard-dynamic-subset.css를 common.css보다 먼저 불러온다. */
-  --font-sans:'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+     pretendard-dynamic-subset.css를 common.css보다 먼저 불러온다.
+     'Pretendard Fallback'(2026-11-18, 모바일 최적화 2차 CLS 후속) — 실제 폰트가 로드되기
+     전 이 자리를 메우는 metric-override 폴백. 보통의 OS 폴백(Apple SD Gothic Neo/Noto
+     Sans KR/Segoe UI/Arial 등)을 쓰되 size-adjust/ascent/descent-override로
+     Pretendard Variable 실측 치수에 맞춰, 웹폰트로 교체되는 순간 리플로우(CLS)가 거의
+     안 생기게 한다. */
+  --font-sans:'Pretendard Variable', Pretendard, 'Pretendard Fallback', -apple-system, BlinkMacSystemFont, system-ui, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
 
   /* 타이포 크기 토큰(2026-11-10) — 화면이 꽉 차 보인다는 피드백으로 헤드 타이포를
      전체적으로 한 단계 줄인다. home-poetic.css·sub.css·megamenu.css가 이 토큰을 쓴다.

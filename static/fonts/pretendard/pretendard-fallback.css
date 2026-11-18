@@ -1,0 +1,14 @@
+/* Pretendard Variable 교체(swap) 시 CLS 방지용 메트릭 보정 폴백.
+   Chromium 헤드리스로 "거래처 정산은 익주 금요일에..." 등 실제 한글/영문/숫자 혼용 샘플을
+   caption.measureText()로 Pretendard Variable과 사이트 fallback 스택(각각 400/800 weight)에서
+   실측해(2026-11-18) size-adjust/ascent-override/descent-override를 계산했다(추측값 아님).
+   line-gap-override는 0%로 둔다 — 사이트 전역 line-height가 전부 숫자(1.2~1.6 등)로 고정돼 있어
+   font의 line-gap이 레이아웃에 영향을 주지 않는다. */
+@font-face {
+  font-family: 'Pretendard Fallback';
+  size-adjust: 90.4%;
+  ascent-override: 89%;
+  descent-override: 24%;
+  line-gap-override: 0%;
+  src: local('Apple SD Gothic Neo'), local('Malgun Gothic'), local('Noto Sans KR'), local('Segoe UI'), local('Arial');
+}
