@@ -156,11 +156,11 @@
 
 {% if page.extra_links %}
 <section>
-  <div class="wrap">
-    <h2>함께 보면 좋은 글</h2>
-    <ul class="doclist" style="margin-top:14px">
-      {% for l in page.extra_links %}<li><a class="more-link" href="{{ l.slug }}.html">{{ l.text }} →</a></li>{% endfor %}
-    </ul>
+  <div class="wrap related-block">
+    <h3>함께 보면 좋은 글</h3>
+    <div class="related-cards">
+      {% for l in page.extra_links %}<a class="related-card" href="{{ l.slug }}.html">{{ l.text }} →</a>{% endfor %}
+    </div>
   </div>
 </section>
 {% endif %}

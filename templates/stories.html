@@ -30,20 +30,20 @@
 <section class="sp-section" id="stories">
   <div class="sp-statement" data-reveal>
     <h2><span class="hp-ink">{{ page.h1 }}</span></h2>
+    {# 디자인 정리 지시서(2026-11-18) §7 — 카드마다 반복되던 "질문: ..."을 여기 한 번만. #}
+    {% if page.quotes[0].asked %}<p class="hp-mono-muted story-quote-shared-label">같은 질문을 드렸습니다: {{ page.quotes[0].asked }}는?</p>{% endif %}
   </div>
   <div class="story-quotes">
     {% for q in page.quotes %}
-    <div data-reveal>
-      <span class="hp-mono-muted story-quote-label">질문: {{ q.asked }}</span>
+    <div class="story-quote-card" data-reveal>
       <blockquote class="quote-box">
         {% for line in q.lines %}<p>{{ line }}</p>{% endfor %}
-        <cite>— {{ q.who }} · {{ q.since }}</cite>
       </blockquote>
-      {% if q.note %}<p class="hp-muted story-quote-note">{{ q.note }}</p>{% endif %}
+      <cite>— {{ q.who }} · {{ q.since }}</cite>
     </div>
     {% endfor %}
   </div>
-  {% if page.interview_note %}<p class="hp-muted story-interview-note">{{ page.interview_note }}</p>{% endif %}
+  {% if page.interview_note %}<p class="story-interview-note">조사 방법 · {{ page.interview_note }}</p>{% endif %}
 </section>
 {% else %}
 <section class="sp-section sp-section--center" id="stories">
@@ -54,7 +54,7 @@
 </section>
 {% endif %}
 
-<section class="sp-section" style="margin-top:40px">
+<section class="sp-section">
   {{ confirm_mod.render(page.confirm_sources) }}
 </section>
 

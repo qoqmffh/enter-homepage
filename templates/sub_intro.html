@@ -50,26 +50,23 @@
 {% set rhythm.i = rhythm.i + 1 %}
 <section class="sp-proof{% if rhythm.i % 2 == 1 %} sp-bg-tint{% endif %}" id="proof">
   <div class="sp-proof-grid">
-    {% if page.answer_lead %}<p class="answer-lead">{{ page.answer_lead }}</p>{% endif %}
-    {# 문구 SEO·GEO 지시서(2026-11-18) §1 — h2_proof_question이 있으면 질문형 문장을
-       실제 <h2>로 쓰고, 기존 투톤 슬로건은 화면에 그대로 보이는 보조 줄로 내린다. #}
+    {# 디자인 정리 지시서(2026-11-18) §3 — H2를 맨 위 전체 폭에 두고, 슬로건 한 줄 ->
+       answer_lead 한 문장 -> 숫자 카드 순으로 세로로 쌓는다(왼쪽 긴 문단 + 오른쪽 H2
+       2단 그리드 구조를 없앴다). #}
     {% if page.h2_proof_question %}
-    {# sp-proof-grid가 1024px+에서 2열 그리드라 자식 개수가 그대로여야 칸이 안 밀린다
-       (원래 h2 자리 하나를 h2+보조줄 묶음 div 하나로만 치환). #}
-    <div>
-      <h2 class="sp-proof-title" data-reveal>{{ page.h2_proof_question }}</h2>
-      <p class="hp-slogan-sub">{{ s.proof.headline_ink }} {{ s.proof.headline_green }}</p>
-    </div>
+    <h2 class="sp-proof-title" data-reveal>{{ page.h2_proof_question }}</h2>
+    <p class="hp-slogan-sub">{{ s.proof.headline_ink }} {{ s.proof.headline_green }}</p>
     {% else %}
     <h2 class="sp-proof-title" data-reveal><span class="hp-ink">{{ s.proof.headline_ink }}</span><br><span class="hp-green">{{ s.proof.headline_green }}</span></h2>
     {% endif %}
     {% if s.proof.subhead %}<p class="sp-proof-subhead">{{ s.proof.subhead }}</p>{% endif %}
+    {% if page.answer_lead %}<p class="answer-lead">{{ page.answer_lead }}</p>{% endif %}
     <div class="sp-proof-facts">
       {% for f in s.proof.facts %}
       <div class="sp-proof-fact" data-reveal>
         <span class="sp-proof-fact-value"{% if f.value | countable %} data-count{% endif %}>{{ f.value }}</span>
         <span class="sp-proof-fact-label">{{ f.label }}</span>
-        <p class="sp-proof-fact-desc">{{ f.desc }}</p>
+        {% if f.desc %}<p class="sp-proof-fact-desc">{{ f.desc }}</p>{% endif %}
       </div>
       {% endfor %}
     </div>
@@ -91,7 +88,8 @@
         {% endif %}
         <span class="sp-card-index">/{{ card.index }}</span>
       </div>
-      {% if card.h3_question %}<p class="hp-slogan-sub">{{ card.title }}</p>{% endif %}
+      {# 디자인 정리 지시서(2026-11-18) §3 — 카드 제목과 같은 말을 되풀이하는 작은 부제
+         (예: "매주 금요일 입금")는 지운다. #}
 
       {% if card.mockup == 'week_strip' %}
       <div class="sp-week">
@@ -130,9 +128,9 @@
 {% if s.detail.style == 'carriers' %}
 <section class="sp-carriers" id="detail">
   <div class="sp-carriers-head" data-reveal>
-    <span class="hp-label"><span class="hp-label-dot"></span>{{ s.detail.label }}</span>
+    <span class="hp-label">{{ s.detail.label }}</span>
     <h2>{{ s.detail.headline }}</h2>
-    <p class="sp-carriers-eyebrow">■ {{ s.detail.eyebrow }}</p>
+    <p class="sp-carriers-eyebrow">{{ s.detail.eyebrow }}</p>
   </div>
   <div class="sp-carriers-names">
     {% for name in s.detail.names %}<div>{{ name }}</div>{% endfor %}
@@ -148,7 +146,7 @@
 {% set rhythm.i = rhythm.i + 1 %}
 <section class="sp-section{% if rhythm.i % 2 == 1 %} sp-bg-tint{% endif %}" id="detail">
   <div class="sp-detail-head" data-reveal>
-    <span class="hp-label"><span class="hp-label-dot"></span>{{ s.detail.label }}</span>
+    <span class="hp-label">{{ s.detail.label }}</span>
     <h2>{{ s.detail.headline }}</h2>
     {% if s.detail.basis_note %}<p class="hp-muted sp-proof-note">{{ s.detail.basis_note }}</p>{% endif %}
   </div>
@@ -222,9 +220,9 @@
 {% endif %}
 
 {% set rhythm.i = rhythm.i + 1 %}
-<section class="sp-section{% if rhythm.i % 2 == 1 %} sp-bg-tint{% endif %}" id="faq">
-  <span class="hp-label"><span class="hp-label-dot"></span>FAQ</span>
-  <div style="margin-top:20px">
+<section class="sp-section sp-faq-section{% if rhythm.i % 2 == 1 %} sp-bg-tint{% endif %}" id="faq">
+  <h2 class="sp-proof-title">자주 묻는 질문</h2>
+  <div style="margin-top:32px">
     {% for item in s.faq %}
     <details class="sp-faq-item" data-reveal{% if loop.first %} open{% endif %}>
       <summary>{{ item.q }}</summary>
@@ -235,7 +233,7 @@
 </section>
 
 {% set rhythm.i = rhythm.i + 1 %}
-<section class="sp-section{% if rhythm.i % 2 == 1 %} sp-bg-tint{% endif %}" style="margin-top:40px">
+<section class="sp-section{% if rhythm.i % 2 == 1 %} sp-bg-tint{% endif %}">
   {{ confirm_mod.render(page.confirm_sources) }}
 </section>
 

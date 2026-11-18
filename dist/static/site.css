@@ -34,7 +34,7 @@
   --hp-grey-bg:#F0F0EB;
   --hp-card-bg:#FFFDFB;
   --hp-card-border:rgba(31,26,23,.08);
-  --hp-line:#E9E3DA;
+  --hp-line:#E8DFD6;
   --hp-line-dark:rgba(255,253,251,.12);
   /* 옛 이름은 새 토큰을 가리키는 별칭으로만 남긴다 — 코드에서 "green"이라는 이름은
      더 이상 새로 쓰지 않는다(2026-11-09 강조색 교체). */
@@ -97,8 +97,8 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
 .hp-mono-muted{ font-size:12px; letter-spacing:.04em; color:var(--hp-grey); text-transform:uppercase; }
 .hp-mono-green{ font-size:12px; letter-spacing:.04em; color:var(--hp-accent-text); text-transform:uppercase; }
 
-.hp-label{ display:inline-flex; align-items:center; gap:7px; font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--hp-grey); margin-bottom:12px; }
-.hp-label-dot{ width:7px; height:7px; border-radius:50%; background:var(--hp-green); flex:0 0 auto; }
+/* 디자인 정리 지시서(2026-11-18) §1 — 라벨 앞 주황 점 제거, 작은 회색 글씨만 남긴다. */
+.hp-label{ display:inline-block; font-size:13px; font-weight:600; letter-spacing:.02em; text-transform:uppercase; color:var(--hp-grey); margin-bottom:12px; }
 
 /* 문구 SEO·GEO 지시서(2026-11-18) §1 — 질문형 소제목으로 바꾸면서 밀려난 기존 슬로건을
    그 바로 아래 "보조 줄"로 남기는 공통 유틸(hp- 토큰 쓰는 모든 페이지 공용). */

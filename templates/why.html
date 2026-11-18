@@ -70,19 +70,19 @@
     <div class="hp-hero-top">
       {# 문구 SEO·GEO 지시서(2026-11-18) §1 — 실제 H1은 슬로건 바로 위 작은 줄(eyebrow
          크기)로, 기존 헤드라인은 글자 크기·위치 그대로 두고 <p> 태그만 바꾼다. #}
-      <h1 class="hp-label" data-reveal><span class="hp-label-dot"></span>{{ page.h1_question }}</h1>
+      <h1 class="hp-label" data-reveal>{{ page.h1_question }}</h1>
       <p class="hp-display-xl" data-scroll-headline>
         {% for line in p.hero.headline %}<span class="hp-headline-line">{% for word in line.split(' ') %}<span class="hp-word">{{ word }}</span>{{ ' ' if not loop.last else '' }}{% endfor %}</span>{% endfor %}
       </p>
-      {% if date_modified %}<p class="post-date page-basis-date">기준일 {{ date_modified | date_fmt_kr }} · ENTER 영업지원팀 확인</p>{% endif %}
       <p class="hp-hero-subhead">{{ p.hero.subhead }}</p>
     </div>
     <div class="hp-hero-below">
-      {% if p.hero.sub %}<p class="answer-lead">{{ p.hero.sub | safe }}</p>{% endif %}
       <div class="hp-hero-ctas">
         {{ m.pill(p.hero.cta_kakao, '#', 'primary', True, True) }}
         {{ m.pill(p.hero.cta_tel, 'tel:' ~ site.phone, 'secondary') }}
       </div>
+      {# 디자인 정리 지시서(2026-11-18) §4 — 기준일은 버튼 바로 아래, 작게. #}
+      {% if date_modified %}<p class="post-date page-basis-date">기준일 {{ date_modified | date_fmt_kr }} · ENTER 영업지원팀 확인</p>{% endif %}
       {% if p.hero.sketch %}
       {# 회사 분류 선 스케치 — 그림 맨 아래 선이 곧 이 구분선(땅). 버튼은 땅 위, 숫자 카드는 땅 아래.
          width/height는 실제 webp 픽셀 크기(지시서 2026-11-14 "최적화" §2) — CSS가 width:100%;
@@ -93,6 +93,9 @@
       {% else %}
       <div class="hp-hairline"></div>
       {% endif %}
+      {# 디자인 정리 지시서(2026-11-18) §4 — 긴 정의 문단은 히어로에서 빼고, 숫자 카드
+         줄 위에 한 문장으로만 둔다(전체 문장은 FAQ "ENTER는 어떤 곳인가요?"로 이동). #}
+      {% if p.hero.sub %}<p class="answer-lead">{{ p.hero.sub | safe }}</p>{% endif %}
       {# 주황 막대 그래프(2026-11-11) — 4,000건/3,000곳/16년은 전부 100%(카드 전체가 주황),
          0회만 0%(빈 카드 + 바닥 주황선). 높이가 100/100/100/0이라 글자가 막대 경계에
          걸칠 일이 없어 텍스트는 한 겹이면 충분하다(이전의 잉크/흰 두 겹 + clip-path 반전
@@ -159,7 +162,7 @@
 <section class="hp-section hp-bg-tint" id="kosis">
   <div class="hp-wrap hp-wrap--narrow">
     <div class="sp-detail-head" data-reveal>
-      <span class="hp-label"><span class="hp-label-dot"></span>MARKET DATA</span>
+      <span class="hp-label">MARKET DATA</span>
       <h2>{{ r.market_table_caption }}</h2>
     </div>
     <div class="hp-kosis-table-wrap">
@@ -334,7 +337,7 @@
   <div class="hp-trail" aria-hidden="true"></div>
   <div class="hp-wrap hp-promise-grid">
     <div class="hp-promise-photo-col" data-reveal>
-      <div class="hp-promise-photo-lg" style="background-image:url('{{ p.promise.photo_src }}')"></div>
+      <img class="hp-promise-photo-lg" src="{{ p.promise.photo_src }}" width="1280" height="1600" alt="" aria-hidden="true" loading="lazy">
     </div>
     <div class="hp-promise-content" data-cursor="swipe" data-reveal>
       {{ m.section_label(p.promise.label) }}
@@ -422,9 +425,9 @@
 </section>
 
 {% if page.faq_mini %}
-<section class="sp-section sp-bg-tint" id="faq">
-  <span class="hp-label"><span class="hp-label-dot"></span>FAQ</span>
-  <div style="margin-top:20px">
+<section class="sp-section sp-bg-tint sp-faq-section" id="faq">
+  <h2 class="sp-proof-title">자주 묻는 질문</h2>
+  <div style="margin-top:32px">
     {% for item in page.faq_mini %}
     <details class="sp-faq-item" data-reveal{% if loop.first %} open{% endif %}>
       <summary>{{ item.q }}</summary>
@@ -435,15 +438,16 @@
 </section>
 {% endif %}
 
-{# GEO 2차 지시서(2026-11-18) §3 — "추천" 질문 대응 글을 관련 글로 연결. #}
-<section class="sp-section" id="related">
-  <span class="hp-label"><span class="hp-label-dot"></span>관련 글</span>
-  <ul class="doclist" style="margin-top:20px">
-    <li><a class="more-link" href="blog-wired-wholesale-checklist.html">유선 도매업체 추천 받기 전에 확인할 7가지 →</a></li>
-  </ul>
+{# GEO 2차 지시서(2026-11-18) §3 — "추천" 질문 대응 글을 관련 글로 연결.
+   디자인 정리 지시서(2026-11-18) §6 — 블로그 카드 스타일로 별도 블록화. #}
+<section class="sp-section related-block" id="related">
+  <h3>함께 보면 좋은 글</h3>
+  <div class="related-cards">
+    <a class="related-card" href="blog-wired-wholesale-checklist.html">유선 도매업체 추천 받기 전에 확인할 7가지 →</a>
+  </div>
 </section>
 
-<div class="hp-wrap" style="margin-top:40px">
+<div class="hp-wrap">
   {{ confirm_mod.render(page.confirm_sources) }}
 </div>
 

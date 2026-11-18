@@ -133,9 +133,12 @@
     {% if page.summary %}<p class="tagline">{{ page.summary }}</p>{% endif %}
 
     {% if page.extra_links %}
-    <ul class="doclist" style="margin-top:14px">
-      {% for l in page.extra_links %}<li><a class="more-link" href="{{ l.slug }}.html">{{ l.text }} →</a></li>{% endfor %}
-    </ul>
+    <div class="related-block">
+      <h3>함께 보면 좋은 글</h3>
+      <div class="related-cards">
+        {% for l in page.extra_links %}<a class="related-card" href="{{ l.slug }}.html">{{ l.text }} →</a>{% endfor %}
+      </div>
+    </div>
     {% endif %}
 
     {% if page.next_slug %}
