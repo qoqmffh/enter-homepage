@@ -1,10 +1,10 @@
 {
   "index": {
     "template": "home.html",
-    "title": "유선 도매 ENTER 유선전문총판 — 6개 통신사 유선 정책, 매일 아침",
+    "title": "유선(인터넷·IPTV) 도매 ENTER 유선전문총판 — 6개 통신사 유선 정책, 매일 아침",
     "meta_description": "ENTER(엔터)는 판매점과 온라인 셀러에게 인터넷·IPTV를 공급하는 유선전문총판입니다. 거래처 3,000곳, 월 평균 4,000건, 매주 금요일 정산. 서류 없이 접수부터 시작하세요.",
     "date_published": "2026-10-19",
-    "date_modified": "2026-11-16",
+    "date_modified": "2026-11-18",
     "eyebrow": "ENTER · 유선 도매",
     "eyebrow_v2": "§00 · WHOLESALE SPECIFICATION",
     "slug_label": "/spec",
@@ -397,10 +397,10 @@
   },
   "why": {
     "template": "why.html",
-    "title": "유선 도매 정책 비교, 왜 ENTER인가 — 숫자로 보는 정책·정산 | ENTER 유선전문총판",
+    "title": "유선(인터넷·IPTV) 도매 정책 비교, 왜 ENTER인가 — 숫자로 보는 정책·정산 | ENTER 유선전문총판",
     "meta_description": "유선 도매처는 정책·정산·답변 속도로 비교합니다. 거래처 3,000곳, 월 평균 4,000건, 정산 지연 0회 — ENTER를 고르는 이유를 숫자로 보여드립니다.",
     "date_published": "2026-10-19",
-    "date_modified": "2026-11-16",
+    "date_modified": "2026-11-18",
     "confirm_sources": [
       {"label": "과학기술정보통신부 「초고속인터넷 사업자별 회선 수」(KOSIS 국가통계포털, 2026년 7월 수록)", "url": "https://kosis.kr/serviceInfo/newContrainDataDetail.do?boardIdx=1998012&boardOrgId=127"},
       {"label": "한국통신사업자연합회(KTOA) 통계", "url": "http://stat.ktoa.or.kr/02_service/service_03_client.asp"}
@@ -1984,9 +1984,9 @@
   "start": {
     "template": "sub_intro.html",
     "title": "유선 도매 거래 시작 — 서류 없이 접수부터 | ENTER 유선전문총판",
-    "meta_description": "ENTER와 거래는 서류 없이 접수·개통부터 시작합니다. 접수 후 청약까지 보통 1시간, 서류는 첫 정산 전에만 내시면 됩니다. 보증금·담보도 받지 않습니다.",
+    "meta_description": "ENTER와 유선(인터넷·IPTV) 거래는 서류 없이 접수·개통부터 시작합니다. 접수 후 청약까지 보통 1시간, 서류는 첫 정산 전에만 내시면 됩니다. 보증금·담보도 받지 않습니다.",
     "date_published": "2026-10-19",
-    "date_modified": "2026-11-16",
+    "date_modified": "2026-11-18",
     "answer_lead": "ENTER와 거래를 시작하려면 전화·문자 중 편한 방법으로 연락하면 됩니다. 계약금·월정료·최소 실적 의무가 없고, 서류 4종(사업자등록증·수수료 통장 사본·대표자 신분증·대표자 명의 휴대폰)은 첫 정산 전에만 내면 됩니다.",
     "sub": {
       "hero": {
@@ -2078,6 +2078,12 @@
             "desc": "본인 인증 및 안내 채널",
             "tag": "04"
           }
+        ],
+        "extra_links": [
+          {
+            "text": "유선 도매업체 추천 받기 전에 확인할 7가지 →",
+            "href": "blog-wired-wholesale-checklist.html"
+          }
         ]
       },
       "faq": [
@@ -2163,9 +2169,9 @@
   "settlement": {
     "template": "sub_intro.html",
     "title": "ENTER 정산·DB보호 — 매주 금요일 정산, 하드마킹 | ENTER 유선전문총판",
-    "meta_description": "매주 수요일 정산서를 보내고 금요일에 입금합니다. 실제 정산 기록상 늦게 처리된 적 0회. 고객 정보는 하드마킹으로 보호해 실적 가로채기를 막습니다.",
+    "meta_description": "유선(인터넷·IPTV) 정산은 매주 수요일 정산서를 보내고 금요일에 입금합니다. 실제 정산 기록상 늦게 처리된 적 0회. 고객 정보는 하드마킹으로 보호해 실적 가로채기를 막습니다.",
     "date_published": "2026-10-19",
-    "date_modified": "2026-11-16",
+    "date_modified": "2026-11-18",
     "answer_lead": "ENTER는 월~일 개통분을 다음 주 수요일에 정산서로 보내고 금요일에 입금합니다. 개통이 끝나면 고객 이름·연락처·주민번호가 자동으로 가려지는 하드마킹을 적용합니다.",
     "sub": {
       "hero": {
@@ -2909,9 +2915,9 @@
   "products": {
     "template": "sub_intro.html",
     "title": "인터넷 도매, 판매점용 유선 상품 한 곳에서 | ENTER 유선전문총판",
-    "meta_description": "인터넷·IPTV·CCTV·가전렌탈·유심까지, 통신사 6곳의 유선 상품을 ENTER 한 곳에서 접수합니다. 판매점·온라인 셀러용 도매 정책으로 공급합니다.",
+    "meta_description": "인터넷·IPTV·CCTV·가전렌탈·유심까지, 통신사 6곳의 유선(인터넷·IPTV) 상품을 ENTER 한 곳에서 접수합니다. 판매점·온라인 셀러용 도매 정책으로 공급합니다.",
     "date_published": "2026-10-19",
-    "date_modified": "2026-11-16",
+    "date_modified": "2026-11-18",
     "answer_lead": "ENTER는 SKT·SK브로드밴드·LG U+·KT·스카이라이프·LG헬로비전 6개 통신사의 인터넷·IPTV·CCTV·가전렌탈·유심(UIT) 상품을 한 곳에서 접수하는 유선 도매입니다. 접수 후 청약까지 보통 1시간, 빠르면 3분이면 끝납니다.",
     "sub": {
       "hero": {
@@ -3064,7 +3070,7 @@
   "startup": {
     "template": "sub_intro.html",
     "title": "휴대폰 창업 가이드 — 매장 열기 전 5단계, 유선까지 | ENTER 유선전문총판",
-    "meta_description": "휴대폰 창업은 판매점으로 시작해 거래처·개통 준비·매장 시설·개업 체크 순서로 준비합니다. 유선까지 함께 하면 같은 손님에게서 수익이 하나 더 생깁니다.",
+    "meta_description": "휴대폰·유선(인터넷·IPTV) 창업은 판매점으로 시작해 거래처·개통 준비·매장 시설·개업 체크 순서로 준비합니다. 유선까지 함께 하면 같은 손님에게서 수익이 하나 더 생깁니다.",
     "answer_lead": "휴대폰 매장 창업은 사업자등록 → 통신판매업 신고 → 사전승낙 → 매장·온라인 채널 준비 → 정책 공급처(도매) 연결 순서로 진행합니다. 이 가운데 매달 수익을 가장 크게 좌우하는 것은 어느 도매에서 정책을 받느냐입니다.",
     "sub": {
       "hero": {
@@ -3175,6 +3181,10 @@
           {
             "text": "휴대폰 매장 창업 순서와 도매 거래처 정하는 법 →",
             "href": "blog-startup-overview.html"
+          },
+          {
+            "text": "유선 도매업체 추천 받기 전에 확인할 7가지 →",
+            "href": "blog-wired-wholesale-checklist.html"
           }
         ]
       },
@@ -3202,7 +3212,7 @@
       }
     },
     "date_published": "2026-10-19",
-    "date_modified": "2026-11-16",
+    "date_modified": "2026-11-18",
     "eyebrow": "창업자 가이드",
     "h1": "휴대폰 매장만 하면, 유선 실적은 그냥 넘어갑니다",
     "lead": "500+TV 번들상품 기준, 소매점에 넘기면 건당 약 30만원, 도매로 직접 처리하면 약 70만원. 건당 40만원 차이입니다.",
@@ -3318,9 +3328,9 @@
   "faq": {
     "template": "sub_board.html",
     "title": "유선 도매 자주 묻는 질문 — 정산·접수·거래 서류 | ENTER 유선전문총판",
-    "meta_description": "정산은 언제 들어오는지, 접수는 어떻게 하는지, 거래 시작에 서류가 필요한지 — 판매점 사장님들이 ENTER에 가장 많이 묻는 질문에 답합니다.",
+    "meta_description": "유선(인터넷·IPTV) 정산은 언제 들어오는지, 접수는 어떻게 하는지, 거래 시작에 서류가 필요한지 — 판매점 사장님들이 ENTER에 가장 많이 묻는 질문에 답합니다.",
     "date_published": "2026-10-19",
-    "date_modified": "2026-10-30",
+    "date_modified": "2026-11-18",
     "eyebrow": "FAQ",
     "h1": "묻기 전에 답합니다",
     "items": [
@@ -3400,8 +3410,8 @@
     "title": "유선 도매 용어 사전 — 매집·딜러·총판·환수·그레이드 뜻 | ENTER 유선전문총판",
     "meta_description": "유선 매집, 딜러, 총판, 대리점, 판매점, 정책표, 단가, 그레이드, 환수, 하드마킹 등 유선 도매에서 쓰는 용어 15개를 2~3문장으로 정리했습니다.",
     "date_published": "2026-11-16",
-    "date_modified": "2026-11-16",
-    "answer_lead": "유선 도매에서 자주 쓰는 용어 15개를 판매점 사장님 기준으로 정리했습니다. 유선 매집은 판매점·딜러가 받은 가입 건을 모아 대리점이나 도매로 넘기는 영업 방식을 말합니다.",
+    "date_modified": "2026-11-18",
+    "answer_lead": "유선(인터넷·IPTV) 도매에서 자주 쓰는 용어 15개를 판매점 사장님 기준으로 정리했습니다. 유선 매집은 판매점·딜러가 받은 가입 건을 모아 대리점이나 도매로 넘기는 영업 방식을 말합니다.",
     "confirm_sources": [
       {"label": "방통위 사전승낙제 가이드라인 보도(이데일리, 2018)", "url": "https://edaily.co.kr/News/Read?mediaCodeNo=257&newsId=01131606622590928"}
     ],
@@ -3426,7 +3436,7 @@
       {"slug": "dealer", "term": "딜러", "definition": "매장 없이 온라인·텔레마케팅 등으로 모은 가입 건을 대리점에 넘기는 중개 영업자입니다."},
       {"slug": "reseller", "term": "판매점", "definition": "대리점과 계약해 통신 상품을 파는 소매 매장입니다. 온라인 셀러도 포함하며, 통신사와 직접 계약하지 않습니다."},
       {"slug": "agency", "term": "대리점", "definition": "통신사와 직접 위탁 계약을 맺고 상품을 판매·관리하는 사업자입니다."},
-      {"slug": "wholesale", "term": "도매 / 총판", "definition": "여러 판매점의 가입 건을 받아 대리점·통신사와 연결하고, 정책 안내·접수·정산을 대신 맡는 중간 사업자입니다. ENTER 유선전문총판이 여기에 해당합니다.", "more_link": "why"},
+      {"slug": "wholesale", "term": "도매 / 총판", "definition": "여러 판매점의 가입 건을 받아 대리점·통신사와 연결하고, 정책 안내·접수·정산을 대신 맡는 중간 사업자입니다. ENTER 유선전문총판이 여기에 해당합니다.", "more_link": "why", "more_link2": "blog-wired-wholesale-checklist", "more_link2_label": "고르는 법 →"},
       {"slug": "preapproval", "term": "사전승낙", "definition": "판매점이 통신사(대리점)로부터 판매 자격을 미리 승인받는 제도입니다. 유선 분야는 2018년 방송통신위원회 가이드라인으로 시작했습니다."},
       {"slug": "policy", "term": "정책 / 정책표", "definition": "가입 건마다 판매점에 지급하는 수수료 조건과 그 표입니다. 통신사·상품·요금제에 따라 다르고 수시로 바뀝니다."},
       {"slug": "unit-price", "term": "단가", "definition": "정책표에 적힌 건당 지급 금액입니다. 시간 단위로 바뀌어 ENTER는 사이트에 공개하지 않고, 거래처 정책방으로 매일 아침 안내합니다."},
@@ -3441,9 +3451,9 @@
   "blog": {
     "template": "sub_board.html",
     "title": "판매점 창업·운영 블로그 | ENTER 유선전문총판",
-    "meta_description": "휴대폰 매장 창업 비용, 대리점과 판매점 차이, 통신판매업신고, 정산 주기까지 — 판매점·온라인 셀러가 실제로 막히는 것을 정리합니다.",
+    "meta_description": "휴대폰·유선(인터넷·IPTV) 매장 창업 비용, 대리점과 판매점 차이, 통신판매업신고, 정산 주기까지 — 판매점·온라인 셀러가 실제로 막히는 것을 정리합니다.",
     "date_published": "2026-10-19",
-    "date_modified": "2026-10-30",
+    "date_modified": "2026-11-18",
     "eyebrow": "블로그",
     "h1": "판매점 사장님이 궁금한 것들",
     "lead": "9편 발행 완료, 이후 주 1편.",
@@ -3482,6 +3492,11 @@
       }
     },
     "posts": [
+      {
+        "title": "유선 도매업체 추천 받기 전에, 판매점이 확인할 7가지",
+        "tag": "업계",
+        "slug": "blog-wired-wholesale-checklist"
+      },
       {
         "title": "휴대폰 매장 창업, 도매 거래처는 언제 어떻게 정하나",
         "tag": "창업",
@@ -3536,9 +3551,9 @@
   "stories": {
     "template": "stories.html",
     "title": "유선 도매 거래처 후기 — 사장님들의 실제 말 | ENTER 유선전문총판",
-    "meta_description": "ENTER와 거래 중인 판매점 대표님들이 카카오톡 인터뷰에서 직접 한 말을 옮겼습니다. 업무 처리, 담당자 소통, 접수 방식에 대한 실제 답변입니다.",
+    "meta_description": "ENTER와 유선(인터넷·IPTV) 거래 중인 판매점 대표님들이 카카오톡 인터뷰에서 직접 한 말을 옮겼습니다. 업무 처리, 담당자 소통, 접수 방식에 대한 실제 답변입니다.",
     "date_published": "2026-10-19",
-    "date_modified": "2026-11-13",
+    "date_modified": "2026-11-18",
     "eyebrow": "거래처 이야기",
     "h1": "실제 사장님들의 말",
     "placeholder_text": "1차 과제(CS·영업·정산팀이 모은 거래처 실제 발언) 수집 중입니다.<br>마감 10/24 — 도착하는 대로 이 페이지를 채웁니다.",
@@ -3603,9 +3618,9 @@
   "about": {
     "template": "sub_intro.html",
     "title": "ENTER 회사소개 — 2010년부터 16년, 유선 한 길 | ENTER 유선전문총판",
-    "meta_description": "ENTER는 (유)위드컴퍼니가 운영하는 유선전문총판입니다. 2010년 LG U+ 대리점으로 시작해 16년, 거래처 3,000곳과 함께합니다. 인증과 수상 실적을 소개합니다.",
+    "meta_description": "ENTER는 유선(인터넷·IPTV) 분야에서 (유)위드컴퍼니가 운영하는 유선전문총판입니다. 2010년 LG U+ 대리점으로 시작해 16년, 거래처 3,000곳과 함께합니다. 인증과 수상 실적을 소개합니다.",
     "date_published": "2026-10-19",
-    "date_modified": "2026-11-16",
+    "date_modified": "2026-11-18",
     "sub": {
       "hero": {
         "label": "회사소개",

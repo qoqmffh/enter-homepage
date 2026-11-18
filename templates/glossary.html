@@ -58,7 +58,7 @@
   {% for t in page.terms %}
   <div class="glossary-term" id="{{ t.slug }}">
     <h2>{{ t.term }}</h2>
-    <p>{{ t.definition }}{% if t.source_label %} <a href="{{ t.source_url }}" target="_blank" rel="noopener">{{ t.source_label }}</a>{% endif %}{% if t.more_link %} <a class="more-link" href="{{ t.more_link }}.html">자세히 →</a>{% endif %}</p>
+    <p>{{ t.definition }}{% if t.source_label %} <a href="{{ t.source_url }}" target="_blank" rel="noopener">{{ t.source_label }}</a>{% endif %}{% if t.more_link %} <a class="more-link" href="{{ t.more_link }}.html">자세히 →</a>{% endif %}{% if t.more_link2 %} <a class="more-link" href="{{ t.more_link2 }}.html">{{ t.more_link2_label or '자세히 →' }}</a>{% endif %}</p>
   </div>
   {% endfor %}
 </section>

@@ -26,6 +26,9 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 DIST_DIR = os.path.join(BASE_DIR, "dist")
 
+# IndexNow 키(GEO 2차 지시서 2026-11-18 §4) — scripts/indexnow_notify.py와 공유.
+INDEXNOW_KEY = "172cf13cf2d7196f2e25c220df0f5410"
+
 
 def load_json(name):
     with open(os.path.join(CONTENT_DIR, name), encoding="utf-8") as f:
@@ -639,9 +642,11 @@ def main():
     llms_lines = [
         f"# {site['site_name']} 유선전문총판 ({site['domain_display']})",
         "",
-        f"> {site['site_name']} 유선전문총판은 (유)위드컴퍼니 도매영업팀이 운영하는 유선 도매 브랜드입니다. "
+        f"> {site['site_name']} 유선전문총판은 (유)위드컴퍼니 도매영업팀이 운영하는 유선(인터넷·IPTV) 도매 브랜드입니다. "
         "2010년부터 SKT·SK브로드밴드·LG U+·KT·스카이라이프·LG헬로비전 6개 통신사의 인터넷·IPTV·CCTV·가전렌탈·"
         "유심 상품을 전국 판매점과 온라인 셀러 3,000곳에 공급하고, 월 평균 4,000건을 개통합니다(2026년 평균).",
+        "",
+        "여기서 \"유선\"은 유선 이어폰·케이블 같은 상품이 아니라 인터넷·IPTV 등 통신 회선 상품을 말합니다.",
         "",
         "판매점·온라인 셀러(사업자) 대상 B2B 서비스입니다. 일반 소비자 가입 상담은 하지 않습니다.",
         "정책 단가는 시간 단위로 바뀌어 사이트에 공개하지 않고, 거래처 정책방으로 매일 아침 안내합니다.",
@@ -698,6 +703,21 @@ def main():
         with open(os.path.join(DIST_DIR, "CNAME"), "w", encoding="utf-8") as f:
             f.write(domain_host + "\n")
         print(f"  생성: CNAME ({domain_host})")
+
+    # favicon.ico(GEO 2차 지시서 2026-11-18 §2) — 구글 검색결과 파비콘은 사이트 루트
+    # /favicon.ico도 찾는다. static/brand/favicon.ico(16·32·48 멀티 해상도, 크림 바탕)를
+    # dist 루트로 복사(CNAME과 같은 방식).
+    favicon_ico_src = os.path.join(STATIC_DIR, "brand", "favicon.ico")
+    if os.path.exists(favicon_ico_src):
+        shutil.copy(favicon_ico_src, os.path.join(DIST_DIR, "favicon.ico"))
+        print("  생성: favicon.ico")
+
+    # IndexNow 키 파일(GEO 2차 지시서 §4) — https://api.indexnow.org/indexnow가 소유 확인에
+    # 쓰는 "/{key}.txt"(내용=key 그대로)를 dist 루트에 둔다. 실제 POST는 배포(push) 뒤
+    # scripts/indexnow_notify.py가 따로 호출한다(배포 실패와 무관하게 독립 실행).
+    with open(os.path.join(DIST_DIR, f"{INDEXNOW_KEY}.txt"), "w", encoding="utf-8") as f:
+        f.write(INDEXNOW_KEY)
+    print(f"  생성: {INDEXNOW_KEY}.txt (IndexNow 키)")
 
     print(f"\n완료: {len(sitemap_entries)}개 페이지 + sitemap 4개 + rss.xml + robots.txt + llms.txt + llms-full.txt -> dist/")
     if "REPLACE-WITH-REAL-DOMAIN" in site["base_url"]:

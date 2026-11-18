@@ -40,6 +40,7 @@
 <meta property="og:title" content="{{ page.title }}">
 <meta property="og:description" content="{{ page.meta_description }}">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="ENTER 유선전문총판">
 <meta property="og:url" content="{{ site.base_url }}/{{ slug }}.html">
 <meta property="og:image" content="{{ site.base_url }}/static/brand/og-default.png">
 <meta property="og:image:width" content="1200">
@@ -48,6 +49,12 @@
 <link rel="icon" href="static/brand/favicon-light.svg" type="image/svg+xml" media="(prefers-color-scheme: light)">
 <link rel="icon" href="static/brand/favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="static/brand/favicon-32.png" type="image/png" sizes="32x32">
+{# 구글 권장: 파비콘은 48px의 배수(GEO 2차 지시서 2026-11-18 §2). 크림(#FBF8F4) 바탕이라
+   검색 결과 흰/어두운 배경 어디서나 잘 보인다. 사이트 루트 /favicon.ico(16·32·48)는
+   build.py가 static/brand/favicon.ico를 복사해서 만든다(링크 불필요, 브라우저 기본 탐색). #}
+<link rel="icon" href="static/brand/favicon-48.png" type="image/png" sizes="48x48">
+<link rel="icon" href="static/brand/favicon-96.png" type="image/png" sizes="96x96">
+<link rel="icon" href="static/brand/favicon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="static/brand/apple-touch-icon.png">
 <link rel="stylesheet" href="static/fonts/pretendard/pretendard-dynamic-subset.css">
 <link rel="stylesheet" href="static/fonts/pretendard/pretendard-fallback.css">
@@ -61,12 +68,17 @@
 {% endif %}
 <link rel="stylesheet" href="static/cursor.css">
 {# A30-1(마케팅 P0 2026-11-10) — site.org의 빈 값(logo·sameAs 등)은 compact 필터가 JSON-LD에서 뺀다. #}
+{# GEO 2차 지시서(2026-11-18) §1 — "유선 도매"가 유선 이어폰·일반 도매몰로 오인되지 않게
+   description·knowsAbout로 업종을 명시. @id는 §2 WebSite 스키마의 publisher가 참조한다. #}
 {% set org_ld = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
+  '@id': site.base_url ~ '/#organization',
   'name': site.site_name,
   'legalName': site.org.legalName,
-  'alternateName': ['엔터', '위드컴퍼니'],
+  'alternateName': ['엔터', '위드컴퍼니', '유선도매.kr', '엔터 유선전문총판'],
+  'description': 'ENTER 유선전문총판은 (유)위드컴퍼니 도매영업팀이 운영하는 통신 유선(인터넷·IPTV·CCTV·가전렌탈·유심) 도매 브랜드입니다. 휴대폰 판매점과 온라인 셀러에게 6개 통신사 유선 정책을 공급하고 접수·개통·정산을 맡습니다.',
+  'knowsAbout': ['유선 도매', '인터넷 도매', 'IPTV 도매', '통신 유선 총판', '판매점 유선 정책', '유선 정산', '휴대폰 판매점 창업'],
   'url': site.base_url ~ '/',
   'telephone': site.phone,
   'foundingDate': site.org.foundingDate,
@@ -77,6 +89,17 @@
   'sameAs': site.org.sameAs
 } %}
 <script type="application/ld+json">{{ org_ld | compact | tojson(indent=2) }}</script>
+{% if slug == 'index' %}
+{% set website_ld = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  'name': 'ENTER 유선전문총판',
+  'alternateName': ['ENTER', '유선도매.kr'],
+  'url': site.base_url ~ '/',
+  'publisher': {'@id': site.base_url ~ '/#organization'}
+} %}
+<script type="application/ld+json">{{ website_ld | tojson(indent=2) }}</script>
+{% endif %}
 {% if slug != 'index' %}
 <script src="static/reveal.js" defer></script>
 <script>
