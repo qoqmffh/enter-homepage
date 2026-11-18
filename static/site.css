@@ -104,7 +104,7 @@ body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; over
    그 바로 아래 "보조 줄"로 남기는 공통 유틸(hp- 토큰 쓰는 모든 페이지 공용). */
 /* color:inherit + opacity(고정 회색 대신) — 어두운 카드(.sp-card/.hp-feature-card) 안에서도
    대비가 죽지 않게, 부모 글자색을 따라가며 옅게만 보이게 한다. */
-.hp-slogan-sub{ display:block; margin-top:8px; font-size:15px; font-weight:400; color:inherit; opacity:.65; }
+.hp-slogan-sub{ display:block; margin-top:8px; font-size:14px; font-weight:400; color:inherit; opacity:.65; }
 
 .hp-pill{ display:inline-flex; align-items:center; justify-content:center; gap:8px; border-radius:var(--radius-btn); padding:12px 24px; font-size:14px; font-weight:600; white-space:nowrap; transition:background-color .15s ease, color .15s ease, border-color .15s ease; }
 .hp-pill-dot{ width:7px; height:7px; border-radius:50%; background:var(--hp-green); flex:0 0 auto; }
