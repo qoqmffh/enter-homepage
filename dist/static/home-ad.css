@@ -31,15 +31,34 @@ html.ad-pending .hp-header .hp-header-tel:hover{ color:#F2A16E; }
 .hp-nav .hp-replay-link{ margin-left:8px; }
 
 /* ---------- 광고 무대 ---------- */
+/* 인트로 고급화 지시서(2026-11-19) §2-1 — 단색 검정(--hp-black, 푸른기 도는 #0B0D12) 대신
+   따뜻한 검정 라디얼 그라데이션(중심 #1A1310 -> 가장자리 #090706) + 가장자리 비네트.
+   그레인(.hp-ad-grain, home.html)은 별도 레이어로 opacity .035, 정적. 장면 문구 색은
+   --hp-white(사이트 전역 크림, #FBF8F4) 대신 이 무대 전용 --hp-ad-ivory로 스코프해서 쓴다 —
+   전역 토큰은 건드리지 않는다. */
 .hp-ad-stage{
   display:none;
   position:fixed; inset:0; z-index:30;
-  background:var(--hp-black); overflow:hidden; isolation:isolate;
+  --hp-ad-ivory:#F3EBE2;
+  background-image:
+    radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 40%, rgba(0,0,0,.45) 100%),
+    radial-gradient(circle at 50% 50%, #1A1310 0%, #090706 100%);
+  background-color:#090706;
+  overflow:hidden; isolation:isolate;
 }
 html.ad-pending .hp-ad-stage{ display:block; }
 
 .hp-ad-canvas{ position:absolute; inset:0; z-index:1; display:block; width:100%; height:100%; opacity:0; transition:opacity 1s ease; }
 .hp-ad-stage--sky .hp-ad-canvas{ opacity:1; }
+
+/* 필름 그레인 — SVG feTurbulence + feColorMatrix(saturate 0)로 완전히 무채색 노이즈를
+   만든 뒤 opacity .035만 입힌다(움직이지 않는 정적 텍스처, 배경 B>R 금지 규칙과 무관하게
+   항상 회색조). 캔버스(z-index 1)보다 위, 글자 오버레이(z-index 2)보다 아래. */
+.hp-ad-grain{
+  position:absolute; inset:0; z-index:1; pointer-events:none; opacity:.035;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size:180px 180px;
+}
 
 /* ---------- 인트로 로고 (효과 없음: 페이드인 -> 머묾 -> 페이드아웃) ---------- */
 .hp-ad-intro{
@@ -48,7 +67,7 @@ html.ad-pending .hp-ad-stage{ display:block; }
 }
 .hp-ad-intro-logo{ height:44px; width:auto; opacity:0; transition:opacity .7s ease; display:block; }
 .hp-ad-intro-sub{
-  margin-top:14px; font-size:14px; color:rgba(255,255,250,.6); letter-spacing:.14em;
+  margin-top:14px; font-size:14px; color:rgba(243,235,226,.6); letter-spacing:.14em;
   opacity:0; transition:opacity .7s ease;
 }
 .hp-ad-intro--in .hp-ad-intro-logo, .hp-ad-intro--in .hp-ad-intro-sub{ opacity:1; }
@@ -61,7 +80,7 @@ html.ad-pending .hp-ad-stage{ display:block; }
 
 .hp-ad-line{
   position:absolute; margin:0; max-width:80vw; font-weight:800; letter-spacing:-.02em;
-  line-height:1; color:var(--hp-white); opacity:0; will-change:opacity, transform;
+  line-height:1; color:var(--hp-ad-ivory); opacity:0; will-change:opacity, transform;
 }
 .hp-ad-line--1{ top:20%; left:6%; font-size:40px; }
 .hp-ad-line--2{ bottom:26%; right:6%; text-align:right; font-size:40px; }
@@ -71,27 +90,27 @@ html.ad-pending .hp-ad-stage{ display:block; }
 
 .hp-ad-scene--s2{ display:flex; align-items:center; justify-content:flex-end; }
 .hp-ad-s2-box{ position:absolute; right:6%; top:50%; transform:translateY(-50%); text-align:right; opacity:0; will-change:opacity, transform; max-width:70vw; }
-.hp-ad-s2-kpi{ margin:0; font-size:30px; font-weight:800; letter-spacing:-.02em; color:var(--hp-white); }
+.hp-ad-s2-kpi{ margin:0; font-size:30px; font-weight:800; letter-spacing:-.02em; color:var(--hp-ad-ivory); }
 .hp-ad-s2-kpi b{ color:#F2A16E; font-weight:800; }
-.hp-ad-s2-note{ margin:10px 0 0; font-size:12px; color:rgba(255,255,250,.6); opacity:0; }
+.hp-ad-s2-note{ margin:10px 0 0; font-size:12px; color:rgba(243,235,226,.6); opacity:0; }
 
 .hp-ad-center{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); text-align:center; }
-.hp-ad-s3-label, .hp-ad-s4-label{ margin:0 0 6px; font-size:16px; font-weight:600; color:rgba(255,255,250,.6); letter-spacing:-.01em; opacity:0; }
-.hp-ad-s3-big, .hp-ad-s4-big{ margin:0; font-size:72px; font-weight:800; line-height:1; color:var(--hp-white); opacity:0; will-change:opacity, transform; }
+.hp-ad-s3-label, .hp-ad-s4-label{ margin:0 0 6px; font-size:16px; font-weight:600; color:rgba(243,235,226,.6); letter-spacing:-.01em; opacity:0; }
+.hp-ad-s3-big, .hp-ad-s4-big{ margin:0; font-size:72px; font-weight:800; line-height:1; color:var(--hp-ad-ivory); opacity:0; will-change:opacity, transform; }
 .hp-ad-s3-big b, .hp-ad-s4-big b{ color:#F2A16E; }
 .hp-ad-s4-big.hp-ad-done b{ color:#F2A16E; }
 .hp-ad-s3-big i, .hp-ad-s4-big i{ font-style:normal; font-size:34px; margin-left:6px; }
-.hp-ad-s4-note{ margin:14px 0 0; font-size:13px; color:rgba(255,255,250,.6); opacity:0; }
+.hp-ad-s4-note{ margin:14px 0 0; font-size:13px; color:rgba(243,235,226,.6); opacity:0; }
 
 .hp-ad-carriers{ position:absolute; inset:0; }
 .hp-ad-carrier{
   position:absolute; left:50%; top:50%; margin:0; white-space:nowrap;
-  font-size:32px; font-weight:800; letter-spacing:-.02em; color:var(--hp-white);
+  font-size:32px; font-weight:800; letter-spacing:-.02em; color:var(--hp-ad-ivory);
   opacity:0; transform:translate(-50%,-50%); will-change:opacity, transform, filter;
 }
-.hp-ad-slogan{ position:absolute; left:0; right:0; bottom:14%; text-align:center; margin:0; font-size:15px; font-weight:500; letter-spacing:.06em; color:rgba(255,255,250,.6); opacity:0; }
+.hp-ad-slogan{ position:absolute; left:0; right:0; bottom:14%; text-align:center; margin:0; font-size:15px; font-weight:500; letter-spacing:.06em; color:rgba(243,235,226,.6); opacity:0; }
 
-.hp-ad-end-line1{ margin:0; font-size:36px; font-weight:800; letter-spacing:-.02em; color:var(--hp-white); opacity:0; }
+.hp-ad-end-line1{ margin:0; font-size:36px; font-weight:800; letter-spacing:-.02em; color:var(--hp-ad-ivory); opacity:0; }
 .hp-ad-end-line2{ margin:12px 0 0; font-size:17px; font-weight:600; color:#3a3f48; opacity:0; }
 .hp-ad-end-btns{
   margin:22px auto 0; display:flex; justify-content:center; flex-wrap:wrap; gap:12px;
@@ -102,9 +121,11 @@ html.ad-pending .hp-ad-stage{ display:block; }
 .hp-ad-btn--ghost{ background:transparent; color:var(--hp-white); border:1.5px solid var(--hp-white); cursor:pointer; font-family:inherit; }
 
 /* ---------- 장면 진행 표시(점 6개) + 하단 진행 막대 ---------- */
+/* 인트로 고급화 지시서(2026-11-19) §2-6 — 순백 대신 웜 아이보리, opacity도 살짝 낮춘다.
+   활성 점은 그대로 주황이지만 확대 배율은 1.6 -> 1.3으로 줄인다. */
 .hp-ad-dots{ position:absolute; right:22px; top:50%; transform:translateY(-50%); z-index:3; display:flex; flex-direction:column; gap:10px; }
-.hp-ad-dot{ width:5px; height:5px; border-radius:50%; background:rgba(255,255,250,.25); transition:background .3s ease, transform .3s ease; }
-.hp-ad-dot--active{ background:#F2A16E; transform:scale(1.6); }
+.hp-ad-dot{ width:5px; height:5px; border-radius:50%; background:rgba(243,235,226,.18); transition:background .3s ease, transform .3s ease; }
+.hp-ad-dot--active{ background:#F2A16E; transform:scale(1.3); }
 
 .hp-ad-progress{ position:absolute; left:0; right:0; bottom:0; z-index:3; height:2px; background:rgba(255,255,250,.12); }
 .hp-ad-progress-fill{ display:block; width:100%; height:100%; background:#F2A16E; transform:scaleX(0); transform-origin:left; }
@@ -148,13 +169,15 @@ html.ad-pending .hp-ad-stage{ display:block; }
   60%{ transform:translateX(-50%) translateY(2px); }
 }
 
+/* 인트로 고급화 지시서(2026-11-19) §2-6 — 스크롤 안내 아이콘의 흰 점(정확히는 DOM 요소,
+   캔버스 입자가 아니다)도 웜 아이보리 + 낮은 opacity로. */
 .hp-ad-scroll-hint-mouse{
-  width:22px; height:34px; border-radius:11px; border:1.5px solid rgba(255,255,250,.9);
+  width:22px; height:34px; border-radius:11px; border:1.5px solid rgba(243,235,226,.6);
   position:relative; box-sizing:border-box;
 }
 .hp-ad-scroll-hint-dot{
   position:absolute; left:50%; top:6px; width:3px; height:6px; border-radius:1.5px;
-  background:rgba(255,255,250,.9); transform:translateX(-50%);
+  background:rgba(243,235,226,.6); transform:translateX(-50%);
   animation:hpAdScrollHintDot 1.6s ease infinite;
 }
 @keyframes hpAdScrollHintDot{
@@ -163,9 +186,9 @@ html.ad-pending .hp-ad-stage{ display:block; }
 }
 
 .hp-ad-scroll-hint-touch-icon{
-  display:none; font-size:22px; line-height:1; color:rgba(255,255,250,.9);
+  display:none; font-size:22px; line-height:1; color:rgba(243,235,226,.6);
 }
-.hp-ad-scroll-hint-label{ font-size:12px; color:rgba(255,255,250,.7); letter-spacing:.04em; white-space:nowrap; }
+.hp-ad-scroll-hint-label{ font-size:12px; color:rgba(243,235,226,.55); letter-spacing:.04em; white-space:nowrap; }
 .hp-ad-scroll-hint-label--touch{ display:none; }
 
 /* 모바일·터치 기기: 마우스 휠 아이콘 대신 위로 쓸어 올리는 화살표 */
