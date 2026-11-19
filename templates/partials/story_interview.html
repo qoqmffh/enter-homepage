@@ -1,0 +1,54 @@
+{# 거래처이야기4건_홈추가 지시서(2026-11-19) — 질문 카드(왼쪽, sticky) + 답변 카드 스택(오른쪽)
+   인터뷰 블록. stories.html과 why.html(홈 #voices)이 이 매크로 하나를 같이 쓴다(복붙 금지).
+
+   인자:
+   - quotes: 보여줄 인용 리스트(이미 원하는 순서로 정렬된 상태로 넘긴다)
+   - questions: 전체 질문 4개([{n, text, short}, ...])
+   - limit: 정수면 quotes를 그만큼만 자른다. None이면 전부.
+   - more_link: 있으면 답변 카드 스택 아래에 "모두 보기" 링크를 둔다(홈 전용).
+   - interview_note: 조사 방법 한 줄(질문 카드 하단).
+
+   질문 번호 매칭은 data-questions(답변 카드)/data-q-trigger(질문 목록)로 JS(static/story-interview.js)가
+   읽는다 — 로컬(이 호출의 quotes)에 매치가 없으면 more_link를 강조하는 분기도 JS가 런타임에 판단한다
+   (사이트 전체 기준 "답이 아예 없는 질문"인지만 여기서 미리 계산해서 .is-muted로 표시한다). #}
+{% macro render(quotes, questions, limit=none, more_link=none, interview_note=none) %}
+{% set shown = quotes[:limit] if limit else quotes %}
+{% set answered_nums = [] %}
+{% for q in quotes %}{% for n in q.q %}{% if n not in answered_nums %}{% set _ = answered_nums.append(n) %}{% endif %}{% endfor %}{% endfor %}
+<div class="story-interview">
+  <div class="story-question-col">
+    <div class="story-question-card" data-reveal>
+      <p class="story-question-title">같은 질문 4개를 드렸습니다</p>
+      <ol class="story-question-list" data-story-questions>
+        {% for ques in questions %}
+        {% set is_muted = ques.n not in answered_nums %}
+        <li class="story-question-item{% if is_muted %} is-muted{% endif %}"{% if not is_muted %} data-q-trigger="{{ ques.n }}" role="button" tabindex="0"{% endif %}>
+          <span class="story-question-num">Q{{ ques.n }}</span>
+          <span class="story-question-text">{{ ques.text }}</span>
+        </li>
+        {% endfor %}
+      </ol>
+      {% if interview_note %}<p class="story-question-method">조사 방법 · {{ interview_note }}</p>{% endif %}
+    </div>
+  </div>
+  <div class="story-answers-col">
+    <div class="story-answers" data-story-answers>
+      {% for q in shown %}
+      <div class="story-answer-card" data-reveal data-stagger-step="0.12" data-questions="{{ q.q | join(',') }}">
+        {% set tag_parts = [] %}{% for n in q.q %}{% set _ = tag_parts.append('Q' ~ n) %}{% endfor %}
+        <p class="story-answer-tag">{% if q.q | length == 1 %}Q{{ q.q[0] }} · {{ questions[q.q[0] - 1].short }}{% else %}{{ tag_parts | join('·') }}{% endif %}</p>
+        <p class="story-answer-mark" aria-hidden="true">&ldquo;</p>
+        <div class="story-answer-body">
+          {% for line in q.lines %}<p>{{ line | highlight(q.highlight) }}</p>{% endfor %}
+        </div>
+        <div class="story-answer-foot">
+          <svg class="story-source-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l1.2-4.5A1.5 1.5 0 0 1 5.65 3.4h12.7a1.5 1.5 0 0 1 1.45 1.1L21 9"/><path d="M4 9v10a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"/><path d="M9 20v-5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v5"/><path d="M3 9a2.2 2.2 0 0 0 4.2 1 2.2 2.2 0 0 0 4 0 2.2 2.2 0 0 0 4 0 2.2 2.2 0 0 0 4.2-1"/></svg>
+          <span>{{ q.who }} · {{ q.since }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% if more_link %}<a class="story-more-link" href="{{ more_link }}" data-story-more>대표님 4분의 답 모두 보기 →</a>{% endif %}
+  </div>
+</div>
+{% endmacro %}
