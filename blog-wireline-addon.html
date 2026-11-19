@@ -117,6 +117,9 @@
 <script src="static/floatnav.js?v=c0dfdd6f" defer></script>
 
 
+<link rel="stylesheet" href="static/sub.css?v=baf6ab67">
+<link rel="stylesheet" href="static/article.css?v=09f3cee3">
+<script src="static/post-interactions.js?v=350896d6" defer></script>
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -624,39 +627,48 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 <main>
 
-<section style="padding-top:28px">
-  <div class="wrap">
+
+<div class="post-progress" data-post-progress aria-hidden="true"></div>
+
+<section class="post-head post-block">
+  <div class="article-wrap">
     
 <nav class="breadcrumb" aria-label="브레드크럼">
   <a href="index.html">홈</a><span aria-hidden="true">›</span><a href="blog.html">블로그</a><span aria-hidden="true">›</span><span aria-current="page">휴대폰 판매점 인터넷·TV 겸업, 매출이 어떻게 달라지나</span>
 </nav>
 
-    <div class="eyebrow">블로그 · 창업</div>
+    <p class="post-category">블로그 · 창업</p>
     <h1>휴대폰 판매점 인터넷·TV 겸업, 매출이 어떻게 달라지나</h1>
-    <p class="post-date page-basis-date">기준일 2026년 11월 13일 · ENTER 영업지원팀 확인</p>
+    <div class="post-byline">
+      <div class="post-byline-id">
+        <span class="post-logo-mark"><img src="static/brand/favicon-dark.svg" width="18" height="18" alt="" aria-hidden="true"></span>
+        <span>
+          <span class="post-byline-name">ENTER 영업지원팀</span>
+          <span class="post-byline-date">2026. 11. 13. · 기준일 확인</span>
+        </span>
+      </div>
+      <button type="button" class="post-copy-btn" data-copy-link>링크 복사<span class="post-copy-toast">복사됨</span></button>
+    </div>
+    <hr class="post-divider">
     <p class="lead"><strong>휴대폰 손님에게 인터넷·TV까지 함께 접수하면(동시판매), 같은 손님에게서 수익이 하나 더 생깁니다.</strong> 특히 <a href="glossary.html#wired" class="glossary-term-link">유선</a>을 다른 곳에 넘기지 않고 <a href="glossary.html#wholesale" class="glossary-term-link">도매</a>로 직접 접수하면, 500메가+TV 1건 기준 건당 약 40만 원이 차이 납니다.</p>
     <div class="basis-box"><strong>이 글의 기준</strong> · 금액은 2026년 평균, 500메가 인터넷 + TV 베이직 상품 기준 · 실제 금액은 통신사·시기별 <a href="glossary.html#policy" class="glossary-term-link">정책</a>에 따라 달라집니다.</div>
   </div>
 </section>
 
+<section class="post-block">
+  <div class="article-wrap post-body">
+    
 
-
-
-
-<section>
-  <div class="wrap">
+    
+    
     <h2>동시판매(동판)가 뭔가요?</h2>
     
       
       <p>손님 한 명에게 휴대폰과 인터넷·IPTV를 함께 판매하는 것을 동시판매, 줄여서 &#39;동판&#39;이라고 부릅니다. 상담 한 번으로 두 가지를 같이 처리하는 셈입니다.</p>
       
     
-  </div>
-</section>
-
-
-<section>
-  <div class="wrap">
+    
+    
     <h2>유선을 직접 처리하면 얼마나 달라지나요?</h2>
     
       
@@ -678,12 +690,8 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       <p>같은 손님, 같은 개수를 처리해도 유선을 누가 처리하느냐에 따라 매장 수익이 달라지는 이유입니다.</p>
       
     
-  </div>
-</section>
-
-
-<section>
-  <div class="wrap">
+    
+    
     <h2>어떤 손님에게 인터넷·TV를 같이 안내하나요?</h2>
     
       
@@ -694,71 +702,102 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       <div class="mid-cta"><p>동판 정책이 궁금하다면 오늘 유선 정책표를 먼저 받아 보세요</p><a class="btn btn-primary" href="#lead" data-lead-trigger>오늘 정책표 받아보기</a></div>
       
     
-  </div>
-</section>
-
-
-<section>
-  <div class="wrap">
+    
+    
     <h2>자주 묻는 질문</h2>
     
       
-      <div class="faq-list">
+      <div>
         
-        <div class="faq-item"><p class="faq-q">유선 상품 설명이 어려워서 못 하겠어요.</p><p class="faq-a">처음엔 결합 할인과 설치 일정 두 가지만 안내해도 충분합니다. 모르는 것은 거래처 담당자에게 바로 물어볼 수 있는지가 중요합니다.</p></div>
+        <details class="sp-faq-item" data-reveal open>
+          <summary>유선 상품 설명이 어려워서 못 하겠어요.</summary>
+          <div class="sp-faq-body">처음엔 결합 할인과 설치 일정 두 가지만 안내해도 충분합니다. 모르는 것은 거래처 담당자에게 바로 물어볼 수 있는지가 중요합니다.</div>
+        </details>
         
-        <div class="faq-item"><p class="faq-q">휴대폰 거래처와 유선 거래처를 따로 둬도 되나요?</p><p class="faq-a">됩니다. 휴대폰은 기존 거래처에서, 유선은 유선 전문 거래처에서 받는 판매점도 많습니다.</p></div>
+        <details class="sp-faq-item" data-reveal>
+          <summary>휴대폰 거래처와 유선 거래처를 따로 둬도 되나요?</summary>
+          <div class="sp-faq-body">됩니다. 휴대폰은 기존 거래처에서, 유선은 유선 전문 거래처에서 받는 판매점도 많습니다.</div>
+        </details>
         
       </div>
       
     
-  </div>
-</section>
+    
 
+    
 
-
-
-<section>
-  <div class="wrap">
     <p class="tagline">같은 개수를 팔아도, <strong>유선을 누가 처리하느냐</strong>에 따라 매장의 수익이 달라집니다.</p>
   </div>
 </section>
 
-
-<section>
-  <div class="wrap">
+<section class="post-block">
+  <div class="article-wrap">
+    
+    
+    <div class="post-tags">
+      <a class="post-tag" href="blog.html">#동시판매</a><a class="post-tag" href="blog.html">#인터넷·TV 겸업</a><a class="post-tag" href="blog.html">#매출</a>
+    </div>
     
 
-<div class="related-block" style="margin-top:64px">
-  <h3>함께 보면 좋은 글</h3>
-  <div class="related-cards">
     
-    <a class="related-card" href="blog-startup-cost.html">
-      <span class="related-card-cat">블로그</span>
-      <span class="related-card-title">휴대폰 판매점 창업 비용, 어디에 들고 어디서 버나</span>
-      <span class="related-card-summary">창업 비용은 보증금·인테리어·전산·초기 운영비로 나눠 계산하고, 인테리어보다 전산을 먼저 갖추세요. 같은 비용으로 더 남기려면 정책과 유선 접수가 열쇠입니다.</span>
-      <span class="related-card-foot">읽기 →</span>
-    </a>
+    <div class="post-author-box">
+      <span class="post-logo-mark"><img src="static/brand/favicon-dark.svg" width="20" height="20" alt="" aria-hidden="true"></span>
+      <span>
+        <span class="post-author-name">ENTER 영업지원팀</span>
+        <p class="post-author-bio">영업지원팀 팀장 · 통신 유통 10년 차. <a href="editorial.html">편집 원칙 →</a></p>
+      </span>
+    </div>
     
-    <a class="related-card" href="products.html">
-      <span class="related-card-cat">정보</span>
-      <span class="related-card-title">유선은 한 곳에서</span>
-      
-      <span class="related-card-foot">읽기 →</span>
-    </a>
-    
-    <a class="related-card" href="blog-wired-maejip.html">
-      <span class="related-card-cat">블로그</span>
-      <span class="related-card-title">유선 매집이란? 매집 딜러와 정식 유선 도매의 차이</span>
-      <span class="related-card-summary">'모아서 넘긴다'는 같아도, 책임지는 범위가 다릅니다 — 정식 등록 여부부터 확인하세요.</span>
-      <span class="related-card-foot">읽기 →</span>
-    </a>
-    
-  </div>
-</div>
 
+    
+    
+    
+    
+    
+    <div class="post-nav">
+      <a class="post-nav-link" href="blog-dealer-reseller-summary.html"><span class="post-nav-dir">← 이전 글</span><span class="post-nav-title">대리점 판매점 차이, 창업한다면 어느 쪽으로 시작할까</span></a>
+      <a class="post-nav-link post-nav-link--next" href="blog-startup-cost.html"><span class="post-nav-dir">다음 글 →</span><span class="post-nav-title">휴대폰 판매점 창업 비용, 어디에 들고 어디서 버나</span></a>
+    </div>
+    
 
-<div style="margin-top:48px">
+    
+    
+    
+    <div class="post-more">
+      <p class="post-more-title">블로그의 다른 글</p>
+      <div class="post-more-list">
+        
+        <a class="post-more-row" href="blog-wired-maejip.html">
+          <span class="post-more-row-title">유선 매집이란? 매집 딜러와 정식 유선 도매의 차이</span>
+          <span class="post-more-row-date">2026. 11. 18.</span>
+        </a>
+        
+        <a class="post-more-row" href="blog-wired-unit-price.html">
+          <span class="post-more-row-title">유선 단가는 왜 매일 바뀔까? 유선 정책 단가 구조</span>
+          <span class="post-more-row-date">2026. 11. 18.</span>
+        </a>
+        
+        <a class="post-more-row" href="blog-wired-wholesale-checklist.html">
+          <span class="post-more-row-title">유선 도매업체 추천 받기 전에, 판매점이 확인할 7가지</span>
+          <span class="post-more-row-date">2026. 11. 18.</span>
+        </a>
+        
+        <a class="post-more-row" href="blog-online-phone-store-startup.html">
+          <span class="post-more-row-title">온라인 휴대폰 판매점 창업, 매장 없이 시작해도 될까</span>
+          <span class="post-more-row-date">2026. 11. 10.</span>
+        </a>
+        
+        <a class="post-more-row" href="blog-online-seller-registration.html">
+          <span class="post-more-row-title">통신판매업신고 방법 — 온라인 셀러가 처음 막히는 곳</span>
+          <span class="post-more-row-date">2026. 10. 22.</span>
+        </a>
+        
+      </div>
+    </div>
+    
+
+    
+<div style="margin-top:40px">
   
 
 <p class="confirm-box-text">이 페이지의 숫자와 절차는 ENTER 영업지원팀이 사내 <a href="glossary.html#settlement" class="glossary-term-link">정산</a> 기록·접수 기록과 통신사 공식 안내를 대조해 확인합니다. <a class="confirm-box-link" href="editorial.html">편집 원칙 →</a></p>
@@ -768,25 +807,14 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 </section>
 
 
-<section>
-  <div class="wrap">
+<section class="post-block">
+  <div class="article-wrap">
     <div class="final-cta">
       <p>동시판매로 매장 수익을 늘리고 싶다면</p>
       <div class="final-cta-actions">
         <a class="btn btn-tel" href="tel:01022224183">전화 010-2222-4183</a>
         <a class="btn btn-primary" href="#lead" data-lead-trigger>정책 받기 신청</a>
       </div>
-    </div>
-  </div>
-</section>
-
-
-
-<section>
-  <div class="wrap">
-    <div class="author-box">
-      <span class="author-name">박태준</span>
-      <span class="author-title">영업지원팀 팀장 · 통신 유통 10년 차</span>
     </div>
   </div>
 </section>
