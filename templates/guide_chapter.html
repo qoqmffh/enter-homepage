@@ -4,6 +4,9 @@
 {% set author = (site.authors | selectattr('id', 'equalto', page.author) | first) if page.author else none %}
 {% set crumb_items = [{'label': '홈', 'href': 'index.html'}, {'label': '창업자 가이드', 'href': 'startup.html'}, {'label': page.h1, 'href': slug ~ '.html'}] %}
 {% block extra_head %}
+<link rel="stylesheet" href="static/article.css">
+{# 디자인 완성 지시서(2026-11-19) Phase 4 — blog_post.html과 본문 스타일(타이포·표·박스·
+   CTA·작성자 박스)을 공유한다(static/article.css, .article-wrap/.post-category 등 공용 클래스). #}
 <script type="application/ld+json">{{ crumb_items | breadcrumb_ld(site.base_url) | tojson(indent=2) }}</script>
 {# A30-2(마케팅 P0 2026-11-10) — 가이드는 BlogPosting이 아니라 일반 Article. #}
 {% set article_ld = {
@@ -20,19 +23,20 @@
 <script type="application/ld+json">{{ article_ld | compact | tojson(indent=2) }}</script>
 {% endblock %}
 {% block content %}
-<section style="padding-top:28px">
-  <div class="wrap">
+<section class="post-head post-block">
+  <div class="article-wrap">
     {{ bc_mod.render(crumb_items) }}
-    <div class="eyebrow">{{ page.eyebrow }}</div>
+    {% if page.eyebrow %}<p class="post-category">{{ page.eyebrow }}</p>{% endif %}
     <h1>{{ page.h1 }}</h1>
     {% if date_modified %}<p class="post-date page-basis-date">기준일 {{ date_modified | date_fmt_kr }} · ENTER 영업지원팀 확인</p>{% endif %}
+    <hr class="post-divider">
     <p class="lead">{{ page.intro }}</p>
   </div>
 </section>
 
 {% if page.concept_body %}
-<section>
-  <div class="wrap">
+<section class="post-block">
+  <div class="article-wrap">
     <h2>{{ page.concept_heading }}</h2>
     {% for p in page.concept_body %}<p>{{ p }}</p>{% endfor %}
   </div>
@@ -40,8 +44,8 @@
 {% endif %}
 
 {% if page.compare_table %}
-<section>
-  <div class="wrap">
+<section class="post-block">
+  <div class="article-wrap">
     <div class="table-scroll">
       <table>
         <thead><tr>{% for cell in page.compare_table[0] %}<th>{{ cell }}</th>{% endfor %}</tr></thead>
@@ -57,8 +61,8 @@
 {% endif %}
 
 {% if page.criteria_cards %}
-<section>
-  <div class="wrap">
+<section class="post-block">
+  <div class="article-wrap">
     <div class="cards">
       {% for c in page.criteria_cards %}
       <div class="card" data-reveal><div style="font-size:22px; margin-bottom:6px">{{ c.icon }}</div><h3>{{ c.title }}</h3><p>{{ c.text }}</p></div>
@@ -69,8 +73,8 @@
 {% endif %}
 
 {% if page.docs %}
-<section>
-  <div class="wrap">
+<section class="post-block">
+  <div class="article-wrap">
     <h2>{{ page.doc_section_title }}</h2>
     <div class="doc-grid">
       {% for d in page.docs %}
@@ -82,8 +86,8 @@
 {% endif %}
 
 {% if page.checklist %}
-<section>
-  <div class="wrap">
+<section class="post-block">
+  <div class="article-wrap">
     {% if page.checklist_section_heading %}<h2>{{ page.checklist_section_heading }}</h2>{% endif %}
     <div class="icon-steps">
       {% for c in page.checklist %}
@@ -98,8 +102,8 @@
    맞출 수 없어서, 모든 챕터가 공통으로 갖는 자리인 "자주 하는 실수" 섹션 앞(본문 중간)을
    고정 삽입 지점으로 썼다. #}
 {% if page.cta_mid %}
-<section>
-  <div class="wrap">
+<section class="post-block">
+  <div class="article-wrap">
     <div class="mid-cta">
       <p>{{ page.cta_mid.text }}</p>
       <a class="btn btn-primary" href="#lead" data-lead-trigger>{{ page.cta_mid.button }}</a>
@@ -109,8 +113,8 @@
 {% endif %}
 
 {% if page.mistake_body %}
-<section>
-  <div class="wrap">
+<section class="post-block">
+  <div class="article-wrap">
     <h2>{{ page.mistake_heading }}</h2>
     <p>{{ page.mistake_body }}</p>
   </div>
@@ -118,8 +122,8 @@
 {% endif %}
 
 {% if page.checkpoint_items %}
-<section>
-  <div class="wrap">
+<section class="post-block">
+  <div class="article-wrap">
     <h2>{{ page.checkpoint_heading }}</h2>
     <ul class="doclist">
       {% for c in page.checkpoint_items %}<li data-reveal>{{ c }}</li>{% endfor %}
@@ -128,8 +132,8 @@
 </section>
 {% endif %}
 
-<section>
-  <div class="wrap">
+<section class="post-block">
+  <div class="article-wrap">
     {% if page.summary %}<p class="tagline">{{ page.summary }}</p>{% endif %}
 
     {% if page.next_slug %}
@@ -150,11 +154,14 @@
 </section>
 
 {% if author %}
-<section>
-  <div class="wrap">
-    <div class="author-box">
-      <span class="author-name">{{ author.name }}</span>
-      <span class="author-title">{{ author.title }}{% if author.career %} · {{ author.career }}{% endif %}</span>
+<section class="post-block">
+  <div class="article-wrap">
+    <div class="post-author-box">
+      <span class="post-logo-mark"><img src="static/brand/favicon-dark.svg" width="20" height="20" alt="" aria-hidden="true"></span>
+      <span>
+        <span class="post-author-name">ENTER 영업지원팀</span>
+        <p class="post-author-bio">{{ author.title }}{% if author.career %} · {{ author.career }}{% endif %}. <a href="editorial.html">편집 원칙 →</a></p>
+      </span>
     </div>
   </div>
 </section>

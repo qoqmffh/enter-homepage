@@ -1,0 +1,130 @@
+/* 디자인 완성 지시서(2026-11-19) Phase 4 — 블로그 글(blog_post.html)·가이드(guide_chapter.html)
+   공용 본문 스타일. 네이버 블로그 본문 양식(좁은 폭·작성자 줄·인용구·태그·같은 카테고리 목록)을
+   참고하되 톤은 사이트 고정 팔레트만 쓴다. .wrap(common.css, 1040px + 세로 격자선)을 안 쓰고
+   이 전용 wrap으로 바꿔서, 본문 뒤 격자선 문제를 애초에 만들지 않는다(그리드 레일은 common.css
+   주석대로 홈·에디토리얼 페이지 전용 장식으로 남겨 둔다). */
+
+.article-wrap{ max-width:720px; margin:0 auto; padding:0 20px; }
+/* common.css의 전역 section{padding:40px 0; border-bottom:1px solid var(--line)} 규칙을 끈다 —
+   블록마다 40+40=80px 여백과 옅은 가로줄이 깔려서, 이 안의 각 요소에 직접 준 margin과
+   겹쳐 "섹션마다 여백이 제각각"(§0-1)·"의미 없는 선"(§0-5)이 됐었다. 이 파일의 컴포넌트
+   margin만으로 위아래 간격을 정한다. */
+.post-block{ padding:0; border-bottom:0; }
+.post-block + .post-block{ margin-top:40px; } /* 안쪽 첫 요소가 더 큰 margin-top(h2 64px 등)을 가지면 그쪽으로 겹쳐 접힌다 */
+
+/* ---------- 상단: 브레드크럼 · 카테고리 · 제목 · 작성자 줄 ---------- */
+.post-head{ padding-top:28px; }
+.post-category{ font-size:13px; font-weight:700; color:var(--hp-accent); margin:16px 0 8px; }
+.article-wrap h1{ font-size:34px; font-weight:800; line-height:1.35; letter-spacing:-.01em; color:var(--hp-ink); margin:0 0 20px; word-break:keep-all; }
+
+.post-byline{ display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+.post-byline-id{ display:flex; align-items:center; gap:12px; }
+.post-logo-mark{ width:36px; height:36px; border-radius:50%; background:var(--hp-brown); display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
+.post-logo-mark svg{ width:18px; height:18px; }
+.post-byline-name{ display:block; font-size:14px; font-weight:700; color:var(--hp-ink); }
+.post-byline-date{ display:block; font-size:13px; color:var(--hp-grey); margin-top:2px; }
+.post-copy-btn{ font-family:inherit; font-size:13px; font-weight:600; color:var(--hp-ink); background:var(--hp-white); border:1px solid var(--hp-line); border-radius:var(--radius-btn); padding:9px 16px; cursor:pointer; flex:0 0 auto; position:relative; transition:border-color .15s ease; }
+.post-copy-btn:hover{ border-color:var(--hp-accent); }
+.post-copy-toast{ position:absolute; top:calc(100% + 8px); right:0; background:var(--hp-ink); color:var(--hp-white); font-size:12px; font-weight:600; padding:6px 12px; border-radius:var(--radius-btn); white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .2s ease; }
+.post-copy-toast.is-shown{ opacity:1; }
+
+.post-divider{ border:0; border-top:1px solid var(--hp-line); margin:24px 0 40px; }
+
+/* ---------- 리드 + 근거(네이버 인용구 스타일) ---------- */
+.article-wrap .lead{ font-size:18px; line-height:1.7; color:var(--hp-ink); margin:0; }
+.article-wrap .basis-box{ margin:20px 0 0; padding:14px 16px; border:0; border-left:3px solid var(--hp-accent); border-radius:0 8px 8px 0; background:#FBEFE6; font-size:14px; line-height:1.6; color:var(--hp-ink); }
+
+/* ---------- 본문 타이포 ----------
+   blog_post.html은 본문 전체가 .post-body 하나(+JS 읽기 진행률 측정 기준)로 묶이지만,
+   guide_chapter.html은 챕터 콘텐츠 모양이 페이지마다 달라 섹션마다 .article-wrap이 따로
+   있다 — 그래서 선택자는 .post-body 없이 .article-wrap 바로 아래로 둬서 두 템플릿이
+   그대로 공유한다. */
+.article-wrap{ margin-top:0; }
+.article-wrap > p, .post-body > p{ font-size:16.5px; line-height:1.85; color:#1F1A17; margin:0 0 1.2em; }
+.article-wrap h2{ font-size:22px; font-weight:800; color:var(--hp-ink); letter-spacing:-.01em; margin:64px 0 16px; word-break:keep-all; }
+.article-wrap h3{ font-size:18px; font-weight:700; color:var(--hp-ink); margin:40px 0 12px; word-break:keep-all; }
+.post-head + section .article-wrap > *:first-child{ margin-top:0; }
+.article-wrap .ul-list, .article-wrap .ol-list{ padding-left:20px; margin:0 0 1.2em; font-size:16.5px; line-height:1.85; color:#1F1A17; }
+.article-wrap .ul-list li, .article-wrap .ol-list li{ margin-bottom:6px; }
+.article-wrap > p a, .post-body a{ color:var(--hp-accent); text-decoration:underline; text-underline-offset:2px; }
+
+/* ---------- 표: 헤더 연살구, 세로선 없음, 모바일 스크롤+페이드 ---------- */
+.article-wrap table{ width:100%; border-collapse:collapse; margin:16px 0; font-size:14px; }
+.article-wrap table th{ background:#FBEFE6; text-align:left; font-weight:700; color:var(--hp-ink); padding:14px 16px; white-space:normal; }
+.article-wrap table td{ text-align:left; padding:14px 16px; border-bottom:1px solid var(--hp-line); color:#1F1A17; white-space:normal; }
+.article-wrap table td:first-child, .article-wrap table th:first-child{ font-weight:700; }
+.article-wrap .table-scroll{ position:relative; overflow-x:auto; -webkit-overflow-scrolling:touch; margin:16px 0; }
+.article-wrap .table-scroll table{ margin:0; min-width:480px; }
+@media (max-width:639px){
+  .article-wrap .table-scroll::after{ content:""; position:absolute; top:0; right:0; bottom:0; width:28px; background:linear-gradient(to right, transparent, var(--hp-white)); pointer-events:none; }
+}
+
+/* ---------- 인용구(네이버 큰 풀쿼트) ---------- */
+.article-wrap .quote-box{ margin:32px 0; padding:8px 0; text-align:center; background:none; border-radius:0; }
+.article-wrap .quote-mark{ font-size:36px; font-weight:800; color:var(--hp-accent); line-height:1; margin:0 0 8px; font-family:Georgia,'Noto Serif KR',serif; }
+.article-wrap .quote-box p{ margin:0; font-size:19px; font-weight:700; line-height:1.55; color:var(--hp-ink); word-break:keep-all; }
+.article-wrap .quote-box cite{ display:block; margin-top:10px; font-size:13px; color:var(--hp-grey); font-style:normal; }
+
+/* ---------- 포인트 박스 ---------- */
+.article-wrap .tip-box{ margin:20px 0; padding:18px 20px; border:0; border-radius:12px; background:#FBEFE6; display:flex; flex-direction:column; gap:8px; }
+.article-wrap .tip-label{ display:inline-flex; width:fit-content; font-size:12px; font-weight:700; letter-spacing:.02em; color:var(--hp-accent); background:none; border:1px solid var(--hp-accent); border-radius:999px; padding:3px 11px; }
+.article-wrap .tip-box p{ margin:0; font-size:15px; line-height:1.7; color:var(--hp-ink); word-break:keep-all; }
+
+/* ---------- 중간/마지막 CTA 배너 — 다크, 흰 글씨, 주황 버튼 ---------- */
+.article-wrap .mid-cta, .article-wrap .final-cta{ margin:32px 0; padding:32px; border-radius:var(--radius-card); background:var(--hp-brown); display:flex; flex-direction:column; align-items:flex-start; gap:16px; }
+.article-wrap .mid-cta p, .article-wrap .final-cta p{ margin:0; font-size:16px; font-weight:700; color:var(--hp-white); word-break:keep-all; }
+.article-wrap .final-cta-actions{ display:flex; flex-wrap:wrap; gap:10px; }
+.article-wrap .final-cta-actions .btn-tel{ background:transparent; border:1px solid rgba(255,255,250,.5); color:var(--hp-white); }
+.article-wrap .mid-cta .btn, .article-wrap .final-cta .btn{ display:inline-flex; align-items:center; justify-content:center; border-radius:var(--radius-btn); padding:12px 24px; font-size:14px; font-weight:600; }
+.article-wrap .btn-primary{ background:var(--hp-accent); color:var(--hp-white); }
+.article-wrap .btn-primary:hover{ background:#c75a22; }
+
+/* ---------- 출처 ---------- */
+.article-wrap .source-note{ margin-top:12px; padding:10px 13px; border:0; border-left:2px solid var(--hp-line); border-radius:0; background:none; font-size:12.5px; color:var(--hp-grey); display:flex; flex-direction:column; gap:4px; }
+.article-wrap .more-link{ color:var(--hp-accent); font-weight:600; font-size:14px; }
+
+/* ---------- 태그 ---------- */
+.post-tags{ display:flex; flex-wrap:wrap; gap:8px; margin-top:56px; }
+.post-tag{ font-size:13px; color:var(--hp-ink); background:#FBEFE6; border-radius:999px; padding:7px 14px; }
+.post-tag:hover{ background:var(--hp-line); }
+
+/* ---------- 작성자 박스 ---------- */
+.post-author-box{ margin-top:24px; padding:20px; border:1px solid var(--hp-line); border-radius:var(--radius-card); display:flex; align-items:flex-start; gap:14px; }
+.post-author-box .post-logo-mark{ width:40px; height:40px; }
+.post-author-box .post-logo-mark svg{ width:20px; height:20px; }
+.post-author-name{ font-size:14px; font-weight:700; color:var(--hp-ink); }
+.post-author-bio{ font-size:13px; color:var(--hp-grey); margin-top:4px; line-height:1.6; }
+.post-author-bio a{ color:var(--hp-accent); }
+
+/* ---------- 이전/다음 글 ---------- */
+/* grid 1fr 1fr로 고정하면 글이 맨 처음/마지막이라 칸이 하나뿐일 때 빈 칸에 컨테이너 배경
+   (회색 줄 색)만 보이는 빈 상자가 생긴다. flex는 있는 카드 수만큼만 공간을 차지해 그 문제가
+   없다 — 모바일은 세로로, 640px부터 가로로 나란히. */
+.post-nav{ display:flex; flex-direction:column; gap:1px; margin-top:24px; background:var(--hp-line); border:1px solid var(--hp-line); border-radius:var(--radius-card); overflow:hidden; }
+.post-nav-link{ flex:1 1 0; background:var(--hp-white); padding:16px 20px; display:flex; flex-direction:column; gap:4px; min-width:0; }
+.post-nav-dir{ font-size:12px; color:var(--hp-grey); }
+.post-nav-title{ font-size:14px; font-weight:600; color:var(--hp-ink); }
+@media (min-width:640px){
+  .post-nav{ flex-direction:row; }
+  .post-nav-link--next{ text-align:right; align-items:flex-end; }
+}
+
+/* ---------- 블로그의 다른 글 (네이버식 목록) ---------- */
+.post-more{ margin-top:40px; }
+.post-more-title{ font-size:16px; font-weight:800; color:var(--hp-ink); margin:0 0 4px; }
+.post-more-list{ border-top:1px solid var(--hp-line); }
+.post-more-row{ display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 0; border-bottom:1px solid var(--hp-line); }
+.post-more-row-title{ font-size:14.5px; color:var(--hp-ink); min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.post-more-row.is-current .post-more-row-title{ color:var(--hp-accent); font-weight:700; }
+.post-more-row-date{ font-size:12.5px; color:var(--hp-grey); flex:0 0 auto; }
+
+/* ---------- 읽기 진행률 바 ---------- */
+.post-progress{ position:fixed; left:0; top:0; height:2px; width:0%; background:var(--hp-accent); z-index:40; transition:width .1s linear; }
+@media (prefers-reduced-motion:reduce){
+  .post-progress{ transition:none; }
+}
+
+@media (min-width:768px){
+  .post-category{ font-size:13px; }
+  .article-wrap h1{ font-size:38px; }
+}

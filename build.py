@@ -107,6 +107,16 @@ def date_fmt_kr(value):
     return f"{y}년 {int(mo)}월 {int(d)}일"
 
 
+def date_fmt_dot(value):
+    """'2026-11-18' -> '2026. 11. 18.'(디자인 완성 지시서 2026-11-19 Phase 4, 블로그
+    글 작성자 줄의 네이버식 날짜 표기). 형식이 다르면 원문 그대로 둔다."""
+    m = _DATE_RE.match(str(value or ""))
+    if not m:
+        return value
+    y, mo, d = m.groups()
+    return f"{y}. {int(mo)}. {int(d)}."
+
+
 _MD_LINK_RE = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
 _MD_BOLD_RE = re.compile(r"\*\*(.+?)\*\*")
 _MD_ITALIC_RE = re.compile(r"(?<!\*)\*([^*]+?)\*(?!\*)")
@@ -583,6 +593,7 @@ def main():
     env.filters["compact"] = compact
     env.filters["date_fmt"] = date_fmt
     env.filters["date_fmt_kr"] = date_fmt_kr
+    env.filters["date_fmt_dot"] = date_fmt_dot
     env.filters["md_inline"] = md_inline
     env.filters["highlight"] = highlight
     env.filters["faq_main_entity"] = faq_main_entity
