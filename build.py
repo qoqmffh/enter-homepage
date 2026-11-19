@@ -450,6 +450,66 @@ def build_menu_summaries(site, pages, blog_posts):
     return summaries
 
 
+_CATEGORY_LABELS = {"blog": "블로그", "guide": "가이드"}
+
+
+def compute_related_cards(pages, page_categories):
+    """디자인 정리 2차 지시서(2026-11-18) §3 — 모든 페이지에 "관련 글" 카드 3장을
+    붙인다. page['extra_links']에 적힌 slug(있으면)를 먼저 쓰고, 3장이 안 차면 같은
+    분류(블로그/가이드, 지금 페이지 자신은 제외)의 최신 글로 채운다. 그래도 모자라면
+    전체 글 중 최신순으로 채운다. 블로그·가이드가 아닌 페이지(서브·용어사전 등)는
+    처음부터 블로그 최신 글로 채운다."""
+    blog_slugs = [s for s, c in page_categories.items() if c == "blog"]
+    blog_slugs.sort(key=lambda s: pages[s].get("date_published", ""), reverse=True)
+    guide_slugs = [s for s, c in page_categories.items() if c == "guide"]
+    guide_slugs.sort(key=lambda s: pages[s].get("date_published", ""), reverse=True)
+
+    for slug, page in pages.items():
+        category = page_categories.get(slug)
+        seen = {slug}
+        picked = []
+
+        for link in page.get("extra_links") or []:
+            s = link.get("slug")
+            if s and s in pages and s not in seen:
+                picked.append(s)
+                seen.add(s)
+
+        same_pool = blog_slugs if category == "blog" else (guide_slugs if category == "guide" else blog_slugs)
+        for s in same_pool:
+            if len(picked) >= 3:
+                break
+            if s not in seen:
+                picked.append(s)
+                seen.add(s)
+
+        if len(picked) < 3:
+            fallback = blog_slugs + guide_slugs
+            for s in fallback:
+                if len(picked) >= 3:
+                    break
+                if s not in seen:
+                    picked.append(s)
+                    seen.add(s)
+
+        cards = []
+        for s in picked[:3]:
+            p = pages[s]
+            cat = page_categories.get(s)
+            label = _CATEGORY_LABELS.get(cat, "정보")
+            if cat == "guide":
+                m = re.search(r"·\s*(\d+)/\d+\s*·", p.get("eyebrow", ""))
+                if m:
+                    label = f"가이드 {m.group(1)}장"
+            cards.append({
+                "slug": s,
+                "category_label": label,
+                "title": p.get("h1") or p.get("title", ""),
+                "summary": strip_md(p.get("summary", "")),
+            })
+        page["related"] = cards
+
+
 def main():
     site = load_json("site.json")
     pages = load_json("pages.json")
@@ -500,6 +560,7 @@ def main():
     page_source_file["editorial"] = "build.py"
 
     menu_summaries = build_menu_summaries(site, pages, blog_posts)
+    compute_related_cards(pages, page_categories)
 
     env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
     env.filters["countable"] = is_countable

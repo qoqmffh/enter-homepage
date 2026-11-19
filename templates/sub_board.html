@@ -41,7 +41,7 @@
 
 {{ hero_mod.render('compact', s.hero, bc_mod.render(crumb_items), date_modified if s.board_type == 'faq' else none, page.h1_question) }}
 
-<section class="sp-section" id="board">
+<section class="sp-section sp-section--after-hero" id="board">
   <div class="sp-board-tabs" data-board-tabs role="tablist">
     {% for tab in s.tabs %}
     <button type="button" class="sp-board-tab{% if loop.first %} is-active{% endif %}" data-tab="{{ tab }}">{{ tab }}</button>
@@ -99,14 +99,11 @@
       <a href="tel:{{ site.phone }}">{{ s.contact.kakao_label }}</a>
     </div>
   </div>
+  {# 디자인 정리 2차 지시서(2026-11-18) §3·§4 — FAQ 판(faq.html)만 관련 글·확인 기준을
+     이 섹션 안에 같이 둔다. #}
+  {% include "partials/_related_confirm.html" %}
   {% endif %}
 </section>
-
-{% if s.board_type == 'faq' %}
-<section class="sp-section sp-bg-tint">
-  {{ confirm_mod.render(page.confirm_sources) }}
-</section>
-{% endif %}
 
 {{ cta_mod.render(s.cta) }}
 

@@ -78,7 +78,7 @@
     </div>
     <div class="hp-hero-below">
       <div class="hp-hero-ctas">
-        {{ m.pill(p.hero.cta_kakao, '#', 'primary', True, True) }}
+        {{ m.pill(p.hero.cta_kakao, '#', 'primary', False, True) }}
         {{ m.pill(p.hero.cta_tel, 'tel:' ~ site.phone, 'secondary') }}
       </div>
       {# 디자인 정리 지시서(2026-11-18) §4 — 기준일은 버튼 바로 아래, 작게. #}
@@ -118,7 +118,7 @@
   </div>
 </section>
 
-<section class="hp-section hp-statement hp-trail-host" id="statement" data-trail="gray">
+<section class="hp-section hp-statement hp-trail-host hp-section--after-hero" id="statement" data-trail="gray">
   <div class="hp-trail" aria-hidden="true"></div>
   <div class="hp-wrap hp-wrap--narrow">
     <h2 class="hp-headline-lg hp-center hp-two-tone" data-reveal>{{ p.statement.question }}</h2>
@@ -328,7 +328,7 @@
     <div class="hp-center hp-features-foot" data-reveal>
       <h3 class="hp-headline-md">{{ p.features.closing_question }}</h3>
       <p class="hp-slogan-sub">{{ p.features.closing_line }}</p>
-      {{ m.pill(p.features.cta_kakao, '#', 'primary', True, True) }}
+      {{ m.pill(p.features.cta_kakao, '#', 'primary', False, True) }}
     </div>
   </div>
 </section>
@@ -424,8 +424,10 @@
   </div>
 </section>
 
-{% if page.faq_mini %}
-<section class="sp-section sp-bg-tint sp-faq-section" id="faq">
+{# 디자인 정리 2차 지시서(2026-11-18) §3·§4 — FAQ·관련 글·확인 기준을 같은 배경의
+   섹션 하나로 묶는다(따로 떨어진 흰 구간에 혼자 두지 않는다). #}
+<section class="sp-section sp-bg-tint" id="faq">
+  {% if page.faq_mini %}
   <h2 class="sp-proof-title">자주 묻는 질문</h2>
   <div style="margin-top:32px">
     {% for item in page.faq_mini %}
@@ -435,21 +437,10 @@
     </details>
     {% endfor %}
   </div>
-</section>
-{% endif %}
+  {% endif %}
 
-{# GEO 2차 지시서(2026-11-18) §3 — "추천" 질문 대응 글을 관련 글로 연결.
-   디자인 정리 지시서(2026-11-18) §6 — 블로그 카드 스타일로 별도 블록화. #}
-<section class="sp-section related-block" id="related">
-  <h3>함께 보면 좋은 글</h3>
-  <div class="related-cards">
-    <a class="related-card" href="blog-wired-wholesale-checklist.html">유선 도매업체 추천 받기 전에 확인할 7가지 →</a>
-  </div>
+  {% include "partials/_related_confirm.html" %}
 </section>
-
-<div class="hp-wrap">
-  {{ confirm_mod.render(page.confirm_sources) }}
-</div>
 
 <section class="hp-section hp-closing hp-trail-host" id="contact" data-trail="gray" data-fn-cta-band>
   <div class="hp-trail" aria-hidden="true"></div>
@@ -460,7 +451,7 @@
       <span class="hp-green">{{ p.closing.headline_green }}</span>
     </h2>
     <div class="hp-closing-ctas" data-reveal>
-      {{ m.pill(p.closing.cta_kakao, '#', 'primary', True, True) }}
+      {{ m.pill(p.closing.cta_kakao, '#', 'primary', False, True) }}
       {{ m.pill(p.closing.cta_tel, 'tel:' ~ site.phone, 'secondary') }}
     </div>
   </div>

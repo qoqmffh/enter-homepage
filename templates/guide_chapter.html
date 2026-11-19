@@ -132,20 +132,12 @@
   <div class="wrap">
     {% if page.summary %}<p class="tagline">{{ page.summary }}</p>{% endif %}
 
-    {% if page.extra_links %}
-    <div class="related-block">
-      <h3>함께 보면 좋은 글</h3>
-      <div class="related-cards">
-        {% for l in page.extra_links %}<a class="related-card" href="{{ l.slug }}.html">{{ l.text }} →</a>{% endfor %}
-      </div>
-    </div>
-    {% endif %}
-
     {% if page.next_slug %}
     <p style="margin-top:20px"><a class="more-link" href="{{ page.next_slug }}.html">다음: {{ page.next_label }} →</a></p>
     {% endif %}
 
-    {{ confirm_mod.render(page.confirm_sources) }}
+    {# 디자인 정리 2차 지시서(2026-11-18) §3·§4 — 관련 글 3장 + 확인 기준을 같이 묶는다. #}
+    {% include "partials/_related_confirm.html" %}
 
     {% if page.cta %}
     <p style="margin-top:20px"><a class="btn btn-primary" href="#lead" data-lead-trigger>{{ page.cta }}</a></p>

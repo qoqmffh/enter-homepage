@@ -45,7 +45,7 @@
 
 {{ hero_mod.render('compact', s.hero, bc_mod.render(crumb_items), date_modified) }}
 
-<section class="sp-section">
+<section class="sp-section sp-section--after-hero">
   <p class="answer-lead">{{ page.answer_lead }}</p>
   <nav class="glossary-toc" aria-label="용어 목차">
     <ul class="doclist">
@@ -61,10 +61,8 @@
     <p>{{ t.definition }}{% if t.source_label %} <a href="{{ t.source_url }}" target="_blank" rel="noopener">{{ t.source_label }}</a>{% endif %}{% if t.more_link %} <a class="more-link" href="{{ t.more_link }}.html">자세히 →</a>{% endif %}{% if t.more_link2 %} <a class="more-link" href="{{ t.more_link2 }}.html">{{ t.more_link2_label or '자세히 →' }}</a>{% endif %}</p>
   </div>
   {% endfor %}
-</section>
 
-<section class="sp-section">
-  {{ confirm_mod.render(page.confirm_sources) }}
+  {% include "partials/_related_confirm.html" %}
 </section>
 
 {{ cta_mod.render(s.cta) }}

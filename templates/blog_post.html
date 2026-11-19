@@ -128,10 +128,17 @@
   </div>
 </section>
 
+{# 디자인 정리 2차 지시서(2026-11-18) §3·§4 — 관련 글 3장 + 확인 기준을 마지막 본문
+   섹션으로 묶는다(닫는 CTA·작성자 소개보다 앞). #}
+<section>
+  <div class="wrap">
+    {% include "partials/_related_confirm.html" %}
+  </div>
+</section>
+
 {% if page.final_cta %}
 <section>
   <div class="wrap">
-    {{ confirm_mod.render(page.confirm_sources) }}
     <div class="final-cta">
       <p>{{ page.final_cta | md_inline }}</p>
       <div class="final-cta-actions">
@@ -149,17 +156,6 @@
     <div class="author-box">
       <span class="author-name">{{ author.name }}</span>
       <span class="author-title">{{ author.title }}{% if author.career %} · {{ author.career }}{% endif %}</span>
-    </div>
-  </div>
-</section>
-{% endif %}
-
-{% if page.extra_links %}
-<section>
-  <div class="wrap related-block">
-    <h3>함께 보면 좋은 글</h3>
-    <div class="related-cards">
-      {% for l in page.extra_links %}<a class="related-card" href="{{ l.slug }}.html">{{ l.text }} →</a>{% endfor %}
     </div>
   </div>
 </section>

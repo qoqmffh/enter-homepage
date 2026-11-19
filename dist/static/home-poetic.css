@@ -7,7 +7,14 @@
    common.css는 건드리지 않는다(다른 페이지 전부 영향). */
 
 .hp-center{ text-align:center; }
-.hp-section{ padding:80px 0; border-bottom:none; }
+/* 디자인 정리 2차 지시서(2026-11-18) §1 — sub.css의 .sp-section과 같은 체계
+   (모바일<640:72px, 태블릿:96px, 데스크톱≥960:120px), 같은 배경 연속 시 둘 사이 120px로. */
+.hp-section{ padding:72px 0; border-bottom:none; }
+.hp-section--after-hero{ padding-top:96px; }
+:is(.hp-section):not(.hp-bg-tint) + :is(.hp-section):not(.hp-bg-tint){ padding-top:0; }
+:is(.hp-section).hp-bg-tint + :is(.hp-section).hp-bg-tint{ padding-top:0; }
+@media (min-width:640px){ .hp-section{ padding:96px 0; } }
+@media (min-width:960px){ .hp-section{ padding:120px 0; } }
 /* 색 온도 정리(2026-11-17) §3 — 히어로·어두운 섹션·마지막 CTA는 빼고 그 사이 일반
    섹션만 크림/연한 주황을 번갈아 칠한다. .hp-section은 margin 없이 바로 붙어 있어서
    배경을 바로 칠해도 끊김 없이 이어진다(.sp-section 쪽은 가운데 정렬 박스라 별도
@@ -334,13 +341,16 @@
 
 /* ---------- 마무리 CTA ---------- */
 .hp-closing-ctas{ display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin-top:28px; }
+/* 디자인 정리 2차 지시서(2026-11-18) §5 — .hp-closing은 배경이 크림인데 .sp-cta-brand
+   기본색(반투명 흰색)을 그대로 쓰면 거의 안 보인다. 이 섹션만 따뜻한 회색으로.
+   .sp-cta(서브페이지 공용, 어두운 바탕)의 기존 흰 라벨은 그대로 둔다. */
+.hp-closing .sp-cta-brand{ color:#8A7D73; }
 
 /* 헤더·푸터·하단 고정바는 static/site.css로 옮겨 서브페이지와 공유한다. */
 
 /* ---------- 데스크톱 확장 ---------- */
 @media (min-width:768px){
   .hp-wrap{ padding:0 40px; }
-  .hp-section{ padding:120px 0; }
 
   .hp-display-lg{ font-size:56px; line-height:1.1; }
   .hp-headline-lg{ line-height:1.2; }

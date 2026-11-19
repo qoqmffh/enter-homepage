@@ -1,0 +1,22 @@
+{# 디자인 정리 2차 지시서(2026-11-18) §3·§4 — 관련 글 3장 + 확인 기준을 마지막 본문
+   섹션 안, 같은 배경으로 공통 삽입한다. confirm_box.html을 import한 템플릿에서만 쓴다
+   (confirm_mod가 호출부 컨텍스트에 이미 있어야 함). #}
+{% if page.related %}
+<div class="related-block" style="margin-top:64px">
+  <h3>함께 보면 좋은 글</h3>
+  <div class="related-cards">
+    {% for r in page.related %}
+    <a class="related-card" href="{{ r.slug }}.html">
+      <span class="related-card-cat">{{ r.category_label }}</span>
+      <span class="related-card-title">{{ r.title }}</span>
+      {% if r.summary %}<span class="related-card-summary">{{ r.summary }}</span>{% endif %}
+      <span class="related-card-foot">읽기 →</span>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<div style="margin-top:48px">
+  {{ confirm_mod.render(page.confirm_sources) }}
+</div>

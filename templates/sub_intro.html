@@ -48,7 +48,7 @@
 {# 근거 띠 — 히어로 숫자 줄 + 가운데 문구 섹션을 하나로 합쳤다(지시서 2026-11-02 [B]).
    statement는 더 안 쓰지만 데이터는 pages.json에 남겨 둔다. #}
 {% set rhythm.i = rhythm.i + 1 %}
-<section class="sp-proof{% if rhythm.i % 2 == 1 %} sp-bg-tint{% endif %}" id="proof">
+<section class="sp-proof sp-section--after-hero{% if rhythm.i % 2 == 1 %} sp-bg-tint{% endif %}" id="proof">
   <div class="sp-proof-grid">
     {# 디자인 정리 지시서(2026-11-18) §3 — H2를 맨 위 전체 폭에 두고, 슬로건 한 줄 ->
        answer_lead 한 문장 -> 숫자 카드 순으로 세로로 쌓는다(왼쪽 긴 문단 + 오른쪽 H2
@@ -220,7 +220,10 @@
 {% endif %}
 
 {% set rhythm.i = rhythm.i + 1 %}
-<section class="sp-section sp-faq-section{% if rhythm.i % 2 == 1 %} sp-bg-tint{% endif %}" id="faq">
+{# 디자인 정리 2차 지시서(2026-11-18) §3·§4 — FAQ·관련 글·확인 기준을 같은 배경의
+   섹션 하나로 묶는다. #}
+<section class="sp-section{% if rhythm.i % 2 == 1 %} sp-bg-tint{% endif %}" id="faq">
+  {% if s.faq %}
   <h2 class="sp-proof-title">자주 묻는 질문</h2>
   <div style="margin-top:32px">
     {% for item in s.faq %}
@@ -230,11 +233,9 @@
     </details>
     {% endfor %}
   </div>
-</section>
+  {% endif %}
 
-{% set rhythm.i = rhythm.i + 1 %}
-<section class="sp-section{% if rhythm.i % 2 == 1 %} sp-bg-tint{% endif %}">
-  {{ confirm_mod.render(page.confirm_sources) }}
+  {% include "partials/_related_confirm.html" %}
 </section>
 
 {{ cta_mod.render(s.cta) }}
