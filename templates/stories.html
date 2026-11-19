@@ -22,32 +22,65 @@
 
 {% block content %}
 {% set s = page.sub %}
+{# 디자인 완성 지시서(2026-11-19) Phase 3 — 리뉴얼. 공개된 인용 2건만 쓰고 한 글자도
+   바꾸지 않는다(content/pages.json의 page.quotes가 원문). #}
+{{ hero_mod.render('tall', s.hero, bc_mod.render(crumb_items), date_modified, page.h1_question, show_facts=false) }}
 
-{{ hero_mod.render('tall', s.hero, bc_mod.render(crumb_items), date_modified, page.h1_question) }}
+{% set rhythm = namespace(i=-1) %}
 
-{# 후기 지시서(2026-11-13) A — 실제 인터뷰 2건. 지어낸 후기·별점·사진·Review 스키마는 넣지 않는다. #}
-{% if page.quotes %}
-<section class="sp-section sp-section--after-hero" id="stories">
-  <div class="sp-statement" data-reveal>
-    <h2><span class="hp-ink">{{ page.h1 }}</span></h2>
-    {# 디자인 정리 지시서(2026-11-18) §7 — 카드마다 반복되던 "질문: ..."을 여기 한 번만. #}
-    {% if page.quotes[0].asked %}<p class="hp-mono-muted story-quote-shared-label">같은 질문을 드렸습니다: {{ page.quotes[0].asked }}는?</p>{% endif %}
-  </div>
-  <div class="story-quotes">
-    {% for q in page.quotes %}
-    <div class="story-quote-card" data-reveal>
-      <blockquote class="quote-box">
-        {% for line in q.lines %}<p>{{ line }}</p>{% endfor %}
-      </blockquote>
-      <cite>— {{ q.who }} · {{ q.since }}</cite>
+{# 숫자 카드 3장 — 2-1 공통 컴포넌트(sp-num-grid/sp-num-card). 예전엔 히어로 안에
+   sp-hero-facts로 있던 것과 같은 데이터(s.hero.facts)를 히어로 밖으로 꺼내 카드로 보여준다. #}
+{% if s.hero.facts %}
+{% set rhythm.i = rhythm.i + 1 %}
+<section class="sp-section sp-section--after-hero{% if rhythm.i % 2 == 1 %} sp-bg-tint{% endif %}" id="stats">
+  <div class="sp-num-grid">
+    {% for f in s.hero.facts %}
+    <div class="sp-num-card" data-reveal>
+      <span class="sp-num-value"{% if f.value | countable %} data-count{% endif %}>{{ f.value }}</span>
+      <span class="sp-num-label">{{ f.label }}</span>
     </div>
     {% endfor %}
   </div>
-  {% if page.interview_note %}<p class="story-interview-note">조사 방법 · {{ page.interview_note }}</p>{% endif %}
+  {% if s.hero.facts_note %}<p class="hp-muted sp-proof-note">{{ s.hero.facts_note }}</p>{% endif %}
+</section>
+{% endif %}
+
+{# 인터뷰 — 왼쪽 질문 카드(sticky) + 오른쪽 답변 카드 스택. 질문(asked)별로 묶어서
+   질문 단위 블록을 반복한다 — 지금은 질문이 1개뿐이라 블록도 1개지만, 질문이 늘어나도
+   탭 UI 없이 같은 블록이 세로로 이어지는 구조라 템플릿을 다시 안 짜도 된다. #}
+{% if page.quotes %}
+{% set rhythm.i = rhythm.i + 1 %}
+<section class="sp-section{% if rhythm.i % 2 == 1 %} sp-bg-tint{% endif %}" id="stories">
+  <h2 class="sp-proof-title" data-reveal>{{ page.h1 }}</h2>
+  {% for asked, group in page.quotes | groupby('asked') %}
+  <div class="story-interview"{% if not loop.first %} style="margin-top:var(--sec-y)"{% endif %}>
+    <div class="story-question-card" data-reveal>
+      <p class="story-question-q" aria-hidden="true">Q</p>
+      {% if asked %}<p class="story-question-text">{{ asked }}는?</p>{% endif %}
+      <p class="story-question-sub">거래 중인 판매점 대표님께 같은 질문을 드렸습니다.</p>
+      {% if page.interview_note %}<p class="story-question-method">조사 방법 · {{ page.interview_note }}</p>{% endif %}
+    </div>
+    <div class="story-answers">
+      {% for q in group %}
+      <div class="story-answer-card" data-reveal data-stagger-step="0.12">
+        <p class="story-answer-mark" aria-hidden="true">&ldquo;</p>
+        <div class="story-answer-body">
+          {% for line in q.lines %}<p>{{ line | highlight(q.highlights) }}</p>{% endfor %}
+        </div>
+        <div class="story-answer-foot">
+          <svg class="story-source-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l1.2-4.5A1.5 1.5 0 0 1 5.65 3.4h12.7a1.5 1.5 0 0 1 1.45 1.1L21 9"/><path d="M4 9v10a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"/><path d="M9 20v-5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v5"/><path d="M3 9a2.2 2.2 0 0 0 4.2 1 2.2 2.2 0 0 0 4 0 2.2 2.2 0 0 0 4 0 2.2 2.2 0 0 0 4.2-1"/></svg>
+          <span>{{ q.who }} · {{ q.since }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
   {% include "partials/_related_confirm.html" %}
 </section>
 {% else %}
-<section class="sp-section sp-section--center sp-section--after-hero" id="stories">
+{% set rhythm.i = rhythm.i + 1 %}
+<section class="sp-section sp-section--center sp-section--after-hero{% if rhythm.i % 2 == 1 %} sp-bg-tint{% endif %}" id="stories">
   <div class="sp-statement" data-reveal>
     <h2><span class="hp-ink">{{ page.h1 }}</span></h2>
     <p>{{ page.placeholder_text | safe }}</p>

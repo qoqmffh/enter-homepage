@@ -102,7 +102,7 @@
 }</script>
 
 
-<script src="static/reveal.js?v=40c463a7" defer></script>
+<script src="static/reveal.js?v=82b25798" defer></script>
 <script>
   /* 정책 받기 팝업·플로팅 내비(지시서 2026-11-13) 전역 설정값 — site.json에서만 관리.
      lead_endpoint가 비어 있거나 lead_form_enabled가 false면 각 스크립트가 알아서
@@ -118,7 +118,7 @@
 
 
 <link rel="stylesheet" href="static/site.css?v=548d154c">
-<link rel="stylesheet" href="static/sub.css?v=2686603a">
+<link rel="stylesheet" href="static/sub.css?v=baf6ab67">
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -557,7 +557,8 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 
 
-<div class="sp-hero sp-hero--tall sp-hero--sketch sp-hero--has-facts">
+
+<div class="sp-hero sp-hero--tall sp-hero--sketch">
   
   
   <div class="sp-hero-frame">
@@ -587,27 +588,6 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
         
       </div>
       
-      
-      <div class="sp-hero-facts">
-        
-        <div class="sp-hero-fact">
-          <span class="sp-hero-fact-value">3,000곳</span>
-          <span class="sp-hero-fact-label">전국 거래처</span>
-        </div>
-        
-        <div class="sp-hero-fact">
-          <span class="sp-hero-fact-value">2010</span>
-          <span class="sp-hero-fact-label">설립</span>
-        </div>
-        
-        <div class="sp-hero-fact">
-          <span class="sp-hero-fact-value">4,000건</span>
-          <span class="sp-hero-fact-label">월 평균 <a href="glossary.html#order-activation" class="glossary-term-link">개통</a></span>
-        </div>
-        
-      </div>
-      <p class="hp-muted sp-hero-facts-note">기준: 월 평균 개통·전국 거래처 수는 2026년 평균</p>
-      
     </div>
     
   </div>
@@ -616,30 +596,72 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 
 
-<section class="sp-section sp-section--after-hero" id="stories">
-  <div class="sp-statement" data-reveal>
-    <h2><span class="hp-ink">판매점 대표님들은 왜 이곳에 접수하나요?</span></h2>
+
+
+
+<section class="sp-section sp-section--after-hero" id="stats">
+  <div class="sp-num-grid">
     
-    <p class="hp-mono-muted story-quote-shared-label">같은 질문을 드렸습니다: <a href="glossary.html#policy" class="glossary-term-link">정책</a> 말고 ENTER에 접수하는 이유는?</p>
-  </div>
-  <div class="story-quotes">
-    
-    <div class="story-quote-card" data-reveal>
-      <blockquote class="quote-box">
-        <p>중간중간 여러 업체들 들어왔지만 답변 속도 제외하고는 엔터가 모든 업무 프로세스가 제일 깔끔했어요.</p><p>팀장님께서 별도로 궁금한 거 해결해 주시고 여러 가지로 챙겨 주시고 관리해 주시는 게, 챙김 받는다는 느낌이 강하게 들면 그게 가장 큰 이유인 것 같아요.</p>
-      </blockquote>
-      <cite>— 판매점 대표 · 창업 때부터 거래</cite>
+    <div class="sp-num-card" data-reveal>
+      <span class="sp-num-value" data-count>3,000곳</span>
+      <span class="sp-num-label">전국 거래처</span>
     </div>
     
-    <div class="story-quote-card" data-reveal>
-      <blockquote class="quote-box">
-        <p>정책이 높거나 동일하면 위드(ENTER 운영사)로 넣는데, 같은 엔터소프트 어드민이라서 편해서 넣습니다~</p>
-      </blockquote>
-      <cite>— 판매점 대표 · 여러 <a href="glossary.html#wholesale" class="glossary-term-link">도매</a>처 병행</cite>
+    <div class="sp-num-card" data-reveal>
+      <span class="sp-num-value">2010</span>
+      <span class="sp-num-label">설립</span>
+    </div>
+    
+    <div class="sp-num-card" data-reveal>
+      <span class="sp-num-value" data-count>4,000건</span>
+      <span class="sp-num-label">월 평균 <a href="glossary.html#order-activation" class="glossary-term-link">개통</a></span>
     </div>
     
   </div>
-  <p class="story-interview-note">조사 방법 · 2026년 11월, 거래 중인 판매점 대표님께 카카오톡으로 같은 질문 4개를 드리고 받은 답을 옮겼습니다. 업체명은 밝히지 않습니다.</p>
+  <p class="hp-muted sp-proof-note">기준: 월 평균 개통·전국 거래처 수는 2026년 평균</p>
+</section>
+
+
+
+
+
+<section class="sp-section sp-bg-tint" id="stories">
+  <h2 class="sp-proof-title" data-reveal>판매점 대표님들은 왜 이곳에 접수하나요?</h2>
+  
+  <div class="story-interview">
+    <div class="story-question-card" data-reveal>
+      <p class="story-question-q" aria-hidden="true">Q</p>
+      <p class="story-question-text"><a href="glossary.html#policy" class="glossary-term-link">정책</a> 말고 ENTER에 접수하는 이유는?</p>
+      <p class="story-question-sub">거래 중인 판매점 대표님께 같은 질문을 드렸습니다.</p>
+      <p class="story-question-method">조사 방법 · 2026년 11월, 거래 중인 판매점 대표님께 카카오톡으로 같은 질문 4개를 드리고 받은 답을 옮겼습니다. 업체명은 밝히지 않습니다.</p>
+    </div>
+    <div class="story-answers">
+      
+      <div class="story-answer-card" data-reveal data-stagger-step="0.12">
+        <p class="story-answer-mark" aria-hidden="true">&ldquo;</p>
+        <div class="story-answer-body">
+          <p>중간중간 여러 업체들 들어왔지만 답변 속도 제외하고는 엔터가 <mark class="hl">모든 업무 프로세스가 제일 깔끔</mark>했어요.</p><p>팀장님께서 별도로 궁금한 거 해결해 주시고 여러 가지로 챙겨 주시고 관리해 주시는 게, <mark class="hl">챙김 받는다는 느낌</mark>이 강하게 들면 그게 가장 큰 이유인 것 같아요.</p>
+        </div>
+        <div class="story-answer-foot">
+          <svg class="story-source-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l1.2-4.5A1.5 1.5 0 0 1 5.65 3.4h12.7a1.5 1.5 0 0 1 1.45 1.1L21 9"/><path d="M4 9v10a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"/><path d="M9 20v-5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v5"/><path d="M3 9a2.2 2.2 0 0 0 4.2 1 2.2 2.2 0 0 0 4 0 2.2 2.2 0 0 0 4 0 2.2 2.2 0 0 0 4.2-1"/></svg>
+          <span>판매점 대표 · 창업 때부터 거래</span>
+        </div>
+      </div>
+      
+      <div class="story-answer-card" data-reveal data-stagger-step="0.12">
+        <p class="story-answer-mark" aria-hidden="true">&ldquo;</p>
+        <div class="story-answer-body">
+          <p>정책이 높거나 동일하면 위드(ENTER 운영사)로 넣는데, 같은 엔터소프트 어드민이라서 <mark class="hl">편해서 넣습니다</mark>~</p>
+        </div>
+        <div class="story-answer-foot">
+          <svg class="story-source-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l1.2-4.5A1.5 1.5 0 0 1 5.65 3.4h12.7a1.5 1.5 0 0 1 1.45 1.1L21 9"/><path d="M4 9v10a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"/><path d="M9 20v-5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v5"/><path d="M3 9a2.2 2.2 0 0 0 4.2 1 2.2 2.2 0 0 0 4 0 2.2 2.2 0 0 0 4 0 2.2 2.2 0 0 0 4.2-1"/></svg>
+          <span>판매점 대표 · 여러 <a href="glossary.html#wholesale" class="glossary-term-link">도매</a>처 병행</span>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
   
 
 <div class="related-block" style="margin-top:64px">

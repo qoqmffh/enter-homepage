@@ -130,9 +130,13 @@
     return n;
   }
   var delayByEl = siblingIndex ? new WeakMap() : null;
+  // data-stagger-step(초)이 붙어 있으면 그 그룹만 0.06s 대신 그 값을 쓴다(디자인 완성
+  // 지시서 2026-11-19 Phase 3 — 거래처 이야기 답변 카드는 0.12s 지연).
   revealEls.forEach(function (el) {
     var idx = nextIndex(el.parentElement);
-    var delay = Math.min(idx * STAGGER_STEP, STAGGER_MAX);
+    var step = parseFloat(el.getAttribute('data-stagger-step'));
+    if (!(step > 0)) step = STAGGER_STEP;
+    var delay = Math.min(idx * step, STAGGER_MAX);
     el.style.transitionDelay = delay.toFixed(2) + 's';
     if (delayByEl) delayByEl.set(el, delay);
   });

@@ -2,12 +2,15 @@
    Stitch 시안의 외부(구글) 이미지는 쓰지 않는다. static/photos/hero-<data.photo>.jpg가
    있으면 쓰고, 없으면 CSS background-color(#2a2d33)만 보인다 — 사진 분위기는
    data.photo_mood 주석으로 옆에 남겨 실제 사진 교체 시 참고한다. #}
-{% macro render(variant, data, breadcrumb=none, date_modified=none, h1_override=none) %}
+{% macro render(variant, data, breadcrumb=none, date_modified=none, h1_override=none, show_facts=true) %}
 {# h1_override(문구 SEO·GEO 지시서 2026-11-18 §1) — 지정된 페이지만 실제 <h1>을 라벨 자리의
    작은 줄로 옮기고(eyebrow 크기 그대로), 기존 헤드라인은 같은 클래스를 유지한 채 <p>로
    내려서 화면에 그대로 보이게 한다. 지정 안 하면 기존 구조(라벨=p, 헤드라인=h1) 그대로. #}
 {% set sk = data.sketch %}
-{% set has_facts = variant == 'tall' and data.facts %}
+{# 디자인 완성 지시서(2026-11-19) Phase 3 — 거래처 이야기(stories.html)는 숫자 줄을
+   히어로 밖 공통 카드 컴포넌트(sp-num-grid)로 옮기면서 show_facts=false로 부른다.
+   데이터(s.hero.facts)는 그대로 두고 호출부에서만 렌더링을 끈다. #}
+{% set has_facts = variant == 'tall' and data.facts and show_facts %}
 {% set sk_dims = {'company': [1672, 820], 'trade': [1672, 793], 'info': [1672, 816]} %}
 <div class="sp-hero sp-hero--{{ variant }}{% if sk %} sp-hero--sketch{% endif %}{% if has_facts %} sp-hero--has-facts{% endif %}">
   {% if sk %}

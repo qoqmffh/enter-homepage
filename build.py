@@ -128,6 +128,22 @@ def md_inline(text):
     return Markup(s)
 
 
+def highlight(text, phrases):
+    """디자인 완성 지시서(2026-11-19) Phase 3 — 거래처 이야기 인용문의 핵심 구절에
+    형광펜(.hl) span을 씌운다. md_inline과 같은 방식으로 원문을 먼저 이스케이프한 뒤
+    그 위에서만 구문을 찾아 태그를 붙이므로 인용문에 특수문자가 있어도 안전하다."""
+    from markupsafe import Markup, escape
+
+    if text is None:
+        return Markup("")
+    s = str(escape(str(text)))
+    for phrase in phrases or []:
+        needle = str(escape(str(phrase)))
+        if needle:
+            s = s.replace(needle, f'<mark class="hl">{needle}</mark>')
+    return Markup(s)
+
+
 def strip_md(text):
     """표기 통일 지시서(2026-11-12) A30-3 — JSON-LD 같은 순수 텍스트 필드에는 원고의
     [글자](주소) 링크 문법을 빼고 글자만 남긴다(화면 표시는 md_inline으로 그대로 링크 유지)."""
@@ -568,6 +584,7 @@ def main():
     env.filters["date_fmt"] = date_fmt
     env.filters["date_fmt_kr"] = date_fmt_kr
     env.filters["md_inline"] = md_inline
+    env.filters["highlight"] = highlight
     env.filters["faq_main_entity"] = faq_main_entity
     env.filters["breadcrumb_ld"] = breadcrumb_ld
     # A30-1/A30-2(마케팅 P0 2026-11-10) — tojson 기본값(ensure_ascii=True)이면

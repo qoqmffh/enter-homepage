@@ -107,6 +107,7 @@ async function auditPage(page, file, viewport) {
         if (el.classList.contains('sp-detail-foot')) return false; // 목록/표 바로 아래 요약행 — 맥락 있음
         const links = el.querySelectorAll('a');
         if (links.length !== 1 || el.children.length > 2) return false;
+        if (links[0].classList.contains('glossary-term-link')) return false; // 본문 속 용어 자동 링크 — 고아 CTA 아님
         const prev = el.previousElementSibling;
         return !prev || !/^(h1|h2|h3|h4)$/i.test(prev.tagName);
       })
