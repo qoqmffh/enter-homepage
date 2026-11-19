@@ -2,22 +2,18 @@
    공통 토큰·헤더·푸터·알약은 static/site.css. 여기는 소개형/게시판형 템플릿이
    공유하는 부품(이미지 히어로, 검은 카드 3장, 상세목록, FAQ 아코디언, CTA 띠)만. */
 
-/* 디자인 정리 2차 지시서(2026-11-18) §1 — margin 대신 padding으로 위아래 여백을 준다.
-   .sp-bg-tint::before가 padding까지 칠해서, 색 구간 안에서도 내용이 경계선과 120px(데스크톱)
-   떨어진다. 모바일<640:72px, 태블릿 640~959:96px, 데스크톱≥960:120px. */
-.sp-section, .sp-proof{ max-width:1200px; margin:0 auto; padding:72px 20px; border-bottom:none; }
+/* 디자인 완성 지시서(2026-11-19) §1-1 — var(--sec-y)(site.css) 하나로 위아래 여백을 준다.
+   토큰이 브레이크포인트마다 알아서 바뀌므로 여기서 또 미디어쿼리를 안 써도 된다. */
+.sp-section, .sp-proof{ max-width:1200px; margin:0 auto; padding:var(--sec-y) 20px; border-bottom:none; }
 .sp-section--center{ text-align:center; }
 /* 히어로 바로 다음 첫 섹션 — 72/96/120 어디서나 96px로 고정. */
 .sp-section--after-hero{ padding-top:96px; }
-/* 같은 배경(흰/틴트)이 연달아 오면 둘 사이 합이 240px이 아니라 120px이 되게,
+/* 같은 배경(흰/틴트)이 연달아 오면 둘 사이 합이 --sec-y의 두 배가 아니라 하나가 되게,
    뒤 섹션의 padding-top을 없앤다. */
 :is(.sp-section, .sp-proof):not(.sp-bg-tint) + :is(.sp-section, .sp-proof):not(.sp-bg-tint){ padding-top:0; }
 :is(.sp-section, .sp-proof).sp-bg-tint + :is(.sp-section, .sp-proof).sp-bg-tint{ padding-top:0; }
 @media (min-width:640px){
-  .sp-section, .sp-proof{ padding:96px 24px; }
-}
-@media (min-width:960px){
-  .sp-section, .sp-proof{ padding:120px 24px; }
+  .sp-section, .sp-proof{ padding-inline:24px; }
 }
 
 /* 색 온도 정리(2026-11-17) §3 — .sp-section·.sp-proof는 가운데 정렬된 1200px 박스라
@@ -167,7 +163,11 @@
 .sp-row-scroll::-webkit-scrollbar-thumb{ background:var(--hp-line); border-radius:999px; }
 
 /* ---------- 4b. 검은 통신사 쇼케이스(상세 목록의 carriers 변형, 취급상품 페이지) ---------- */
-.sp-carriers{ margin-top:160px; background:var(--hp-brown); color:var(--hp-white); padding:64px 24px; }
+/* 디자인 완성 지시서(2026-11-19) §2-2/§2-3 — margin-top:160px가 이 섹션 앞에 빈 띠(흰 배경이
+   그대로 드러나는 구간)를 만들던 원인이었다. 배경이 다른 섹션끼리는 margin 없이 바로 맞붙고
+   자기 padding(--sec-y)만으로 안쪽 여백을 주는 공통 규칙으로 통일한다. foot 행(정책 신청하기 →)은
+   맥락 없는 고아 링크라 삭제(§2-3) — 템플릿에서도 함께 제거.*/
+.sp-carriers{ background:var(--hp-brown); color:var(--hp-white); padding:var(--sec-y) 24px; }
 .sp-carriers-head{ max-width:1200px; margin:0 auto; }
 .sp-carriers-head h2{ font-size:28px; font-weight:800; letter-spacing:-.01em; margin:10px 0 0; }
 .sp-carriers-eyebrow{ font-size:12px; color:#F2A16E; font-weight:600; margin:14px 0 0; }
@@ -176,10 +176,6 @@
 .sp-carriers-desc{ max-width:1200px; margin:24px auto 0; font-size:14px; color:rgba(255,255,250,.7); line-height:1.6; }
 .sp-carriers-link{ max-width:1200px; display:block; margin:14px auto 0; font-size:14px; font-weight:600; color:var(--hp-white); }
 .sp-carriers-link:hover{ color:#F2A16E; }
-.sp-carriers-foot{ max-width:1200px; margin:40px auto 0; padding-top:24px; border-top:1px solid rgba(255,255,250,.15); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
-.sp-carriers-foot a{ font-size:15px; font-weight:600; color:var(--hp-white); }
-.sp-carriers-foot a:hover{ color:#F2A16E; }
-.sp-carriers-foot span{ font-size:12px; color:rgba(255,255,250,.5); }
 
 /* ---------- 5. 질문 3개(FAQ 아코디언) ---------- */
 /* 디자인 정리 2차 지시서(2026-11-18) §1 — FAQ 섹션 위아래 여백은 이제 .sp-section의
@@ -194,10 +190,9 @@
 .sp-faq-body{ padding:0 0 24px; font-size:14px; color:var(--hp-grey); line-height:1.6; max-width:760px; }
 
 /* ---------- 6. CTA 띠(검은 통 섹션) ---------- */
-/* 디자인 정리 2차 지시서(2026-11-18) §1 — 닫는 CTA 앞 간격도 같은 120px(모바일 72px) 체계로. */
-.sp-cta{ margin-top:72px; background:var(--hp-brown); padding:72px 24px; text-align:center; color:var(--hp-white); }
-@media (min-width:640px){ .sp-cta{ margin-top:96px; } }
-@media (min-width:960px){ .sp-cta{ margin-top:120px; } }
+/* 디자인 완성 지시서(2026-11-19) §1-1 — 닫는 CTA는 이전 섹션과 배경이 달라 margin 없이
+   바로 맞붙는다. 자기 padding(--sec-y)만으로 안쪽 여백을 준다. */
+.sp-cta{ background:var(--hp-brown); padding:var(--sec-y) 24px; text-align:center; color:var(--hp-white); }
 /* 본문 SEO·GEO 보강 지시서(2026-11-13) 2 — 페이지 끝 브랜드 한 줄. */
 .sp-cta-brand{ font-size:13px; font-weight:600; letter-spacing:.04em; color:rgba(255,255,250,.6); margin:0 0 12px; }
 .sp-cta-inner{ max-width:1200px; margin:0 auto; }
@@ -244,7 +239,6 @@
   .sp-detail-head h2{ font-size:36px; }
   .sp-row-title{ font-size:20px; }
   .sp-cta h2{ font-size:40px; letter-spacing:-.02em; }
-  .sp-carriers{ padding:88px 40px; }
   .sp-carriers-head h2{ font-size:36px; }
   .sp-carriers-names div{ font-size:60px; }
   .sp-board-featured{ grid-template-columns:repeat(3,1fr); }

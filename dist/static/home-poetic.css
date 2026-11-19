@@ -7,14 +7,17 @@
    common.css는 건드리지 않는다(다른 페이지 전부 영향). */
 
 .hp-center{ text-align:center; }
-/* 디자인 정리 2차 지시서(2026-11-18) §1 — sub.css의 .sp-section과 같은 체계
-   (모바일<640:72px, 태블릿:96px, 데스크톱≥960:120px), 같은 배경 연속 시 둘 사이 120px로. */
-.hp-section{ padding:72px 0; border-bottom:none; }
+/* 디자인 완성 지시서(2026-11-19) §1-1 — var(--sec-y)(site.css) 하나로. 같은 배경 연속 시
+   뒤 섹션 padding-top만 0으로 접는다(배경이 다르면 margin 없이 바로 맞붙게 그대로 둔다). */
+.hp-section{ padding:var(--sec-y) 0; border-bottom:none; }
 .hp-section--after-hero{ padding-top:96px; }
-:is(.hp-section):not(.hp-bg-tint) + :is(.hp-section):not(.hp-bg-tint){ padding-top:0; }
+/* 디자인 완성 지시서(2026-11-19) §2-5 — 배경은 크림(기본)/연한 주황(.hp-bg-tint)/다크
+   (.hp-bg-dark, 약속·통신사 섹션)의 3그룹이다. 같은 그룹이 연달아 올 때만 접는다 —
+   이전엔 .hp-bg-tint 유무만 봐서 다크 섹션(.hp-bg-tint 없음)이 앞뒤 크림 섹션과
+   "같은 배경"으로 오인돼 padding-top이 잘못 0이 됐었다(약속 섹션 위가 눌린 원인). */
+:is(.hp-section):not(.hp-bg-tint):not(.hp-bg-dark) + :is(.hp-section):not(.hp-bg-tint):not(.hp-bg-dark){ padding-top:0; }
 :is(.hp-section).hp-bg-tint + :is(.hp-section).hp-bg-tint{ padding-top:0; }
-@media (min-width:640px){ .hp-section{ padding:96px 0; } }
-@media (min-width:960px){ .hp-section{ padding:120px 0; } }
+:is(.hp-section).hp-bg-dark + :is(.hp-section).hp-bg-dark{ padding-top:0; }
 /* 색 온도 정리(2026-11-17) §3 — 히어로·어두운 섹션·마지막 CTA는 빼고 그 사이 일반
    섹션만 크림/연한 주황을 번갈아 칠한다. .hp-section은 margin 없이 바로 붙어 있어서
    배경을 바로 칠해도 끊김 없이 이어진다(.sp-section 쪽은 가운데 정렬 박스라 별도
@@ -264,11 +267,15 @@
   .hp-quote-item{ transition:none; }
 }
 .hp-promise-grid{ display:flex; flex-direction:column; gap:32px; }
-/* 디자인 정리 지시서(2026-11-18) §5 — 누끼(director-cutout.webp, 배경 투명)를 섹션
-   바닥선에 딱 맞춰 붙인다. .hp-promise가 overflow:hidden이라, 섹션 padding(80px/768px+
-   120px)만큼 margin-bottom을 당겨도 그 지점에서 정확히 잘려 바닥과 맞아떨어진다.
-   박스 배경·그림자·테두리는 없애고, 사진 뒤에 아주 옅은 빛 번짐만 둔다. */
-.hp-promise-photo-col{ width:100%; position:relative; display:flex; justify-content:center; align-items:flex-end; margin-bottom:-80px; }
+/* 디자인 완성 지시서(2026-11-19) §2-5 — 예전엔 margin-bottom 음수 + overflow:hidden으로
+   사진을 바닥에 "흘려서" 잘라냈는데, 그 음수 마진이 flex 행 높이 계산에서 사진 칸의
+   키를 깎아버려 글 칸이 사진 키(450px)가 아니라 자기 콘텐츠 키(330px)로만 세로 중앙
+   정렬되는 버그의 원인이었다(글이 위로 쏠려 보이는 이유). 데스크톱에서는 섹션 자체의
+   padding-bottom을 0으로 둬서(.hp-promise, 768px 아래) 음수 마진 없이 사진이 바로
+   바닥에 닿게 하고, 행 높이는 사진의 실제 키를 그대로 쓴다 — 그래야 글 칸도 그 키
+   기준으로 정확히 가운데 정렬된다. 모바일은 사진이 맨 위 요소라 바닥에 붙일 필요가
+   없고 평소대로 --sec-y를 쓴다. */
+.hp-promise-photo-col{ width:100%; position:relative; display:flex; justify-content:center; align-items:flex-end; }
 .hp-promise-photo-col::before{
   content:""; position:absolute; left:50%; bottom:0; width:160%; max-width:640px; aspect-ratio:1/1;
   transform:translateX(-50%); border-radius:50%; pointer-events:none;
@@ -276,7 +283,7 @@
 }
 .hp-promise-photo-lg{ position:relative; display:block; width:80%; max-width:300px; height:auto; }
 .hp-promise-content{ flex:1; min-width:0; }
-.hp-promise-foot{ display:flex; flex-direction:column; gap:28px; border-top:1px solid rgba(255,255,255,.1); padding-top:28px; }
+.hp-promise-foot{ display:flex; flex-direction:column; gap:28px; border-top:1px solid rgba(255,255,255,.1); margin-top:24px; padding-top:28px; }
 .hp-promise-person{ display:flex; gap:18px; align-items:flex-start; }
 .hp-promise-name{ display:block; font-size:15px; font-weight:600; }
 .hp-promise-title{ display:block; font-size:12px; color:rgba(255,255,250,.55); margin:3px 0 14px; }
@@ -373,11 +380,12 @@
   .hp-chip-label{ display:inline; }
 
   .hp-quote{ font-size:32px; max-width:900px; }
+  .hp-promise{ padding-bottom:0; }
   .hp-promise-grid{ flex-direction:row; align-items:stretch; gap:56px; }
-  .hp-promise-photo-col{ width:40%; flex:0 0 40%; margin-bottom:-120px; }
+  .hp-promise-photo-col{ width:40%; flex:0 0 40%; }
   .hp-promise-photo-lg{ width:100%; max-width:360px; }
   .hp-promise-content{ display:flex; flex-direction:column; justify-content:center; }
-  .hp-promise-foot{ flex-direction:row; justify-content:space-between; align-items:flex-end; }
+  .hp-promise-foot{ flex-direction:row; justify-content:space-between; align-items:center; }
   .hp-promise-person{ align-items:center; }
 
   .hp-trust-badges{ grid-template-columns:repeat(6,1fr); gap:16px; }

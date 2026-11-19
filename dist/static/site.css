@@ -74,6 +74,18 @@
   :root{ --fs-h1:48px; --fs-h2:32px; }
 }
 
+/* 디자인 완성 지시서(2026-11-19) §1-1 — 섹션 여백 체계. DESIGN.md "Layout Rules" 참고.
+   sub.css·home-poetic.css가 이 토큰으로 padding-block/간격을 준다. */
+:root{
+  --sec-y:72px; --edge-min:56px; --stack-head:10px; --stack-body:32px; --stack-note:20px;
+}
+@media (min-width:640px){
+  :root{ --sec-y:96px; --edge-min:80px; --stack-head:12px; --stack-body:40px; --stack-note:24px; }
+}
+@media (min-width:960px){
+  :root{ --sec-y:120px; --edge-min:96px; --stack-body:48px; }
+}
+
 body{ background:var(--hp-white); color:var(--hp-ink); word-break:keep-all; overflow-wrap:break-word; overflow-x:hidden; }
 .hp-wrap{ max-width:1200px; margin:0 auto; padding:0 20px; }
 .hp-wrap--narrow{ max-width:900px; }

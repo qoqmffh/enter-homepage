@@ -140,6 +140,20 @@ Sections are full-bleed horizontal bands: `padding: 40px 0` (mobile) / `56px 0` 
 
 Responsive change at 768px is additive, not restructural: the stat bar goes 2-col → 4-col, `.lead-row` goes stacked → flex row (content max-width 640px), and the fixed header switches from a column stack to a row with space-between.
 
+### Layout Rules (디자인 완성 지시서 2026-11-19 — `sp-`/`hp-` marketing+sub-page system)
+
+Section vertical rhythm runs on five CSS custom properties (defined in `static/site.css`, consumed by `static/sub.css` and `static/home-poetic.css`):
+
+| token | role | ≥960px | 640–959px | <640px |
+|---|---|---|---|---|
+| `--sec-y` | section block padding (top+bottom) | 120px | 96px | 72px |
+| `--edge-min` | min. distance from a background-color edge to the first/last visible content | 96px | 80px | 56px |
+| `--stack-head` | label → H2, H2 → slogan line | 12px | 12px | 10px |
+| `--stack-body` | heading block → body (cards/list) | 48px | 40px | 32px |
+| `--stack-note` | body → footnote/basis note | 24px | 24px | 20px |
+
+Rules: sections never carry `margin` for vertical spacing — only `padding-block: var(--sec-y)`. Two sections sharing the same background sit back-to-back with the trailing one's `padding-top` zeroed (so the visible gap between their content is exactly one `--sec-y`, not two). Two sections with *different* backgrounds abut directly — no third, differently-colored gap band between them. A section renders nothing (not even its wrapper) when it has no data. Card/number grids fill the full 1200px container in equal columns — a grid that only fills ~60% of its container with the remainder empty is the one layout bug this system exists to prevent. The one named exception is the "약속" portrait section, where the image sits flush to the section's bottom edge (`padding-bottom: 0` on that section only).
+
 ## Elevation & Depth
 
 Flat. There is no `box-shadow` declaration anywhere in `common.css`. Depth and grouping are conveyed entirely by hairline 1px borders (`var(--line)`) and by whitespace/section padding — never by shadow, blur, or lift. The only "lift" affordance in the whole system is the sticky header (`position: sticky`) and the fixed footer bar (`position: fixed`), both of which use a z-index and a plain hairline/border-top for separation, not a shadow.
