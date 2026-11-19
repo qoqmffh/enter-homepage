@@ -86,17 +86,29 @@
 /* 본문 SEO·GEO 보강 지시서(2026-11-13) 1-4 — H2를 질문형으로 바꾼 페이지는 기존 슬로건
    문구를 H2 바로 아래 한 줄로 남긴다. */
 .sp-proof-subhead{ font-size:16px; font-weight:600; color:var(--hp-ink); margin:0; }
-.sp-proof-facts{ display:grid; grid-template-columns:1fr; gap:28px; margin-top:8px; }
-/* 디자인 정리 2차 지시서(2026-11-18) §2 — 연혁·기준 주석 두 줄을 한 줄로 합쳐 숫자 카드
-   바로 아래 24px 지점에. */
-.sp-proof-note{ font-size:12px; margin-top:24px; }
-.sp-proof-fact-value{ display:block; font-size:24px; font-weight:800; line-height:1; letter-spacing:-.01em; font-variant-numeric:tabular-nums; color:var(--hp-ink); }
-.sp-proof-fact-label{ display:block; font-size:13px; color:var(--hp-grey); margin-top:8px; }
-.sp-proof-fact-desc{ font-size:15px; color:var(--hp-ink); line-height:1.6; margin:8px 0 0; }
-@media (min-width:1024px){
-  /* §2 — 숫자 카드가 본문 전체 폭(1200px)을 3등분하게 max-width 제한을 없앴다. */
-  .sp-proof-facts{ grid-template-columns:repeat(3,1fr); gap:32px; }
-  .sp-proof-fact-value{ font-size:30px; }
+/* 디자인 정리 2차 지시서(2026-11-18) §2 — 연혁·기준 주석은 숫자 카드 바로 아래 --stack-note 지점에. */
+.sp-proof-note{ font-size:12px; margin-top:var(--stack-note); }
+
+/* ---------- 공통 숫자 카드(2-1, 디자인 완성 지시서 2026-11-19) ----------
+   why.html의 sp-chart-card(모서리·패딩·숫자 크기)를 기준으로 삼은 정적 카드.
+   첫 장만 주황(.sp-num-card가 grid/스크롤의 첫째 자식), 나머지는 연살구(#FBEFE6, 고정
+   팔레트 값 — sp-chart-card의 라이트 변형(#FBE3D3)과는 미세하게 다르지만 팔레트 고정
+   규칙을 따른다). sub_intro.html(sp-proof-facts)·stories.html 숫자 줄이 공유한다. */
+.sp-num-grid{ display:grid; grid-auto-flow:column; grid-auto-columns:78%; gap:12px; margin-top:var(--stack-body); overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:4px; -webkit-overflow-scrolling:touch; }
+.sp-num-card{ scroll-snap-align:start; background:#FBEFE6; border-radius:var(--radius-card); padding:20px; }
+.sp-num-card:first-child{ background:var(--hp-accent); }
+.sp-num-card:first-child .sp-num-value{ color:var(--hp-white); }
+.sp-num-card:first-child .sp-num-label{ color:rgba(255,255,250,.85); }
+.sp-num-value{ display:block; font-size:26px; font-weight:800; line-height:1; letter-spacing:-.01em; font-variant-numeric:tabular-nums; color:var(--hp-ink); }
+.sp-num-label{ display:block; font-size:13px; color:var(--hp-grey); margin-top:8px; }
+.sp-num-desc{ font-size:14px; color:var(--hp-ink); line-height:1.6; margin:8px 0 0; }
+@media (min-width:640px){
+  .sp-num-grid{ grid-auto-flow:row; grid-template-columns:repeat(3,1fr); gap:16px; overflow-x:visible; scroll-snap-type:none; padding-bottom:0; }
+  .sp-num-card{ padding:24px; }
+}
+@media (min-width:960px){
+  .sp-num-card{ padding:28px; }
+  .sp-num-value{ font-size:40px; }
 }
 
 /* ---------- 3. 검은 카드 3장 ---------- */
@@ -282,7 +294,11 @@
 @media (min-width:1024px){
   .sp-hero-headline{ margin-bottom:40px; }
   .sp-hero--sketch .sp-hero-body{ padding-top:110px; }
-  .sp-hero--sketch .sp-hero-body > div:first-child{ max-width:560px; padding-bottom:0; min-height:376px; box-sizing:border-box; }
+  /* 디자인 완성 지시서(2026-11-19) §2-4 — 기준일이 버튼 줄 위로 올라오면서(hero.html)
+     버튼이 콘텐츠 블록의 맨 아래가 됐다. 376px로는 버튼이 일러스트(건물·전선) 맨 위
+     보이는 선과 겹쳐서(실측: 버튼 하단이 일러스트 시작선보다 약 70px 위에서 끝남),
+     최소 32px 여유가 남게 480px로 늘린다. */
+  .sp-hero--sketch .sp-hero-body > div:first-child{ max-width:560px; padding-bottom:0; min-height:480px; box-sizing:border-box; }
   .sp-hero--has-facts.sp-hero--sketch .sp-hero-body > div:first-child{ padding-bottom:188px; min-height:556px; }
   .sp-hero--sketch .sp-hero-facts{ gap:64px; }
   /* 헤드라인만 글 영역보다 넓게: 정산·창업자·회사소개 2줄 헤드라인이 560px 안에서

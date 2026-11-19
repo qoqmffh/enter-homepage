@@ -61,12 +61,12 @@
     {% endif %}
     {% if s.proof.subhead %}<p class="sp-proof-subhead">{{ s.proof.subhead }}</p>{% endif %}
     {% if page.answer_lead %}<p class="answer-lead">{{ page.answer_lead }}</p>{% endif %}
-    <div class="sp-proof-facts">
+    <div class="sp-num-grid">
       {% for f in s.proof.facts %}
-      <div class="sp-proof-fact" data-reveal>
-        <span class="sp-proof-fact-value"{% if f.value | countable %} data-count{% endif %}>{{ f.value }}</span>
-        <span class="sp-proof-fact-label">{{ f.label }}</span>
-        {% if f.desc %}<p class="sp-proof-fact-desc">{{ f.desc }}</p>{% endif %}
+      <div class="sp-num-card" data-reveal>
+        <span class="sp-num-value"{% if f.value | countable %} data-count{% endif %}>{{ f.value }}</span>
+        <span class="sp-num-label">{{ f.label }}</span>
+        {% if f.desc %}<p class="sp-num-desc">{{ f.desc }}</p>{% endif %}
       </div>
       {% endfor %}
     </div>

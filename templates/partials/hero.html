@@ -33,6 +33,10 @@
         <h1 class="sp-hero-headline">{% for line in data.headline %}{{ line }}{% if not loop.last %}<br>{% endif %}{% endfor %}</h1>
         {% endif %}
         {% if data.subline %}<p class="sp-hero-sub">{{ data.subline | safe }}</p>{% endif %}
+        {# 디자인 완성 지시서(2026-11-19) §2-4 — sketch 히어로는 기준일이 버튼 줄 아래에
+           있으면 일러스트 선(건물·전선)과 겹친다. 서브 문장 바로 아래, 버튼 줄 위로 올린다.
+           사진 히어로(sk 없음)는 겹칠 일러스트가 없어 기존 위치(버튼 아래) 그대로 둔다. #}
+        {% if sk and date_modified %}<p class="post-date page-basis-date">기준일 {{ date_modified | date_fmt_kr }} · ENTER 영업지원팀 확인</p>{% endif %}
         {# 정책 받기 팝업(지시서 2026-11-13) — FAQ 히어로의 "전화로 묻기"만 원래대로 CTA 띠로
            스크롤만 한다(전화 상담을 바로 유도하는 문구라서 팝업으로 가로채지 않기로 했다 —
            판단 근거는 보고 시 알림). 나머지는 모두 팝업(지시서 2026-11-16 §1, 카카오 채널
@@ -42,7 +46,7 @@
           <a class="hp-pill {% if sk %}hp-pill--primary{% else %}hp-pill--inverted{% endif %}" href="#lead"{% if not is_phone_ask %} data-lead-trigger{% endif %}>{{ data.cta_primary }}</a>
           {% if variant == 'tall' %}<a class="hp-pill {% if sk %}hp-pill--secondary{% else %}hp-pill--outline{% endif %}" href="#faq">{{ data.cta_secondary }}</a>{% endif %}
         </div>
-        {% if date_modified %}<p class="post-date page-basis-date">기준일 {{ date_modified | date_fmt_kr }} · ENTER 영업지원팀 확인</p>{% endif %}
+        {% if not sk and date_modified %}<p class="post-date page-basis-date">기준일 {{ date_modified | date_fmt_kr }} · ENTER 영업지원팀 확인</p>{% endif %}
       </div>
       {% if has_facts %}
       {# 숫자 줄: 정산·취급상품·창업자·회사소개·거래시작 5곳은 이제 hero.facts 데이터 자체가
