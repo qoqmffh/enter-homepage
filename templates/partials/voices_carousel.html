@@ -1,0 +1,55 @@
+{# 인터뷰캐러셀 지시서(2026-11-19) — 거래처 인터뷰를 가운데 카드 캐러셀로 보여준다.
+   stories.html·why.html(#voices)이 이 매크로 하나를 같이 쓴다(복붙 금지).
+
+   인자:
+   - quotes: 카드로 보여줄 인용 리스트(원하는 순서, 전부 보여준다 — limit 없음)
+   - more_link: 있으면 점 표시 아래에 "거래처 이야기 더 보기 →"를 둔다(홈 전용)
+   - show_method_note: true면 점 표시 아래(more_link 없을 때는 그 자리)에 조사 방법
+     문구를 가운데 정렬로 둔다(stories 전용)
+   - interview_note: 조사 방법 문구 #}
+{% macro render(quotes, more_link=none, show_method_note=false, interview_note=none) %}
+<div class="voices-head" data-reveal>
+  <h2 class="voices-title">왜 ENTER에 접수하시나요?</h2>
+  <p class="voices-sub">거래 중인 판매점 대표님께 직접 여쭤봤습니다.</p>
+</div>
+<div class="voices-carousel" data-voices-carousel aria-roledescription="carousel" aria-label="거래처 인터뷰" tabindex="0" data-reveal>
+  <button type="button" class="voices-arrow voices-arrow--prev" data-voices-prev aria-label="이전 후기">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+  </button>
+  <div class="voices-track-wrap">
+    <ul class="voices-track" data-voices-track>
+      {% for q in quotes %}
+      <li class="voices-slide" data-voices-slide="{{ loop.index0 }}" aria-roledescription="slide" aria-label="{{ quotes | length }}개 중 {{ loop.index }}번째">
+        <div class="voices-card">
+          <div class="voices-card-head">
+            <span class="voices-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1.2-4.5A1.5 1.5 0 0 1 5.65 3.4h12.7a1.5 1.5 0 0 1 1.45 1.1L21 9"/><path d="M4 9v10a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"/><path d="M9 20v-5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v5"/><path d="M3 9a2.2 2.2 0 0 0 4.2 1 2.2 2.2 0 0 0 4 0 2.2 2.2 0 0 0 4 0 2.2 2.2 0 0 0 4.2-1"/></svg>
+            </span>
+            <span class="voices-card-tag">{{ q.since }}</span>
+          </div>
+          <p class="voices-card-headline">&ldquo;{{ q.headline }}&rdquo;</p>
+          <div class="voices-card-lines">
+            {% for line in q.lines %}<p>{{ line }}</p>{% endfor %}
+          </div>
+          <div class="voices-card-info">
+            <div class="voices-info-row"><span class="voices-info-label">구분</span><span class="voices-info-value">{{ q.who }}</span></div>
+            <div class="voices-info-row"><span class="voices-info-label">거래</span><span class="voices-info-value">{{ q.since }}</span></div>
+            <div class="voices-info-row"><span class="voices-info-label">꼽은 이유</span><span class="voices-info-value">{{ q.tags }}</span></div>
+          </div>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <button type="button" class="voices-arrow voices-arrow--next" data-voices-next aria-label="다음 후기">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+  </button>
+  <div class="voices-dots" data-voices-dots role="tablist" aria-label="후기 선택">
+    {% for q in quotes %}
+    <button type="button" class="voices-dot" data-voices-dot="{{ loop.index0 }}" aria-label="{{ loop.index }}번째 후기로 이동"></button>
+    {% endfor %}
+  </div>
+</div>
+{% if more_link %}<p class="voices-more"><a href="{{ more_link }}">거래처 이야기 더 보기 →</a></p>{% endif %}
+{% if show_method_note and interview_note %}<p class="voices-method-note">{{ interview_note }}</p>{% endif %}
+{% endmacro %}
