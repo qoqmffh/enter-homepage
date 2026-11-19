@@ -406,7 +406,7 @@
     ],
     "meta_description": "유선 도매처는 정책·정산·답변 속도로 비교합니다. 거래처 3,000곳, 월 평균 4,000건, 정산 지연 0회 — ENTER를 고르는 이유를 숫자로 보여드립니다.",
     "date_published": "2026-10-19",
-    "date_modified": "2026-11-18",
+    "date_modified": "2026-11-19",
     "confirm_sources": [
       {"label": "과학기술정보통신부 「초고속인터넷 사업자별 회선 수」(KOSIS 국가통계포털, 2026년 7월 수록)", "url": "https://kosis.kr/serviceInfo/newContrainDataDetail.do?boardIdx=1998012&boardOrgId=127"},
       {"label": "한국통신사업자연합회(KTOA) 통계", "url": "http://stat.ktoa.or.kr/02_service/service_03_client.asp"}
@@ -1358,6 +1358,12 @@
             "cta_slug": "start"
           }
         ]
+      },
+      "voices": {
+        "label": "VOICES",
+        "question": "판매점 대표님들은 왜 ENTER에 접수하나요?",
+        "headline_ink": "판매점 대표님 4분이 ",
+        "headline_green": "직접 한 말 그대로."
       },
       "start": {
         "label": "HOW TO START",

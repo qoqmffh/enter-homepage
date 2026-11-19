@@ -629,7 +629,10 @@ def main():
         lastmod = page.get("date_modified") or git_last_modified_date(page_source_file[slug]) or ""
         template = env.get_template(page["template"])
         legal_text = site["legal_footer_about"] if slug == "about" else site["legal_footer"]
-        html = template.render(site=site, page=page, slug=slug, legal_text=legal_text, blog_posts=blog_posts["pages"], menu_summaries=menu_summaries, date_modified=lastmod)
+        # 거래처이야기4건_홈추가 지시서(2026-11-19) — 홈(why.html)이 stories.html과 같은
+        # 인터뷰 매크로를 쓰면서 질문 목록(어떤 질문이 아예 답이 없는지 판단)을 보려면
+        # stories 전체 데이터가 필요하다. blog_posts와 같은 방식으로 모든 템플릿에 노출한다.
+        html = template.render(site=site, page=page, slug=slug, legal_text=legal_text, blog_posts=blog_posts["pages"], stories=pages["stories"], menu_summaries=menu_summaries, date_modified=lastmod)
         if slug != "glossary" and (slug in _GLOSSARY_LINK_SERVICE_SLUGS or page_categories.get(slug) in ("guide", "blog")):
             html, linked_slugs = auto_link_glossary_terms(html, glossary_terms)
             if linked_slugs:
