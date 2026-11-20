@@ -498,7 +498,7 @@
     mx += (MX - mx) * .06; my += (MY - my) * .06;
     var moving = Math.abs(target - P) > 1e-5 || dm > 1e-4;
     if (moving) {
-      draw(P + (target - P) * .18);
+      draw(P + (target - P) * .14);
       raf = requestAnimationFrame(tick);
     } else {
       P = target; draw(P);
@@ -519,6 +519,35 @@
   window.addEventListener('resize', onResize);
 
   // ================= 입력: "굴린 만큼만" — 휠/터치 같은 계수(/14000), 쌓이지 않음 =================
+  // 대표 요청(2026-11-20): 휠 한 칸에 진행되는 양을 절반으로(/14000 -> /28000) 줄여 천천히,
+  // 그리고 장면마다 문구·숫자가 다 찬 지점(멈춤점)에서는 휠을 3~4번(420) 더 굴려야 넘어간다.
+  var BASE = 28000, DETENT = 420;
+  var STOPS = [0.082, 0.182, 0.282, 0.382, 0.482, 0.582, 0.682, 0.782, 0.882];
+  var hold = -1, holdDir = 0, holdAcc = 0;
+  function advance(d) {
+    if (!d) return;
+    var dir = d > 0 ? 1 : -1;
+    if (hold >= 0) {
+      if (dir !== holdDir) { hold = -1; holdAcc = 0; }
+      else {
+        holdAcc += Math.abs(d);
+        if (holdAcc < DETENT) return;
+        var rest = holdAcc - DETENT; hold = -1; holdAcc = 0;
+        target = clamp01(target + dir * rest / BASE);
+        return;
+      }
+    }
+    var nt = clamp01(target + d / BASE);
+    for (var i = 0; i < STOPS.length; i++) {
+      var s = STOPS[i];
+      if ((dir > 0 && target < s - 1e-6 && nt >= s) || (dir < 0 && target > s + 1e-6 && nt <= s)) {
+        target = s; hold = s; holdDir = dir; holdAcc = Math.abs(nt - s) * BASE;
+        if (holdAcc >= DETENT) { var r = holdAcc - DETENT; hold = -1; holdAcc = 0; target = clamp01(s + dir * r / BASE); }
+        return;
+      }
+    }
+    target = nt;
+  }
   var touchY = 0;
   function onWheel(e) {
     e.preventDefault();
@@ -526,7 +555,7 @@
     var d = e.deltaY;
     if (e.deltaMode === 1) d *= 16;
     d = Math.max(-120, Math.min(120, d));
-    target = clamp01(target + d / 14000);
+    advance(d);
     startLoop();
   }
   function onTouchStart(e) { touchY = e.touches[0].clientY; }
@@ -536,7 +565,7 @@
     var y = e.touches[0].clientY;
     var dy = touchY - y;
     touchY = y;
-    target = clamp01(target + dy / 14000);
+    advance(dy);
     startLoop();
   }
   function jumpScene(dir) {
