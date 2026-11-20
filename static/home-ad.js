@@ -648,6 +648,10 @@
         stage.classList.add('hp-ad-stage--film');
         introDone = true; target = p; P = p; draw(p);
       };
+      /* 검증용 훅: 현재 화면 진행도(P)·목표 진행도(target)를 읽기만 한다(스크롤 감각
+         수치 검증용, §3-2). 쓰기는 하지 않으므로 평소 흐름에 관여하지 않는다. */
+      window.__adDebugP = function () { return P; };
+      window.__adDebugTarget = function () { return target; };
     })
     .catch(function () {
       bailOut();
