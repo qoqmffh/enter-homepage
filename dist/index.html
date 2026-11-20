@@ -117,9 +117,10 @@
 <script>
 (function () {
   /* 기획서/클로드코드_홈_왜ENTER_구조변경_지시서.md §2 — index.html은 광고만 남는다.
-     광고를 안 틀어야 하는 경우(1시간 재방문 / reduced-motion / WebGL 불가)는 전부
-     이 자리에서 즉시 why.html로 보낸다(깜빡임 없이) — 더 이상 index 안에 보여줄
-     "하얀 홈"이 없기 때문이다. ?intro=1이면 이 판단 전체를 건너뛰고 항상 광고를 튼다. */
+     광고를 안 틀어야 하는 경우(1시간 재방문 / reduced-motion)는 전부 이 자리에서 즉시
+     why.html로 보낸다(깜빡임 없이) — 더 이상 index 안에 보여줄 "하얀 홈"이 없기 때문이다.
+     ?intro=1이면 이 판단 전체를 건너뛰고 항상 광고를 튼다.
+     (시안3 포팅 — 2026-11-20: 캔버스 2D만 쓰므로 WebGL 가능 여부 확인은 더 이상 필요 없다.) */
   try {
     var params = new URLSearchParams(location.search);
     var forced = params.get('intro') === '1';
@@ -130,12 +131,7 @@
         var last = localStorage.getItem('enter_ad_seen');
         recentlySeen = !!last && (Date.now() - parseInt(last, 10)) < 60 * 60 * 1000;
       } catch (e) {}
-      var hasWebGL = false;
-      try {
-        var c = document.createElement('canvas');
-        hasWebGL = !!(window.WebGLRenderingContext && (c.getContext('webgl') || c.getContext('experimental-webgl')));
-      } catch (e) {}
-      if (reduce || recentlySeen || !hasWebGL) {
+      if (reduce || recentlySeen) {
         location.replace('why.html');
         return;
       }
@@ -149,8 +145,8 @@
   } catch (e) {}
 })();
 </script>
-<link rel="stylesheet" href="static/home-ad.css?v=013ac5de">
-<script type="module" src="static/home-ad.js?v=376b3936"></script>
+<link rel="stylesheet" href="static/home-ad.css?v=0dcdc15c">
+<script type="module" src="static/home-ad.js?v=cba90393"></script>
 
 </head>
 <body>
@@ -565,69 +561,211 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   </div>
 </noscript>
 
+
+<script type="application/json" id="hp-ad-copy">
+{
+  "phoneTitle": "ENTER 업무방",
+  "phoneMsgs": [
+  [
+    "me",
+    "신규 접수 1건 보냅니다"
+  ],
+  [
+    "en",
+    "접수 완료됐습니다"
+  ],
+  [
+    "en",
+    "회신 왔습니다. 고객 확인 부탁드려요"
+  ],
+  [
+    "en",
+    "개통 완료됐습니다"
+  ]
+],
+  "desk": {
+  "received": "접수 담당",
+  "reply": "회신 담당",
+  "note": "평균 10분 내외 전달"
+},
+  "clock": {
+  "start_desktop": "09:00 업무 시작",
+  "start_mobile": "09:00 시작",
+  "end": "18:00 사은품 입금"
+},
+  "settlement": {
+  "range_start": "2025.01",
+  "range_end": "2026.10 · 90회"
+},
+  "chips": [
+  "월~일 개통",
+  "수 · 정산서",
+  "금 · 입금"
+],
+  "mapPin": "ENTER"
+}
+</script>
+
 <div class="hp-ad-stage" data-ad-stage aria-hidden="true">
   <div class="hp-ad-intro" data-ad-intro>
-    <img class="hp-ad-intro-logo" src="static/brand/enter-horizontal-dark.svg" alt="ENTER" loading="eager" fetchpriority="high">
+    <img class="hp-ad-intro-logo" src="static/brand/enter-horizontal-light.svg" alt="ENTER" loading="eager" fetchpriority="high">
     <p class="hp-ad-intro-sub">유선전문총판</p>
   </div>
 
   <canvas class="hp-ad-canvas" data-ad-canvas></canvas>
 
-  <div class="hp-ad-overlay">
-    <div class="hp-ad-scene" data-ad-scene="1">
+  
+  <h1 class="hp-ad-eyebrow" data-ad-eyebrow>판매점용 유선(인터넷·IPTV) 도매, ENTER 유선전문총판</h1>
+
+  <div class="hp-ad-txt" data-ad-txt>
+    
+    <div class="hp-ad-sc" data-ad-sc="0">
+      <div class="hp-ad-m hp-ad-lab"><span>01 — 전국 거래처</span></div>
+      <div class="hp-ad-gap1"></div>
       
-      <h1 class="hp-ad-eyebrow hp-ad-s3-label" data-ad-s1-eyebrow>판매점용 유선(인터넷·IPTV) 도매, ENTER 유선전문총판</h1>
-      <p class="hp-ad-line hp-ad-line--1" data-ad-s1-line1>초대형 유선전문도매,</p>
-      <p class="hp-ad-line hp-ad-line--2" data-ad-s1-line2>정책이 얼마나 좋을까요?</p>
+      <div class="hp-ad-m hp-ad-big"><span><b data-ad-n="0">3,000</b><small>곳</small></span></div>
+      
+      <div class="hp-ad-gap2"></div>
+      
+      <div class="hp-ad-m hp-ad-cap"><span>전국의 판매점이 ENTER로 접수합니다.</span></div>
+      
     </div>
-
-    <div class="hp-ad-scene" data-ad-scene="2">
-      <div class="hp-ad-s2-box" data-ad-s2-box>
-        <p class="hp-ad-s2-kpi">전국 거래처 <b data-ad-s2-num>3,000</b>곳</p>
-        <p class="hp-ad-s2-note" data-ad-s2-note>2010년부터, 전국의 판매점과 함께.</p>
-      </div>
+    
+    <div class="hp-ad-sc" data-ad-sc="1">
+      <div class="hp-ad-m hp-ad-lab"><span>02 — 업력</span></div>
+      <div class="hp-ad-gap1"></div>
+      
+      <div class="hp-ad-m hp-ad-big"><span><b data-ad-n="1">2010</b><small>년부터</small></span></div>
+      
+      <div class="hp-ad-gap2"></div>
+      
+      <div class="hp-ad-m hp-ad-cap"><span>16년, 유선 한 길.</span></div>
+      
     </div>
-
-    <div class="hp-ad-scene" data-ad-scene="3">
-      <div class="hp-ad-center">
-        <p class="hp-ad-s3-label" data-ad-s3-label>매달 평균 개통</p>
-        <p class="hp-ad-s3-big" data-ad-s3-big><b data-ad-s3-num>4,000</b><i>건</i></p>
-      </div>
+    
+    <div class="hp-ad-sc" data-ad-sc="2">
+      <div class="hp-ad-m hp-ad-lab"><span>03 — 월 평균 개통</span></div>
+      <div class="hp-ad-gap1"></div>
+      
+      <div class="hp-ad-m hp-ad-big"><span><b data-ad-n="2">4,000</b><small>건</small></span></div>
+      
+      <div class="hp-ad-gap2"></div>
+      
+      <div class="hp-ad-m hp-ad-cap"><span>2026년 월 평균 기준.</span></div>
+      
     </div>
-
-    <div class="hp-ad-scene" data-ad-scene="4">
-      <div class="hp-ad-center">
-        <p class="hp-ad-s4-label" data-ad-s4-label>이번 주 정산 진행 중</p>
-        <p class="hp-ad-s4-big" data-ad-s4-big><b data-ad-s4-num>4,000</b><i data-ad-s4-unit>건</i></p>
-        <p class="hp-ad-s4-note" data-ad-s4-note>최근 90번의 정산, 단 한 번도 늦은 적 없습니다.</p>
-      </div>
-    </div>
-
-    <div class="hp-ad-scene" data-ad-scene="5">
-      <div class="hp-ad-carriers" data-ad-carriers>
-        <p class="hp-ad-carrier" data-ad-carrier>SKT</p><p class="hp-ad-carrier" data-ad-carrier>SK브로드밴드</p><p class="hp-ad-carrier" data-ad-carrier>LG U+</p><p class="hp-ad-carrier" data-ad-carrier>KT</p><p class="hp-ad-carrier" data-ad-carrier>스카이라이프</p><p class="hp-ad-carrier" data-ad-carrier>LG헬로비전</p>
-      </div>
-      <p class="hp-ad-slogan" data-ad-s5-slogan>유선은, 한 곳에서.</p>
-    </div>
-
-    <div class="hp-ad-scene" data-ad-scene="6">
-      <div class="hp-ad-center">
+    
+    <div class="hp-ad-sc" data-ad-sc="3">
+      <div class="hp-ad-m hp-ad-lab"><span>04 — 접수 한 건 한 건</span></div>
+      <div class="hp-ad-gap1"></div>
+      
         
-        <h2 class="hp-ad-end-line1" data-ad-s6-heading>정책표는 어떻게 받아 보나요?</h2>
-        <p class="hp-ad-end-line2" data-ad-s6-line1>비교해 보시면 압니다.</p>
-        <p class="hp-ad-end-line2" data-ad-s6-line2>매일 아침 단가를 받아보세요.</p>
-        <div class="hp-ad-end-btns" data-ad-end-btns>
-          <a href="#" class="hp-ad-btn hp-ad-btn--primary" data-ad-cta-primary>정책 받아보기</a>
-          <button type="button" class="hp-ad-btn hp-ad-btn--ghost" data-ad-enter-home>홈페이지 둘러보기 →</button>
-        </div>
-      </div>
+        <div class="hp-ad-m hp-ad-ttl"><span>접수가 취소되지 않게,</span></div>
+        
+        <div class="hp-ad-m hp-ad-ttl"><span>이슈는 빠르게 전달하고</span></div>
+        
+        <div class="hp-ad-m hp-ad-ttl"><span>개통 전환율을 지킵니다.</span></div>
+        
+      
+      <div class="hp-ad-gap2"></div>
+      
+      <div class="hp-ad-m hp-ad-cap"><span>담당자가 회신·반송을 수시로 확인합니다.</span></div>
+      
+    </div>
+    
+    <div class="hp-ad-sc" data-ad-sc="4">
+      <div class="hp-ad-m hp-ad-lab"><span>05 — 카톡 접수</span></div>
+      <div class="hp-ad-gap1"></div>
+      
+        
+        <div class="hp-ad-m hp-ad-ttl"><span>전용 업무방 하나로</span></div>
+        
+        <div class="hp-ad-m hp-ad-ttl"><span>접수부터 개통까지.</span></div>
+        
+      
+      <div class="hp-ad-gap2"></div>
+      
+      <div class="hp-ad-m hp-ad-cap"><span>접수 → 회신 → 개통, 모든 단계를</span></div>
+      
+      <div class="hp-ad-m hp-ad-cap"><span>카톡으로 알려 드립니다.</span></div>
+      
+    </div>
+    
+    <div class="hp-ad-sc" data-ad-sc="5">
+      <div class="hp-ad-m hp-ad-lab"><span>06 — 소통</span></div>
+      <div class="hp-ad-gap1"></div>
+      
+      <div class="hp-ad-m hp-ad-big"><span><b data-ad-n="5">10</b><small>분 내외</small></span></div>
+      
+      <div class="hp-ad-gap2"></div>
+      
+      <div class="hp-ad-m hp-ad-cap"><span>본사 회신이 오면 평균 10분 안에 전달합니다.</span></div>
+      
+      <div class="hp-ad-m hp-ad-cap"><span>접수 담당과 회신 담당이 따로 있습니다.</span></div>
+      
+    </div>
+    
+    <div class="hp-ad-sc" data-ad-sc="6">
+      <div class="hp-ad-m hp-ad-lab"><span>07 — 업무시간 · 사은품</span></div>
+      <div class="hp-ad-gap1"></div>
+      
+      <div class="hp-ad-m hp-ad-big"><span><b data-ad-n="6">09:00</b><small></small></span></div>
+      
+      <div class="hp-ad-gap2"></div>
+      
+      <div class="hp-ad-m hp-ad-cap"><span>업무시간은 09:00~18:00.</span></div>
+      
+      <div class="hp-ad-m hp-ad-cap"><span>하루를 마치는 18시, 개통 당일 사은품을 입금합니다.</span></div>
+      
+      <div class="hp-ad-m hp-ad-cap"><span>요청하시면 입금증도 보내 드립니다.</span></div>
+      
+    </div>
+    
+    <div class="hp-ad-sc" data-ad-sc="7">
+      <div class="hp-ad-m hp-ad-lab"><span>08 — 정산 오류</span></div>
+      <div class="hp-ad-gap1"></div>
+      
+      <div class="hp-ad-m hp-ad-big"><span><b data-ad-n="7">0</b><small>회</small></span></div>
+      
+      <div class="hp-ad-gap2"></div>
+      
+      <div class="hp-ad-m hp-ad-cap"><span>최근 90번의 정산, 지급일이 늦어진 적 없습니다.</span></div>
+      
+    </div>
+    
+    <div class="hp-ad-sc" data-ad-sc="8">
+      <div class="hp-ad-m hp-ad-lab"><span>09 — 정산일</span></div>
+      <div class="hp-ad-gap1"></div>
+      
+        
+        <div class="hp-ad-m hp-ad-ttl"><span>매주 금요일,</span></div>
+        
+        <div class="hp-ad-m hp-ad-ttl"><span>입금합니다.</span></div>
+        
+      
+      <div class="hp-ad-gap2"></div>
+      
+      <div class="hp-ad-m hp-ad-cap"><span>월~일 개통분 → 다음 주 수요일 정산서</span></div>
+      
+      <div class="hp-ad-m hp-ad-cap"><span>→ 금요일 입금</span></div>
+      
+    </div>
+    
+  </div>
+
+  <div class="hp-ad-end" data-ad-end>
+    <h2 class="hp-ad-m hp-ad-end-ttl"><span>정책표는 어떻게 받아 보나요?</span></h2>
+    <div class="hp-ad-gap2"></div>
+    
+    <div class="hp-ad-m hp-ad-cap"><span>비교해 보시면 압니다. 매일 아침 단가를 받아보세요.</span></div>
+    
+    <div class="hp-ad-end-btns" data-ad-end-btns>
+      <a href="#" class="hp-ad-btn hp-ad-btn--primary" data-ad-cta-primary>정책 받아보기</a>
+      <button type="button" class="hp-ad-btn hp-ad-btn--ghost" data-ad-enter-home>홈페이지 둘러보기 →</button>
     </div>
   </div>
 
-  <div class="hp-ad-dots" data-ad-dots>
-    <span class="hp-ad-dot" data-ad-dot></span><span class="hp-ad-dot" data-ad-dot></span><span class="hp-ad-dot" data-ad-dot></span><span class="hp-ad-dot" data-ad-dot></span><span class="hp-ad-dot" data-ad-dot></span><span class="hp-ad-dot" data-ad-dot></span>
-  </div>
-  <div class="hp-ad-progress"><span class="hp-ad-progress-fill" data-ad-progress></span></div>
+  <div class="hp-ad-hud" data-ad-hud></div>
 
   
   <div class="hp-ad-scroll-hint" data-ad-scroll-hint aria-hidden="true">

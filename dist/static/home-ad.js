@@ -1,21 +1,13 @@
-/* ENTER 홈 — "광고 한 편 -> 막이 걷히며 하얀 홈" (기획서/클로드코드_홈_광고인트로_지시서.md, v8 기준).
-   기준: 기획서/ENTER_광고인트로_러프영상_v8.mp4 + 기획서/참고_광고인트로_러프_v8.html
-   러프 코드는 시간(초) 기준 자동재생이지만, 실제 사이트는 "스크롤 진행도"로 재생한다.
-   그래서 러프의 모든 초(t) 값을 gAbs(t)로 변환해 0~1 진행도로 바꿔 쓴다 — gAbs는 아래
-   SCENES 표(장면별 시작/끝 초 <-> 장면별 시작/끝 진행도%, 지시서 §1 표 기준)로 선형 변환한다.
+/* ENTER 홈 — 인트로 "시안3": 선화 스크롤 필름(9장면 + 엔딩), 캔버스 2D.
+   기준: 기획서/클로드코드_인트로시안3적용_백업_지시서_1120.md +
+         기획서/마케팅/인트로시안/시안3/intro3.html("기준 구현" — 위치·크기·타이밍·곡선 값은
+         대표가 하나하나 확인한 것이므로 K 키프레임 표·render() 안의 수치는 임의로 바꾸지 않는다).
+   이전(2026-11-20 이전) 버전은 three.js 파티클 지도였다 — 그 코드/에셋은
+   자료/_backup/intro_v1_particles_1120/에 백업, intro-v1-particles 태그로 되돌릴 수 있다.
 
-   팀장이 다시 넣지 말라고 한 것(지시서 §0): 화면 전체 플래시, 워프, 글자 확대 줌,
-   입자가 날아와 모여 로고·지도를 만드는 연출, 비 내리는 유성, 위첨자 숫자.
-   -> 흩어진 별이 지도로 "모이는" 순간만큼은 위치를 보간하지 않고 스냅(hard cut)한다
-      (아래 vertex shader의 step(0.5, revealOn) 참고) — 짧게 사그라들고 다른 자리에 켜지는
-      것처럼 보이게 해서, 날아와서 모이는 움직임 자체가 생기지 않게 막았다.
-      반대로 장면3의 "펼쳐짐"은 모양을 만드는 게 아니라 흩어지는 움직임이라 허용(v8 승인됨).
-
-   Three.js는 정적 import 대신 동적 import로 가져온다(지시서 2026-11-14 "최적화" §1) —
-   reduced-motion·1시간 재방문 생략·WebGL 불가로 광고를 아예 안 틀 때는 469KB짜리
-   three-lite.min.js(static/vendor, scripts/build-three-lite.mjs로 생성)조차 받지 않게
-   하려는 것. 아래 bailOut() 분기들이 THREE를 쓰기 전에 먼저 return하므로, import()는
-   그 분기를 다 통과한 뒤(§ "시작" 구간)에만 실행한다. */
+   reduced-motion 처리: 정적 스택형 대체 레이아웃을 새로 만들지 않고, 기존과 같이
+   why.html로 즉시 리다이렉트한다(템플릿 아래 인라인 스크립트에서 이미 처리) — 광고가 전하는
+   숫자·이야기는 why.html에도 이미 그대로 있어서, 애니메이션 없이도 같은 내용을 보여줄 수 있다. */
 
 (function () {
   'use strict';
@@ -41,17 +33,12 @@
   var forced = params.get('intro') === '1';
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // 하드 안전장치(인라인 head 스크립트가 걸어둔 강제 타임아웃)는 우리가 정상적으로
-  // 시작한다는 신호를 보내는 순간 취소한다 — 모듈 로드/파싱 자체가 실패해도
-  // 그 타임아웃이 결국 ad-pending을 풀어준다.
   function cancelHardTimeout() {
     if (window.__adHardTimeout) { clearTimeout(window.__adHardTimeout); window.__adHardTimeout = null; }
   }
 
   function bailOut() {
     cancelHardTimeout();
-    /* index.html에는 더 이상 "하얀 홈"이 없다(기획서/클로드코드_홈_왜ENTER_구조변경_지시서.md) —
-       광고를 못 틀 사정이면 보여줄 게 없으니 바로 why.html로 보낸다. */
     location.replace('why.html');
   }
 
@@ -61,79 +48,33 @@
   }
   html.classList.add('ad-pending');
 
-  function hasWebGL() {
-    try {
-      var c = document.createElement('canvas');
-      return !!(window.WebGLRenderingContext && (c.getContext('webgl') || c.getContext('experimental-webgl')));
-    } catch (e) { return false; }
-  }
-  if (!hasWebGL()) { bailOut(); return; }
-
   // ================= DOM refs =================
   var introEl = safeGet('[data-ad-intro]');
   var canvas = safeGet('[data-ad-canvas]');
-  var s1Eyebrow = safeGet('[data-ad-s1-eyebrow]'); // 문구 SEO·GEO 지시서(2026-11-18) §1
-  var line1 = safeGet('[data-ad-s1-line1]');
-  var line2 = safeGet('[data-ad-s1-line2]');
-  var s2box = safeGet('[data-ad-s2-box]');
-  var s2num = safeGet('[data-ad-s2-num]');
-  var s2note = safeGet('[data-ad-s2-note]');
-  var s3label = safeGet('[data-ad-s3-label]');
-  var s3big = safeGet('[data-ad-s3-big]');
-  var s3num = safeGet('[data-ad-s3-num]');
-  var s4label = safeGet('[data-ad-s4-label]');
-  var s4big = safeGet('[data-ad-s4-big]');
-  var s4num = safeGet('[data-ad-s4-num]');
-  var s4unit = safeGet('[data-ad-s4-unit]');
-  var s4note = safeGet('[data-ad-s4-note]');
-  var carrierEls = Array.prototype.slice.call(stage.querySelectorAll('[data-ad-carrier]'));
-  var s5slogan = safeGet('[data-ad-s5-slogan]');
-  var s6heading = safeGet('[data-ad-s6-heading]'); // 문구 SEO·GEO 지시서(2026-11-18) §1
-  var s6line1 = safeGet('[data-ad-s6-line1]');
-  var s6line2 = safeGet('[data-ad-s6-line2]');
-  var s6btns = safeGet('[data-ad-end-btns]');
+  var txtRoot = safeGet('[data-ad-txt]');
+  var scEls = Array.prototype.slice.call(stage.querySelectorAll('[data-ad-sc]'));
+  var endEl = safeGet('[data-ad-end]');
+  var endBtns = safeGet('[data-ad-end-btns]');
+  var hudEl = safeGet('[data-ad-hud]');
   var enterHomeBtn = safeGet('[data-ad-enter-home]');
   var ctaPrimaryBtn = safeGet('[data-ad-cta-primary]');
-  var dots = Array.prototype.slice.call(stage.querySelectorAll('[data-ad-dot]'));
-  var progressFill = safeGet('[data-ad-progress]');
   var skipBtn = safeGet('[data-ad-skip]');
   var scrollHint = safeGet('[data-ad-scroll-hint]');
   var wipeLayers = Array.prototype.slice.call(stage.querySelectorAll('.hp-ad-wipe-layer'));
 
-  // ================= 장면 시간표: 러프(초) <-> 진행도(%) 변환 =================
-  // t0/t1은 참고_광고인트로_러프_v8.html의 frame() 안 seg()/주석 타임라인에서 그대로 읽은 값.
-  // g0/g1은 지시서 §1 표의 진행도 구간(0-14/14-34/34-50/50-68/68-86/86-100)을 0~1로.
-  var SCENES = [
-    { g0: 0.00, g1: 0.14, t0: 0.0, t1: 6.8 },
-    { g0: 0.14, g1: 0.34, t0: 6.8, t1: 11.2 },
-    { g0: 0.34, g1: 0.50, t0: 11.2, t1: 15.2 },
-    { g0: 0.50, g1: 0.68, t0: 15.2, t1: 19.5 },
-    { g0: 0.68, g1: 0.86, t0: 19.5, t1: 26.2 },
-    { g0: 0.86, g1: 1.00, t0: 26.2, t1: 30.2 }
-  ];
-  function gAbs(tSec) {
-    for (var i = 0; i < SCENES.length; i++) {
-      var s = SCENES[i];
-      if (tSec <= s.t1 || i === SCENES.length - 1) {
-        var frac = (tSec - s.t0) / (s.t1 - s.t0);
-        return s.g0 + frac * (s.g1 - s.g0);
-      }
-    }
-  }
-  function clamp01(v) { return Math.max(0, Math.min(1, v)); }
-  function seg(p, a, b) { return clamp01((p - a) / (b - a)); }
-  function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
-  function fmt(n) { return Math.round(n).toLocaleString('ko-KR'); }
+  var copyEl = document.getElementById('hp-ad-copy');
+  var COPY = {};
+  try { COPY = JSON.parse(copyEl.textContent); } catch (e) {}
 
   // ================= 상태 =================
-  var isMobile = window.matchMedia('(max-width: 767px)').matches;
   var introDone = false;
   var transitioning = false;
   var latestProgress = 0;
   var lastApplied = -1;
-  var virtualLength = (isMobile ? 4 : 5) * window.innerHeight;
+  var isMobileVL = window.matchMedia('(max-width: 767px)').matches;
+  var virtualLength = (isMobileVL ? 4 : 5) * window.innerHeight;
 
-  // 스크롤 안내(2026-11-12) — "갑자기 우주만 떠 있어서 뭔지 모르겠다" 피드백 대응.
+  // 스크롤 안내(2026-11-12)
   var hintHidden = false;
   var hintBounceCount = 0;
   var hintBounceTimer = null;
@@ -141,363 +82,306 @@
   var HINT_IDLE_MS = 3000;
   var HINT_MAX_BOUNCES = 3;
 
-  // ================= Three.js 장면 =================
-  var THREE; // 동적 import로 채워짐(아래 "시작" 구간) — 그 전까지는 쓰지 않는다.
-  var renderer, scene, camera, points, uniforms, clock, raf;
-  var isVisible = true;
+  function clamp01(v) { return Math.max(0, Math.min(1, v)); }
 
-  function buildGeometry(mapPoints) {
-    var N_BASE = isMobile ? Math.min(1500, mapPoints.length) : mapPoints.length;
-    var N_EXTRA = Math.round(N_BASE / 3);
-    var N = N_BASE + N_EXTRA;
+  // ================= 캔버스 2D: 시안3 render() 포팅 =================
+  var cv = canvas, X = cv.getContext('2d');
+  var W, H, D, mob;
+  function size() {
+    D = Math.min(2, window.devicePixelRatio || 1);
+    W = window.innerWidth; H = window.innerHeight; mob = W < 700;
+    cv.width = W * D; cv.height = H * D;
+    X.setTransform(D, 0, 0, D, 0, 0);
+  }
 
-    // 모바일: 지도 모양을 지키려고 균등 간격으로 샘플링(끝/앞쪽만 자르지 않음)
-    var usedIdx = [];
-    if (N_BASE === mapPoints.length) {
-      for (var k = 0; k < N_BASE; k++) usedIdx.push(k);
-    } else {
-      for (var k2 = 0; k2 < N_BASE; k2++) usedIdx.push(Math.floor(k2 * mapPoints.length / N_BASE));
-    }
+  var seg = function (p, a, b) { return Math.min(1, Math.max(0, (p - a) / (b - a))); };
+  var io = function (t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+  var eo = function (t) { return 1 - Math.pow(1 - t, 4); };
+  var lerp = function (a, b, t) { return a + (b - a) * t; };
 
-    function rand(seed) { var x = Math.sin(seed) * 10000; return x - Math.floor(x); }
+  var FONT = '"Pretendard Variable",Pretendard,"Pretendard Fallback",-apple-system,BlinkMacSystemFont,system-ui,"Apple SD Gothic Neo","Noto Sans KR",sans-serif';
 
-    var position = new Float32Array(N * 3);
-    var aMap = new Float32Array(N * 3);
-    var aSpread = new Float32Array(N * 3);
-    var aRevealStart = new Float32Array(N);
-    var aOrderSeed = new Float32Array(N);
-    var aBackdropFlag = new Float32Array(N);
-    var aTwinkleSeed = new Float32Array(N);
-    var aSize = new Float32Array(N);
-    var aIsExtra = new Float32Array(N);
+  /* ---- 에셋: static/intro/*.webp, createImageBitmap으로 미리 디코드해둔다 ---- */
+  var IMG = {};
+  var names = ['city_far', 'office_enter', 'store', 'office_desk', 'phone', 'calendar'];
+  function loadImage(n) {
+    return fetch('static/intro/' + n + '.webp')
+      .then(function (r) { return r.blob(); })
+      .then(function (b) { return createImageBitmap(b); })
+      .then(function (bmp) { IMG[n] = bmp; });
+  }
 
-    var W = window.innerWidth, H = window.innerHeight;
-    var minDim = Math.min(W, H);
-    var mapOffX = isMobile ? 0 : -0.10 * W;
-    var mapOffY = isMobile ? 0.06 * H : 0.02 * H;
-    var mapScale = minDim * (isMobile ? 0.62 : 0.46);
+  var GRID = [], hub = null;
 
-    var extraReveal0 = gAbs(11.4), extraReveal1 = gAbs(11.8);
-    var EXTRA_REVEAL_WIDTH = Math.max(0.004, extraReveal1 - extraReveal0);
-    var mapReveal0 = gAbs(7.0), mapReveal1 = gAbs(7.35);
-    var MAP_REVEAL_WIDTH = Math.max(0.004, mapReveal1 - mapReveal0);
-
-    var maxY = 1, minY = -1; // korea-points.json은 [-1,1] 정규화, y는 위가 +1
-
-    for (var i = 0; i < N; i++) {
-      var isExtra = i >= N_BASE ? 1 : 0;
-      aIsExtra[i] = isExtra;
-
-      var sx = (rand(i * 2 + 1) - 0.5) * W * 1.15;
-      var sy = (rand(i * 2 + 7) - 0.5) * H * 1.15;
-      position[i * 3 + 0] = sx;
-      position[i * 3 + 1] = sy;
-      position[i * 3 + 2] = (rand(i * 2 + 3) - 0.5) * 2;
-
-      var fx = (rand(i * 3 + 11) - 0.5) * W * 1.05;
-      var fy = (rand(i * 3 + 17) - 0.5) * H * 1.05;
-      aSpread[i * 3 + 0] = fx;
-      aSpread[i * 3 + 1] = fy;
-      aSpread[i * 3 + 2] = 0;
-
-      var order = rand(i + 41);
-      aOrderSeed[i] = order;
-      var tw = rand(i + 5);
-      aTwinkleSeed[i] = tw;
-      aBackdropFlag[i] = tw > 0.85 ? 1 : 0;
-      aSize[i] = 0.6 + rand(i + 3) * 1.3;
-
-      if (!isExtra) {
-        var p = mapPoints[usedIdx[i]];
-        var mx = mapOffX + p[0] * mapScale;
-        var my = mapOffY + p[1] * mapScale;
-        aMap[i * 3 + 0] = mx;
-        aMap[i * 3 + 1] = my;
-        aMap[i * 3 + 2] = 0;
-        var ny = (maxY - p[1]) / (maxY - minY); // 0=북(위), 1=남(아래) -> 북쪽이 먼저 켜짐
-        var jitter = rand(i + 11) * 0.35 * 0.6;
-        var startSec = 7.0 + ny * 2.2 + jitter;
-        aRevealStart[i] = gAbs(startSec);
-      } else {
-        aMap[i * 3 + 0] = 0; aMap[i * 3 + 1] = 0; aMap[i * 3 + 2] = 0;
-        var off = order; // 러프 코드의 s.off 재사용(장면3 등장 + 장면4 소등 순서 공용)
-        var startSecExtra = 11.4 + off * 1.8;
-        aRevealStart[i] = gAbs(startSecExtra);
+  /* ---- 레이어 키프레임: [p, x, y, w, alpha, blur] — intro3.html의 K 표와 동일, 값 변경 없음 ----
+     무대 = 데스크톱 오른쪽 60%, 모바일 아래쪽 55%. u = 무대 폭/1000 */
+  var K = {
+    office_enter: [[.19, 0, 40, 300, 0], [.23, 0, 40, 560, 1], [.29, 0, 40, 600, 1], [.34, -900, 40, 520, 0]],
+    city_far: [[.19, 0, 215, 1500, 0], [.23, 0, 215, 1500, .3], [.29, 0, 215, 1500, .3], [.34, -120, 175, 1500, .22], [.38, -160, 175, 1500, .22], [.41, -200, 175, 1600, 0]],
+    store: [[.29, 300, 170, 560, 0], [.34, 90, 150, 700, 1], [.38, 90, 150, 720, 1], [.42, 90, 260, 1400, 0]],
+    phone: [[.40, 120, 240, 160, 0], [.44, 80, 0, 760, 1], [.50, 80, 0, 760, 1], [.54, -300, 0, 600, 1], [.60, -300, 0, 600, 1], [.63, -300, 0, 560, 0]],
+    office_desk: [[.50, 500, 60, 560, 0], [.55, 250, 60, 640, 1], [.60, 250, 60, 640, 1], [.63, 280, 60, 620, 0]],
+    calendar: [[.80, 0, 20, 560, 0], [.84, 0, 20, 640, 1], [.89, 0, 20, 660, 1], [.91, 0, 20, 620, 0]]
+  };
+  function kf(arr, p) {
+    if (p <= arr[0][0]) return { x: arr[0][1], y: arr[0][2], w: arr[0][3], a: 0, b: arr[0][5] || 0 };
+    var l = arr[arr.length - 1];
+    if (p >= l[0]) return { x: l[1], y: l[2], w: l[3], a: 0, b: l[5] || 0 };
+    for (var i = 0; i < arr.length - 1; i++) {
+      var A = arr[i], B = arr[i + 1];
+      if (p >= A[0] && p <= B[0]) {
+        var t = io(seg(p, A[0], B[0]));
+        return { x: lerp(A[1], B[1], t), y: lerp(A[2], B[2], t), w: lerp(A[3], B[3], t), a: lerp(A[4], B[4], t), b: lerp(A[5] || 0, B[5] || 0, t) };
       }
     }
-
-    var geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.BufferAttribute(position, 3));
-    geo.setAttribute('aMap', new THREE.BufferAttribute(aMap, 3));
-    geo.setAttribute('aSpread', new THREE.BufferAttribute(aSpread, 3));
-    geo.setAttribute('aRevealStart', new THREE.BufferAttribute(aRevealStart, 1));
-    geo.setAttribute('aOrderSeed', new THREE.BufferAttribute(aOrderSeed, 1));
-    geo.setAttribute('aBackdropFlag', new THREE.BufferAttribute(aBackdropFlag, 1));
-    geo.setAttribute('aTwinkleSeed', new THREE.BufferAttribute(aTwinkleSeed, 1));
-    geo.setAttribute('aSize', new THREE.BufferAttribute(aSize, 1));
-    geo.setAttribute('aIsExtra', new THREE.BufferAttribute(aIsExtra, 1));
-
-    return { geo: geo, mapRevealWidth: MAP_REVEAL_WIDTH, extraRevealWidth: EXTRA_REVEAL_WIDTH };
+  }
+  var SX, SY, U;
+  function stage2() {
+    if (mob) { SX = W * .5; SY = H * .70; U = W / 1000 * 1.05; }
+    else { SX = W * .63; SY = H * .54; U = Math.min(W * .56, H * 1.05) / 1000; }
+  }
+  function drawImg(n, p) {
+    var st = kf(K[n], p); if (!st || st.a <= .002) return null;
+    var im = IMG[n]; if (!im) return null;
+    var w = st.w * U, h = w * im.height / im.width;
+    var x = SX + st.x * U - w / 2, y = SY + st.y * U - h / 2;
+    X.globalAlpha = st.a; if (st.b > .1) X.filter = 'blur(' + st.b + 'px)';
+    X.drawImage(im, x, y, w, h); X.filter = 'none'; X.globalAlpha = 1;
+    return { x: x, y: y, w: w, h: h, a: st.a };
   }
 
-  var VERT = [
-    'attribute vec3 aMap;',
-    'attribute vec3 aSpread;',
-    'attribute float aRevealStart;',
-    'attribute float aOrderSeed;',
-    'attribute float aBackdropFlag;',
-    'attribute float aTwinkleSeed;',
-    'attribute float aSize;',
-    'attribute float aIsExtra;',
-    'uniform float uProgress;',
-    'uniform float uRevealWidth;',
-    'uniform float uExtraRevealWidth;',
-    'uniform float uSpreadStart;',
-    'uniform float uSpreadEnd;',
-    'uniform float uKillStart;',
-    'uniform float uKillEnd;',
-    'uniform float uScatterFadeStart;',
-    'uniform float uScatterFadeEnd;',
-    'uniform float uBackdropStart;',
-    'uniform float uBackdropEnd;',
-    'uniform float uTime;',
-    'uniform float uPixelRatio;',
-    'uniform float uBaseSize;',
-    'varying float vAlpha;',
-    'varying float vFlash;',
-    'varying float vBright;',
-    'float seg2(float p, float a, float b){ return clamp((p-a)/max(1e-5,(b-a)), 0.0, 1.0); }',
-    'float ease2(float t){ return t<0.5 ? 4.0*t*t*t : 1.0-pow(-2.0*t+2.0,3.0)/2.0; }',
-    'void main(){',
-    '  vBright = aTwinkleSeed;',
-    '  vec3 pos = position;',
-    '  pos.x += sin(uTime*0.2 + aOrderSeed*6.2831)*6.0;',
-    '  pos.y += cos(uTime*0.17 + aOrderSeed*6.2831)*5.0;',
-    '  float revealOn = 0.0;',
-    '  float alpha = 0.0;',
-    '  float spreadT = ease2(seg2(uProgress, uSpreadStart, uSpreadEnd));',
-    '  if (aIsExtra < 0.5) {',
-    '    float pulse = 0.85 + 0.15*sin(uTime*1.5 + aTwinkleSeed*6.2831);',
-    '    float scatterFade = (1.0 - seg2(uProgress, uScatterFadeStart, uScatterFadeEnd)) * pulse;',
-    '    revealOn = seg2(uProgress, aRevealStart, aRevealStart + uRevealWidth);',
-    '    vec3 formedPos = mix(aMap, aSpread, spreadT);',
-    '    pos = mix(pos, formedPos, step(0.5, revealOn));',
-    '    alpha = max(scatterFade * (1.0 - revealOn), revealOn);',
-    '  } else {',
-    '    revealOn = seg2(uProgress, aRevealStart, aRevealStart + uExtraRevealWidth);',
-    '    pos = mix(vec3(0.0), aSpread, spreadT);',
-    '    alpha = revealOn;',
-    '  }',
-    '  float killP = seg2(uProgress, uKillStart, uKillEnd);',
-    '  float killed = step(aOrderSeed, killP);',
-    '  float flashT = killP - aOrderSeed;',
-    '  float pastKillWindow = step(uKillEnd + 0.02, uProgress);',
-    '  vFlash = (flashT > -0.04 && flashT < 0.02 && pastKillWindow < 0.5) ? 1.0 : 0.0;',
-    '  alpha *= (1.0 - killed);',
-    '  if (vFlash > 0.5) alpha = 1.0;',
-    '  float backdropMix = seg2(uProgress, uBackdropStart, uBackdropEnd);',
-    '  float backdropAlpha = 0.18 * aBackdropFlag;',
-    '  alpha = mix(alpha, backdropAlpha, backdropMix);',
-    '  vAlpha = alpha;',
-    '  vec4 mv = modelViewMatrix * vec4(pos, 1.0);',
-    '  gl_PointSize = aSize * uBaseSize * uPixelRatio * mix(1.8, 1.0, clamp(revealOn,0.0,1.0));',
-    '  gl_Position = projectionMatrix * mv;',
-    '}'
-  ].join('\n');
-
-  var FRAG = [
-    'precision mediump float;',
-    'varying float vAlpha;',
-    'varying float vFlash;',
-    'varying float vBright;',
-    'void main(){',
-    '  vec2 c = gl_PointCoord - vec2(0.5);',
-    '  float d = length(c);',
-    '  if (d > 0.5) discard;',
-    '  float a = (1.0 - smoothstep(0.1, 0.5, d)) * vAlpha;',
-    '  if (a <= 0.003) discard;',
-    '  vec3 base = vec3(0.890, 0.420, 0.173);',
-    '  vec3 bright = vec3(0.949, 0.631, 0.431);',
-    '  vec3 flashC = vec3(0.988, 0.863, 0.765);',
-    '  vec3 color = mix(base, bright, step(0.9, vBright));',
-    '  color = mix(color, flashC, vFlash);',
-    '  gl_FragColor = vec4(color*a, a);',
-    '}'
-  ].join('\n');
-
-  function initThree(mapPoints) {
-    var W = window.innerWidth, H = window.innerHeight;
-    scene = new THREE.Scene();
-    camera = new THREE.OrthographicCamera(-W / 2, W / 2, H / 2, -H / 2, 0.1, 10);
-    camera.position.z = 5;
-
-    /* antialias는 점(Points) 렌더링이라 필요 없어서 끈다. 해상도 상한도 2 -> 1.5(모바일
-       1.25)로 낮춘다 — 둘 다 매 프레임 그려야 하는 픽셀 수를 줄여서 렌더 비용을 낮춘다.
-       powerPreference는 일부러 안 넣는다(기본값 유지, 지시서 2026-11-09 §1). */
-    renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: false, alpha: true });
-    var pr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.25 : 1.5);
-    renderer.setPixelRatio(pr);
-    renderer.setSize(W, H, false);
-
-    var built = buildGeometry(mapPoints);
-
-    uniforms = {
-      uProgress: { value: 0 },
-      uRevealWidth: { value: built.mapRevealWidth },
-      uExtraRevealWidth: { value: built.extraRevealWidth },
-      uSpreadStart: { value: gAbs(11.2) },
-      uSpreadEnd: { value: gAbs(13.6) },
-      uKillStart: { value: gAbs(15.6) },
-      uKillEnd: { value: gAbs(16.6) },
-      uScatterFadeStart: { value: gAbs(6.3) },
-      uScatterFadeEnd: { value: gAbs(7.6) },
-      uBackdropStart: { value: gAbs(19.5) },
-      uBackdropEnd: { value: gAbs(21.0) },
-      uTime: { value: 0 },
-      uPixelRatio: { value: pr },
-      uBaseSize: { value: isMobile ? 2.3 : 3.0 }
-    };
-
-    var mat = new THREE.ShaderMaterial({
-      uniforms: uniforms,
-      vertexShader: VERT,
-      fragmentShader: FRAG,
-      transparent: true,
-      depthWrite: false,
-      depthTest: false,
-      blending: THREE.AdditiveBlending
-    });
-
-    points = new THREE.Points(built.geo, mat);
-    points.frustumCulled = false;
-    scene.add(points);
-
-    clock = new THREE.Clock();
+  /* ---- 글자 리빌: intro3.html의 reveal()과 동일 ---- */
+  function reveal(el, in0, in1, out0, out1, p) {
+    if (!el) return;
+    var ls = el.querySelectorAll('.hp-ad-m>span');
+    el.style.visibility = (p >= in0 - .001 && p <= out1 + .001) ? 'visible' : 'hidden';
+    var step = .0085, dur = Math.max(.016, in1 - in0);
+    for (var i = 0; i < ls.length; i++) {
+      var st = in0 + i * step;
+      var a = eo(seg(p, st, st + dur)), b = io(seg(p, out0, out1));
+      ls[i].style.transform = 'translate3d(0,' + ((1 - a) * 105 - b * 105) + '%,0)';
+      ls[i].style.opacity = String(Math.min(1, a * 1.3) * (1 - b));
+    }
   }
 
-  function sizeRenderer() {
-    if (!renderer) return;
-    var W = window.innerWidth, H = window.innerHeight;
-    camera.left = -W / 2; camera.right = W / 2; camera.top = H / 2; camera.bottom = -H / 2;
-    camera.updateProjectionMatrix();
-    renderer.setSize(W, H, false);
-  }
-  var resizeTimer = null;
-  function onResize() {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(sizeRenderer, 150);
-  }
-  window.addEventListener('resize', onResize);
+  function render(p) {
+    stage2(); X.clearRect(0, 0, W, H);
 
-  // 휠 입력은 한 칸(약 100px)씩 뚝뚝 들어오므로, 목표 진행도(latestProgress)를 바로 쓰지 않고
-  // 매 프레임 부드럽게 따라가게 한다(관성 스무딩). 프레임레이트와 무관하게 같은 속도로 수렴.
-  var MIN_AD_SECONDS = 18; // 광고(장면1~엔딩) 최소 재생 시간. 줄이면 빨라지고 늘리면 느려짐
-  var smoothProgress = 0, lastTickTime = performance.now();
+    /* ===== S1~S2: 점묘 한국 지도 ===== */
+    var mapA = eo(seg(p, .0, .04)) * (1 - io(seg(p, .19, .22)));
+    if (mapA > 0 && GRID.length && hub) {
+      var zoom = lerp(1, 1.6, io(seg(p, .18, .22)));
+      var R = (mob ? 430 : 470) * U, hx = hub[0], hy = hub[1];
+      var ox = SX - hx * R * (zoom - 1), oy = SY + hy * R * (zoom - 1);
+      var lit = seg(p, .02, .09), yrs = seg(p, .11, .19);
+      var GS = .024, sp = GS * R * zoom;
+      var rG = Math.max(.8, sp * .20), rO = Math.max(1.3, sp * .31);
+      for (var i = 0; i < GRID.length; i++) {
+        var g = GRID[i]; var x = ox + g[0] * R * zoom, y = oy - g[1] * R * zoom;
+        if (x < -10 || x > W + 10 || y < -10 || y > H + 10) continue;
+        var sweep = (1 - (g[1] + 1) / 2);
+        var p1 = g[2] < .35 ? eo(seg(lit * 1.12, sweep, sweep + .10)) : 0;
+        var t2 = g[3] / 1.15, p2 = g[2] < .72 ? eo(seg(yrs, t2, t2 + .10)) : 0;
+        var pop = Math.max(p1, p2);
+        X.globalAlpha = .30 * mapA * (1 - pop); X.fillStyle = '#8A8A8F'; X.beginPath(); X.arc(x, y, rG, 0, 7); X.fill();
+        if (pop > 0) { X.globalAlpha = mapA * Math.min(1, pop * 1.4); X.fillStyle = '#E36B2C'; X.beginPath(); X.arc(x, y, rO * (.35 + .65 * pop), 0, 7); X.fill(); }
+      }
+      X.globalAlpha = mapA; var hxp = ox + hx * R * zoom, hyp = oy - hy * R * zoom;
+      X.strokeStyle = '#E36B2C'; X.lineWidth = 1.2; X.beginPath(); X.arc(hxp, hyp, 9, 0, 7); X.stroke();
+      var pinLabel = COPY.mapPin || 'ENTER';
+      X.font = '800 12px ' + FONT; var tw = X.measureText(pinLabel).width;
+      X.fillStyle = '#1F1A17'; X.beginPath(); X.roundRect(hxp + 14, hyp - 10, tw + 14, 20, 10); X.fill();
+      X.fillStyle = '#FBF8F4'; X.textAlign = 'left'; X.fillText(pinLabel, hxp + 21, hyp + 4);
+      X.fillStyle = '#FBF8F4'; X.beginPath(); X.arc(hxp, hyp, 9, 0, 7); X.fill();
+      X.strokeStyle = '#1F1A17'; X.lineWidth = 1.6; X.beginPath(); X.arc(hxp, hyp, 9, 0, 7); X.stroke();
+      X.fillStyle = '#E36B2C'; X.beginPath(); X.arc(hxp, hyp, 4, 0, 7); X.fill();
+      X.globalAlpha = 1;
+    }
 
-  /* 렌더 빈도 조절(지시서 2026-11-09 §2) — 진행도가 실제로 움직이는 동안(스무딩이 목표를
-     따라가는 중)만 매 프레임 그린다. 진행도가 멈춰 있으면(uTime 반짝임만 바뀜) 1000/24ms마다
-     한 번꼴로만 그려서 가만히 있을 때의 GPU/CPU 부담을 줄인다. reduced-motion이면(지금은
-     위에서 이미 bailOut되어 이 코드까지 안 오지만, 혹시 몰라 방어적으로 넣는다) 반짝임
-     자체가 없으므로 진행도가 실제로 바뀐 프레임에만 그린다. */
-  var RENDER_INTERVAL_IDLE = 1000 / 24;
-  var lastRenderTime = 0;
-  function tick() {
-    raf = requestAnimationFrame(tick);
-    var now = performance.now(), dt = Math.min(0.05, (now - lastTickTime) / 1000); lastTickTime = now;
-    var diff = latestProgress - smoothProgress;
-    var moving = Math.abs(diff) > 0.00002;
-    if (moving) {
-      var step = diff * (1 - Math.pow(1 - 0.085, dt * 60));
-      // 재생 속도 상한: 아무리 빨리 휠을 돌려도 광고 전체가 최소 MIN_AD_SECONDS초에 걸쳐 재생된다(영상처럼 보이게).
-      var maxStep = dt / MIN_AD_SECONDS;
-      if (step > maxStep) step = maxStep; else if (step < -maxStep) step = -maxStep;
-      smoothProgress += step;
+    /* ===== 선화 레이어(뒤 -> 앞) ===== */
+    drawImg('city_far', p);
+    drawImg('office_enter', p);
+    drawImg('store', p);
+    var desk = drawImg('office_desk', p);
+    if (desk) {
+      var dk = COPY.desk || {};
+      X.globalAlpha = desk.a; X.fillStyle = '#1F1A17'; X.font = '700 ' + Math.max(12, 13 * U * 1.6) + 'px ' + FONT; X.textAlign = 'center';
+      X.fillText(dk.received || '접수 담당', desk.x + desk.w * .27, desk.y - 14);
+      X.fillText(dk.reply || '회신 담당', desk.x + desk.w * .73, desk.y - 14);
+      X.fillStyle = '#E36B2C'; X.font = '600 ' + Math.max(11, 11 * U * 1.6) + 'px ' + FONT;
+      X.fillText(dk.note || '평균 10분 내외 전달', desk.x + desk.w * .5, desk.y + desk.h + 28);
+      X.globalAlpha = 1;
+    }
+    var ph = drawImg('phone', p);
+    if (ph) {
+      var sx = ph.x + ph.w * .275, sy = ph.y + ph.h * .07, sw = ph.w * .39;
+      var fs = Math.round(Math.max(11, sw * .068)), lh = Math.round(fs * 1.45), pad = Math.round(fs * .8);
+      var font = '500 ' + fs + 'px ' + FONT;
+      X.globalAlpha = ph.a; X.font = '600 ' + fs + 'px ' + FONT; X.fillStyle = '#1F1A17'; X.textAlign = 'center';
+      X.fillText(COPY.phoneTitle || 'ENTER 업무방', sx + sw / 2, sy + fs * 1.3);
+      X.fillStyle = '#E8DFD6'; X.fillRect(sx, sy + fs * 2.2, sw, 1); X.textAlign = 'left'; X.font = font;
+      var msgs = COPY.phoneMsgs || [];
+      var maxW = sw * .78 - pad * 2; var yy = sy + fs * 3.2;
+      var wrap = function (t) {
+        var out = [], line = '';
+        var words = t.split(' ');
+        for (var w2 = 0; w2 < words.length; w2++) {
+          var tst = line ? line + ' ' + words[w2] : words[w2];
+          if (X.measureText(tst).width > maxW && line) { out.push(line); line = words[w2]; } else line = tst;
+        }
+        out.push(line); return out;
+      };
+      for (var mi = 0; mi < msgs.length; mi++) {
+        var m = msgs[mi];
+        var a = eo(seg(p, .44 + mi * .014, .452 + mi * .014)) * ph.a; if (a <= 0) continue;
+        var lsArr = wrap(m[1]);
+        var bw = 0; for (var li = 0; li < lsArr.length; li++) bw = Math.max(bw, X.measureText(lsArr[li]).width);
+        var tw2 = bw + pad * 2, bh = lsArr.length * lh + pad * 1.1;
+        var bx = m[0] === 'me' ? sx + sw - tw2 - sw * .05 : sx + sw * .05, by = yy + (1 - a) * 8;
+        X.globalAlpha = a; X.fillStyle = m[0] === 'me' ? '#E36B2C' : '#F1EAE3';
+        X.beginPath(); X.roundRect(bx, by, tw2, bh, Math.min(16, bh / 2)); X.fill();
+        X.fillStyle = m[0] === 'me' ? '#FFFFFF' : '#1F1A17';
+        for (var k2 = 0; k2 < lsArr.length; k2++) X.fillText(lsArr[k2], bx + pad, by + pad * .55 + lh * (k2 + .78));
+        yy += bh + fs * .7;
+      }
+      X.globalAlpha = 1;
+    }
+
+    /* ===== S7: 코드로 그린 시계 ===== */
+    var ca = eo(seg(p, .60, .635)) * (1 - io(seg(p, .70, .72)));
+    if (ca > 0) {
+      var ck = COPY.clock || {};
+      var Rc = mob ? W * .29 : 250 * U, cx = SX + (mob ? 0 : 70 * U), cy = SY + (mob ? 10 : 0);
+      var tt = io(seg(p, .635, .685));
+      var hrs = 9 + 9 * tt;
+      X.save(); X.globalAlpha = ca; X.translate(cx, cy);
+      X.strokeStyle = '#6E6E73'; X.lineWidth = 1.6; X.beginPath(); X.arc(0, 0, Rc, 0, 7); X.stroke();
+      X.lineWidth = 1; X.beginPath(); X.arc(0, 0, Rc * .93, 0, 7); X.stroke();
+      for (var ti = 0; ti < 60; ti++) {
+        var ta = ti / 60 * Math.PI * 2, big = ti % 5 === 0; var r1 = Rc * .93, r0 = Rc * (big ? .83 : .89);
+        X.lineWidth = big ? 1.6 : 1; X.strokeStyle = big ? '#6E6E73' : 'rgba(110,110,115,.55)';
+        X.beginPath(); X.moveTo(Math.sin(ta) * r0, -Math.cos(ta) * r0); X.lineTo(Math.sin(ta) * r1, -Math.cos(ta) * r1); X.stroke();
+      }
+      var a9 = (9 / 12) * Math.PI * 2 - Math.PI / 2, aNow = ((hrs % 12) / 12) * Math.PI * 2 - Math.PI / 2 + (hrs >= 12 ? Math.PI * 2 : 0);
+      X.strokeStyle = '#E36B2C'; X.lineWidth = 3; X.lineCap = 'round'; X.beginPath(); X.arc(0, 0, Rc * 1.06, a9, aNow); X.stroke(); X.lineCap = 'butt';
+      var ah = ((hrs % 12) / 12) * Math.PI * 2, am = ((hrs % 1)) * Math.PI * 2;
+      X.strokeStyle = '#1F1A17'; X.lineWidth = 2.4; X.beginPath(); X.moveTo(0, 0); X.lineTo(Math.sin(ah) * Rc * .5, -Math.cos(ah) * Rc * .5); X.stroke();
+      X.lineWidth = 1.4; X.beginPath(); X.moveTo(0, 0); X.lineTo(Math.sin(am) * Rc * .76, -Math.cos(am) * Rc * .76); X.stroke();
+      X.fillStyle = '#FBF8F4'; X.strokeStyle = '#1F1A17'; X.lineWidth = 1.4; X.beginPath(); X.arc(0, 0, 4, 0, 7); X.fill(); X.stroke();
+      var lab = function (t, a2, col, w2) {
+        X.fillStyle = col; X.font = w2 + ' ' + Math.round(Math.max(11, Rc * .085)) + 'px ' + FONT; X.textAlign = 'center';
+        X.fillText(t, Math.sin(a2) * Rc * 1.22, -Math.cos(a2) * Rc * 1.22 + 4);
+      };
+      X.fillStyle = '#6E6259'; X.font = '600 ' + Math.round(Math.max(11, Rc * .085)) + 'px ' + FONT;
+      if (mob) { X.textAlign = 'left'; X.fillText(ck.start_mobile || '09:00 시작', -Rc * .78, 4); }
+      else { X.textAlign = 'right'; X.fillText(ck.start_desktop || '09:00 업무 시작', -Rc * 1.16, 4); }
+      var done = eo(seg(p, .683, .695));
+      if (done > 0) {
+        X.globalAlpha = ca * done; lab(ck.end || '18:00 사은품 입금', (6 / 12) * Math.PI * 2, '#E36B2C', '700');
+        X.fillStyle = '#E36B2C'; X.beginPath(); X.arc(Math.sin(Math.PI) * Rc * 1.06, -Math.cos(Math.PI) * Rc * 1.06, 5, 0, 7); X.fill();
+      }
+      X.restore(); X.globalAlpha = 1;
+    }
+    if (!mob) {
+      var gH = X.createLinearGradient(0, 0, W * .44, 0);
+      gH.addColorStop(0, 'rgba(251,248,244,1)'); gH.addColorStop(.72, 'rgba(251,248,244,.96)'); gH.addColorStop(1, 'rgba(251,248,244,0)');
+      X.fillStyle = gH; X.fillRect(0, 0, W * .44, H);
     } else {
-      smoothProgress = latestProgress;
+      var gV = X.createLinearGradient(0, 0, 0, H * .52);
+      gV.addColorStop(0, 'rgba(251,248,244,1)'); gV.addColorStop(.8, 'rgba(251,248,244,.96)'); gV.addColorStop(1, 'rgba(251,248,244,0)');
+      X.fillStyle = gV; X.fillRect(0, 0, W, H * .52);
     }
-    var progressChanged = smoothProgress !== lastApplied;
-    if (progressChanged) {
-      applyProgress(smoothProgress);
-      lastApplied = smoothProgress;
+    /* ===== S8: 정산 90회 눈금 ===== */
+    var tk = seg(p, .72, .79), tko = 1 - io(seg(p, .795, .81));
+    if (tk > 0 && tko > 0) {
+      var stl = COPY.settlement || {};
+      var bw2 = (mob ? 860 : 760) * U, x0 = SX - bw2 / 2, y2 = SY + 40 * U;
+      X.strokeStyle = 'rgba(110,110,115,.35)'; X.lineWidth = 1; X.beginPath(); X.moveTo(x0, y2 + .5); X.lineTo(x0 + bw2 * eo(seg(p, .715, .74)), y2 + .5); X.stroke();
+      for (var ii = 0; ii < 90; ii++) {
+        var on = eo(seg(tk, ii / 90 * .8, ii / 90 * .8 + .2)); if (on <= 0) continue;
+        var xx = x0 + bw2 * ii / 89, bigT = ii % 10 === 9;
+        X.strokeStyle = bigT ? 'rgba(227,107,44,' + tko + ')' : 'rgba(110,110,115,' + (.8 * tko) + ')';
+        X.lineWidth = bigT ? 1.6 : 1; X.beginPath(); X.moveTo(xx + .5, y2); X.lineTo(xx + .5, y2 - (bigT ? 54 : 28) * U * on); X.stroke();
+      }
+      X.globalAlpha = tko * eo(seg(p, .76, .79)); X.fillStyle = '#6E6259'; X.font = '600 ' + Math.max(11, 12 * U * 1.6) + 'px ' + FONT; X.textAlign = 'left';
+      X.fillText(stl.range_start || '2025.01', x0, y2 + 28); X.textAlign = 'right'; X.fillText(stl.range_end || '2026.10 · 90회', x0 + bw2, y2 + 28);
+      X.globalAlpha = 1;
     }
-    uniforms.uTime.value = clock.getElapsedTime();
-
-    if (reduce) {
-      if (!progressChanged) return;
-      renderer.render(scene, camera);
-      lastRenderTime = now;
-      return;
+    /* ===== S9: 달력 + 정산 흐름 칩 ===== */
+    var cal = drawImg('calendar', p);
+    if (cal) {
+      var chips = COPY.chips || [];
+      var cw = 150 * U * 1.4, gap = 36 * U, tot = cw * 3 + gap * 2; var cx2 = SX - tot / 2; var cy2 = cal.y + cal.h + 30;
+      X.font = '700 ' + Math.max(12, 13 * U * 1.6) + 'px ' + FONT; X.textAlign = 'center';
+      for (var ci = 0; ci < chips.length; ci++) {
+        var a2 = eo(seg(p, .845 + ci * .012, .86 + ci * .012)) * cal.a;
+        if (a2 <= 0) { cx2 += cw + gap; continue; }
+        X.globalAlpha = a2; X.fillStyle = ci === 2 ? '#E36B2C' : '#F1EAE3'; X.beginPath(); X.roundRect(cx2, cy2, cw, 40, 20); X.fill();
+        X.fillStyle = ci === 2 ? '#fff' : '#1F1A17'; X.fillText(chips[ci], cx2 + cw / 2, cy2 + 25);
+        if (ci < 2) { X.strokeStyle = '#C9BEB4'; X.lineWidth = 1; X.beginPath(); X.moveTo(cx2 + cw + 6, cy2 + 20); X.lineTo(cx2 + cw + gap - 6, cy2 + 20); X.stroke(); }
+        cx2 += cw + gap;
+      }
+      X.globalAlpha = 1;
     }
-    if (moving || now - lastRenderTime >= RENDER_INTERVAL_IDLE) {
-      renderer.render(scene, camera);
-      lastRenderTime = now;
+    /* ===== 엔딩: 한 가닥 주황선 ===== */
+    var e = eo(seg(p, .91, .95));
+    if (e > 0) { var yE = H * .72; X.strokeStyle = '#E36B2C'; X.lineWidth = 1.4; X.beginPath(); X.moveTo(0, yE); X.lineTo(W * e, yE); X.stroke(); }
+
+    /* ===== 문구 ===== */
+    for (var si = 0; si < 9; si++) {
+      var a3 = si * .1;
+      reveal(scEls[si], a3 + .008, a3 + .030, a3 + .088, a3 + .098, p);
     }
-  }
-
-  /* rAF 루프 시작·정지 — 광고가 화면 밖(스크롤로 지나감)이거나 탭이 숨겨지면 루프 자체를
-     끊는다(cancelAnimationFrame). 매 프레임 할 일을 건너뛰기만 하던 이전 방식은 보이지
-     않을 때도 rAF가 계속 돌았다(지시서 2026-11-09 §2). */
-  function shouldRun() { return !!renderer && isVisible && isTabVisible; }
-  function startLoop() {
-    if (raf || !shouldRun()) return;
-    lastTickTime = performance.now(); // 멈춰 있던 동안의 실제 경과 시간이 dt로 한번에 들어가지 않게
-    raf = requestAnimationFrame(tick);
-  }
-  function stopLoop() {
-    if (raf) { cancelAnimationFrame(raf); raf = null; }
-  }
-  function syncLoop() { if (shouldRun()) startLoop(); else stopLoop(); }
-
-  var isTabVisible = document.visibilityState !== 'hidden';
-  function onVisibilityChange() {
-    isTabVisible = document.visibilityState !== 'hidden';
-    syncLoop();
-  }
-  document.addEventListener('visibilitychange', onVisibilityChange);
-
-  var visObserver = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) { isVisible = e.isIntersecting; });
-    syncLoop();
-  }, { threshold: 0 });
-  visObserver.observe(stage);
-
-  // ================= 장면별 DOM 업데이트(러프의 seg()/op() 그대로, 초 -> gAbs()) =================
-  function updateDots(p) {
-    for (var i = 0; i < SCENES.length; i++) {
-      var s = SCENES[i];
-      var active = (p >= s.g0 && p < s.g1) || (i === SCENES.length - 1 && p >= s.g1);
-      if (dots[i]) dots[i].classList.toggle('hp-ad-dot--active', active);
+    var cnt = function (i, to, a4, b4) {
+      var el = stage.querySelector('[data-ad-n="' + i + '"]');
+      if (el) el.textContent = Math.round(to * eo(seg(p, a4, b4))).toLocaleString('en-US');
+    };
+    cnt(0, 3000, .02, .08); cnt(2, 4000, .22, .28); cnt(5, 10, .52, .56);
+    var yEl = stage.querySelector('[data-ad-n="1"]');
+    if (yEl) {
+      yEl.textContent = String(Math.round(lerp(2010, 2026, seg(p, .12, .19))));
+      var smallEl = scEls[1] && scEls[1].querySelector('small');
+      if (smallEl) smallEl.textContent = p < .19 ? '년' : '년까지';
     }
+    var tEl = stage.querySelector('[data-ad-n="6"]');
+    if (tEl) {
+      var hh2 = 9 + 9 * io(seg(p, .635, .685));
+      var hh = Math.floor(hh2 + 1e-6), mm = Math.floor((hh2 - hh) * 60 / 10) * 10;
+      tEl.textContent = String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
+    }
+    reveal(endEl, .912, .93, 2, 3, p);
+    if (endBtns) endBtns.style.opacity = eo(seg(p, .94, .97));
+    if (hudEl) {
+      var sc = Math.min(9, Math.floor(p * 10) + 1);
+      hudEl.innerHTML = p < .91 ? ('<b>' + String(sc).padStart(2, '0') + '</b> / 09') : '';
+    }
+
+    if (!hintHidden && p >= 0.02) hideScrollHint();
+    if (endBtns) endBtns.style.pointerEvents = p >= .95 ? 'auto' : 'none';
   }
 
   // ================= 스크롤 안내 보이기/숨기기/튕기기 =================
   function resetHintIdle() { lastHintInputTime = performance.now(); }
-
   function bounceHint() {
     hintBounceCount++;
     scrollHint.classList.remove('hp-ad-scroll-hint--bounce');
-    void scrollHint.offsetWidth; // 리플로우로 같은 애니메이션 클래스를 다시 트리거
+    void scrollHint.offsetWidth;
     scrollHint.classList.add('hp-ad-scroll-hint--bounce');
   }
-
   function checkHintIdle() {
-    if (hintHidden || hintBounceCount >= HINT_MAX_BOUNCES) {
-      clearInterval(hintBounceTimer); hintBounceTimer = null; return;
-    }
+    if (hintHidden || hintBounceCount >= HINT_MAX_BOUNCES) { clearInterval(hintBounceTimer); hintBounceTimer = null; return; }
     if (performance.now() - lastHintInputTime >= HINT_IDLE_MS) {
       bounceHint();
-      lastHintInputTime = performance.now(); // 튕긴 뒤 다시 3초 무입력을 기다린다
+      lastHintInputTime = performance.now();
       if (hintBounceCount >= HINT_MAX_BOUNCES) { clearInterval(hintBounceTimer); hintBounceTimer = null; }
     }
   }
-
   function showScrollHint() {
     if (!scrollHint) return;
     scrollHint.classList.add('hp-ad-scroll-hint--in');
     resetHintIdle();
     hintBounceTimer = setInterval(checkHintIdle, 500);
   }
-
   function hideScrollHint() {
     if (hintHidden || !scrollHint) return;
     hintHidden = true;
@@ -505,99 +389,42 @@
     if (hintBounceTimer) { clearInterval(hintBounceTimer); hintBounceTimer = null; }
   }
 
-  function applyProgress(p) {
-    uniforms.uProgress.value = p;
-    if (!hintHidden && p >= 0.02) hideScrollHint(); // 진행도 2% 이상 -> 페이드아웃, 다시 안 보임
-
-    // 장면 1
-    var h1Op = seg(p, gAbs(3.0), gAbs(3.6)) * (1 - seg(p, gAbs(6.0), gAbs(6.8)));
-    var h1Ty = (1 - seg(p, gAbs(3.0), gAbs(3.6))) * 30 - seg(p, gAbs(6.0), gAbs(6.8)) * 60;
-    if (line1) { line1.style.opacity = h1Op; line1.style.transform = 'translateY(' + h1Ty + 'px)'; }
-    if (s1Eyebrow) { s1Eyebrow.style.opacity = h1Op; s1Eyebrow.style.transform = 'translateY(' + h1Ty + 'px)'; }
-    var h2Op = seg(p, gAbs(3.4), gAbs(4.0)) * (1 - seg(p, gAbs(6.0), gAbs(6.8)));
-    var h2Ty = (1 - seg(p, gAbs(3.4), gAbs(4.0))) * 30 + seg(p, gAbs(6.0), gAbs(6.8)) * 60;
-    if (line2) { line2.style.opacity = h2Op; line2.style.transform = 'translateY(' + h2Ty + 'px)'; }
-
-    // 장면 2
-    var k1Op = seg(p, gAbs(8.6), gAbs(9.3)) * (1 - seg(p, gAbs(10.6), gAbs(11.0)));
-    var k1Ty = (1 - seg(p, gAbs(8.6), gAbs(9.3))) * 20;
-    if (s2box) { s2box.style.opacity = k1Op; s2box.style.transform = 'translateY(-50%) translateY(' + k1Ty + 'px)'; }
-    var k1sOp = seg(p, gAbs(9.0), gAbs(9.6)) * (1 - seg(p, gAbs(10.6), gAbs(11.0)));
-    if (s2note) s2note.style.opacity = k1sOp;
-    if (s2num) s2num.textContent = fmt(3000 * ease(seg(p, gAbs(8.6), gAbs(10.4))));
-
-    // 장면 3
-    var k2aOp = seg(p, gAbs(11.6), gAbs(12.1)) * (1 - seg(p, gAbs(14.8), gAbs(15.2)));
-    if (s3label) s3label.style.opacity = k2aOp;
-    var k2Op = seg(p, gAbs(11.8), gAbs(12.4)) * (1 - seg(p, gAbs(14.8), gAbs(15.2)));
-    var k2Ty = (1 - seg(p, gAbs(11.8), gAbs(12.4))) * 24;
-    if (s3big) { s3big.style.opacity = k2Op; s3big.style.transform = 'translateY(' + k2Ty + 'px)'; }
-    if (s3num) s3num.textContent = fmt(4000 * ease(seg(p, gAbs(11.8), gAbs(14.0))));
-
-    // 장면 4
-    var killP = seg(p, gAbs(15.6), gAbs(16.6));
-    var k3Op = seg(p, gAbs(15.3), gAbs(15.7)) * (1 - seg(p, gAbs(19.0), gAbs(19.4)));
-    if (s4label) s4label.style.opacity = k3Op;
-    if (s4big) s4big.style.opacity = k3Op;
-    var done = killP >= 1;
-    if (s4num) s4num.textContent = fmt(4000 * (1 - killP));
-    if (s4unit) s4unit.textContent = done ? '회' : '건';
-    if (s4label) s4label.textContent = done ? '정산 누락' : '이번 주 정산 진행 중';
-    if (s4big) s4big.classList.toggle('hp-ad-done', done);
-    var k3sOp = seg(p, gAbs(16.8), gAbs(17.2)) * (1 - seg(p, gAbs(19.0), gAbs(19.4)));
-    if (s4note) s4note.style.opacity = k3sOp;
-
-    // 장면 5
-    carrierEls.forEach(function (el, i) {
-      var a = 19.8 + i * 0.8;
-      var cp = seg(p, gAbs(a), gAbs(a + 1.6));
-      var sc = 3.2 - 2.9 * cp;
-      var op = (cp > 0 && cp < 1) ? Math.sin(Math.PI * cp) : 0;
-      var blur = cp < 0.25 ? (0.25 - cp) * 24 : 0;
-      el.style.opacity = op;
-      el.style.transform = 'translate(-50%,-50%) scale(' + sc + ')';
-      el.style.filter = 'none'; // 120px 글자에 매 프레임 blur는 무거워서 끊김 유발 -> 투명도·크기만 사용
-    });
-    var slogOp = seg(p, gAbs(24.6), gAbs(25.1)) * (1 - seg(p, gAbs(25.9), gAbs(26.2)));
-    if (s5slogan) s5slogan.style.opacity = slogOp;
-
-    // 장면 6
-    if (s6heading) s6heading.style.opacity = seg(p, gAbs(26.4), gAbs(27.0));
-    if (s6line1) s6line1.style.opacity = seg(p, gAbs(26.4), gAbs(27.0));
-    if (s6line2) {
-      s6line2.style.opacity = seg(p, gAbs(27.0), gAbs(27.5));
-      var f = seg(p, gAbs(27.5), gAbs(28.6));
-      s6line2.style.color = 'rgb(' + Math.round(58 + 197 * f) + ',' + Math.round(63 + 192 * f) + ',' + Math.round(72 + 178 * f) + ')';
+  // ================= 재생 루프: 진행도가 실제로 바뀔 때만 그리고, 멈추면 rAF도 멈춘다 =================
+  var MIN_AD_SECONDS = 30; // 광고(장면1~엔딩) 최소 재생 시간
+  var smoothProgress = 0, lastTickTime = performance.now(), raf = null;
+  function tick() {
+    var now = performance.now(), dt = Math.min(0.05, (now - lastTickTime) / 1000); lastTickTime = now;
+    var diff = latestProgress - smoothProgress;
+    var moving = Math.abs(diff) > 0.00002;
+    if (moving) {
+      var step = diff * (1 - Math.pow(1 - 0.085, dt * 60));
+      var maxStep = dt / MIN_AD_SECONDS;
+      if (step > maxStep) step = maxStep; else if (step < -maxStep) step = -maxStep;
+      smoothProgress += step;
+    } else {
+      smoothProgress = latestProgress;
     }
-    if (s6btns) {
-      var btnsOp = seg(p, gAbs(28.6), gAbs(29.1));
-      s6btns.style.opacity = btnsOp;
-      s6btns.style.transform = 'translateY(' + ((1 - btnsOp) * 16) + 'px)';
-      s6btns.style.pointerEvents = p >= 0.95 ? 'auto' : 'none';
-    }
-
-    if (progressFill) progressFill.style.transform = 'scaleX(' + p + ')';
-    updateDots(p);
-    updateSelectable();
-  }
-
-  // 글자는 실제 HTML 텍스트다. 오버레이는 휠 입력을 위해 pointer-events:none이지만,
-  // "지금 화면에 보이는 글자"만 마우스 드래그로 선택할 수 있게 켠다(투명한 다른 장면 글자는 선택 안 됨).
-  var selectableEls = Array.prototype.slice.call(stage.querySelectorAll('.hp-ad-overlay h1, .hp-ad-overlay p'));
-  function effOpacity(el) {
-    var o = 1, n = el;
-    while (n && n !== stage) { var v = parseFloat(n.style.opacity); if (!isNaN(v)) o *= v; n = n.parentElement; }
-    return o;
-  }
-  function updateSelectable() {
-    for (var i = 0; i < selectableEls.length; i++) {
-      var el = selectableEls[i], on = effOpacity(el) > 0.6;
-      el.style.pointerEvents = on ? 'auto' : 'none';
-      el.style.userSelect = on ? 'text' : 'none';
-      el.style.webkitUserSelect = on ? 'text' : 'none';
-      el.style.cursor = on ? 'text' : '';
+    var progressChanged = smoothProgress !== lastApplied;
+    if (progressChanged) { render(smoothProgress); lastApplied = smoothProgress; }
+    if (moving || progressChanged) {
+      raf = requestAnimationFrame(tick);
+    } else {
+      raf = null; // 더 바뀔 게 없으면 루프를 완전히 멈춘다 — 다음 입력이 올 때 startLoop()가 다시 돈다
     }
   }
+  function startLoop() {
+    if (raf) return;
+    lastTickTime = performance.now();
+    raf = requestAnimationFrame(tick);
+  }
+  function stopLoop() { if (raf) { cancelAnimationFrame(raf); raf = null; } }
+
+  var resizeTimer = null;
+  function onResize() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () { size(); render(smoothProgress); }, 100);
+  }
+  window.addEventListener('resize', onResize);
 
   // ================= 입력: 스크롤(wheel/touch/키보드)을 가상 진행도로 =================
   var touchY = 0;
@@ -606,6 +433,7 @@
     resetHintIdle();
     if (!introDone || transitioning) return;
     latestProgress = clamp01(latestProgress + e.deltaY / virtualLength);
+    startLoop();
   }
   function onTouchStart(e) { touchY = e.touches[0].clientY; resetHintIdle(); }
   function onTouchMove(e) {
@@ -616,15 +444,16 @@
     var dy = touchY - y;
     touchY = y;
     latestProgress = clamp01(latestProgress + dy / virtualLength);
+    startLoop();
   }
   function onKey(e) {
     resetHintIdle();
     if (!introDone || transitioning) return;
     var step = 0.06;
     if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
-      latestProgress = clamp01(latestProgress + step); e.preventDefault();
+      latestProgress = clamp01(latestProgress + step); e.preventDefault(); startLoop();
     } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
-      latestProgress = clamp01(latestProgress - step); e.preventDefault();
+      latestProgress = clamp01(latestProgress - step); e.preventDefault(); startLoop();
     }
   }
   function attachInput() {
@@ -642,34 +471,26 @@
 
   // ================= 인트로(자동재생, 효과 없음) =================
   function playIntro() {
-    attachInput(); // 잠겨 있지만(introDone=false) 리스너는 먼저 달아둔다
-    requestAnimationFrame(function () {
-      introEl.classList.add('hp-ad-intro--in');
-    });
+    attachInput();
+    requestAnimationFrame(function () { introEl.classList.add('hp-ad-intro--in'); });
     setTimeout(function () {
       introEl.classList.remove('hp-ad-intro--in');
       introEl.classList.add('hp-ad-intro--out');
     }, 700 + 1100);
     setTimeout(function () {
       introEl.classList.add('hp-ad-intro--done');
-      stage.classList.add('hp-ad-stage--sky');
+      stage.classList.add('hp-ad-stage--film');
     }, 700 + 1100 + 700);
     setTimeout(function () {
       introDone = true;
-      showScrollHint(); // 우주 화면 시작(위 두 번째 setTimeout) 1s 뒤 = 바로 이 시점
+      showScrollHint();
     }, 700 + 1100 + 700 + 1000);
   }
 
-  function stopThree() {
+  function stopCanvas() {
     stopLoop();
     clearTimeout(resizeTimer);
     if (hintBounceTimer) { clearInterval(hintBounceTimer); hintBounceTimer = null; }
-    visObserver.disconnect();
-    document.removeEventListener('visibilitychange', onVisibilityChange);
-    if (renderer) {
-      renderer.dispose();
-      if (points) { points.geometry.dispose(); points.material.dispose(); }
-    }
   }
 
   function beginTransition() {
@@ -678,10 +499,6 @@
     detachInput();
     markSeen();
 
-    /* 기획서/클로드코드_홈_왜ENTER_구조변경_지시서.md §2 — 초록 띠 3장이 "들어와서
-       화면을 덮고"(왼쪽→오른쪽, -100% -> 0%) 다 덮이면 why.html#from-ad로 이동한다.
-       실제로 걷히는(reveal) 쪽은 why.html의 static/wipe-reveal.js가 맡는다 — 사용자
-       눈에는 페이지가 바뀌는 게 아니라 기존과 같은 한 번의 와이프로 보인다. */
     wipeLayers.forEach(function (layer, i) {
       setTimeout(function () {
         layer.style.transition = 'transform .72s cubic-bezier(.7,0,.3,1)';
@@ -690,7 +507,7 @@
     });
 
     setTimeout(function () {
-      stopThree();
+      stopCanvas();
       location.href = 'why.html#from-ad';
     }, 900);
   }
@@ -704,19 +521,25 @@
     });
   }
 
-  // ================= 시작: Three.js(동적 import) + 지도 데이터를 같이 받은 뒤 초기화 =================
+  // ================= 시작: 에셋(webp 6장 + 격자 json) + 폰트 로딩 후 첫 렌더 =================
   cancelHardTimeout();
+  size();
+
+  var fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
 
   Promise.all([
-    import('./vendor/three-lite.min.js'),
-    fetch('static/data/korea-points.json').then(function (r) {
-      if (!r.ok) throw new Error('korea-points fetch failed');
+    Promise.all(names.map(loadImage)),
+    fetch('static/intro/korea-grid.json').then(function (r) {
+      if (!r.ok) throw new Error('korea-grid fetch failed');
       return r.json();
-    })
+    }),
+    fontsReady
   ])
     .then(function (results) {
-      THREE = results[0];
-      initThree(results[1].points);
+      var gridData = results[1];
+      hub = gridData.hub;
+      GRID = gridData.grid;
+      render(0);
       startLoop();
       playIntro();
     })

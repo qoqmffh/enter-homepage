@@ -1,30 +1,13 @@
 /* ENTER 홈(index.html) — 광고 무대 전용 스타일.
-   기획서/클로드코드_홈_왜ENTER_구조변경_지시서.md 이후 index.html은 광고만 남는다
-   ("하얀 홈"은 why.html로 옮겨짐, static/home-poetic.css + static/wipe-reveal.js 참고).
-   동기 인라인 스크립트가 localStorage 1시간 재방문·reduced-motion·WebGL 가능 여부·
-   ?intro=1을 먼저 확인해서, 광고를 틀 수 없으면 애초에 ad-pending을 붙이지 않고
-   바로 why.html로 보낸다. JS가 실패해도 안전장치(하드 타임아웃)가 why.html로 보낸다
-   — static/home-ad.js 참고. */
+   인트로 "시안3" 포팅(기획서/클로드코드_인트로시안3적용_백업_지시서_1120.md) — 배경이
+   cream(#FBF8F4)으로 바뀌면서 헤더를 더 이상 투명/흰색으로 덮어쓸 필요가 없어졌다
+   (예전엔 어두운 우주 배경 위에 떠 있어야 해서 헤더를 흰 글자로 뒤집었었다).
+   .txt/.sc/.m/.lab/.big/.ttl/.cap/.gap1/.gap2/.end/.btn/.hud 위치·크기·색은
+   기획서/마케팅/인트로시안/시안3/intro3.html(기준 구현)의 값을 그대로 옮긴 것 — 임의로
+   바꾸지 않는다. 헤더(76px, static/site.css .hp-header-inner) 높이만큼만 세로로 내렸다. */
 
 html.ad-pending body,
 html.ad-pending{ overflow:hidden; height:100%; }
-
-/* ---------- 헤더: 광고 중에는 투명 배경 + 흰 로고 ---------- */
-html.ad-pending .hp-header{ background:transparent; border-bottom-color:transparent; backdrop-filter:none; }
-html.ad-pending .hp-header .hp-brand-svg g{ fill:var(--hp-white); }
-html.ad-pending .hp-header .hp-brand-door-leaf{ fill:#F2A16E; }
-html.ad-pending .hp-nav-group-num{ color:#F2A16E; }
-html.ad-pending .hp-nav-group-label{ color:rgba(255,255,250,.75); }
-html.ad-pending .hp-nav-group:hover .hp-nav-group-label,
-html.ad-pending .hp-nav-group[aria-expanded="true"] .hp-nav-group-label{ color:var(--hp-white); }
-html.ad-pending .hp-nav-toggle{ color:var(--hp-white); }
-/* 메가 패널이 열려있는 동안은 megamenu.css의 mega-open 규칙이 흰 바탕/잉크 글자로
-   되돌리므로(!important) 여기서 더 손대지 않는다. */
-html.ad-pending .hp-header-right .hp-pill--primary{ background:var(--hp-white); color:var(--hp-black); }
-/* 메뉴·헤더 정리(2026-11-13) D-2/D-3 — 투명 헤더에서는 로고 아래 업종 문구·전화 링크도 흰색. */
-html.ad-pending .hp-header .hp-brand-sub-text{ fill:rgba(255,255,250,.6); }
-html.ad-pending .hp-header .hp-header-tel{ color:var(--hp-white); }
-html.ad-pending .hp-header .hp-header-tel:hover{ color:#F2A16E; }
 
 .hp-replay-link{ font-size:12px; color:var(--hp-grey); white-space:nowrap; }
 .hp-replay-link:hover{ color:var(--hp-ink); }
@@ -34,105 +17,86 @@ html.ad-pending .hp-header .hp-header-tel:hover{ color:#F2A16E; }
 .hp-ad-stage{
   display:none;
   position:fixed; inset:0; z-index:30;
-  background:var(--hp-black); overflow:hidden; isolation:isolate;
+  background:#FBF8F4; overflow:hidden; isolation:isolate;
+  color:#1F1A17; font-family:var(--font-sans);
 }
 html.ad-pending .hp-ad-stage{ display:block; }
 
 .hp-ad-canvas{ position:absolute; inset:0; z-index:1; display:block; width:100%; height:100%; opacity:0; transition:opacity 1s ease; }
-.hp-ad-stage--sky .hp-ad-canvas{ opacity:1; }
+.hp-ad-stage--film .hp-ad-canvas{ opacity:1; }
 
-/* ---------- 인트로 로고 (효과 없음: 페이드인 -> 머묾 -> 페이드아웃) ---------- */
+/* ---------- 인트로 로고(효과 없음: 페이드인 -> 머묾 -> 페이드아웃), cream 배경용으로 재배색 ---------- */
 .hp-ad-intro{
   position:absolute; inset:0; z-index:5; display:flex; flex-direction:column;
   align-items:center; justify-content:center; pointer-events:none;
 }
 .hp-ad-intro-logo{ height:44px; width:auto; opacity:0; transition:opacity .7s ease; display:block; }
 .hp-ad-intro-sub{
-  margin-top:14px; font-size:14px; color:rgba(255,255,250,.6); letter-spacing:.14em;
+  margin-top:14px; font-size:14px; color:#6E6259; letter-spacing:.14em;
   opacity:0; transition:opacity .7s ease;
 }
 .hp-ad-intro--in .hp-ad-intro-logo, .hp-ad-intro--in .hp-ad-intro-sub{ opacity:1; }
 .hp-ad-intro--out .hp-ad-intro-logo, .hp-ad-intro--out .hp-ad-intro-sub{ opacity:0; }
 .hp-ad-intro--done{ display:none; }
 
-/* ---------- 장면 텍스트 오버레이(전부 JS가 progress에 따라 opacity/transform을 직접 쓴다) ---------- */
-.hp-ad-overlay{ position:absolute; inset:0; z-index:2; pointer-events:none; }
-.hp-ad-scene{ position:absolute; inset:0; }
-
-.hp-ad-line{
-  position:absolute; margin:0; max-width:80vw; font-weight:800; letter-spacing:-.02em;
-  line-height:1; color:var(--hp-white); opacity:0; will-change:opacity, transform;
+/* ---------- H1(지속 노출, SEO·GEO 지시서 2026-11-18 §1) — HUD 바로 위 작은 회색 줄.
+   never display:none — 장면 전환과 무관하게 항상 떠 있는다. ---------- */
+.hp-ad-eyebrow{
+  position:fixed; left:7vw; bottom:58px; z-index:3;
+  margin:0; font-size:12px; font-weight:600; color:#9A8E84; letter-spacing:-.005em;
+  max-width:min(34vw,480px); line-height:1.4;
 }
-.hp-ad-line--1{ top:20%; left:6%; font-size:40px; }
-.hp-ad-line--2{ bottom:26%; right:6%; text-align:right; font-size:40px; }
-/* 문구 SEO·GEO 지시서(2026-11-18) §1 — 실제 H1(작은 줄). hp-ad-line--1 바로 위,
-   수평 위치는 같게. 텍스트 스타일은 hp-ad-s3-label과 같이 쓴다(복합 클래스). */
-.hp-ad-eyebrow{ position:absolute; top:13%; left:6%; margin:0; max-width:80vw; opacity:0; }
 
-.hp-ad-scene--s2{ display:flex; align-items:center; justify-content:flex-end; }
-.hp-ad-s2-box{ position:absolute; right:6%; top:50%; transform:translateY(-50%); text-align:right; opacity:0; will-change:opacity, transform; max-width:70vw; }
-.hp-ad-s2-kpi{ margin:0; font-size:30px; font-weight:800; letter-spacing:-.02em; color:var(--hp-white); }
-.hp-ad-s2-kpi b{ color:#F2A16E; font-weight:800; }
-.hp-ad-s2-note{ margin:10px 0 0; font-size:12px; color:rgba(255,255,250,.6); opacity:0; }
-
-.hp-ad-center{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); text-align:center; }
-.hp-ad-s3-label, .hp-ad-s4-label{ margin:0 0 6px; font-size:16px; font-weight:600; color:rgba(255,255,250,.6); letter-spacing:-.01em; opacity:0; }
-.hp-ad-s3-big, .hp-ad-s4-big{ margin:0; font-size:72px; font-weight:800; line-height:1; color:var(--hp-white); opacity:0; will-change:opacity, transform; }
-.hp-ad-s3-big b, .hp-ad-s4-big b{ color:#F2A16E; }
-.hp-ad-s4-big.hp-ad-done b{ color:#F2A16E; }
-.hp-ad-s3-big i, .hp-ad-s4-big i{ font-style:normal; font-size:34px; margin-left:6px; }
-.hp-ad-s4-note{ margin:14px 0 0; font-size:13px; color:rgba(255,255,250,.6); opacity:0; }
-
-.hp-ad-carriers{ position:absolute; inset:0; }
-.hp-ad-carrier{
-  position:absolute; left:50%; top:50%; margin:0; white-space:nowrap;
-  font-size:32px; font-weight:800; letter-spacing:-.02em; color:var(--hp-white);
-  opacity:0; transform:translate(-50%,-50%); will-change:opacity, transform, filter;
+/* ---------- 장면 텍스트 칼럼(시안3 .txt/.sc/.m 포팅) ----------
+   top:50%를 헤더 높이(76px)의 절반만큼 내려서, 헤더 아래 영역을 기준으로 세로 중앙에 온다. */
+.hp-ad-txt{
+  position:fixed; left:7vw; top:calc(50% + 38px); transform:translateY(-50%);
+  width:min(34vw,480px); z-index:2; pointer-events:none;
 }
-.hp-ad-slogan{ position:absolute; left:0; right:0; bottom:14%; text-align:center; margin:0; font-size:15px; font-weight:500; letter-spacing:.06em; color:rgba(255,255,250,.6); opacity:0; }
+.hp-ad-sc{ position:absolute; left:0; top:50%; transform:translateY(-50%); width:100%; visibility:hidden; }
+.hp-ad-m{ display:block; overflow:hidden; padding-bottom:.08em; }
+.hp-ad-m>span{ display:block; will-change:transform; pointer-events:auto; }
+.hp-ad-lab{ font-size:13px; font-weight:700; letter-spacing:.22em; color:#E36B2C; }
+.hp-ad-big{ font-size:clamp(56px,7.4vw,112px); font-weight:800; letter-spacing:-.045em; line-height:1; font-variant-numeric:tabular-nums; }
+.hp-ad-big small{ font-size:.36em; font-weight:700; letter-spacing:-.02em; margin-left:.12em; }
+.hp-ad-ttl{ font-size:clamp(28px,3vw,44px); font-weight:800; letter-spacing:-.035em; line-height:1.22; }
+.hp-ad-cap{ font-size:16px; line-height:1.7; color:#6E6259; letter-spacing:-.01em; }
+.hp-ad-gap1{ height:18px; }
+.hp-ad-gap2{ height:22px; }
 
-.hp-ad-end-line1{ margin:0; font-size:36px; font-weight:800; letter-spacing:-.02em; color:var(--hp-white); opacity:0; }
-.hp-ad-end-line2{ margin:12px 0 0; font-size:17px; font-weight:600; color:#3a3f48; opacity:0; }
-.hp-ad-end-btns{
-  margin:22px auto 0; display:flex; justify-content:center; flex-wrap:wrap; gap:12px;
-  opacity:0; pointer-events:none; will-change:opacity, transform;
+/* ---------- 엔딩(시안3 .end/.btns/.btn 포팅) ---------- */
+.hp-ad-end{
+  position:fixed; left:50%; top:calc(44% + 38px); transform:translate(-50%,-50%);
+  text-align:center; width:90vw; z-index:2; visibility:hidden;
 }
-.hp-ad-btn{ padding:13px 24px; border-radius:999px; font-size:15px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; }
-.hp-ad-btn--primary{ background:var(--hp-white); color:var(--hp-black); border:none; cursor:pointer; }
-.hp-ad-btn--ghost{ background:transparent; color:var(--hp-white); border:1.5px solid var(--hp-white); cursor:pointer; font-family:inherit; }
+.hp-ad-end .hp-ad-m>span{ display:inline-block; }
+.hp-ad-end-ttl{ margin:0; font-size:clamp(30px,4vw,56px); font-weight:800; letter-spacing:-.035em; line-height:1.22; color:#1F1A17; }
+.hp-ad-end-btns{ display:flex; gap:12px; justify-content:center; margin-top:36px; opacity:0; pointer-events:none; }
+.hp-ad-btn{ height:52px; padding:0 28px; border-radius:12px; display:inline-flex; align-items:center; font-size:15px; font-weight:700; text-decoration:none; }
+.hp-ad-btn--primary{ background:#E36B2C; color:#fff; border:none; cursor:pointer; }
+.hp-ad-btn--ghost{ background:#EFEAE4; color:#1F1A17; border:none; cursor:pointer; font-family:inherit; }
 
-/* ---------- 장면 진행 표시(점 6개) + 하단 진행 막대 ---------- */
-.hp-ad-dots{ position:absolute; right:22px; top:50%; transform:translateY(-50%); z-index:3; display:flex; flex-direction:column; gap:10px; }
-.hp-ad-dot{ width:5px; height:5px; border-radius:50%; background:rgba(255,255,250,.25); transition:background .3s ease, transform .3s ease; }
-.hp-ad-dot--active{ background:#F2A16E; transform:scale(1.6); }
-
-.hp-ad-progress{ position:absolute; left:0; right:0; bottom:0; z-index:3; height:2px; background:rgba(255,255,250,.12); }
-.hp-ad-progress-fill{ display:block; width:100%; height:100%; background:#F2A16E; transform:scaleX(0); transform-origin:left; }
+/* ---------- HUD(장면 번호, 시안3 .hud 포팅 — 점 6개/진행 막대 대신 "NN / 09") ---------- */
+.hp-ad-hud{ position:fixed; left:7vw; bottom:36px; z-index:3; font-size:12px; letter-spacing:.24em; color:#9A8E84; font-weight:600; }
+.hp-ad-hud b{ color:#1F1A17; }
 
 .hp-ad-skip{
   position:absolute; right:22px; bottom:20px; z-index:4;
-  background:none; border:none; font-size:13px; color:rgba(255,255,250,.55);
+  background:none; border:none; font-size:13px; color:rgba(31,26,23,.55);
   cursor:pointer; padding:8px; font-family:inherit;
 }
-.hp-ad-skip:hover{ color:rgba(255,255,250,1); }
-/* 모바일 전면 최적화(2026-11-17) 10 — 별가루 인트로만 보이고 "건너뛰기"가 너무 옅어서
-   눈에 안 띈다는 지적. 모바일은 터치 영역을 키우고 알약 배경을 줘서 바로 보이게 한다. */
+.hp-ad-skip:hover{ color:#1F1A17; }
 @media (max-width:767px){
   .hp-ad-skip{
     right:16px; bottom:16px; min-height:44px; padding:0 18px;
     display:flex; align-items:center;
-    font-size:14px; font-weight:600; color:#FFFFFA;
-    background:rgba(255,255,250,.14); border-radius:999px;
-    border:1px solid rgba(255,255,250,.3);
+    font-size:14px; font-weight:600; color:#1F1A17;
+    background:rgba(31,26,23,.06); border-radius:999px;
+    border:1px solid rgba(31,26,23,.14);
   }
 }
 
-/* ---------- 스크롤 안내(2026-11-12) ----------
-   가운데 아래, 건너뛰기(오른쪽 아래)·진행 막대(맨 아래 2px)와 안 겹치는 자리.
-   static/home-ad.js가 우주 화면 시작 1s 뒤 --in을 붙여 0.6s 페이드인하고, 스크롤
-   진행도가 2% 이상 되면 --in을 떼서(이 규칙 자체의 .4s로) 페이드아웃한다 — 한 번
-   사라지면 다시 안 붙인다. 커스텀 커서·휠 스크롤·드래그 선택을 막지 않도록 통째로
-   pointer-events:none. */
+/* ---------- 스크롤 안내(2026-11-12), cream 배경용으로 재배색 ---------- */
 .hp-ad-scroll-hint{
   position:absolute; left:50%; bottom:40px; z-index:4;
   transform:translateX(-50%);
@@ -147,28 +111,22 @@ html.ad-pending .hp-ad-stage{ display:block; }
   30%{ transform:translateX(-50%) translateY(-6px); }
   60%{ transform:translateX(-50%) translateY(2px); }
 }
-
 .hp-ad-scroll-hint-mouse{
-  width:22px; height:34px; border-radius:11px; border:1.5px solid rgba(255,255,250,.9);
+  width:22px; height:34px; border-radius:11px; border:1.5px solid rgba(31,26,23,.6);
   position:relative; box-sizing:border-box;
 }
 .hp-ad-scroll-hint-dot{
   position:absolute; left:50%; top:6px; width:3px; height:6px; border-radius:1.5px;
-  background:rgba(255,255,250,.9); transform:translateX(-50%);
+  background:rgba(31,26,23,.6); transform:translateX(-50%);
   animation:hpAdScrollHintDot 1.6s ease infinite;
 }
 @keyframes hpAdScrollHintDot{
   0%{ opacity:1; transform:translateX(-50%) translateY(0); }
   70%, 100%{ opacity:0; transform:translateX(-50%) translateY(14px); }
 }
-
-.hp-ad-scroll-hint-touch-icon{
-  display:none; font-size:22px; line-height:1; color:rgba(255,255,250,.9);
-}
-.hp-ad-scroll-hint-label{ font-size:12px; color:rgba(255,255,250,.7); letter-spacing:.04em; white-space:nowrap; }
+.hp-ad-scroll-hint-touch-icon{ display:none; font-size:22px; line-height:1; color:rgba(31,26,23,.6); }
+.hp-ad-scroll-hint-label{ font-size:12px; color:rgba(31,26,23,.55); letter-spacing:.04em; white-space:nowrap; }
 .hp-ad-scroll-hint-label--touch{ display:none; }
-
-/* 모바일·터치 기기: 마우스 휠 아이콘 대신 위로 쓸어 올리는 화살표 */
 @media (hover:none), (pointer:coarse){
   .hp-ad-scroll-hint-mouse{ display:none; }
   .hp-ad-scroll-hint-touch-icon{ display:block; }
@@ -176,36 +134,26 @@ html.ad-pending .hp-ad-stage{ display:block; }
   .hp-ad-scroll-hint-label--touch{ display:block; }
 }
 
-/* ---------- 막 걷힘: 주황 띠 와이프 3장(인트로와 같은 색/타이밍) ---------- */
+/* ---------- 막 걷힘: 주황 띠 와이프 3장 ---------- */
 .hp-ad-wipe{ position:absolute; inset:0; z-index:6; pointer-events:none; }
 .hp-ad-wipe-layer{ position:absolute; inset:0; transform:translateX(-100%); }
 .hp-ad-wipe-layer--1{ background:#E36B2C; }
 .hp-ad-wipe-layer--2{ background:#EA864D; }
 .hp-ad-wipe-layer--3{ background:#F2A16E; }
 
-@media (min-width:768px){
-  .hp-ad-intro-logo{ height:56px; }
-  .hp-ad-line--1{ top:18%; left:7%; font-size:72px; }
-  .hp-ad-eyebrow{ top:11%; left:7%; }
-  .hp-ad-line--2{ bottom:26%; right:7%; font-size:72px; }
-  .hp-ad-s2-kpi{ font-size:52px; }
-  .hp-ad-s2-note{ font-size:13px; }
-  .hp-ad-s3-label, .hp-ad-s4-label{ font-size:20px; }
-  .hp-ad-s3-big, .hp-ad-s4-big{ font-size:128px; }
-  .hp-ad-s3-big i, .hp-ad-s4-big i{ font-size:56px; }
-  .hp-ad-s4-note{ font-size:15px; }
-  .hp-ad-carrier{ font-size:96px; }
-  .hp-ad-slogan{ font-size:17px; }
-  .hp-ad-end-line1{ font-size:56px; }
-  .hp-ad-end-line2{ font-size:19px; }
+/* ---------- 모바일(시안3 @media max-width:700px 포팅, 캔버스 mob 분기와 같은 기준폭) ---------- */
+@media (max-width:700px){
+  .hp-ad-txt{ left:24px; right:24px; width:auto; top:calc(20% + 38px); transform:none; }
+  .hp-ad-sc{ top:0; transform:none; }
+  .hp-ad-big{ font-size:64px; }
+  .hp-ad-ttl{ font-size:28px; }
+  .hp-ad-cap{ font-size:14px; }
+  .hp-ad-eyebrow, .hp-ad-hud{ left:24px; max-width:60vw; }
+  .hp-ad-eyebrow{ bottom:56px; }
 }
 
-@media (min-width:1280px){
-  .hp-ad-line--1{ left:80px; font-size:88px; }
-  .hp-ad-eyebrow{ left:80px; }
-  .hp-ad-line--2{ right:80px; font-size:88px; }
-  .hp-ad-s3-big, .hp-ad-s4-big{ font-size:150px; }
-  .hp-ad-carrier{ font-size:120px; }
+@media (min-width:768px){
+  .hp-ad-intro-logo{ height:56px; }
 }
 
 /* ---------- 안전장치 ----------
@@ -214,8 +162,6 @@ html.ad-pending .hp-ad-stage{ display:block; }
 @media (prefers-reduced-motion:reduce){
   html.ad-pending .hp-ad-stage{ display:none !important; }
   html.ad-pending body, html.ad-pending{ overflow:visible !important; height:auto !important; }
-  /* 스크롤 안내도 2차 방어선: 위에서 이미 display:none이라 실제로는 안 보이지만,
-     혹시 모를 경우에도 휠 점 애니메이션·튕김은 켜지지 않고 정적인 아이콘·글자만 남는다. */
   .hp-ad-scroll-hint-dot{ animation:none; opacity:1; }
   .hp-ad-scroll-hint--bounce{ animation:none; }
 }
