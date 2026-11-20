@@ -143,83 +143,8 @@
 
   // ================= Three.js 장면 =================
   var THREE; // 동적 import로 채워짐(아래 "시작" 구간) — 그 전까지는 쓰지 않는다.
-  var renderer, scene, camera, points, starPoints, uniforms, starsUniforms, clock, raf;
+  var renderer, scene, camera, points, uniforms, clock, raf;
   var isVisible = true;
-
-  function rand(seed) { var x = Math.sin(seed) * 10000; return x - Math.floor(x); }
-
-  /* 인트로 고급화 지시서(2026-11-19) §2-4 — 진짜 포아송 디스크 대신 "지터드 그리드"
-     (셀 하나당 점 하나 + 셀 안에서 살짝 무작위 이동)로 블루 노이즈에 가깝게 뭉침 없이
-     고르게 뿌린다. count가 화면을 cell 크기로 나눈 칸 수보다 많으면 칸 수만큼만 돌려준다
-     (이 작업에서 쓰는 별 개수·화면 크기 비율에서는 발생하지 않는다). seedBase로 결정적
-     (매번 같은 배치)이다. */
-  function jitteredGrid(count, W, H, seedBase) {
-    var cell = Math.sqrt((W * H) / count);
-    var cols = Math.max(1, Math.round(W / cell));
-    var rows = Math.max(1, Math.round(H / cell));
-    var total = cols * rows;
-    var idx = [];
-    for (var i = 0; i < total; i++) idx.push(i);
-    for (var i2 = total - 1; i2 > 0; i2--) {
-      var j = Math.floor(rand(seedBase + i2 * 13.7) * (i2 + 1));
-      var t = idx[i2]; idx[i2] = idx[j]; idx[j] = t;
-    }
-    var n = Math.min(count, total);
-    var out = [];
-    var cw = W / cols, ch = H / rows;
-    for (var k = 0; k < n; k++) {
-      var cellIdx = idx[k];
-      var cx = cellIdx % cols, cy = Math.floor(cellIdx / cols);
-      var jx = (rand(seedBase + k * 3.1) - 0.5) * cw * 0.9;
-      var jy = (rand(seedBase + k * 7.7) - 0.5) * ch * 0.9;
-      out.push([(cx + 0.5) * cw - W / 2 + jx, (cy + 0.5) * ch - H / 2 + jy]);
-    }
-    return out;
-  }
-
-  /* 배경 별 레이어 3단(지도 점과 별개, §2-4) — 항상 떠 있고, 스크롤 진행에 따라
-     레이어마다 다른 세로 시차(parallax)로 움직여 깊이감을 만든다. 엔딩에서 지도 점이
-     다 꺼진 뒤에도 이 레이어만 남는다. */
-  function buildStars() {
-    var W = window.innerWidth, H = window.innerHeight;
-    var LAYERS = isMobile
-      ? [{ n: 450, size: [0.6, 0.9], alpha: [.12, .22], py: -0.02, halo: 0.18 },
-         { n: 180, size: [0.9, 1.3], alpha: [.2, .32], py: -0.05, halo: 0.18 },
-         { n: 30, size: [1.3, 1.8], alpha: [.3, .4], py: -0.10, halo: 0.30 }]
-      : [{ n: 900, size: [0.6, 0.9], alpha: [.12, .22], py: -0.02, halo: 0.18 },
-         { n: 350, size: [0.9, 1.3], alpha: [.2, .32], py: -0.05, halo: 0.18 },
-         { n: 60, size: [1.3, 1.8], alpha: [.3, .4], py: -0.10, halo: 0.30 }];
-    var total = 0;
-    for (var li0 = 0; li0 < LAYERS.length; li0++) total += LAYERS[li0].n;
-    var position = new Float32Array(total * 3);
-    var aSize = new Float32Array(total);
-    var aAlpha = new Float32Array(total);
-    var aParallaxPx = new Float32Array(total);
-    var aHaloBoost = new Float32Array(total);
-    var cursor = 0;
-    LAYERS.forEach(function (layer, li) {
-      var seedBase = 4000 + li * 9973;
-      var pts = jitteredGrid(layer.n, W, H, seedBase);
-      for (var i = 0; i < pts.length; i++) {
-        var gi = cursor + i;
-        position[gi * 3 + 0] = pts[i][0];
-        position[gi * 3 + 1] = pts[i][1];
-        position[gi * 3 + 2] = -1 - li;
-        aSize[gi] = layer.size[0] + rand(seedBase + i * 3.3) * (layer.size[1] - layer.size[0]);
-        aAlpha[gi] = layer.alpha[0] + rand(seedBase + i * 5.5 + 1) * (layer.alpha[1] - layer.alpha[0]);
-        aParallaxPx[gi] = layer.py * H;
-        aHaloBoost[gi] = layer.halo;
-      }
-      cursor += pts.length;
-    });
-    var geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.BufferAttribute(position, 3));
-    geo.setAttribute('aSize', new THREE.BufferAttribute(aSize, 1));
-    geo.setAttribute('aAlpha', new THREE.BufferAttribute(aAlpha, 1));
-    geo.setAttribute('aParallaxPx', new THREE.BufferAttribute(aParallaxPx, 1));
-    geo.setAttribute('aHaloBoost', new THREE.BufferAttribute(aHaloBoost, 1));
-    return geo;
-  }
 
   function buildGeometry(mapPoints) {
     var N_BASE = isMobile ? Math.min(1500, mapPoints.length) : mapPoints.length;
@@ -234,12 +159,14 @@
       for (var k2 = 0; k2 < N_BASE; k2++) usedIdx.push(Math.floor(k2 * mapPoints.length / N_BASE));
     }
 
+    function rand(seed) { var x = Math.sin(seed) * 10000; return x - Math.floor(x); }
+
     var position = new Float32Array(N * 3);
     var aMap = new Float32Array(N * 3);
     var aSpread = new Float32Array(N * 3);
     var aRevealStart = new Float32Array(N);
     var aOrderSeed = new Float32Array(N);
-    var aHighlight = new Float32Array(N);
+    var aBackdropFlag = new Float32Array(N);
     var aTwinkleSeed = new Float32Array(N);
     var aSize = new Float32Array(N);
     var aIsExtra = new Float32Array(N);
@@ -277,11 +204,8 @@
       aOrderSeed[i] = order;
       var tw = rand(i + 5);
       aTwinkleSeed[i] = tw;
-      /* 인트로 고급화 지시서(2026-11-19) §2-2 — 하이라이트(전체의 6%)만 3px까지 허용하고
-         깜빡인다(§2-5). 나머지는 0.7~1.3(uBaseSize 1.4 곱하면 화면 지름 1~1.8px) 고정 밝기. */
-      var isHL = rand(i + 97) > 0.94;
-      aHighlight[i] = isHL ? 1 : 0;
-      aSize[i] = isHL ? (1.4 + rand(i + 3) * 0.743) : (0.7 + rand(i + 3) * 0.6);
+      aBackdropFlag[i] = tw > 0.85 ? 1 : 0;
+      aSize[i] = 0.6 + rand(i + 3) * 1.3;
 
       if (!isExtra) {
         var p = mapPoints[usedIdx[i]];
@@ -308,7 +232,7 @@
     geo.setAttribute('aSpread', new THREE.BufferAttribute(aSpread, 3));
     geo.setAttribute('aRevealStart', new THREE.BufferAttribute(aRevealStart, 1));
     geo.setAttribute('aOrderSeed', new THREE.BufferAttribute(aOrderSeed, 1));
-    geo.setAttribute('aHighlight', new THREE.BufferAttribute(aHighlight, 1));
+    geo.setAttribute('aBackdropFlag', new THREE.BufferAttribute(aBackdropFlag, 1));
     geo.setAttribute('aTwinkleSeed', new THREE.BufferAttribute(aTwinkleSeed, 1));
     geo.setAttribute('aSize', new THREE.BufferAttribute(aSize, 1));
     geo.setAttribute('aIsExtra', new THREE.BufferAttribute(aIsExtra, 1));
@@ -316,17 +240,12 @@
     return { geo: geo, mapRevealWidth: MAP_REVEAL_WIDTH, extraRevealWidth: EXTRA_REVEAL_WIDTH };
   }
 
-  /* 인트로 고급화 지시서(2026-11-19) — 점 크기(§2-2)·블렌딩/색(§2-3)·움직임(§2-5)을
-     전부 다시 썼다. 등장은 1.8배로 커졌다가 줄어드는 대신 0.6->1.0 커지는 쪽으로(§2-2),
-     흔들림 진폭·속도 절반(§2-5), 깜빡임은 하이라이트(6%)만(§2-5), 엔딩에서 지도 점이
-     완전히 사라지도록 "18% 잔상" 로직(aBackdropFlag/backdropMix)은 통째로 없앴다(§2-4) —
-     그 역할은 이제 상시 떠 있는 배경 별 레이어(아래 VERT_STARS)가 맡는다. */
   var VERT = [
     'attribute vec3 aMap;',
     'attribute vec3 aSpread;',
     'attribute float aRevealStart;',
     'attribute float aOrderSeed;',
-    'attribute float aHighlight;',
+    'attribute float aBackdropFlag;',
     'attribute float aTwinkleSeed;',
     'attribute float aSize;',
     'attribute float aIsExtra;',
@@ -339,24 +258,26 @@
     'uniform float uKillEnd;',
     'uniform float uScatterFadeStart;',
     'uniform float uScatterFadeEnd;',
+    'uniform float uBackdropStart;',
+    'uniform float uBackdropEnd;',
     'uniform float uTime;',
     'uniform float uPixelRatio;',
     'uniform float uBaseSize;',
     'varying float vAlpha;',
     'varying float vFlash;',
-    'varying float vHighlight;',
+    'varying float vBright;',
     'float seg2(float p, float a, float b){ return clamp((p-a)/max(1e-5,(b-a)), 0.0, 1.0); }',
     'float ease2(float t){ return t<0.5 ? 4.0*t*t*t : 1.0-pow(-2.0*t+2.0,3.0)/2.0; }',
     'void main(){',
-    '  vHighlight = aHighlight;',
+    '  vBright = aTwinkleSeed;',
     '  vec3 pos = position;',
-    '  pos.x += sin(uTime*0.1 + aOrderSeed*6.2831)*1.5;',
-    '  pos.y += cos(uTime*0.085 + aOrderSeed*6.2831)*1.25;',
+    '  pos.x += sin(uTime*0.2 + aOrderSeed*6.2831)*6.0;',
+    '  pos.y += cos(uTime*0.17 + aOrderSeed*6.2831)*5.0;',
     '  float revealOn = 0.0;',
     '  float alpha = 0.0;',
     '  float spreadT = ease2(seg2(uProgress, uSpreadStart, uSpreadEnd));',
     '  if (aIsExtra < 0.5) {',
-    '    float pulse = mix(1.0, 0.92 + 0.08*sin(uTime*0.35 + aTwinkleSeed*6.2831), aHighlight);',
+    '    float pulse = 0.85 + 0.15*sin(uTime*1.5 + aTwinkleSeed*6.2831);',
     '    float scatterFade = (1.0 - seg2(uProgress, uScatterFadeStart, uScatterFadeEnd)) * pulse;',
     '    revealOn = seg2(uProgress, aRevealStart, aRevealStart + uRevealWidth);',
     '    vec3 formedPos = mix(aMap, aSpread, spreadT);',
@@ -371,14 +292,15 @@
     '  float killed = step(aOrderSeed, killP);',
     '  float flashT = killP - aOrderSeed;',
     '  float pastKillWindow = step(uKillEnd + 0.02, uProgress);',
-    '  vFlash = (flashT > -0.02 && flashT < 0.01 && pastKillWindow < 0.5) ? 1.0 : 0.0;',
+    '  vFlash = (flashT > -0.04 && flashT < 0.02 && pastKillWindow < 0.5) ? 1.0 : 0.0;',
     '  alpha *= (1.0 - killed);',
-    '  if (vFlash > 0.5) alpha = 0.9;',
+    '  if (vFlash > 0.5) alpha = 1.0;',
+    '  float backdropMix = seg2(uProgress, uBackdropStart, uBackdropEnd);',
+    '  float backdropAlpha = 0.18 * aBackdropFlag;',
+    '  alpha = mix(alpha, backdropAlpha, backdropMix);',
     '  vAlpha = alpha;',
-    '  float camScale = mix(1.0, 1.04, uProgress);',
-    '  vec4 mv = modelViewMatrix * vec4(pos * camScale, 1.0);',
-    '  float sizeReveal = mix(0.6, 1.0, clamp(revealOn, 0.0, 1.0));',
-    '  gl_PointSize = aSize * uBaseSize * uPixelRatio * sizeReveal;',
+    '  vec4 mv = modelViewMatrix * vec4(pos, 1.0);',
+    '  gl_PointSize = aSize * uBaseSize * uPixelRatio * mix(1.8, 1.0, clamp(revealOn,0.0,1.0));',
     '  gl_Position = projectionMatrix * mv;',
     '}'
   ].join('\n');
@@ -387,61 +309,18 @@
     'precision mediump float;',
     'varying float vAlpha;',
     'varying float vFlash;',
-    'varying float vHighlight;',
+    'varying float vBright;',
     'void main(){',
     '  vec2 c = gl_PointCoord - vec2(0.5);',
     '  float d = length(c);',
     '  if (d > 0.5) discard;',
-    '  float core = exp(-d*d*60.0);',
-    '  float halo = exp(-d*d*8.0) * 0.18;',
-    '  float a = (core + halo) * vAlpha;',
+    '  float a = (1.0 - smoothstep(0.1, 0.5, d)) * vAlpha;',
     '  if (a <= 0.003) discard;',
-    '  vec3 base = vec3(0.914, 0.573, 0.353);',
-    '  vec3 champagne = vec3(0.965, 0.851, 0.745);',
-    '  vec3 color = mix(base, champagne, max(vHighlight, vFlash));',
-    '  float cap = mix(0.85, 0.9, vFlash);',
-    '  a = min(a, cap);',
-    '  gl_FragColor = vec4(color*a, a);',
-    '}'
-  ].join('\n');
-
-  /* 배경 별 3단(§2-4) 전용 셰이더 — 지도 점과 완전히 다른 Points 오브젝트. 깜빡임 없이
-     고정 밝기(§2-5는 "하이라이트 점만 깜빡인다"고 했고, 배경 별은 그 하이라이트 대상이
-     아니다), 레이어별 세로 시차(aParallaxPx * uProgress)만 움직인다. */
-  var VERT_STARS = [
-    'attribute float aSize;',
-    'attribute float aAlpha;',
-    'attribute float aParallaxPx;',
-    'attribute float aHaloBoost;',
-    'uniform float uProgress;',
-    'uniform float uPixelRatio;',
-    'varying float vAlpha;',
-    'varying float vHaloBoost;',
-    'void main(){',
-    '  vAlpha = aAlpha;',
-    '  vHaloBoost = aHaloBoost;',
-    '  vec3 pos = position;',
-    '  pos.y += aParallaxPx * uProgress;',
-    '  float camScale = mix(1.0, 1.04, uProgress);',
-    '  vec4 mv = modelViewMatrix * vec4(pos * camScale, 1.0);',
-    '  gl_PointSize = aSize * uPixelRatio;',
-    '  gl_Position = projectionMatrix * mv;',
-    '}'
-  ].join('\n');
-
-  var FRAG_STARS = [
-    'precision mediump float;',
-    'varying float vAlpha;',
-    'varying float vHaloBoost;',
-    'void main(){',
-    '  vec2 c = gl_PointCoord - vec2(0.5);',
-    '  float d = length(c);',
-    '  if (d > 0.5) discard;',
-    '  float core = exp(-d*d*60.0);',
-    '  float halo = exp(-d*d*8.0) * vHaloBoost;',
-    '  float a = (core + halo) * vAlpha;',
-    '  if (a <= 0.003) discard;',
-    '  vec3 color = vec3(0.918, 0.875, 0.827);',
+    '  vec3 base = vec3(0.890, 0.420, 0.173);',
+    '  vec3 bright = vec3(0.949, 0.631, 0.431);',
+    '  vec3 flashC = vec3(0.988, 0.863, 0.765);',
+    '  vec3 color = mix(base, bright, step(0.9, vBright));',
+    '  color = mix(color, flashC, vFlash);',
     '  gl_FragColor = vec4(color*a, a);',
     '}'
   ].join('\n');
@@ -452,14 +331,11 @@
     camera = new THREE.OrthographicCamera(-W / 2, W / 2, H / 2, -H / 2, 0.1, 10);
     camera.position.z = 5;
 
-    /* antialias는 점(Points) 렌더링이라 필요 없어서 끈다. 해상도 상한을 1.5(모바일 1.25)
-       -> 2(모바일 1.75)로 올린다(지시서 2026-11-19 §2-2 — 작아진 점이 또렷하게 보이게).
-       대신 3-3 성능 기준(데스크톱 55fps·모바일 40fps)을 지켜야 해서, 안 되면 배경 별
-       개수부터 줄인다. preserveDrawingBuffer는 QA 스크린샷·readPixels 검증용으로
-       켠다(렌더 비용에는 실질적으로 영향 없음 — 매 프레임 버퍼를 지우지 않을 뿐).
+    /* antialias는 점(Points) 렌더링이라 필요 없어서 끈다. 해상도 상한도 2 -> 1.5(모바일
+       1.25)로 낮춘다 — 둘 다 매 프레임 그려야 하는 픽셀 수를 줄여서 렌더 비용을 낮춘다.
        powerPreference는 일부러 안 넣는다(기본값 유지, 지시서 2026-11-09 §1). */
-    renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: false, alpha: true, preserveDrawingBuffer: true });
-    var pr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.75 : 2);
+    renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: false, alpha: true });
+    var pr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.25 : 1.5);
     renderer.setPixelRatio(pr);
     renderer.setSize(W, H, false);
 
@@ -475,14 +351,13 @@
       uKillEnd: { value: gAbs(16.6) },
       uScatterFadeStart: { value: gAbs(6.3) },
       uScatterFadeEnd: { value: gAbs(7.6) },
+      uBackdropStart: { value: gAbs(19.5) },
+      uBackdropEnd: { value: gAbs(21.0) },
       uTime: { value: 0 },
       uPixelRatio: { value: pr },
-      uBaseSize: { value: isMobile ? 1.2 : 1.4 }
+      uBaseSize: { value: isMobile ? 2.3 : 3.0 }
     };
 
-    /* 인트로 고급화 지시서(2026-11-19) §2-3 — AdditiveBlending(겹치면 더해져서 하얗게
-       타 버림) 대신 NormalBlending. 프래그먼트 셰이더가 이미 색*alpha(premultiplied
-       alpha)로 내보내므로 premultipliedAlpha:true를 같이 켜야 블렌딩 식이 맞는다. */
     var mat = new THREE.ShaderMaterial({
       uniforms: uniforms,
       vertexShader: VERT,
@@ -490,30 +365,11 @@
       transparent: true,
       depthWrite: false,
       depthTest: false,
-      blending: THREE.NormalBlending,
-      premultipliedAlpha: true
+      blending: THREE.AdditiveBlending
     });
 
     points = new THREE.Points(built.geo, mat);
     points.frustumCulled = false;
-
-    starsUniforms = { uProgress: { value: 0 }, uPixelRatio: { value: pr } };
-    var starsMat = new THREE.ShaderMaterial({
-      uniforms: starsUniforms,
-      vertexShader: VERT_STARS,
-      fragmentShader: FRAG_STARS,
-      transparent: true,
-      depthWrite: false,
-      depthTest: false,
-      blending: THREE.NormalBlending,
-      premultipliedAlpha: true
-    });
-    starPoints = new THREE.Points(buildStars(), starsMat);
-    starPoints.frustumCulled = false;
-
-    // 별 레이어를 먼저 그려서 지도 점(points)이 그 위에 덮이게 — depthTest가 꺼져 있어
-    // 그리는 순서가 곧 위아래 순서다.
-    scene.add(starPoints);
     scene.add(points);
 
     clock = new THREE.Clock();
@@ -651,7 +507,6 @@
 
   function applyProgress(p) {
     uniforms.uProgress.value = p;
-    if (starsUniforms) starsUniforms.uProgress.value = p;
     if (!hintHidden && p >= 0.02) hideScrollHint(); // 진행도 2% 이상 -> 페이드아웃, 다시 안 보임
 
     // 장면 1
@@ -814,7 +669,6 @@
     if (renderer) {
       renderer.dispose();
       if (points) { points.geometry.dispose(); points.material.dispose(); }
-      if (starPoints) { starPoints.geometry.dispose(); starPoints.material.dispose(); }
     }
   }
 
@@ -865,54 +719,6 @@
       initThree(results[1].points);
       startLoop();
       playIntro();
-
-      /* QA 전용 디버그 훅(인트로 고급화 지시서 2026-11-19 §3-1) — playwright 등 외부
-         스크립트가 진행도를 강제 설정하고 그 프레임을 바로 그리게 한다. 프로덕션
-         동작에는 전혀 관여하지 않는다(호출하는 쪽이 없으면 그냥 아무 일도 안 일어남). */
-      window.__adDebug = {
-        setProgress: function (p) {
-          introDone = true;
-          latestProgress = smoothProgress = lastApplied = clamp01(p);
-          applyProgress(smoothProgress);
-          uniforms.uTime.value = clock.getElapsedTime();
-          if (renderer) renderer.render(scene, camera);
-        },
-        // §3-2 수치 점검용 — 지도 점 평균/최대 지름(px)은 셰이더에 실제로 들어가는
-        // aSize*uBaseSize 값을 그대로 읽고(=화면에 그려지는 지름 그 자체), 흰 픽셀·
-        // B>R 픽셀은 WebGL readPixels로 캔버스를 37픽셀 간격 샘플링해 센다.
-        getStats: function () {
-          var sizeArr = points.geometry.attributes.aSize.array;
-          var hlArr = points.geometry.attributes.aHighlight.array;
-          var base = uniforms.uBaseSize.value;
-          var sumNormal = 0, cntNormal = 0, sumHL = 0, cntHL = 0, maxPx = 0;
-          for (var i = 0; i < sizeArr.length; i++) {
-            var px = sizeArr[i] * base;
-            if (px > maxPx) maxPx = px;
-            if (hlArr[i] > 0.5) { sumHL += px; cntHL++; } else { sumNormal += px; cntNormal++; }
-          }
-          var gl = renderer.getContext();
-          var W = canvas.width, H = canvas.height;
-          var buf = new Uint8Array(W * H * 4);
-          gl.readPixels(0, 0, W, H, gl.RGBA, gl.UNSIGNED_BYTE, buf);
-          var white = 0, blue = 0, sampled = 0;
-          for (var p2 = 0; p2 < buf.length; p2 += 4 * 37) {
-            var r = buf[p2], g = buf[p2 + 1], b = buf[p2 + 2], a = buf[p2 + 3];
-            if (a < 5) continue;
-            sampled++;
-            if (r > 245 && g > 245 && b > 245) white++;
-            if (b > r) blue++;
-          }
-          return {
-            avgNormalPx: cntNormal ? sumNormal / cntNormal : 0,
-            avgHighlightPx: cntHL ? sumHL / cntHL : 0,
-            maxPx: maxPx,
-            highlightShare: cntHL / sizeArr.length,
-            canvasWhitePixels: white,
-            canvasBluePixels: blue,
-            canvasSampled: sampled
-          };
-        }
-      };
     })
     .catch(function () {
       bailOut();
