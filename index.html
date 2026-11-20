@@ -120,7 +120,7 @@
      광고를 안 틀어야 하는 경우(1시간 재방문 / reduced-motion)는 전부 이 자리에서 즉시
      why.html로 보낸다(깜빡임 없이) — 더 이상 index 안에 보여줄 "하얀 홈"이 없기 때문이다.
      ?intro=1이면 이 판단 전체를 건너뛰고 항상 광고를 튼다.
-     (시안3 포팅 — 2026-11-20: 캔버스 2D만 쓰므로 WebGL 가능 여부 확인은 더 이상 필요 없다.) */
+     (캔버스 2D만 쓰므로 WebGL 가능 여부 확인은 필요 없다 — 시안3 포팅 때 지웠고 그대로.) */
   try {
     var params = new URLSearchParams(location.search);
     var forced = params.get('intro') === '1';
@@ -145,8 +145,8 @@
   } catch (e) {}
 })();
 </script>
-<link rel="stylesheet" href="static/home-ad.css?v=0dcdc15c">
-<script type="module" src="static/home-ad.js?v=932e5809"></script>
+<link rel="stylesheet" href="static/home-ad.css?v=4710d1fb">
+<script type="module" src="static/home-ad.js?v=3e5f491e"></script>
 
 </head>
 <body>
@@ -590,19 +590,19 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 },
   "clock": {
   "start_desktop": "09:00 업무 시작",
-  "start_mobile": "09:00 시작",
   "end": "18:00 사은품 입금"
 },
-  "settlement": {
-  "range_start": "2025.01",
-  "range_end": "2026.10 · 90회"
-},
+  "settlementLabel": "2025.01 → 2026.10 · 정산 90회",
   "chips": [
   "월~일 개통",
   "수 · 정산서",
   "금 · 입금"
 ],
-  "mapPin": "ENTER"
+  "mapPin": "ENTER",
+  "tags": {
+  "hq": "ENTER 본사",
+  "city": "거래처 판매점"
+}
 }
 </script>
 
@@ -614,13 +614,10 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
   <canvas class="hp-ad-canvas" data-ad-canvas></canvas>
 
-  
-  <h1 class="hp-ad-eyebrow" data-ad-eyebrow>판매점용 유선(인터넷·IPTV) 도매, ENTER 유선전문총판</h1>
-
   <div class="hp-ad-txt" data-ad-txt>
     
     <div class="hp-ad-sc" data-ad-sc="0">
-      <div class="hp-ad-m hp-ad-lab"><span>01 — 전국 거래처</span></div>
+      <div class="hp-ad-m hp-ad-lab"><span><em>01</em>전국 거래처</span></div>
       <div class="hp-ad-gap1"></div>
       
       <div class="hp-ad-m hp-ad-big"><span><b data-ad-n="0">3,000</b><small>곳</small></span></div>
@@ -632,7 +629,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     </div>
     
     <div class="hp-ad-sc" data-ad-sc="1">
-      <div class="hp-ad-m hp-ad-lab"><span>02 — 업력</span></div>
+      <div class="hp-ad-m hp-ad-lab"><span><em>02</em>업력</span></div>
       <div class="hp-ad-gap1"></div>
       
       <div class="hp-ad-m hp-ad-big"><span><b data-ad-n="1">2010</b><small>년부터</small></span></div>
@@ -644,7 +641,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     </div>
     
     <div class="hp-ad-sc" data-ad-sc="2">
-      <div class="hp-ad-m hp-ad-lab"><span>03 — 월 평균 개통</span></div>
+      <div class="hp-ad-m hp-ad-lab"><span><em>03</em>월 평균 개통</span></div>
       <div class="hp-ad-gap1"></div>
       
       <div class="hp-ad-m hp-ad-big"><span><b data-ad-n="2">4,000</b><small>건</small></span></div>
@@ -656,7 +653,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     </div>
     
     <div class="hp-ad-sc" data-ad-sc="3">
-      <div class="hp-ad-m hp-ad-lab"><span>04 — 접수 한 건 한 건</span></div>
+      <div class="hp-ad-m hp-ad-lab"><span><em>04</em>접수 한 건 한 건</span></div>
       <div class="hp-ad-gap1"></div>
       
         
@@ -674,7 +671,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     </div>
     
     <div class="hp-ad-sc" data-ad-sc="4">
-      <div class="hp-ad-m hp-ad-lab"><span>05 — 카톡 접수</span></div>
+      <div class="hp-ad-m hp-ad-lab"><span><em>05</em>카톡 접수</span></div>
       <div class="hp-ad-gap1"></div>
       
         
@@ -692,7 +689,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     </div>
     
     <div class="hp-ad-sc" data-ad-sc="5">
-      <div class="hp-ad-m hp-ad-lab"><span>06 — 소통</span></div>
+      <div class="hp-ad-m hp-ad-lab"><span><em>06</em>소통</span></div>
       <div class="hp-ad-gap1"></div>
       
       <div class="hp-ad-m hp-ad-big"><span><b data-ad-n="5">10</b><small>분 내외</small></span></div>
@@ -706,7 +703,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     </div>
     
     <div class="hp-ad-sc" data-ad-sc="6">
-      <div class="hp-ad-m hp-ad-lab"><span>07 — 업무시간 · 사은품</span></div>
+      <div class="hp-ad-m hp-ad-lab"><span><em>07</em>업무시간 · 사은품</span></div>
       <div class="hp-ad-gap1"></div>
       
       <div class="hp-ad-m hp-ad-big"><span><b data-ad-n="6">09:00</b><small></small></span></div>
@@ -722,7 +719,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     </div>
     
     <div class="hp-ad-sc" data-ad-sc="7">
-      <div class="hp-ad-m hp-ad-lab"><span>08 — 정산 오류</span></div>
+      <div class="hp-ad-m hp-ad-lab"><span><em>08</em>정산 오류</span></div>
       <div class="hp-ad-gap1"></div>
       
       <div class="hp-ad-m hp-ad-big"><span><b data-ad-n="7">0</b><small>회</small></span></div>
@@ -734,7 +731,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     </div>
     
     <div class="hp-ad-sc" data-ad-sc="8">
-      <div class="hp-ad-m hp-ad-lab"><span>09 — 정산일</span></div>
+      <div class="hp-ad-m hp-ad-lab"><span><em>09</em>정산일</span></div>
       <div class="hp-ad-gap1"></div>
       
         
@@ -765,7 +762,11 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     </div>
   </div>
 
-  <div class="hp-ad-hud" data-ad-hud></div>
+  
+  <div class="hp-ad-foot" data-ad-foot>
+    <span class="hp-ad-hud" data-ad-hud></span>
+    <h1 class="hp-ad-eyebrow" data-ad-eyebrow>판매점용 유선(인터넷·IPTV) 도매, ENTER 유선전문총판</h1>
+  </div>
 
   
   <div class="hp-ad-scroll-hint" data-ad-scroll-hint aria-hidden="true">
