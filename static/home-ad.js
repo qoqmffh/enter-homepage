@@ -542,6 +542,14 @@
       render(0);
       startLoop();
       playIntro();
+      /* 검증용 훅(기준 구현 intro3.html의 window.render처럼) — 정확한 진행도로 캡처해
+         시안과 비교할 때만 쓴다. 평소 사용자 흐름에는 전혀 관여하지 않는다. */
+      window.__adSetProgress = function (p) {
+        introEl.classList.remove('hp-ad-intro--in', 'hp-ad-intro--out');
+        introEl.classList.add('hp-ad-intro--done');
+        stage.classList.add('hp-ad-stage--film');
+        introDone = true; latestProgress = p; smoothProgress = p; lastApplied = p; render(p);
+      };
     })
     .catch(function () {
       bailOut();
