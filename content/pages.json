@@ -368,10 +368,11 @@
         "phone_title": "ENTER 업무방",
         "phone_msgs": [["me", "신규 접수 1건 보냅니다"], ["en", "접수 완료됐습니다"], ["en", "회신 왔습니다. 고객 확인 부탁드려요"], ["en", "개통 완료됐습니다"]],
         "desk": {"received": "접수 담당", "reply": "회신 담당", "note": "평균 10분 내외 전달"},
-        "clock": {"start_desktop": "09:00 업무 시작", "start_mobile": "09:00 시작", "end": "18:00 사은품 입금"},
-        "settlement": {"range_start": "2025.01", "range_end": "2026.10 · 90회"},
+        "clock": {"start_desktop": "09:00 업무 시작", "end": "18:00 사은품 입금"},
+        "settlement_label": "2025.01 → 2026.10 · 정산 90회",
         "chips": ["월~일 개통", "수 · 정산서", "금 · 입금"],
         "map_pin": "ENTER",
+        "tags": {"hq": "ENTER 본사", "city": "거래처 판매점"},
         "end": {
           "heading": "정책표는 어떻게 받아 보나요?",
           "cap": ["비교해 보시면 압니다. 매일 아침 단가를 받아보세요."],

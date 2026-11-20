@@ -7,7 +7,7 @@
      광고를 안 틀어야 하는 경우(1시간 재방문 / reduced-motion)는 전부 이 자리에서 즉시
      why.html로 보낸다(깜빡임 없이) — 더 이상 index 안에 보여줄 "하얀 홈"이 없기 때문이다.
      ?intro=1이면 이 판단 전체를 건너뛰고 항상 광고를 튼다.
-     (시안3 포팅 — 2026-11-20: 캔버스 2D만 쓰므로 WebGL 가능 여부 확인은 더 이상 필요 없다.) */
+     (캔버스 2D만 쓰므로 WebGL 가능 여부 확인은 필요 없다 — 시안3 포팅 때 지웠고 그대로.) */
   try {
     var params = new URLSearchParams(location.search);
     var forced = params.get('intro') === '1';
@@ -47,18 +47,19 @@
   </div>
 </noscript>
 
-{# 캔버스는 숫자로 바로 그리지만, 벡터로 그리는 칩/말풍선/라벨 문구는 pages.json의 ad
+{# 캔버스는 숫자로 바로 그리지만, 벡터로 그리는 칩/말풍선/라벨/태그 문구는 pages.json의 ad
    블록에서 그대로 가져와 JSON으로 심어둔다 — static/home-ad.js가 init 때 한 번 읽는다.
-   (기획서/마케팅/클로드코드_인트로시안3적용_백업_지시서_1120.md §2-3) #}
+   (기획서/마케팅/클로드코드_인트로시안4적용_지시서_1120.md §2-5) #}
 <script type="application/json" id="hp-ad-copy">
 {
   "phoneTitle": {{ ad.phone_title | tojson }},
   "phoneMsgs": {{ ad.phone_msgs | tojson }},
   "desk": {{ ad.desk | tojson }},
   "clock": {{ ad.clock | tojson }},
-  "settlement": {{ ad.settlement | tojson }},
+  "settlementLabel": {{ ad.settlement_label | tojson }},
   "chips": {{ ad.chips | tojson }},
-  "mapPin": {{ ad.map_pin | tojson }}
+  "mapPin": {{ ad.map_pin | tojson }},
+  "tags": {{ ad.tags | tojson }}
 }
 </script>
 
@@ -70,14 +71,10 @@
 
   <canvas class="hp-ad-canvas" data-ad-canvas></canvas>
 
-  {# 문구 SEO·GEO 지시서(2026-11-18) §1 — 실제 H1은 슬로건이 아니라 이 작은 줄. 시안3에는
-     없는 요소라 장면 텍스트와 분리해 HUD 옆(화면 하단)에 항상 보이게 둔다 — CSS로 숨기지 않는다. #}
-  <h1 class="hp-ad-eyebrow" data-ad-eyebrow>{{ ad.eyebrow }}</h1>
-
   <div class="hp-ad-txt" data-ad-txt>
     {% for s in ad.scenes %}
     <div class="hp-ad-sc" data-ad-sc="{{ loop.index0 }}">
-      <div class="hp-ad-m hp-ad-lab"><span>{{ "%02d"|format(loop.index) }} — {{ s.lab }}</span></div>
+      <div class="hp-ad-m hp-ad-lab"><span><em>{{ "%02d"|format(loop.index) }}</em>{{ s.lab }}</span></div>
       <div class="hp-ad-gap1"></div>
       {% if s.big is defined %}
       <div class="hp-ad-m hp-ad-big"><span><b data-ad-n="{{ loop.index0 }}">{{ s.big }}</b><small>{{ s.unit }}</small></span></div>
@@ -106,10 +103,18 @@
     </div>
   </div>
 
-  <div class="hp-ad-hud" data-ad-hud></div>
+  {# 아래쪽 한 줄: 왼쪽은 "NN / 09"(hud) + SEO H1(eyebrow, 인트로 내내 보임 — CSS로 숨기지
+     않는다. 문구 SEO·GEO 지시서(2026-11-18) §1), 오른쪽은 건너뛰기(기존 .hp-ad-skip 그대로).
+     모바일은 H1 줄을 숨기지 않고 두 줄로 줄바꿈한다(시안4 적용 지시서 §2-4, 기준 구현의
+     '.foot .h1{display:none}'과 다르게 간다 — 숨기면 SEO상 손해라 대표 지시로 바꿈). #}
+  <div class="hp-ad-foot" data-ad-foot>
+    <span class="hp-ad-hud" data-ad-hud></span>
+    <h1 class="hp-ad-eyebrow" data-ad-eyebrow>{{ ad.eyebrow }}</h1>
+  </div>
 
   {# 스크롤 안내(2026-11-12) — "갑자기 화면만 떠 있어서 뭔지 모르겠다" 피드백 대응.
-     마우스/터치 아이콘 둘 다 마크업에 넣어두고 CSS(pointer:coarse)로 하나만 보인다. #}
+     마우스/터치 아이콘 둘 다 마크업에 넣어두고 CSS(pointer:coarse)로 하나만 보인다.
+     시안4부터는 1장면(p<.1)에서만 보이고 그다음엔 사라진다(static/home-ad.js draw() 참고). #}
   <div class="hp-ad-scroll-hint" data-ad-scroll-hint aria-hidden="true">
     <span class="hp-ad-scroll-hint-mouse">
       <span class="hp-ad-scroll-hint-dot"></span>
