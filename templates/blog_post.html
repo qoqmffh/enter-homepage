@@ -4,8 +4,7 @@
 {% set author = (site.authors | selectattr('id', 'equalto', page.author) | first) if page.author else none %}
 {% set crumb_items = [{'label': '홈', 'href': page_href('index')}, {'label': '블로그', 'href': page_href('blog')}, {'label': page.h1, 'href': page_href(slug)}] %}
 {% block extra_head %}
-<link rel="stylesheet" href="static/sub.css">
-<link rel="stylesheet" href="static/article.css">
+<link rel="stylesheet" href="{{ bundle_href('blogpost', 'css') }}">
 <script src="static/post-interactions.js" defer></script>
 <script type="application/ld+json">{{ crumb_items | breadcrumb_ld(site.base_url) | tojson(indent=2) }}</script>
 {# A30-2(마케팅 P0 2026-11-10) — BlogPosting JSON-LD. author는 글에 author가 지정돼 있고

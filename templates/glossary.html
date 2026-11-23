@@ -8,7 +8,6 @@
 {% set crumb_items = [{'label': '홈', 'href': page_href('index')}, {'label': '정보마당', 'href': page_href('blog')}, {'label': '용어 사전', 'href': page_href('glossary')}] %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="static/site.css">
 <link rel="stylesheet" href="static/sub.css">
 <script type="application/ld+json">{{ crumb_items | breadcrumb_ld(site.base_url) | tojson(indent=2) }}</script>
 {% set webpage_ld = {

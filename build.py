@@ -115,6 +115,81 @@ def build_font_subset(chars, out_dir):
     return out_name, True
 
 
+# ---------------------------------------------------------------------------
+# CSS·JS 묶기(속도 개선 지시서 2026-11-23 §2-④) — esbuild로 압축(minify)만 한다
+# (여러 파일을 합칠 때는 그냥 이어붙인 뒤 압축 — 전부 IIFE라 안전). 공통(모든 페이지)·
+# 조건부 공통(index 제외)·페이지 전용(why·블로그 글) 묶음은 파일명에 내용 해시를 넣어
+# 템플릿에서 직접 참조한다(bundle_href). 어느 페이지에서도 다른 파일과 안 묶이는
+# 단일 파일(article.css·sub.css·home-ad.*·post-interactions.js·voices-carousel.js)은
+# 이름은 그대로 두고 압축만 해서, 기존 add_cache_busting()의 ?v= 해시가 그대로 먹게 한다.
+ESBUILD_BIN = os.path.join(BASE_DIR, "scripts", "node_modules", "esbuild", "bin", "esbuild")
+
+CSS_BUNDLES = {
+    "common": ["static/common.css", "static/site.css", "static/megamenu.css"],
+    "chrome": ["static/reveal.css", "static/lead-modal.css", "static/floatnav.css"],
+    "why": ["static/home-poetic.css", "static/sub.css"],
+    "blogpost": ["static/article.css", "static/sub.css"],
+}
+JS_BUNDLES = {
+    "common": ["static/megamenu.js"],
+    "chrome": ["static/reveal.js", "static/lead-modal.js", "static/floatnav.js"],
+    "why": [
+        "static/home-poetic.js", "static/home-poetic-cards.js", "static/home-poetic-trail.js",
+        "static/voices-carousel.js", "static/why-carousels.js", "static/why-chart.js", "static/wipe-reveal.js",
+    ],
+}
+# 어느 묶음에도 안 들어가지만 그 자체로 압축은 해야 하는 단일 파일(원래 이름 그대로 둠).
+STANDALONE_MINIFY = {
+    "css": ["static/article.css", "static/sub.css", "static/home-ad.css"],
+    "js": ["static/home-ad.js", "static/post-interactions.js", "static/voices-carousel.js"],
+}
+# 묶음에만 들어가고 따로는 아무도 안 쓰는 원본 — dist에서 지운다(common.css 등은 어차피
+# 아무 페이지도 더는 직접 안 받지만, 안 지우면 쓸모없이 그대로 배포된다).
+_BUNDLED_FILES = {f for files in CSS_BUNDLES.values() for f in files} | {f for files in JS_BUNDLES.values() for f in files}
+_STANDALONE_FILES = set(STANDALONE_MINIFY["css"]) | set(STANDALONE_MINIFY["js"])
+BUNDLE_ORPHANS = sorted(_BUNDLED_FILES - _STANDALONE_FILES)
+
+
+def _esbuild_minify(text, loader):
+    result = subprocess.run(
+        ["node", ESBUILD_BIN, f"--loader={loader}", "--minify"],
+        input=text.encode("utf-8"), capture_output=True, check=True,
+    )
+    return result.stdout.decode("utf-8")
+
+
+def build_bundles(dist_dir):
+    """CSS_BUNDLES·JS_BUNDLES를 묶어 dist/static/에 해시 파일명으로 쓰고, STANDALONE_MINIFY는
+    같은 자리에서 압축만 해 제자리에 덮어쓴다. 반환: {(name, ext): href} 묶음 매핑."""
+    hrefs = {}
+    for ext, bundles, loader in (("css", CSS_BUNDLES, "css"), ("js", JS_BUNDLES, "js")):
+        for name, files in bundles.items():
+            combined = ""
+            for rel in files:
+                with open(os.path.join(BASE_DIR, rel), encoding="utf-8") as f:
+                    combined += f.read() + "\n"
+            minified = _esbuild_minify(combined, loader)
+            content_hash = hashlib.sha256(minified.encode("utf-8")).hexdigest()[:8]
+            out_name = f"{name}.{content_hash}.{ext}"
+            with open(os.path.join(dist_dir, "static", out_name), "w", encoding="utf-8") as f:
+                f.write(minified)
+            hrefs[(name, ext)] = f"static/{out_name}"
+
+    for ext, files in STANDALONE_MINIFY.items():
+        for rel in files:
+            with open(os.path.join(BASE_DIR, rel), encoding="utf-8") as f:
+                minified = _esbuild_minify(f.read(), ext)
+            with open(os.path.join(dist_dir, rel), "w", encoding="utf-8") as f:
+                f.write(minified)
+
+    for rel in BUNDLE_ORPHANS:
+        p = os.path.join(dist_dir, rel)
+        if os.path.exists(p):
+            os.remove(p)
+
+    return hrefs
+
+
 def load_json(name):
     with open(os.path.join(CONTENT_DIR, name), encoding="utf-8") as f:
         return json.load(f)
@@ -707,6 +782,13 @@ def main():
     # static/ 통째로 복사 — 단, 어디서도 참조 안 하는 원본 png는 뺀다(지시서 2026-11-14 §5)
     reference_text = _load_reference_text()
     shutil.copytree(STATIC_DIR, os.path.join(DIST_DIR, "static"), ignore=make_png_ignore_fn(STATIC_DIR, reference_text))
+
+    # CSS·JS 묶기(속도 개선 지시서 2026-11-23 §2-④) — 렌더링 전에 해야 템플릿이
+    # bundle_href()로 묶음 파일명을 바로 쓸 수 있다(폰트 서브셋과 달리 렌더된
+    # HTML 내용에 의존하지 않아 먼저 해도 된다).
+    bundle_hrefs = build_bundles(DIST_DIR)
+    env.globals["bundle_href"] = lambda name, ext: bundle_hrefs[(name, ext)]
+    print(f"  CSS·JS 묶음: {len(bundle_hrefs)}개 생성")
 
     sitemap_entries = []  # (slug, lastmod, category)
     all_slugs = list(pages.keys())

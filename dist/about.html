@@ -64,13 +64,10 @@
 <link rel="icon" href="static/brand/favicon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="static/brand/apple-touch-icon.png">
 <link rel="stylesheet" href="static/fonts/pretendard/pretendard-fallback.css?v=a36e7f8d">
-<link rel="stylesheet" href="static/common.css?v=84938459">
-<link rel="stylesheet" href="static/site.css?v=b2d2c342">
-<link rel="stylesheet" href="static/megamenu.css?v=a2d05020">
 
-<link rel="stylesheet" href="static/reveal.css?v=46ce769e">
-<link rel="stylesheet" href="static/lead-modal.css?v=6da3a881">
-<link rel="stylesheet" href="static/floatnav.css?v=4129d77f">
+<link rel="stylesheet" href="static/common.e3c6c753.css">
+
+<link rel="stylesheet" href="static/chrome.8db95f5e.css">
 
 
 <script>
@@ -121,22 +118,22 @@
 }</script>
 
 
-<script src="static/reveal.js?v=82b25798" defer></script>
 <script>
   /* 정책 받기 팝업·플로팅 내비(지시서 2026-11-13) 전역 설정값 — site.json에서만 관리.
      lead_endpoint가 비어 있거나 lead_form_enabled가 false면 각 스크립트가 알아서
-     대체 동작(전화·문자 안내 화면)을 한다(지시서 2026-11-16 §2). */
+     대체 동작(전화·문자 안내 화면)을 한다(지시서 2026-11-16 §2). defer 스크립트는
+     문서 전체 파싱이 끝난 뒤에야 실행되므로, 이 인라인 스크립트는 아래 묶음 전/후
+     어디 있어도 상관없이 항상 먼저 실행된다. */
   window.ENTER_SITE = {
     leadEndpoint: "",
     leadFormEnabled: false,
     phone: "010-2222-4183"
   };
 </script>
-<script src="static/lead-modal.js?v=db201fea" defer></script>
-<script src="static/floatnav.js?v=c0dfdd6f" defer></script>
+
+<script src="static/chrome.34d022b6.js" defer></script>
 
 
-<link rel="stylesheet" href="static/site.css?v=b2d2c342">
 <link rel="stylesheet" href="static/sub.css?v=b22f4f32">
 <script type="application/ld+json">{
   "@context": "https://schema.org",
@@ -599,7 +596,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   </nav>
 </header>
 
-<script src="static/megamenu.js?v=89b66ab9" defer></script>
+<script src="static/common.233618c9.js" defer></script>
 <script>
 (function () {
   if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;

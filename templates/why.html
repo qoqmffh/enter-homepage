@@ -22,18 +22,12 @@
   } catch (e) {}
 })();
 </script>
-<link rel="stylesheet" href="static/home-poetic.css">
-<link rel="stylesheet" href="static/sub.css">
+<link rel="stylesheet" href="{{ bundle_href('why', 'css') }}">
 {# 홈 전체 스크롤 인터랙션(gsap/ScrollTrigger/home-poetic-scroll.js)은 팀장 요청(2026-10-29)으로
    꺼둔 채 오래 썼고, 쓰지도 않는 세 파일이 저장소에만 남아 있어 최적화(2026-11-14) 때
-   git rm으로 지웠다 — 다시 켜려면 세 파일을 되살리고 아래에 <script> 태그로 다시 넣는다. #}
-<script src="static/home-poetic.js" defer></script>
-<script src="static/home-poetic-trail.js" defer></script>
-<script src="static/home-poetic-cards.js" defer></script>
-<script src="static/wipe-reveal.js" defer></script>
-<script src="static/why-carousels.js" defer></script>
-<script src="static/why-chart.js" defer></script>
-<script src="static/voices-carousel.js" defer></script>
+   git rm으로 지웠다 — 다시 켜려면 세 파일을 되살리고 JS_BUNDLES['why'](build.py)에 추가한다.
+   속도 개선 지시서(2026-11-23) §2-④ — 7개 스크립트를 묶음 하나로. #}
+<script src="{{ bundle_href('why', 'js') }}" defer></script>
 {# AI 검색 대응 지시서(2026-11-16) §3 — 사이트맵 lastmod와 같은 date_modified를 WebPage
    스키마에도 넣는다. #}
 {% set webpage_ld = {
