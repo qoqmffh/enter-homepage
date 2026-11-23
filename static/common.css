@@ -31,30 +31,6 @@ a{color:inherit; text-decoration:none}
   background-image:repeating-linear-gradient(to right, transparent, transparent 219px, var(--line-grid) 219px, var(--line-grid) 220px);
 }
 
-/* ---------- 헤더 (에디토리얼 마스트헤드) ---------- */
-header.site{
-  background:var(--white); color:var(--ink);
-  padding:18px 0 14px; position:sticky; top:0; z-index:10;
-  border-bottom:1px solid var(--line);
-}
-header.site .wrap{display:flex; flex-direction:column; gap:12px; background-image:none}
-.brand-group{display:flex; align-items:center; gap:12px; flex-wrap:wrap}
-.brand{font-weight:600; font-size:21px; letter-spacing:-.01em; color:var(--ink)}
-.brand small{display:none}
-nav.site{
-  display:flex; gap:2px; font-size:12px;
-  overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none;
-  padding-bottom:2px;
-}
-nav.site::-webkit-scrollbar{display:none}
-nav.site a{
-  padding:7px 10px; color:var(--muted); font-weight:600; white-space:nowrap; flex:0 0 auto;
-  letter-spacing:.03em; text-transform:uppercase; position:relative;
-}
-nav.site a:hover{color:var(--ink)}
-nav.site a.active{color:var(--ink)}
-nav.site a.active::after{content:""; position:absolute; left:10px; right:10px; bottom:0; height:2px; background:var(--ink)}
-
 /* ---------- 섹션 공통 ---------- */
 main{display:block}
 section{padding:40px 0; border-bottom:1px solid var(--line)}
@@ -69,105 +45,13 @@ p{margin:0 0 10px; color:#2B2E3A}
    색 온도 정리(2026-11-17) — #6B7280(푸른 회색) → #6E6259(따뜻한 회색). */
 .post-date{font-size:12px; color:#6E6259; margin:6px 0 0}
 
-/* ---------- 섹션 헤드 (번호 와이파인딩 — 긴 싱글 페이지 스캔용) ---------- */
-.section-head{display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:20px; padding-bottom:12px; border-bottom:1px solid var(--line)}
-.section-head .idx{font-size:12px; color:var(--ink); letter-spacing:.05em; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-.section-head .label{font-size:12px; color:var(--muted); letter-spacing:.02em; font-weight:600; text-align:right; white-space:nowrap; flex:0 0 auto}
-
-/* ---------- 상태 뱃지 (헤더용) ---------- */
-.status-badge{display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); font-weight:600; letter-spacing:.02em}
-.status-badge::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--green)}
-.h2-xl{font-size:clamp(24px,4.6vw,38px); line-height:1.25; margin:0 0 12px; letter-spacing:-.01em; word-break:keep-all; overflow-wrap:break-word}
-
-@media (min-width:768px){
-  .lead-row{display:flex; justify-content:space-between; align-items:flex-end; gap:32px}
-  .lead-row > .lead-row-main{flex:1; max-width:640px}
-}
-
 /* ---------- 버튼 (투톤 옐로우 CTA) ---------- */
 .btn{display:inline-block; padding:13px 24px; border-radius:var(--radius-btn); font-weight:600; font-size:14px}
 .btn-primary{background:var(--yellow); color:var(--ink)}
 
-/* ---------- 히어로 v2 (홈 전용, 승인된 comp C — 에디토리얼/신문형 기준) ---------- */
-.hero-v2{color:var(--ink); padding:32px 0 0}
-.hero-v2-grid{padding:18px 0 32px}
-.hero-v2 .eyebrow-v2{font-size:12px; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; font-weight:600; margin-bottom:18px; max-width:230px}
-.hero-v2 h1{font-size:clamp(30px,5.4vw,56px); line-height:1.15; margin:0 0 20px; word-break:keep-all; overflow-wrap:break-word}
-.hero-v2 .sub-v2{font-size:15px; color:var(--muted); margin-bottom:20px; max-width:230px; word-break:keep-all; overflow-wrap:break-word}
-.hero-v2-cta{display:inline-flex; align-items:center; gap:8px; font-weight:600; font-size:14.5px; color:var(--ink); padding-bottom:3px; border-bottom:1px solid var(--ink)}
-.hero-v2-cta .cta-icon{display:flex; align-items:center; color:var(--ink)}
-.hero-v2-cta .cta-label{color:var(--ink)}
-
-/* ---------- 히어로 ABSTRACT 박스 ---------- */
-.hero-v2-layout{display:flex; flex-direction:column; gap:22px}
-.abstract-box{border-top:1px solid var(--line); padding-top:14px; max-width:360px}
-.abstract-label{font-size:12px; color:var(--muted); letter-spacing:.1em; font-weight:600; margin-bottom:8px}
-.abstract-box p{font-size:12.5px; color:var(--muted); line-height:1.6; margin:0}
-@media (min-width:860px){
-  .hero-v2-layout{flex-direction:row; justify-content:space-between; align-items:flex-start; gap:40px}
-  .hero-v2-main{flex:1}
-  .abstract-box{flex:0 0 280px; border-top:none; padding-top:0; border-left:1px solid var(--line); padding-left:24px; margin-top:4px}
-}
-
-/* ---------- 통계 바 v2 (홈 전용) ---------- */
-.stat-bar-v2{display:grid; grid-template-columns:repeat(2,1fr); border-top:1px solid var(--line)}
-.stat-bar-v2 .stat-v2{padding:26px 16px; border-right:1px solid var(--line); border-bottom:1px solid var(--line)}
-.stat-bar-v2 .stat-v2:nth-child(2n){border-right:none}
-.stat-bar-v2 .stat-v2-label{font-size:12px; color:var(--muted); letter-spacing:.03em; margin-bottom:8px}
-.stat-bar-v2 .stat-v2-num{font-weight:800; font-size:clamp(26px,6.5vw,46px); letter-spacing:-.01em}
-.stat-bar-v2 .stat-v2-sub{font-size:12px; color:var(--muted); margin-top:6px}
-
-@media (min-width:768px){
-  .hero-v2-grid{padding:48px 0 0}
-  .stat-bar-v2{grid-template-columns:repeat(4,1fr)}
-  .stat-bar-v2 .stat-v2{border-bottom:none; padding:30px 20px}
-  .stat-bar-v2 .stat-v2:nth-child(2n){border-right:1px solid var(--line)}
-  .stat-bar-v2 .stat-v2:last-child{border-right:none}
-}
-
-/* ---------- 이유 리스트 (번호 에디토리얼 로우 — 카드 그리드 대신) ---------- */
-.reason-list{margin-top:4px; border-top:1px solid var(--line)}
-.reason-row{display:grid; grid-template-columns:40px 1fr; gap:16px; padding:20px 0; border-bottom:1px solid var(--line)}
-.reason-row .rn{font-weight:800; font-size:22px; line-height:1; letter-spacing:-.01em}
-.reason-row:nth-child(1) .rn{color:var(--ink)}
-.reason-row:nth-child(2) .rn{color:var(--blue)}
-.reason-row:nth-child(3) .rn{color:var(--green)}
-.reason-row:nth-child(4) .rn{color:var(--gold)}
-.reason-row h3{margin:2px 0 5px; font-size:16px; font-weight:600}
-.reason-row p{margin:0; font-size:13.5px; color:var(--muted)}
-@media (min-width:768px){
-  .reason-row{grid-template-columns:52px 1fr; padding:24px 0}
-}
-
-/* ---------- 가로 구분 리스트 (칩 대신 — 취급상품/뱃지) ---------- */
-.inline-divided{display:flex; flex-wrap:wrap; margin-top:4px; padding:0}
-.inline-divided span{font-size:14px; color:var(--ink); padding:0 16px; border-right:1px solid var(--line); line-height:2.2}
-.inline-divided span:first-child{padding-left:0}
-.inline-divided span:last-child{border-right:none}
-
-/* ---------- 티커 헤드(고정 컬럼 라벨) ---------- */
-.ticker-head{display:flex; align-items:center; gap:8px; padding:0 12px 10px; font-size:12px; color:var(--muted); letter-spacing:.05em; text-transform:uppercase; font-weight:600}
-.ticker-head .h-date{flex:0 0 92px}
-.ticker-head .h-count{flex:1}
-.ticker-head .h-amount{flex:0 0 auto}
-
-/* ---------- 블로그 로우 리스트 (카드 대신 에디토리얼 로우) ---------- */
-.blog-row-list{list-style:none; margin:4px 0 0; padding:0; border-top:1px solid var(--line)}
-.blog-row-list li{display:flex; justify-content:space-between; align-items:baseline; gap:14px; padding:15px 0; border-bottom:1px solid var(--line)}
-.blog-row-list a{font-size:14.5px; font-weight:600; color:var(--ink)}
-.blog-row-list .tag{font-size:12px; color:var(--blue); font-weight:600; white-space:nowrap; text-transform:uppercase; letter-spacing:.04em}
-
-/* ---------- 최종 CTA 블록 ---------- */
-.final-cta-block .tagline{font-size:clamp(22px,4.6vw,36px); font-weight:800; line-height:1.3; max-width:620px}
-
-/* ---------- 트러스트 배지(라이트 필) ---------- */
-.trustbar{display:flex; flex-wrap:wrap; gap:8px; margin:18px 0 24px}
-.trustbar span{background:var(--paper-dim); border:1px solid var(--line); padding:6px 12px; border-radius:var(--radius-btn); font-size:12px; color:var(--ink)}
-
 /* ---------- 카드 ---------- */
 .cards{display:grid; grid-template-columns:1fr; gap:14px; margin-top:16px}
 .card{background:var(--white); border:1px solid var(--line); border-radius:var(--radius-card); padding:18px}
-.card .num{display:inline-block; width:24px;height:24px;border-radius:50%;background:var(--paper-dim); color:var(--ink); font-weight:600; font-size:12px; text-align:center; line-height:24px; margin-bottom:8px}
 .card h3{margin:0 0 6px; font-size:15px}
 .card p{font-size:13px; color:var(--muted); margin:0}
 
@@ -182,85 +66,6 @@ table th{color:var(--muted); font-weight:600; font-size:12px; letter-spacing:.02
 /* 모바일 전면 최적화(2026-11-17) 9 — li의 패딩만으로는 시각적으로만 커 보이고 실제
    탭 영역(<a>)은 작았다. 링크 자체를 li 전체 박스만큼 넓혀서 44px 이상 확보한다. */
 .doclist li > a{ display:block; margin:-9px -12px; padding:13px 14px; }
-.steps{display:flex; flex-direction:column; gap:8px; margin-top:14px; font-size:13.5px}
-.steps .step{background:var(--white); border:1px solid var(--line); border-radius:var(--radius-card); padding:10px 13px}
-
-/* ---------- 프로세스 흐름(일처리 단계) ---------- */
-.flow{gap:22px}
-.flow .step{position:relative}
-.flow .step:not(:last-child)::after{content:"↓"; position:absolute; left:50%; bottom:-19px; transform:translateX(-50%); color:var(--muted); font-size:13px; line-height:1}
-.source-note{margin-top:12px; padding:10px 13px; border:1px dashed var(--line); border-radius:var(--radius-card); background:var(--paper-dim); font-size:12.5px; color:var(--muted); display:flex; flex-direction:column; gap:4px}
-.source-note .source-status{font-size:12px; color:var(--gold); font-weight:600}
-
-/* ---------- 실거래 롤링 티커 ---------- */
-.ticker-wrap{margin-top:12px; height:240px; overflow:hidden; border:1px solid var(--line); border-radius:var(--radius-card); background:var(--white); position:relative; mask-image:linear-gradient(to bottom, transparent, #000 8%, #000 92%, transparent)}
-.ticker-list{animation:ticker-scroll 40s linear infinite}
-.ticker-wrap:hover .ticker-list{animation-play-state:paused}
-.ticker-row{display:flex; align-items:center; gap:8px; padding:8px 12px; border-bottom:1px solid var(--line); font-size:12px; white-space:nowrap}
-.ticker-row .t-date{color:var(--muted); flex:0 0 92px}
-.ticker-row .t-bank{color:var(--blue); font-weight:600; flex:0 0 52px}
-.ticker-row .t-count{color:var(--blue); font-weight:600; flex:1}
-.ticker-row .t-recipient{color:var(--muted); flex:1; overflow:hidden; text-overflow:ellipsis}
-.ticker-row .t-amount{font-weight:600; flex:0 0 auto; font-variant-numeric:tabular-nums}
-.ticker-row .t-status{flex:0 0 auto; margin-left:10px; font-size:12px; font-weight:600; color:var(--green); white-space:nowrap}
-@keyframes ticker-scroll{from{transform:translateY(0)}to{transform:translateY(-50%)}}
-@media (prefers-reduced-motion: reduce){.ticker-list{animation:none}}
-
-/* ---------- 정산 원장 헤드(AUDIT LEDGER) ---------- */
-.ledger-top{display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap}
-.ledger-top .h2-xl{margin-bottom:0}
-.ledger-badge{display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); font-weight:600; white-space:nowrap}
-.ledger-badge::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--green)}
-.ticker-head .h-status{flex:0 0 auto; margin-left:10px; width:52px}
-
-/* ---------- 여정표(START HERE 3단 테이블) ---------- */
-/* 모바일: 가로 스크롤 대신 카드형으로 쌓기 (받는 것 칼럼이 스와이프 뒤에 숨는 것 방지) */
-@media (max-width:599px){
-  .journey-table-wrap{overflow-x:visible}
-  .journey-table, .journey-table tbody, .journey-table tr, .journey-table td{display:block; width:auto; min-width:0}
-  .journey-table thead{display:none}
-  .journey-table{margin-top:14px}
-  .journey-table tr{border:1px solid var(--line); border-radius:var(--radius-card); padding:14px; margin-bottom:10px; position:relative}
-  .journey-table td{padding:3px 0; border-bottom:none; font-size:13.5px}
-  .journey-table .jt-n{position:absolute; top:14px; right:14px; color:var(--blue); font-weight:600}
-  .journey-table td[data-label]::before{content:attr(data-label); display:block; font-size:12px; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.03em; margin-top:6px}
-  .journey-table td[data-label]:first-of-type::before{margin-top:0}
-}
-@media (min-width:600px){
-  .journey-table-wrap{overflow-x:auto; -webkit-overflow-scrolling:touch}
-  .journey-table{width:100%; border-collapse:collapse; margin-top:18px; font-size:13px}
-  .journey-table th{text-align:left; font-size:12px; color:var(--muted); font-weight:600; letter-spacing:.03em; text-transform:uppercase; padding:0 12px 10px 0; border-bottom:1px solid var(--line)}
-  .journey-table td{padding:14px 12px 14px 0; border-bottom:1px solid var(--line); vertical-align:top}
-  .journey-table .jt-n{font-weight:600; color:var(--blue); width:28px}
-  .journey-table tr:last-child td{border-bottom:none}
-}
-
-/* ---------- 카테고리 카드(취급상품) ---------- */
-.category-grid{display:grid; grid-template-columns:1fr 1fr; gap:0; margin-top:16px; border-top:1px solid var(--line); border-left:1px solid var(--line)}
-.category-card{padding:18px 16px; border-right:1px solid var(--line); border-bottom:1px solid var(--line)}
-.category-card .cc-n{font-size:12px; color:var(--muted); font-weight:600; margin-bottom:8px}
-.category-card .cc-name{font-weight:600; font-size:15px; margin-bottom:4px}
-.category-card .cc-desc{font-size:12px; color:var(--muted)}
-@media (min-width:768px){
-  .category-grid{grid-template-columns:repeat(5,1fr)}
-}
-
-/* ---------- 연락 카드(최종 CTA) ---------- */
-.contact-cards{display:grid; grid-template-columns:repeat(3,1fr); gap:0; margin-top:20px; border-top:1px solid var(--line); border-left:1px solid var(--line)}
-.contact-card{display:flex; flex-direction:column; align-items:center; gap:8px; padding:20px 8px; border-right:1px solid var(--line); border-bottom:1px solid var(--line); font-size:12.5px; font-weight:600; color:var(--ink)}
-.contact-card:hover{background:var(--paper-dim)}
-
-/* ---------- 실제 화면 캡처 비교(BEFORE/AFTER) ---------- */
-.compare{display:flex; flex-direction:column; gap:14px; margin-top:16px}
-.compare-item{background:var(--white); border:1px solid var(--line); border-radius:var(--radius-card); padding:14px; position:relative}
-.compare-item img{width:100%; height:auto; border-radius:6px; border:1px solid var(--line); display:block}
-.compare-tag{display:inline-block; font-size:12px; font-weight:600; letter-spacing:.06em; color:var(--muted); background:var(--paper-dim); padding:3px 9px; border-radius:var(--radius-btn); margin-bottom:8px}
-.compare-tag-after{color:var(--ink); background:var(--gold-soft)}
-.compare-item p{margin-top:9px; font-size:12.5px; color:var(--muted)}
-@media (min-width:768px){
-  .compare{flex-direction:row}
-  .compare-item{flex:1}
-}
 
 /* ---------- 강조 태그라인 ---------- */
 .tagline{margin-top:14px; font-size:16px; font-weight:600; color:var(--ink); line-height:1.5; word-break:keep-all; overflow-wrap:break-word}
@@ -269,11 +74,6 @@ table th{color:var(--muted); font-weight:600; font-size:12px; letter-spacing:.02
    버튼은 기존 .btn.btn-primary 그대로 재사용(새 색 안 씀). */
 .mid-cta{background:var(--paper-dim); border-radius:var(--radius-card); padding:20px; display:flex; flex-direction:column; align-items:flex-start; gap:12px}
 .mid-cta p{margin:0; font-size:14px; color:var(--ink); word-break:keep-all}
-
-/* 작성자 박스(마케팅 P0 A25-1, 2026-11-10) — author 값이 있을 때만 렌더됨(템플릿에서 분기). */
-.author-box{border-top:1px solid var(--line); padding-top:16px; display:flex; flex-direction:column; gap:2px}
-.author-name{font-size:14px; font-weight:700; color:var(--ink)}
-.author-title{font-size:12.5px; color:var(--muted)}
 
 /* 블로그 글 본문 블록 타입(블로그 글 3편 반영 지시서 2026-11-10) — 색·라운드는 모두
    기존 토큰(--paper-dim/--line/--ink/--muted/--blue/--yellow/--radius-card/--radius-btn)만 쓴다. */
@@ -309,26 +109,6 @@ table th{color:var(--muted); font-weight:600; font-size:12px; letter-spacing:.02
 .final-cta-actions{display:flex; flex-wrap:wrap; gap:10px}
 .final-cta-actions .btn-tel{background:var(--white); border:1px solid var(--line); color:var(--ink)}
 
-/* ---------- 이유 카드(스탯+필프로우 조합형) ---------- */
-.reason-card{background:var(--white); border:1px solid var(--line); border-radius:var(--radius-card); padding:22px 18px}
-.reason-card h2{margin-top:4px}
-.stat-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px}
-.stat-box{background:var(--paper-dim); border-radius:var(--radius-card); padding:14px 15px}
-.stat-box .num{font-weight:800; font-size:22px; letter-spacing:-.01em; color:var(--ink)}
-.stat-box .label{font-size:12px; color:var(--muted); margin-top:3px}
-/* 4색 순환(레퍼런스 통계바와 동일한 멀티컬러 룰) */
-.stat-grid .stat-box:nth-child(4n+1) .num{color:var(--ink)}
-.stat-grid .stat-box:nth-child(4n+2) .num{color:var(--blue)}
-.stat-grid .stat-box:nth-child(4n+3) .num{color:var(--green)}
-.stat-grid .stat-box:nth-child(4n+4) .num{color:var(--gold)}
-.pill-flow{display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin-top:14px; font-size:12px; color:var(--muted)}
-.pill-flow .pill{background:var(--paper-dim); border-radius:var(--radius-btn); padding:6px 12px}
-.pill-flow .arrow{color:var(--line)}
-.reason-card .divider{border:none; border-top:1px solid var(--line); margin:18px 0}
-.checklist{display:flex; flex-direction:column; gap:8px; margin-top:16px}
-.checklist-item{display:flex; align-items:center; justify-content:space-between; gap:10px; background:var(--paper-dim); border-radius:var(--radius-card); padding:12px 16px; font-size:13.5px; color:var(--ink)}
-.checklist-item .check{color:var(--green); font-weight:600; flex:0 0 auto}
-
 /* ---------- 아이콘 스텝(거래 시작하기) ---------- */
 .icon-steps{display:flex; flex-direction:column; gap:10px; margin-top:16px}
 .icon-step{display:flex; align-items:center; gap:12px; background:var(--white); border:1px solid var(--line); border-radius:var(--radius-card); padding:14px 16px}
@@ -338,42 +118,11 @@ table th{color:var(--muted); font-weight:600; font-size:12px; letter-spacing:.02
 .icon-step-text-wrap{display:flex; flex-direction:column; gap:2px}
 .icon-step-sub{font-size:12px; color:var(--muted)}
 
-.no-obligations{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px}
-.no-obligations span{background:var(--paper-dim); border-radius:var(--radius-btn); padding:7px 13px; font-size:12.5px; color:var(--muted); font-weight:600}
-
 .doc-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px}
 .doc-card{background:var(--white); border:1px solid var(--line); border-radius:var(--radius-card); padding:16px; text-align:center}
 .doc-icon{font-size:28px; margin-bottom:8px}
 .doc-name{font-weight:600; font-size:13.5px; margin-bottom:4px}
 .doc-reason{font-size:12px; color:var(--muted)}
-
-/* ---------- 근거/출처 묶음 블록(메인카피보다 한 단계 낮은 톤) ---------- */
-.evidence-block{margin-top:16px; padding-top:14px; border-top:1px solid var(--line)}
-.evidence-block > p{font-size:12.5px; color:var(--muted); font-weight:400; margin:8px 0}
-.evidence-block table{font-size:12px}
-.evidence-block .source-note{margin-top:10px}
-
-/* ---------- FAQ ---------- */
-.faq-item{padding:24px 0; border-bottom:1px solid #E8DFD6}
-.faq-item:last-child{border-bottom:none}
-.faq-q{font-weight:600; margin-bottom:6px; font-size:14.5px}
-.faq-q::before{content:"Q. "; color:var(--blue)}
-.faq-a::before{content:"A. "; color:var(--gold); font-weight:600}
-.faq-a{color:var(--muted); font-size:14px}
-
-/* ---------- 블로그/후기 리스트 ---------- */
-.bloglist{list-style:none; padding:0; margin:16px 0 0; display:flex; flex-direction:column; gap:9px}
-.bloglist li{background:var(--white); border:1px solid var(--line); border-radius:var(--radius-card); padding:12px 14px; display:flex; justify-content:space-between; gap:10px; font-size:13.5px}
-.bloglist .tag{font-size:12px; color:var(--blue); font-weight:600; white-space:nowrap}
-.placeholder{background:var(--paper-dim); border:1px dashed var(--line); border-radius:var(--radius-card); padding:32px 20px; text-align:center; color:var(--muted); margin-top:16px}
-
-/* ---------- 블로그 본문(리치텍스트 에디터 작성분) ---------- */
-.blog-body img{max-width:100%; height:auto; border-radius:10px; margin:10px 0}
-.blog-body h2{margin-top:22px}
-.blog-body h3{font-size:16px; margin-top:18px}
-.blog-body ul, .blog-body ol{padding-left:20px; margin:0 0 10px}
-.blog-body li{margin-bottom:4px}
-.blog-body a{color:var(--blue); text-decoration:underline}
 
 /* ---------- 링크 더보기 ---------- */
 .more-link{color:var(--blue); font-weight:600; font-size:14px}
@@ -403,47 +152,19 @@ table th{color:var(--muted); font-weight:600; font-size:12px; letter-spacing:.02
 @media (min-width:640px){ .related-cards{ grid-template-columns:repeat(2,1fr); } }
 @media (min-width:960px){ .related-cards{ grid-template-columns:repeat(3,1fr); } }
 
-footer.legal{padding:24px 0 92px; font-size:12px; color:var(--muted)}
-
 /* ---------- 데스크톱 확장 (모바일이 기본, 넓은 화면에서 보강) ---------- */
 @media (min-width:768px){
   .wrap{padding:0 24px}
-  header.site .wrap{flex-direction:row; align-items:center; justify-content:space-between; max-width:1040px}
-  nav.site{overflow:visible}
   section{padding:56px 0}
   .cards{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
-  .steps{flex-direction:row; flex-wrap:wrap; align-items:center}
-  .flow{gap:30px}
-  .flow .step:not(:last-child)::after{content:"→"; left:auto; right:-22px; top:50%; bottom:auto; transform:translateY(-50%)}
   .doc-grid{grid-template-columns:repeat(4,1fr)}
 }
 
 /* 모바일 전면 최적화(2026-11-17) §2 — 캡션류 글자를 12px 미만에서 12px로 올렸다(위 각
    규칙 본문). PC(768px 이상)는 바꾸지 않기 위해 원래 값으로 여기서 되돌린다. */
 @media (min-width:768px){
-  nav.site{ font-size:11px; }
-  .section-head .idx{ font-size:11px; }
-  .section-head .label{ font-size:11px; }
-  .status-badge{ font-size:10.5px; }
-  .hero-v2 .eyebrow-v2{ font-size:11.5px; }
-  .abstract-label{ font-size:10.5px; }
-  .stat-bar-v2 .stat-v2-label{ font-size:11px; }
-  .stat-bar-v2 .stat-v2-sub{ font-size:11px; }
-  .ticker-head{ font-size:10.5px; }
-  .blog-row-list .tag{ font-size:10.5px; }
-  .trustbar span{ font-size:11.5px; }
   table th{ font-size:11.5px; }
-  .source-note .source-status{ font-size:11px; }
-  .ticker-row .t-status{ font-size:10.5px; }
-  .ledger-badge{ font-size:10.5px; }
-  .journey-table td[data-label]::before{ font-size:10px; }
-  .journey-table th{ font-size:10.5px; }
-  .category-card .cc-n{ font-size:11px; }
-  .compare-tag{ font-size:10.5px; }
   .tip-label{ font-size:10.5px; }
-  .stat-box .label{ font-size:11.5px; }
   .icon-step-num{ font-size:11px; }
   .doc-reason{ font-size:11.5px; }
-  .bloglist .tag{ font-size:10.5px; }
-  footer.legal{ font-size:11.5px; }
 }
