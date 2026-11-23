@@ -24,8 +24,7 @@
 
 {% block content %}
 {% set s = page.sub %}
-{# 거래처이야기4건_홈추가 지시서(2026-11-19) — 공개된 인용 4건(A·C·D·B 순), 한 글자도
-   바꾸지 않는다(content/pages.json의 page.quotes가 원문). #}
+{# 거래처 인터뷰 인용구 3건 — content/pages.json의 page.quotes가 원문. #}
 {{ hero_mod.render('tall', s.hero, bc_mod.render(crumb_items), date_modified, page.h1_question, show_facts=false) }}
 
 {% set rhythm = namespace(i=-1) %}
@@ -47,9 +46,8 @@
 </section>
 {% endif %}
 
-{# 인터뷰캐러셀 지시서(2026-11-19) — voices_carousel.html 매크로(홈 #voices와 공유).
-   stories.html은 4건 전부, more_link 없음, 조사 방법 문구는 이 페이지에만. 캐러셀
-   섹션 배경은 연살구 고정(지시서 §4) — 리듬 카운터에 넣지 않는다. #}
+{# voices_carousel.html 매크로(홈 #voices와 공유). stories.html은 3건 전부, more_link
+   없음, 조사 방법 문구는 이 페이지에만. 섹션 배경은 연살구 고정 — 리듬 카운터에 넣지 않는다. #}
 {% if page.quotes %}
 <section class="sp-section sp-bg-tint" id="voices">
   {{ voices_mod.render(page.quotes, show_method_note=true, interview_note=page.interview_note) }}
