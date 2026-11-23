@@ -46,15 +46,11 @@
   --radius-card:8px;
   --radius-btn:6px;
 
-  /* 폰트 토큰(2026-11-02) — ONE Mobile(TTF, 약 12MB) → Pretendard Variable
-     woff2 dynamic subset(static/fonts/pretendard/)로 교체. base.html이
-     pretendard-dynamic-subset.css를 common.css보다 먼저 불러온다.
-     'Pretendard Fallback'(2026-11-18, 모바일 최적화 2차 CLS 후속) — 실제 폰트가 로드되기
-     전 이 자리를 메우는 metric-override 폴백. 보통의 OS 폴백(Apple SD Gothic Neo/Noto
-     Sans KR/Segoe UI/Arial 등)을 쓰되 size-adjust/ascent/descent-override로
-     Pretendard Variable 실측 치수에 맞춰, 웹폰트로 교체되는 순간 리플로우(CLS)가 거의
-     안 생기게 한다. */
-  --font-sans:'Pretendard Variable', Pretendard, 'Pretendard Fallback', -apple-system, BlinkMacSystemFont, system-ui, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  /* 'Pretendard Fallback Win/Mac/Android' — 실제 폰트가 로드되기 전 이 자리를 메우는
+     OS별 metric-override 폴백(static/fonts/pretendard/pretendard-fallback.css).
+     size-adjust/ascent/descent-override를 Pretendard Variable 실측 치수에 맞춰,
+     웹폰트로 교체되는 순간 리플로우(CLS)가 거의 안 생기게 한다. */
+  --font-sans:'Pretendard Variable', Pretendard, 'Pretendard Fallback Win', 'Pretendard Fallback Mac', 'Pretendard Fallback Android', -apple-system, BlinkMacSystemFont, system-ui, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
 
   /* 타이포 크기 토큰(2026-11-10) — 화면이 꽉 차 보인다는 피드백으로 헤드 타이포를
      전체적으로 한 단계 줄인다. home-poetic.css·sub.css·megamenu.css가 이 토큰을 쓴다.
@@ -145,7 +141,7 @@ html:not(.ad-pending) #hpHeaderCta:hover{ background:var(--hp-ink); }
 /* ---------- 헤더(사이트 전체 공통) ----------
    01/02/03 그룹 버튼·메가 패널·모바일 메뉴 전용 스타일은 static/megamenu.css.
    여기는 헤더 뼈대(로고·높이·레이아웃)와 알약 버튼만 남는다. */
-.hp-header{ position:sticky; top:0; z-index:40; background:rgba(255,255,250,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--hp-line); transition:background .3s ease, border-color .3s ease; }
+.hp-header{ position:sticky; top:0; z-index:40; background:rgba(251,248,244,.97); border-bottom:1px solid var(--hp-line); transition:background .3s ease, border-color .3s ease; }
 .hp-header-inner{ max-width:1200px; margin:0 auto; padding:0 20px; height:76px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
 .hp-brand{ display:inline-flex; align-items:center; flex:0 0 auto; }
 @media (max-width:1023px){ .hp-brand{ min-height:44px; } }

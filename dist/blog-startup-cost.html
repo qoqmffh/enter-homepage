@@ -4,6 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<link rel="preload" href="static/fonts/pretendard/pretendard-subset.d41da887.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{
+  font-family:'Pretendard Variable';
+  font-style:normal;
+  font-display:swap;
+  font-weight:300 800;
+  src:url('static/fonts/pretendard/pretendard-subset.d41da887.woff2') format('woff2-variations');
+}
+</style>
+
 <meta name="google-site-verification" content="nt_En3bZdbAeOCELge02ilb1QQT6p8wMLYRm82tFxMs">
 <meta name="naver-site-verification" content="f6999f8762d2a9ea61d5dda35cb0c4b5287cd938">
 
@@ -52,17 +63,25 @@
 <link rel="icon" href="static/brand/favicon-96.png" type="image/png" sizes="96x96">
 <link rel="icon" href="static/brand/favicon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="static/brand/apple-touch-icon.png">
-<link rel="stylesheet" href="static/fonts/pretendard/pretendard-dynamic-subset.css?v=2973bcae">
-<link rel="stylesheet" href="static/fonts/pretendard/pretendard-fallback.css?v=fde9256b">
-<link rel="stylesheet" href="static/common.css?v=dc1695ff">
-<link rel="stylesheet" href="static/site.css?v=548d154c">
+<link rel="stylesheet" href="static/fonts/pretendard/pretendard-fallback.css?v=a36e7f8d">
+<link rel="stylesheet" href="static/common.css?v=84938459">
+<link rel="stylesheet" href="static/site.css?v=b2d2c342">
 <link rel="stylesheet" href="static/megamenu.css?v=a2d05020">
 
 <link rel="stylesheet" href="static/reveal.css?v=46ce769e">
 <link rel="stylesheet" href="static/lead-modal.css?v=6da3a881">
 <link rel="stylesheet" href="static/floatnav.css?v=4129d77f">
 
-<link rel="stylesheet" href="static/cursor.css?v=7a63899e">
+
+<script>
+(function () {
+  if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
+  var l = document.createElement('link');
+  l.rel = 'stylesheet';
+  l.href = 'static/cursor.css?v=7a63899e';
+  document.head.appendChild(l);
+})();
+</script>
 
 
 
@@ -655,7 +674,15 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 </header>
 
 <script src="static/megamenu.js?v=89b66ab9" defer></script>
-<script src="static/cursor.js?v=425bfe59" defer></script>
+<script>
+(function () {
+  if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
+  var s = document.createElement('script');
+  s.src = 'static/cursor.js?v=847f6184';
+  s.defer = true;
+  document.head.appendChild(s);
+})();
+</script>
 
 <main>
 

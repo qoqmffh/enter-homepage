@@ -14,6 +14,7 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 import xml.sax.saxutils as xml_escape
 from html.parser import HTMLParser
 
@@ -28,6 +29,90 @@ DIST_DIR = os.path.join(BASE_DIR, "dist")
 
 # IndexNow 키(GEO 2차 지시서 2026-11-18 §4) — scripts/indexnow_notify.py와 공유.
 INDEXNOW_KEY = "172cf13cf2d7196f2e25c220df0f5410"
+
+# ---------------------------------------------------------------------------
+# 폰트 서브셋(속도 개선 지시서 2026-11-23 §2-①) — Pretendard 가변 폰트 원본
+# (fonts-source/PretendardVariable.ttf, static/ 밖이라 dist에 안 들어간다)에서
+# 실제로 쓰는 굵기(300~800)만 인스턴스화하고, 실제로 쓰는 글자만 추려 woff2 1개로
+# 만든다. 파일 이름에 글자 집합 해시를 붙여서(pretendard-subset.<hash>.woff2),
+# 글자가 바뀌면 자동으로 새 파일이 되고(캐시 무효화), 안 바뀌면 fonts-source/.cache/
+# 안의 이미 만든 파일을 그대로 쓴다(매번 느린 fontTools 서브셋을 다시 안 돌림).
+FONT_SOURCE = os.path.join(BASE_DIR, "fonts-source", "PretendardVariable.ttf")
+FONT_CACHE_DIR = os.path.join(BASE_DIR, "fonts-source", ".cache")
+FONT_PLACEHOLDER = "__FONT_SUBSET_HREF__"
+FONT_WEIGHT_RANGE = "300 800"  # CSS font-weight 범위 — site.css·home-ad.js에서 실제 쓰는 굵기
+
+# 항상 포함: 영문 대소문자·숫자·기본 문장부호(출력 가능 ASCII 전체) + 원화·화살표·말줄임표·대시.
+_FONT_ALWAYS_CHARS = set(
+    "".join(chr(c) for c in range(0x20, 0x7F))  # 출력 가능 ASCII(공백~물결표)
+    + "₩→←↑↓…—–"
+)
+_JSONLD_SCRIPT_RE = re.compile(r'<script type="application/ld\+json">.*?</script>', re.S)
+
+
+def collect_font_chars(dist_dir, static_dir, content_dir):
+    """dist 전체 텍스트(JSON-LD 제외) + static/*.js 문자열 + content/*.json(안전망,
+    HTML에 아직 안 반영됐을 수 있는 문구 대비) + 항상 포함 세트를 모은 고유 글자 집합."""
+    chars = set(_FONT_ALWAYS_CHARS)
+    for path in sorted(glob.glob(os.path.join(dist_dir, "*.html"))):
+        with open(path, encoding="utf-8") as f:
+            html = f.read()
+        chars.update(_JSONLD_SCRIPT_RE.sub("", html))
+    for path in sorted(glob.glob(os.path.join(static_dir, "*.js"))):
+        with open(path, encoding="utf-8") as f:
+            chars.update(f.read())
+    for path in sorted(glob.glob(os.path.join(content_dir, "*.json"))):
+        with open(path, encoding="utf-8") as f:
+            chars.update(f.read())
+    chars -= {"\n", "\t", "\r"}
+    return chars
+
+
+def build_font_subset(chars, out_dir):
+    """글자 집합 해시로 캐시를 확인하고, 없으면 fontTools로 새로 만든다.
+    반환: (파일명, 새로 만들었는지 여부)."""
+    sorted_chars = "".join(sorted(chars))
+    chars_hash = hashlib.sha256(sorted_chars.encode("utf-8")).hexdigest()[:8]
+    out_name = f"pretendard-subset.{chars_hash}.woff2"
+    out_path = os.path.join(out_dir, out_name)
+    os.makedirs(FONT_CACHE_DIR, exist_ok=True)
+    cache_path = os.path.join(FONT_CACHE_DIR, out_name)
+
+    if os.path.exists(cache_path):
+        shutil.copy(cache_path, out_path)
+        return out_name, False
+
+    if not os.path.exists(FONT_SOURCE):
+        raise FileNotFoundError(
+            f"폰트 원본이 없습니다: {FONT_SOURCE} — Pretendard Variable TTF를 이 경로에 두세요"
+            "(orioncactus/pretendard 릴리스의 public/variable/PretendardVariable.ttf)."
+        )
+
+    instanced_path = os.path.join(FONT_CACHE_DIR, f"_instanced_{chars_hash}.ttf")
+    text_path = os.path.join(FONT_CACHE_DIR, f"_chars_{chars_hash}.txt")
+    try:
+        with open(text_path, "w", encoding="utf-8") as f:
+            f.write(sorted_chars)
+        wght_lo, wght_hi = FONT_WEIGHT_RANGE.split()
+        subprocess.run(
+            [sys.executable, "-m", "fontTools.varLib.instancer",
+             FONT_SOURCE, f"wght={wght_lo}:{wght_hi}", "-o", instanced_path],
+            check=True, capture_output=True,
+        )
+        subprocess.run(
+            [sys.executable, "-m", "fontTools.subset", instanced_path,
+             f"--text-file={text_path}", "--flavor=woff2",
+             f"--output-file={cache_path}",
+             "--layout-features=*", "--no-hinting"],
+            check=True, capture_output=True,
+        )
+    finally:
+        for p in (instanced_path, text_path):
+            if os.path.exists(p):
+                os.remove(p)
+
+    shutil.copy(cache_path, out_path)
+    return out_name, True
 
 
 def load_json(name):
@@ -606,6 +691,10 @@ def main():
     env.filters["breadcrumb_ld"] = breadcrumb_ld
     env.globals["page_url"] = page_url
     env.globals["page_href"] = page_href
+    # 속도 개선 지시서(2026-11-23) §2-② — 터치 기기에서 아예 안 받는 cursor.js/css처럼,
+    # <script> 문자열 안에서 동적으로 만드는 태그는 add_cache_busting()의 정규식이 못
+    # 잡으므로 템플릿에서 직접 해시를 넣을 수 있게 노출한다.
+    env.globals["asset_hash"] = _asset_hash
     # A30-1/A30-2(마케팅 P0 2026-11-10) — tojson 기본값(ensure_ascii=True)이면
     # JSON-LD 속 한글이 \uXXXX로 이스케이프된다. 사람이 읽을 수 있게 끈다.
     env.policies["json.dumps_kwargs"] = {"ensure_ascii": False, "indent": 2}
@@ -656,6 +745,29 @@ def main():
     if glossary_link_stats:
         total_links = sum(len(v) for v in glossary_link_stats.values())
         print(f"  용어 사전 자동 링크: {len(glossary_link_stats)}개 페이지, 총 {total_links}개")
+
+    # 폰트 서브셋(속도 개선 지시서 2026-11-23 §2-①) — 위에서 dist/*.html을 전부 쓴
+    # 뒤라야 "실제로 쓰인 글자"를 모을 수 있다. base.html은 __FONT_SUBSET_HREF__라는
+    # 자리표시자로 렌더링돼 있으므로, 서브셋 파일 이름이 정해지면 전체 dist에서
+    # 한 번에 치환한다(add_cache_busting과 같은 "렌더 뒤 일괄 치환" 방식).
+    font_fonts_dir = os.path.join(DIST_DIR, "static", "fonts", "pretendard")
+    font_chars = collect_font_chars(DIST_DIR, STATIC_DIR, CONTENT_DIR)
+    font_out_name, font_rebuilt = build_font_subset(font_chars, font_fonts_dir)
+    font_href = f"static/fonts/pretendard/{font_out_name}"
+    for path in glob.glob(os.path.join(DIST_DIR, "*.html")):
+        with open(path, encoding="utf-8") as f:
+            html = f.read()
+        if FONT_PLACEHOLDER in html:
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(html.replace(FONT_PLACEHOLDER, font_href))
+    # 더는 안 쓰는 예전 굵기별·유니코드 조각 폰트 — 전부 복사된 뒤이므로 지금 지운다.
+    old_subset_css = os.path.join(font_fonts_dir, "pretendard-dynamic-subset.css")
+    old_subset_dir = os.path.join(font_fonts_dir, "woff2-dynamic-subset")
+    if os.path.exists(old_subset_css):
+        os.remove(old_subset_css)
+    if os.path.isdir(old_subset_dir):
+        shutil.rmtree(old_subset_dir)
+    print(f"  폰트 서브셋: {font_out_name} ({'새로 생성' if font_rebuilt else '캐시 사용'}, 글자 {len(font_chars)}개, 굵기 {FONT_WEIGHT_RANGE})")
 
     # 사이트맵 3분리 + 인덱스(A01-3)
     def write_sitemap(filename, entries):

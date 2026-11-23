@@ -16,6 +16,9 @@
     if (!items.length) return;
     var index = 0;
     var timer = null;
+    // 성능(지시서 2026-11-23 §2-②-6) — 호버/포커스 말고도 화면 밖·탭 숨김이면 자동 전환을
+    // 멈춘다. paused()가 하나라도 걸리면 멈추고, 전부 풀리면 다시 돈다.
+    var hovering = false, inView = true, tabVisible = !document.hidden;
 
     function render() {
       items.forEach(function (el, i) {
@@ -35,7 +38,7 @@
     }
     function start() {
       stop();
-      if (reduceMotion || items.length < 2) return;
+      if (reduceMotion || items.length < 2 || hovering || !inView || !tabVisible) return;
       timer = setInterval(function () { go(index + 1); }, opts.interval);
     }
 
@@ -46,11 +49,22 @@
       opts.nextBtn.addEventListener('click', function () { go(index + 1); start(); });
     }
 
-    root.addEventListener('mouseenter', stop);
-    root.addEventListener('mouseleave', start);
-    root.addEventListener('focusin', stop);
+    root.addEventListener('mouseenter', function () { hovering = true; stop(); });
+    root.addEventListener('mouseleave', function () { hovering = false; start(); });
+    root.addEventListener('focusin', function () { hovering = true; stop(); });
     root.addEventListener('focusout', function (e) {
-      if (!root.contains(e.relatedTarget)) start();
+      if (!root.contains(e.relatedTarget)) { hovering = false; start(); }
+    });
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) { inView = entry.isIntersecting; });
+        if (inView) start(); else stop();
+      }, { threshold: 0 }).observe(root);
+    }
+    document.addEventListener('visibilitychange', function () {
+      tabVisible = !document.hidden;
+      if (tabVisible) start(); else stop();
     });
 
     render();

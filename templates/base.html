@@ -3,6 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{# 속도 개선 지시서(2026-11-23) §2-① — 실제로 쓰는 글자·굵기(300~800)만 담은 가변
+   폰트 1개를 <head> 맨 앞에서 인라인 @font-face + preload한다. 파일 이름의
+   __FONT_SUBSET_HREF__ 자리표시자는 build.py가 dist 전체를 쓴 뒤 실제 글자 집합
+   해시 파일명으로 한 번에 치환한다(add_cache_busting과 같은 방식). #}
+<link rel="preload" href="__FONT_SUBSET_HREF__" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{
+  font-family:'Pretendard Variable';
+  font-style:normal;
+  font-display:swap;
+  font-weight:300 800;
+  src:url('__FONT_SUBSET_HREF__') format('woff2-variations');
+}
+</style>
 {% if site.noindex %}<meta name="robots" content="noindex, nofollow">{% endif %}
 {% if site.google_verify %}<meta name="google-site-verification" content="{{ site.google_verify }}">{% endif %}
 {% if site.naver_verify %}<meta name="naver-site-verification" content="{{ site.naver_verify }}">{% endif %}
@@ -56,7 +70,6 @@
 <link rel="icon" href="static/brand/favicon-96.png" type="image/png" sizes="96x96">
 <link rel="icon" href="static/brand/favicon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="static/brand/apple-touch-icon.png">
-<link rel="stylesheet" href="static/fonts/pretendard/pretendard-dynamic-subset.css">
 <link rel="stylesheet" href="static/fonts/pretendard/pretendard-fallback.css">
 <link rel="stylesheet" href="static/common.css">
 <link rel="stylesheet" href="static/site.css">
@@ -66,7 +79,18 @@
 <link rel="stylesheet" href="static/lead-modal.css">
 <link rel="stylesheet" href="static/floatnav.css">
 {% endif %}
-<link rel="stylesheet" href="static/cursor.css">
+{# 속도 개선 지시서(2026-11-23) §2-② — 터치 기기(pointer:coarse)에서는 커스텀 커서
+   CSS·JS를 아예 안 받는다. src/href를 리터럴로 안 쓰고 JS로 조건부 삽입해야 네트워크
+   요청 자체가 안 생긴다(media 속성만으로는 link도 어차피 받아간다). #}
+<script>
+(function () {
+  if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
+  var l = document.createElement('link');
+  l.rel = 'stylesheet';
+  l.href = 'static/cursor.css?v={{ asset_hash("static/cursor.css") }}';
+  document.head.appendChild(l);
+})();
+</script>
 {# A30-1(마케팅 P0 2026-11-10) — site.org의 빈 값(logo·sameAs 등)은 compact 필터가 JSON-LD에서 뺀다. #}
 {# GEO 2차 지시서(2026-11-18) §1 — "유선 도매"가 유선 이어폰·일반 도매몰로 오인되지 않게
    description·knowsAbout로 업종을 명시. @id는 §2 WebSite 스키마의 publisher가 참조한다. #}
@@ -131,7 +155,15 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 {% include "partials/site_header.html" %}
 {% endblock %}
 <script src="static/megamenu.js" defer></script>
-<script src="static/cursor.js" defer></script>
+<script>
+(function () {
+  if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) return;
+  var s = document.createElement('script');
+  s.src = 'static/cursor.js?v={{ asset_hash("static/cursor.js") }}';
+  s.defer = true;
+  document.head.appendChild(s);
+})();
+</script>
 
 <main>
 {% block content %}{% endblock %}

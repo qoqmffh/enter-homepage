@@ -34,11 +34,22 @@
   function getState(host) {
     var state = hostStates.get(host);
     if (!state) {
-      state = { layer: host.querySelector('.hp-trail'), cells: new Map(), order: [], lastCell: null };
+      state = { layer: host.querySelector('.hp-trail'), cells: new Map(), order: [], lastCell: null, rect: null };
       hostStates.set(host, state);
     }
     return state;
   }
+
+  /* 성능(지시서 2026-11-23 §2-②-1) — getBoundingClientRect는 리사이즈 때만 다시 잰다.
+     호스트가 바뀔 때(= 이 호스트에 "새로 들어옴")도 다시 재야 한다(레이아웃이 그 사이
+     바뀌었을 수 있음 - 스크롤 자체는 rect를 바꾸지 않지만 안전하게 들어올 때 한 번 더 잰다). */
+  function getRect(host, state, fresh) {
+    if (fresh || !state.rect) state.rect = host.getBoundingClientRect();
+    return state.rect;
+  }
+  addEventListener('resize', function () {
+    hostStates = new WeakMap(); // 전부 무효화 — 다음 접근 때 다시 잰다
+  });
 
   function killCell(state, key) {
     var entry = state.cells.get(key);
@@ -52,12 +63,15 @@
     var el = entry.el;
     el.style.animation = 'none';
     el.style.transform = 'scale(1)';
-    void el.offsetWidth; // 강제 리플로우 — 위 상태를 브라우저가 확정한 뒤에 트랜지션을 건다
-    el.style.transition = 'transform ' + (EXIT_DUR / 1000) + 's ease-in';
-    el.style.transform = 'scale(0)';
-    setTimeout(function () {
-      if (el.parentNode) el.parentNode.removeChild(el);
-    }, EXIT_DUR + 30);
+    // 성능(지시서 2026-11-23 §2-②-1) — 강제 리플로우(offsetWidth) 대신 다음 프레임으로
+    // 미룬다. scale(1)이 한 프레임 그려진 뒤에 전환이 걸리므로 같은 효과를 낸다.
+    requestAnimationFrame(function () {
+      el.style.transition = 'transform ' + (EXIT_DUR / 1000) + 's ease-in';
+      el.style.transform = 'scale(0)';
+      setTimeout(function () {
+        if (el.parentNode) el.parentNode.removeChild(el);
+      }, EXIT_DUR + 30);
+    });
   }
 
   function lightCell(host, state, color, ix, iy, maxIx, maxIy) {
@@ -127,13 +141,14 @@
 
     var color = host.getAttribute('data-trail') === 'gray' ? COLOR_GRAY : COLOR_GREEN;
     var state = getState(host);
-    var rect = host.getBoundingClientRect();
+    var enteringHost = host !== currentHost;
+    var rect = getRect(host, state, enteringHost);
     var maxIx = Math.floor(rect.width / PITCH);
     var maxIy = Math.floor(rect.height / PITCH);
     var cx = Math.floor((e.clientX - rect.left) / PITCH);
     var cy = Math.floor((e.clientY - rect.top) / PITCH);
 
-    if (host !== currentHost) {
+    if (enteringHost) {
       // 다른 호스트(또는 호스트 바깥)에서 막 들어옴 — 직전 위치와 보간하지 않고 이 칸만 켠다
       state.lastCell = null;
       currentHost = host;

@@ -93,7 +93,7 @@
   var lerp = function (a, b, t) { return a + (b - a) * t; };
   var DEG = Math.PI / 180;
 
-  var FONT = function (w, s) { return w + ' ' + s + 'px "Pretendard Variable",Pretendard,"Pretendard Fallback",-apple-system,BlinkMacSystemFont,system-ui,"Apple SD Gothic Neo","Noto Sans KR",sans-serif'; };
+  var FONT = function (w, s) { return w + ' ' + s + 'px "Pretendard Variable",Pretendard,"Pretendard Fallback Win","Pretendard Fallback Mac","Pretendard Fallback Android",-apple-system,BlinkMacSystemFont,system-ui,"Apple SD Gothic Neo","Noto Sans KR",sans-serif'; };
 
   /* ---- 에셋: static/intro/*.webp(속 채움 선화), createImageBitmap으로 미리 디코드 ----
      AS의 h(기준 높이)·gf(바닥 접지 비율)는 기준 구현 값 그대로 — 바꾸지 않는다. */
