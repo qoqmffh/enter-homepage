@@ -37,6 +37,7 @@
     var timer = null;
     var hovering = false;
     var inView = true;
+    var tabVisible = !document.hidden; // 성능(지시서 2026-11-23 §2-②-6) — 탭 숨김이면 정지
 
     function dotIndex() {
       return ((current - 1) % N + N) % N;
@@ -104,7 +105,7 @@
     }, { passive: true });
 
     function play() {
-      if (reduce || hovering || !inView) return;
+      if (reduce || hovering || !inView || !tabVisible) return;
       stop();
       timer = setInterval(next, AUTOPLAY_MS);
     }
@@ -126,6 +127,10 @@
       }, { threshold: .2 });
       io.observe(root);
     }
+    document.addEventListener('visibilitychange', function () {
+      tabVisible = !document.hidden;
+      if (tabVisible) play(); else stop();
+    });
 
     render();
     play();

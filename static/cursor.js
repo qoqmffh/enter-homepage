@@ -63,10 +63,19 @@
   var started = false;
   var currentType = null; /* null | 'home' | 'phone' | 'go' | 'swipe' | 'click' */
 
-  function onMouseMove(e) {
-    var t = 'translate3d(' + e.clientX + 'px,' + e.clientY + 'px,0)';
+  /* 성능(지시서 2026-11-23 §2-②-2) — mousemove는 좌표만 저장하고, 실제 스타일 쓰기는
+     프레임당 한 번(rAF)만 한다. 고폴링레이트 마우스는 rAF보다 훨씬 자주 mousemove를
+     보낼 수 있어서, 매번 바로 쓰면 같은 프레임 안에 여러 번 덮어쓰는 낭비가 생긴다. */
+  var lastX = 0, lastY = 0, moveRaf = null;
+  function applyMove() {
+    moveRaf = null;
+    var t = 'translate3d(' + lastX + 'px,' + lastY + 'px,0)';
     cross.style.transform = t;
     icon.style.transform = t;
+  }
+  function onMouseMove(e) {
+    lastX = e.clientX; lastY = e.clientY;
+    if (moveRaf == null) moveRaf = requestAnimationFrame(applyMove);
   }
 
   /* 클릭 포인터 영역(지시서 2026-11-14) — 정책 받기 팝업·1:1 상담창·플로팅 내비 안의
@@ -91,16 +100,17 @@
     return null;
   }
 
+  /* 키프레임을 처음부터 다시 돌리기 위한 "재시작" — 강제 리플로우(offsetWidth) 대신
+     다음 프레임으로 미뤄서 같은 효과를 낸다(지시서 2026-11-23 §2-②). remove가 먼저
+     그려진 뒤에 add가 다음 프레임에 들어가므로 브라우저가 상태 변화를 인식한다. */
   function restartEntrance() {
     iconShape.classList.remove('is-entering');
     iconAnim.classList.remove('is-looping');
-    void iconShape.offsetWidth; /* 강제 리플로 — 키프레임을 처음부터 다시 돌리기 위함 */
-    iconShape.classList.add('is-entering');
+    requestAnimationFrame(function () { iconShape.classList.add('is-entering'); });
   }
   function restartCrossReturn() {
     crossShape.classList.remove('is-returning');
-    void crossShape.offsetWidth;
-    crossShape.classList.add('is-returning');
+    requestAnimationFrame(function () { crossShape.classList.add('is-returning'); });
   }
   /* 등장(cursorIconIn)이 끝난 뒤에만 반복을 시작한다(지시서: "등장이 끝난 뒤 시작"). */
   iconShape.addEventListener('animationend', function (e) {
