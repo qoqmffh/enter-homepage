@@ -2,7 +2,7 @@
 {% import "partials/breadcrumb.html" as bc_mod %}
 {% import "partials/confirm_box.html" as confirm_mod %}
 {% set author = (site.authors | selectattr('id', 'equalto', page.author) | first) if page.author else none %}
-{% set crumb_items = [{'label': '홈', 'href': 'index.html'}, {'label': '창업자 가이드', 'href': 'startup.html'}, {'label': page.h1, 'href': slug ~ '.html'}] %}
+{% set crumb_items = [{'label': '홈', 'href': page_href('index')}, {'label': '창업자 가이드', 'href': page_href('startup')}, {'label': page.h1, 'href': page_href(slug)}] %}
 {% block extra_head %}
 <link rel="stylesheet" href="static/article.css">
 {# 디자인 완성 지시서(2026-11-19) Phase 4 — blog_post.html과 본문 스타일(타이포·표·박스·
@@ -16,7 +16,7 @@
   'description': page.meta_description,
   'datePublished': page.date_published,
   'dateModified': date_modified,
-  'mainEntityOfPage': {'@type': 'WebPage', '@id': site.base_url ~ '/' ~ slug ~ '.html'},
+  'mainEntityOfPage': {'@type': 'WebPage', '@id': page_url(slug)},
   'publisher': {'@type': 'Organization', 'name': site.site_name},
   'author': ({'@type': 'Person', 'name': author.name, 'jobTitle': author.title, 'worksFor': {'@type': 'Organization', 'name': site.site_name}} if author else {'@type': 'Organization', 'name': site.site_name})
 } %}
@@ -137,7 +137,7 @@
     {% if page.summary %}<p class="tagline">{{ page.summary }}</p>{% endif %}
 
     {% if page.next_slug %}
-    <p style="margin-top:20px"><a class="more-link" href="{{ page.next_slug }}.html">다음: {{ page.next_label }} →</a></p>
+    <p style="margin-top:20px"><a class="more-link" href="{{ page_href(page.next_slug) }}">다음: {{ page.next_label }} →</a></p>
     {% endif %}
 
     {# 디자인 정리 2차 지시서(2026-11-18) §3·§4 — 관련 글 3장 + 확인 기준을 같이 묶는다. #}
@@ -148,7 +148,7 @@
     {% endif %}
 
     {% if page.cross_link %}
-    <p class="lead" style="margin-top:14px">{{ page.cross_link.prefix }} → 「<a class="more-link" href="{{ page.cross_link.slug }}.html">{{ page.cross_link.text }}</a>」</p>
+    <p class="lead" style="margin-top:14px">{{ page.cross_link.prefix }} → 「<a class="more-link" href="{{ page_href(page.cross_link.slug) }}">{{ page.cross_link.text }}</a>」</p>
     {% endif %}
   </div>
 </section>
@@ -160,7 +160,7 @@
       <span class="post-logo-mark"><img src="static/brand/favicon-dark.svg" width="20" height="20" alt="" aria-hidden="true"></span>
       <span>
         <span class="post-author-name">ENTER 영업지원팀</span>
-        <p class="post-author-bio">{{ author.title }}{% if author.career %} · {{ author.career }}{% endif %}. <a href="editorial.html">편집 원칙 →</a></p>
+        <p class="post-author-bio">{{ author.title }}{% if author.career %} · {{ author.career }}{% endif %}. <a href="{{ page_href('editorial') }}">편집 원칙 →</a></p>
       </span>
     </div>
   </div>

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% import "partials/breadcrumb.html" as bc_mod %}
-{% set crumb_items = [{'label': '홈', 'href': 'index.html'}, {'label': '개인정보처리방침', 'href': 'privacy.html'}] %}
+{% set crumb_items = [{'label': '홈', 'href': page_href('index')}, {'label': '개인정보처리방침', 'href': page_href('privacy')}] %}
 
 {% block extra_head %}
 <script type="application/ld+json">{{ crumb_items | breadcrumb_ld(site.base_url) | tojson(indent=2) }}</script>

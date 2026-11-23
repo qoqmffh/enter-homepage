@@ -10,7 +10,7 @@
      #hpNavToggle:checked ~ .hp-nav-mobile 형제 선택자가 동작한다. #}
   <input type="checkbox" id="hpNavToggle" class="hp-nav-toggle-input">
   <div class="hp-header-inner">
-    <a class="hp-brand" href="index.html" aria-label="ENTER 유선전문총판 홈">
+    <a class="hp-brand" href="{{ page_href('index') }}" aria-label="ENTER 유선전문총판 홈">
       {# 수정 2차(2026-11-13) §2 — "유선전문총판"을 별도 HTML이 아니라 로고 SVG 안
          <text>로 넣는다. ENTER 글자 영역은 translate(32 18) 기준 x=0~495(path 경계
          재계산 확인됨) → viewBox 좌표 x=32~527. textLength=495로 E~R 폭에 양끝 정렬한다. #}
@@ -37,7 +37,7 @@
       <span class="hp-nav-indicator" id="hpNavIndicator" aria-hidden="true"></span>
     </nav>
     <div class="hp-header-right">
-      {% if slug == 'why' %}<a href="index.html?intro=1" class="hp-replay-link">{{ site.ad_replay_label }}</a>{% endif %}
+      {% if slug == 'why' %}<a href="{{ page_href('index') }}?intro=1" class="hp-replay-link">{{ site.ad_replay_label }}</a>{% endif %}
       <a class="hp-header-tel" href="tel:{{ site.phone }}" aria-label="전화 문의 {{ site.phone }}">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
         {{ site.phone }}
@@ -64,7 +64,7 @@
           </div>
           <div class="hp-mega-links">
             {% for it in g['items'] %}
-            <a href="{{ it.slug }}.html" class="hp-mega-link{% if it.slug == slug %} is-current{% endif %}" data-slug="{{ it.slug }}">
+            <a href="{{ page_href(it.slug) }}" class="hp-mega-link{% if it.slug == slug %} is-current{% endif %}" data-slug="{{ it.slug }}">
               <span class="hp-mega-link-title">{{ it.label }}</span>
               <span class="hp-mega-link-desc">{{ it.desc }}</span>
             </a>
@@ -99,11 +99,11 @@
     <div class="hp-nav-mobile-group">
       <p class="hp-nav-mobile-group-title">{{ g.num }} {{ g.label }}</p>
       {% for it in g['items'] %}
-      <a href="{{ it.slug }}.html"{% if it.slug == slug %} class="active"{% endif %}>{{ it.label }}</a>
+      <a href="{{ page_href(it.slug) }}"{% if it.slug == slug %} class="active"{% endif %}>{{ it.label }}</a>
       {% endfor %}
     </div>
     {% endfor %}
-    {% if slug == 'why' %}<a href="index.html?intro=1" class="hp-nav-mobile-sub">{{ site.ad_replay_label }}</a>{% endif %}
+    {% if slug == 'why' %}<a href="{{ page_href('index') }}?intro=1" class="hp-nav-mobile-sub">{{ site.ad_replay_label }}</a>{% endif %}
     <div class="hp-nav-mobile-cta">
       <a class="hp-pill hp-pill--primary" href="#lead" data-lead-trigger>{{ site.header_menu_cta.button }}</a>
       <a class="hp-nav-mobile-tel" href="tel:{{ site.phone }}">전화 {{ site.phone }}</a>

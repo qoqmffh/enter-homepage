@@ -15,10 +15,14 @@ KEY = "172cf13cf2d7196f2e25c220df0f5410"  # build.py의 INDEXNOW_KEY와 동일
 
 
 def main():
+    # URL 통일 지시서(2026-11-23) — build.py의 page_url()과 같은 규칙: index는 "/",
+    # 나머지는 "/slug"(.html 없음). dist의 파일명 자체는 그대로(xxx.html)지만, IndexNow에
+    # 알리는 주소는 사이트가 스스로를 부르는 새 대표 주소와 맞춘다.
     urls = []
     for path in glob.glob(os.path.join(DIST_DIR, "*.html")):
-        name = os.path.basename(path)
-        urls.append(f"https://{HOST}/{name}")
+        slug = os.path.splitext(os.path.basename(path))[0]
+        href = "/" if slug == "index" else f"/{slug}"
+        urls.append(f"https://{HOST}{href}")
     urls.sort()
 
     payload = {

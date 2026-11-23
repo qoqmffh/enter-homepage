@@ -5,7 +5,7 @@
 {% import "partials/confirm_box.html" as confirm_mod %}
 {# 마케팅 마무리 지시서(2026-11-12) D — 서브페이지는 2단: 홈 › 페이지명.
    block 안에서 set하면 다른 block에서 안 보이므로 템플릿 최상위에서 설정한다. #}
-{% set crumb_items = [{'label': '홈', 'href': 'index.html'}, {'label': page.eyebrow, 'href': slug ~ '.html'}] %}
+{% set crumb_items = [{'label': '홈', 'href': page_href('index')}, {'label': page.eyebrow, 'href': page_href(slug)}] %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="static/site.css">
@@ -18,7 +18,7 @@
   '@type': 'WebPage',
   'name': page.title,
   'description': page.meta_description,
-  'url': site.base_url ~ '/' ~ slug ~ '.html',
+  'url': page_url(slug),
   'dateModified': date_modified
 } %}
 <script type="application/ld+json">{{ webpage_ld | compact | tojson(indent=2) }}</script>
@@ -202,13 +202,13 @@
   {% endif %}
   {% if s.detail.more_link %}
   <div class="sp-detail-foot">
-    <a href="{{ s.detail.more_link_href }}">{{ s.detail.more_link }}</a>
+    <a href="{{ page_href(s.detail.more_link_href) }}">{{ s.detail.more_link }}</a>
   </div>
   {% endif %}
   {% if s.detail.extra_links %}
   {% for l in s.detail.extra_links %}
   <div class="sp-detail-foot">
-    <a href="{{ l.href }}">{{ l.text }}</a>
+    <a href="{{ page_href(l.href) }}">{{ l.text }}</a>
   </div>
   {% endfor %}
   {% endif %}

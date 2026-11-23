@@ -162,7 +162,7 @@
     var payload = {
       shop_name: shopInput.value.trim(),
       phone: phoneInput.value.replace(/[^0-9]/g, ''),
-      page: (location.pathname.split('/').pop() || 'index.html'),
+      page: (location.pathname.split('/').pop() || 'index'),
       submitted_at: new Date().toISOString(),
       consent: true
     };

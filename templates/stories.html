@@ -4,7 +4,7 @@
 {% import "partials/breadcrumb.html" as bc_mod %}
 {% import "partials/confirm_box.html" as confirm_mod %}
 {% import "partials/voices_carousel.html" as voices_mod %}
-{% set crumb_items = [{'label': '홈', 'href': 'index.html'}, {'label': page.eyebrow, 'href': slug ~ '.html'}] %}
+{% set crumb_items = [{'label': '홈', 'href': page_href('index')}, {'label': page.eyebrow, 'href': page_href(slug)}] %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="static/site.css">
@@ -16,7 +16,7 @@
   '@type': 'WebPage',
   'name': page.title,
   'description': page.meta_description,
-  'url': site.base_url ~ '/' ~ slug ~ '.html',
+  'url': page_url(slug),
   'dateModified': date_modified
 } %}
 <script type="application/ld+json">{{ webpage_ld | compact | tojson(indent=2) }}</script>

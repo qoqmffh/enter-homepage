@@ -10,13 +10,13 @@
         {% for col in site.footer.columns %}
         <div class="hp-footer-col">
           <span class="hp-footer-heading">{{ col.heading }}</span>
-          {% for link in col.links %}<a href="{{ link.slug }}.html">{{ link.label }}</a>{% endfor %}
+          {% for link in col.links %}<a href="{{ page_href(link.slug) }}">{{ link.label }}</a>{% endfor %}
         </div>
         {% endfor %}
       </div>
     </div>
     <div class="hp-footer-bottom">
-      <span>{{ legal_text }}{% if site.domain_display %} · {{ site.domain_display }}{% endif %} · <a href="privacy.html">개인정보처리방침</a> · <a href="editorial.html">편집 원칙</a></span>
+      <span>{{ legal_text }}{% if site.domain_display %} · {{ site.domain_display }}{% endif %} · <a href="{{ page_href('privacy') }}">개인정보처리방침</a> · <a href="{{ page_href('editorial') }}">편집 원칙</a></span>
       <span>© 2026 ENTER. All rights reserved.</span>
     </div>
   </div>

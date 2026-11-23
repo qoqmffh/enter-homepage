@@ -41,7 +41,7 @@
   '@type': 'WebPage',
   'name': page.title,
   'description': page.meta_description,
-  'url': site.base_url ~ '/why.html',
+  'url': page_url('why'),
   'dateModified': date_modified
 } %}
 <script type="application/ld+json">{{ webpage_ld | compact | tojson(indent=2) }}</script>
@@ -347,7 +347,7 @@
         {% for q in p.promise.quotes %}
         <div class="hp-quote-item{% if loop.first %} is-active{% endif %}">
           <blockquote class="hp-quote">{% for line in q.lines %}<span>{% if loop.first %}“{% endif %}{{ line }}{% if loop.last %}”{% endif %}</span>{% endfor %}</blockquote>
-          {{ m.pill(q.cta, (q.cta_slug ~ '.html') if q.cta_slug != '#' else '#', 'inverted') }}
+          {{ m.pill(q.cta, page_href(q.cta_slug) if q.cta_slug != '#' else '#', 'inverted') }}
         </div>
         {% endfor %}
       </div>
@@ -376,7 +376,7 @@
    stories 전체는 build.py가 모든 템플릿에 넘기는 stories 변수로 받는다. #}
 <section class="hp-section" id="voices">
   <div class="hp-wrap">
-    {{ voices_mod.render(stories.quotes, more_link="stories.html") }}
+    {{ voices_mod.render(stories.quotes, more_link=page_href('stories')) }}
   </div>
 </section>
 
@@ -432,7 +432,7 @@
       {% for n in p.carriers.names %}<div>{{ n }}</div>{% endfor %}
     </div>
     <p class="hp-body-lg hp-carriers-body">{{ p.carriers.body }}</p>
-    {{ m.pill(p.carriers.cta, p.carriers.cta_slug ~ '.html', 'inverted') }}
+    {{ m.pill(p.carriers.cta, page_href(p.carriers.cta_slug), 'inverted') }}
   </div>
 </section>
 

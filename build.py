@@ -151,7 +151,8 @@ def strip_md(text):
 
 def breadcrumb_ld(items, base_url):
     """브레드크럼 items([{label,href}, ...])를 BreadcrumbList JSON-LD로 바꾼다
-    (마케팅 마무리 지시서 2026-11-12 D)."""
+    (마케팅 마무리 지시서 2026-11-12 D). href는 URL 통일 지시서(2026-11-23) 이후
+    page_href()가 만든 절대 경로("/" 또는 "/slug")라 base_url 뒤에 그대로 붙인다."""
     return {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -160,7 +161,7 @@ def breadcrumb_ld(items, base_url):
                 "@type": "ListItem",
                 "position": i + 1,
                 "name": it["label"],
-                "item": base_url + "/" + it["href"],
+                "item": base_url + it["href"],
             }
             for i, it in enumerate(items)
         ],
@@ -233,14 +234,21 @@ def find_orphan_pages(dist_dir, all_slugs):
     """어느 dist 페이지에서도 안 걸리는(= 내부 링크가 없는) 페이지를 찾는다(A34-2).
     sitemap.xml·robots.txt는 페이지가 아니라서 링크 대상에서 뺀다. 루트에서 시작하는
     링크만 셀 수 있지만, 여기서는 "전체 dist 안 어디서도 href로 한 번도 안 걸린 slug"를
-    보수적으로 찾는다(한 군데서라도 걸리면 고아 아님)."""
+    보수적으로 찾는다(한 군데서라도 걸리면 고아 아님).
+    URL 통일 지시서(2026-11-23) §2-5 — 새 형식(href="/slug", href="/")과 옛 형식
+    (href="slug.html", 혹시 남아 있으면 잡아내려고 방어적으로 같이 본다) 둘 다 검사한다."""
     linked = set()
-    href_re = re.compile(r'href="([a-zA-Z0-9_-]+)\.html(?:#[^"]*)?"')
+    href_re = re.compile(r'href="(?:/([a-zA-Z0-9_-]+)|(/)|([a-zA-Z0-9_-]+)\.html)(?:#[^"]*)?"')
     for path in glob.glob(os.path.join(dist_dir, "*.html")):
         with open(path, encoding="utf-8") as f:
             html = f.read()
         for m in href_re.finditer(html):
-            linked.add(m.group(1))
+            if m.group(1):
+                linked.add(m.group(1))
+            elif m.group(2):
+                linked.add("index")
+            elif m.group(3):
+                linked.add(m.group(3))
     return sorted(s for s in all_slugs if s not in linked)
 
 
@@ -384,7 +392,7 @@ def auto_link_glossary_terms(html_str, terms):
         return html_str, []
     out = html_str
     for start, end, slug, alias in sorted(parser.insertions, key=lambda x: -x[0]):
-        link = f'<a href="glossary.html#{slug}" class="glossary-term-link">{alias}</a>'
+        link = f'<a href="/glossary#{slug}" class="glossary-term-link">{alias}</a>'
         out = out[:start] + link + out[end:]
     return out, sorted({ins[2] for ins in parser.insertions})
 
@@ -522,6 +530,21 @@ def compute_related_cards(pages, page_categories):
 
 def main():
     site = load_json("site.json")
+    base_url = site["base_url"]
+
+    # URL 통일 지시서(2026-11-23) — 구글이 이미 .html 없는 주소를 색인해서, 사이트가
+    # 스스로를 부르는 주소(canonical·사이트맵·내부 링크)를 전부 그쪽으로 맞춘다.
+    # dist의 파일명(about.html 등)은 그대로 둔다 — GitHub Pages가 /about 요청에
+    # about.html을 내준다. page_url은 절대주소(canonical·og:url·sitemap·RSS·llms*용),
+    # page_href는 사이트 안 상대 링크(href="...")용이다.
+    def page_url(slug):
+        return f"{base_url}/" if slug == "index" else f"{base_url}/{slug}"
+
+    def page_href(slug):
+        return "/" if slug == "index" else f"/{slug}"
+
+    today = datetime.date.today().isoformat()
+
     pages = load_json("pages.json")
 
     # 사이트맵 3분리(A01-3)용 — 어느 content 파일에서 왔는지(= 어느 사이트맵에 들어갈지)
@@ -581,6 +604,8 @@ def main():
     env.filters["md_inline"] = md_inline
     env.filters["faq_main_entity"] = faq_main_entity
     env.filters["breadcrumb_ld"] = breadcrumb_ld
+    env.globals["page_url"] = page_url
+    env.globals["page_href"] = page_href
     # A30-1/A30-2(마케팅 P0 2026-11-10) — tojson 기본값(ensure_ascii=True)이면
     # JSON-LD 속 한글이 \uXXXX로 이스케이프된다. 사람이 읽을 수 있게 끈다.
     env.policies["json.dumps_kwargs"] = {"ensure_ascii": False, "indent": 2}
@@ -637,9 +662,10 @@ def main():
         lines = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
         for slug, lastmod, _cat in entries:
             lines.append("  <url>")
-            lines.append(f"    <loc>{site['base_url']}/{slug}.html</loc>")
-            if lastmod:
-                lines.append(f"    <lastmod>{lastmod}</lastmod>")
+            lines.append(f"    <loc>{page_url(slug)}</loc>")
+            # URL 통일 지시서(2026-11-23) §2-3 — lastmod가 없으면 빌드 날짜로 채운다(사이트맵
+            # 전용 보강; llms-full.txt 등 다른 용도의 date_modified_map은 원래 값 그대로 둔다).
+            lines.append(f"    <lastmod>{lastmod or today}</lastmod>")
             lines.append("  </url>")
         lines.append("</urlset>")
         with open(os.path.join(DIST_DIR, filename), "w", encoding="utf-8") as f:
@@ -651,7 +677,6 @@ def main():
         "guide": "sitemap-guide.xml",
         "blog": "sitemap-blog.xml",
     }
-    today = datetime.date.today().isoformat()
     index_lines = ['<?xml version="1.0" encoding="UTF-8"?>', '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for cat, filename in sitemap_files.items():
         cat_entries = [e for e in sitemap_entries if e[2] == cat]
@@ -668,7 +693,7 @@ def main():
     # RSS(A01-6) — 블로그 글만, 네이버 서치어드바이저 제출용
     rss_items = []
     for slug, bp in blog_posts["pages"].items():
-        link = f"{site['base_url']}/{slug}.html"
+        link = page_url(slug)
         pub = bp.get("date_published", "")
         rss_items.append((pub, (
             "    <item>\n"
@@ -685,7 +710,7 @@ def main():
         '<rss version="2.0">\n'
         "  <channel>\n"
         f"    <title>{xml_escape.escape(site['site_name'])} 블로그</title>\n"
-        f"    <link>{xml_escape.escape(site['base_url'])}/blog.html</link>\n"
+        f"    <link>{xml_escape.escape(page_url('blog'))}</link>\n"
         f"    <description>{xml_escape.escape(site.get('site_tagline', ''))}</description>\n"
         + "\n".join(item for _pub, item in rss_items) + "\n"
         "  </channel>\n"
@@ -732,15 +757,15 @@ def main():
     for group in site["header_menu"]:
         for item in group["items"]:
             s = item["slug"]
-            llms_lines.append(f"- [{item['label']}]({site['base_url']}/{s}.html): {pages[s].get('meta_description', '')}")
+            llms_lines.append(f"- [{item['label']}]({page_url(s)}): {pages[s].get('meta_description', '')}")
 
     llms_lines += ["", "## 창업자 가이드"]
     for s, p in guide["pages"].items():
-        llms_lines.append(f"- [{p.get('h1', '')}]({site['base_url']}/{s}.html): {p.get('meta_description', '')}")
+        llms_lines.append(f"- [{p.get('h1', '')}]({page_url(s)}): {p.get('meta_description', '')}")
 
     llms_lines += ["", "## 블로그"]
     for s, p in sorted(blog_posts["pages"].items(), key=lambda kv: kv[1].get("date_published", ""), reverse=True):
-        llms_lines.append(f"- [{p.get('h1', '')}]({site['base_url']}/{s}.html): {p.get('meta_description', '')} ({p.get('date_published', '')})")
+        llms_lines.append(f"- [{p.get('h1', '')}]({page_url(s)}): {p.get('meta_description', '')} ({p.get('date_published', '')})")
 
     llms_lines += [
         "",
@@ -748,7 +773,7 @@ def main():
         f"- 운영: {site['legal_footer']}",
         "- 정산: 월~일 개통분을 다음 주 수요일 정산서, 금요일 입금. 최근 90회 정산 지연 0회(2026.10.08 기준)",
         f"- 문의: 전화 {site['phone']}",
-        f"- [편집 원칙]({site['base_url']}/editorial.html): 콘텐츠 확인 기준과 정정 절차",
+        f"- [편집 원칙]({page_url('editorial')}): 콘텐츠 확인 기준과 정정 절차",
         "",
         "## 기준일",
         f"- 이 파일 생성일: {today}",
@@ -761,7 +786,7 @@ def main():
     llms_full_lines = [llms_txt, "---", ""]
     for s, p in pages.items():
         llms_full_lines.append(f"## {p.get('title', s)}")
-        llms_full_lines.append(f"URL: {site['base_url']}/{s}.html")
+        llms_full_lines.append(f"URL: {page_url(s)}")
         if date_modified_map.get(s):
             llms_full_lines.append(f"기준일: {date_modified_map[s]}")
         llms_full_lines.append("")

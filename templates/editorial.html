@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% import "partials/breadcrumb.html" as bc_mod %}
-{% set crumb_items = [{'label': '홈', 'href': 'index.html'}, {'label': '편집 원칙', 'href': 'editorial.html'}] %}
+{% set crumb_items = [{'label': '홈', 'href': page_href('index')}, {'label': '편집 원칙', 'href': page_href('editorial')}] %}
 
 {% block extra_head %}
 <script type="application/ld+json">{{ crumb_items | breadcrumb_ld(site.base_url) | tojson(indent=2) }}</script>
@@ -9,7 +9,7 @@
   '@type': 'WebPage',
   'name': page.title,
   'description': page.meta_description,
-  'url': site.base_url ~ '/editorial.html',
+  'url': page_url('editorial'),
   'dateModified': date_modified
 } %}
 <script type="application/ld+json">{{ webpage_ld | compact | tojson(indent=2) }}</script>

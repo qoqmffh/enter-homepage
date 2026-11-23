@@ -6,7 +6,7 @@
   <h3>함께 보면 좋은 글</h3>
   <div class="related-cards">
     {% for r in page.related %}
-    <a class="related-card" href="{{ r.slug }}.html">
+    <a class="related-card" href="{{ page_href(r.slug) }}">
       <span class="related-card-cat">{{ r.category_label }}</span>
       <span class="related-card-title">{{ r.title }}</span>
       {% if r.summary %}<span class="related-card-summary">{{ r.summary }}</span>{% endif %}

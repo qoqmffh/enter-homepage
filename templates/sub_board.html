@@ -5,7 +5,7 @@
 {% import "partials/confirm_box.html" as confirm_mod %}
 {# 마케팅 마무리 지시서(2026-11-12) D — block 안에서 set하면 다른 block에서 안 보이므로
    템플릿 최상위에서 설정한다. #}
-{% set crumb_items = [{'label': '홈', 'href': 'index.html'}, {'label': page.eyebrow, 'href': slug ~ '.html'}] %}
+{% set crumb_items = [{'label': '홈', 'href': page_href('index')}, {'label': page.eyebrow, 'href': page_href(slug)}] %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="static/site.css">
@@ -29,7 +29,7 @@
   '@type': 'WebPage',
   'name': page.title,
   'description': page.meta_description,
-  'url': site.base_url ~ '/' ~ slug ~ '.html',
+  'url': page_url(slug),
   'dateModified': date_modified
 } %}
 <script type="application/ld+json">{{ webpage_ld | compact | tojson(indent=2) }}</script>
@@ -55,7 +55,7 @@
     {% for slug in s.featured %}
     {% set post = blog_posts[slug] %}
     {% set meta = (page.posts | selectattr('slug', 'equalto', slug) | first) %}
-    <a class="sp-board-feature-card" href="{{ slug }}.html" data-reveal>
+    <a class="sp-board-feature-card" href="{{ page_href(slug) }}" data-reveal>
       <span class="sp-board-tag">[{{ '업계 질문' if meta.tag == '업계' else meta.tag }}]</span>
       <span class="sp-board-feature-title">{{ post.h1 }}</span>
       <span class="sp-board-feature-foot"><span>{{ post.date_published }}</span><span>읽기 →</span></span>
@@ -67,7 +67,7 @@
     {% for p in page.posts %}
     {% set post = blog_posts.get(p.slug) if p.slug else None %}
     <a class="sp-board-row{% if not p.slug %} sp-board-row--pending{% endif %}" data-cat="{{ p.tag }}" data-title="{{ p.title }}" data-reveal
-       {% if p.slug %}href="{{ p.slug }}.html"{% else %}href="javascript:void(0)" tabindex="-1" aria-disabled="true"{% endif %}>
+       {% if p.slug %}href="{{ page_href(p.slug) }}"{% else %}href="javascript:void(0)" tabindex="-1" aria-disabled="true"{% endif %}>
       <span class="sp-board-thumb"></span>
       <span class="sp-board-row-body">
         <span class="sp-board-tag">[{{ '업계 질문' if p.tag == '업계' else p.tag }}]</span>

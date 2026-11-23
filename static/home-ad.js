@@ -43,7 +43,7 @@
 
   function bailOut() {
     cancelHardTimeout();
-    location.replace('why.html');
+    location.replace('/why');
   }
 
   if (reduce || (!forced && recentlySeen())) {
@@ -631,7 +631,7 @@
 
     setTimeout(function () {
       stopCanvas();
-      location.href = 'why.html#from-ad';
+      location.href = '/why#from-ad';
     }, 900);
   }
 

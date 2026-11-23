@@ -5,5 +5,5 @@
 {# 디자인 정리 지시서(2026-11-18) §8 — 회색 상자 대신 위쪽 1px 선만 있는 각주 형태로. #}
 <p class="confirm-box-text">이 페이지의 숫자와 절차는 ENTER 영업지원팀이 사내 정산 기록·접수 기록과 통신사 공식 안내를 대조해 확인합니다.{% if sources %} 출처:
   {%- for s in sources %} <a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.label }}</a>{% if not loop.last %},{% endif %}{% endfor -%}
-.{% endif %} <a class="confirm-box-link" href="editorial.html">편집 원칙 →</a></p>
+.{% endif %} <a class="confirm-box-link" href="{{ page_href('editorial') }}">편집 원칙 →</a></p>
 {% endmacro %}

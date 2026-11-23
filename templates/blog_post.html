@@ -2,7 +2,7 @@
 {% import "partials/breadcrumb.html" as bc_mod %}
 {% import "partials/confirm_box.html" as confirm_mod %}
 {% set author = (site.authors | selectattr('id', 'equalto', page.author) | first) if page.author else none %}
-{% set crumb_items = [{'label': '홈', 'href': 'index.html'}, {'label': '블로그', 'href': 'blog.html'}, {'label': page.h1, 'href': slug ~ '.html'}] %}
+{% set crumb_items = [{'label': '홈', 'href': page_href('index')}, {'label': '블로그', 'href': page_href('blog')}, {'label': page.h1, 'href': page_href(slug)}] %}
 {% block extra_head %}
 <link rel="stylesheet" href="static/sub.css">
 <link rel="stylesheet" href="static/article.css">
@@ -17,7 +17,7 @@
   'description': page.meta_description,
   'datePublished': page.date_published,
   'dateModified': date_modified,
-  'mainEntityOfPage': {'@type': 'WebPage', '@id': site.base_url ~ '/' ~ slug ~ '.html'},
+  'mainEntityOfPage': {'@type': 'WebPage', '@id': page_url(slug)},
   'publisher': {'@type': 'Organization', 'name': site.site_name},
   'author': ({'@type': 'Person', 'name': author.name, 'jobTitle': author.title, 'worksFor': {'@type': 'Organization', 'name': site.site_name}} if author else {'@type': 'Organization', 'name': site.site_name})
 } %}
@@ -136,7 +136,7 @@
     {# 태그 — blog_posts.json에 tags가 있으면 그대로, 제목·본문에 실제로 나오는 핵심어만 썼다. #}
     {% if page.tags %}
     <div class="post-tags">
-      {% for t in page.tags %}<a class="post-tag" href="blog.html">#{{ t }}</a>{% endfor %}
+      {% for t in page.tags %}<a class="post-tag" href="{{ page_href('blog') }}">#{{ t }}</a>{% endfor %}
     </div>
     {% endif %}
 
@@ -145,7 +145,7 @@
       <span class="post-logo-mark"><img src="static/brand/favicon-dark.svg" width="20" height="20" alt="" aria-hidden="true"></span>
       <span>
         <span class="post-author-name">ENTER 영업지원팀</span>
-        <p class="post-author-bio">{{ author.title }}{% if author.career %} · {{ author.career }}{% endif %}. <a href="editorial.html">편집 원칙 →</a></p>
+        <p class="post-author-bio">{{ author.title }}{% if author.career %} · {{ author.career }}{% endif %}. <a href="{{ page_href('editorial') }}">편집 원칙 →</a></p>
       </span>
     </div>
     {% endif %}
@@ -157,8 +157,8 @@
     {% set cur_idx = all_slugs.index(slug) if slug in all_slugs else -1 %}
     {% if cur_idx > -1 %}
     <div class="post-nav">
-      {% if cur_idx + 1 < all_sorted | length %}{% set prev = all_sorted[cur_idx + 1] %}<a class="post-nav-link" href="{{ prev[0] }}.html"><span class="post-nav-dir">← 이전 글</span><span class="post-nav-title">{{ prev[1].h1 }}</span></a>{% endif %}
-      {% if cur_idx > 0 %}{% set nxt = all_sorted[cur_idx - 1] %}<a class="post-nav-link post-nav-link--next" href="{{ nxt[0] }}.html"><span class="post-nav-dir">다음 글 →</span><span class="post-nav-title">{{ nxt[1].h1 }}</span></a>{% endif %}
+      {% if cur_idx + 1 < all_sorted | length %}{% set prev = all_sorted[cur_idx + 1] %}<a class="post-nav-link" href="{{ page_href(prev[0]) }}"><span class="post-nav-dir">← 이전 글</span><span class="post-nav-title">{{ prev[1].h1 }}</span></a>{% endif %}
+      {% if cur_idx > 0 %}{% set nxt = all_sorted[cur_idx - 1] %}<a class="post-nav-link post-nav-link--next" href="{{ page_href(nxt[0]) }}"><span class="post-nav-dir">다음 글 →</span><span class="post-nav-title">{{ nxt[1].h1 }}</span></a>{% endif %}
     </div>
     {% endif %}
 
@@ -170,7 +170,7 @@
       <p class="post-more-title">블로그의 다른 글</p>
       <div class="post-more-list">
         {% for s2, bp in recent_posts %}
-        <a class="post-more-row{% if s2 == slug %} is-current{% endif %}" href="{{ s2 }}.html">
+        <a class="post-more-row{% if s2 == slug %} is-current{% endif %}" href="{{ page_href(s2) }}">
           <span class="post-more-row-title">{{ bp.h1 }}</span>
           <span class="post-more-row-date">{{ bp.date_published | date_fmt_dot }}</span>
         </a>
