@@ -9,6 +9,7 @@
   try {
     var p = new URLSearchParams(location.search);
     var hasUtm = ['utm_source', 'utm_medium', 'utm_campaign'].some(function (k) { return p.has(k); });
+    var isFirstPageOfSession = !sessionStorage.getItem('enter_visit_sent');
     if (hasUtm || !sessionStorage.getItem('enter_attribution')) {
       sessionStorage.setItem('enter_attribution', JSON.stringify({
         utm_source: p.get('utm_source') || '',
@@ -17,6 +18,25 @@
         referrer: document.referrer || '',
         landing_page: location.pathname
       }));
+    }
+    if (!sessionStorage.getItem('enter_session_id')) {
+      sessionStorage.setItem('enter_session_id', (Date.now().toString(36) + Math.random().toString(36).slice(2)));
+    }
+    if (isFirstPageOfSession) {
+      sessionStorage.setItem('enter_visit_sent', '1');
+      var visitEndpoint = "https://ehao0584.mycafe24.com/api/visit.php";
+      if (visitEndpoint && navigator.sendBeacon) {
+        var payload = JSON.stringify({
+          session_id: sessionStorage.getItem('enter_session_id'),
+          referrer: document.referrer || '',
+          first_page: location.pathname,
+          utm_source: p.get('utm_source') || '',
+          utm_medium: p.get('utm_medium') || '',
+          utm_campaign: p.get('utm_campaign') || ''
+        });
+        
+        navigator.sendBeacon(visitEndpoint, new Blob([payload], { type: 'text/plain' }));
+      }
     }
   } catch (e) { /* 시크릿 모드 등 sessionStorage 차단 시 조용히 무시 */ }
 })();
@@ -149,7 +169,7 @@
   };
 </script>
 
-<script src="static/chrome.e4e7afd0.js" defer></script>
+<script src="static/chrome.fba93941.js" defer></script>
 
 
 <script type="application/ld+json">{
@@ -599,6 +619,13 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   <div class="wrap">
     <h2>수집 항목</h2>
     <p>이름, 상호명, 연락처</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>자동 수집 항목</h2>
+    <p>신청 폼을 쓰지 않아도, 사이트에 처음 들어온 페이지에서 접속 경로·접속 일시·IP(끝자리는 가림)·기기 정보가 자동으로 수집됩니다. 페이지를 옮겨 다니는 중에는 추가로 수집되지 않습니다.</p>
   </div>
 </section>
 

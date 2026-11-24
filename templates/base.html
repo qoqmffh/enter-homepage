@@ -5,12 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 {# 관리자 페이지 지시서(2026-11-24) §4-1 — 접수 폼에 실어 보낼 첫 유입 정보(처음
    들어온 페이지의 utm_*·리퍼러)를 세션 동안 기억한다. 이후 다른 페이지에서 신청해도
-   처음 유입 기준으로 남게. sessionStorage라 탭을 닫으면 사라진다(의도된 동작). #}
+   처음 유입 기준으로 남게. sessionStorage라 탭을 닫으면 사라진다(의도된 동작).
+   접속경로 지시서(2026-11-24) — 같은 자리에서 세션당 1회(처음 들어온 페이지에서만)
+   방문 기록을 카페24 서버로 보낸다. sendBeacon이라 전송 성공 여부와 무관하게
+   페이지 동작에 전혀 영향이 없다(응답을 기다리지도, 실패해도 아무 처리 안 함). #}
 <script>
 (function () {
   try {
     var p = new URLSearchParams(location.search);
     var hasUtm = ['utm_source', 'utm_medium', 'utm_campaign'].some(function (k) { return p.has(k); });
+    var isFirstPageOfSession = !sessionStorage.getItem('enter_visit_sent');
     if (hasUtm || !sessionStorage.getItem('enter_attribution')) {
       sessionStorage.setItem('enter_attribution', JSON.stringify({
         utm_source: p.get('utm_source') || '',
@@ -19,6 +23,29 @@
         referrer: document.referrer || '',
         landing_page: location.pathname
       }));
+    }
+    if (!sessionStorage.getItem('enter_session_id')) {
+      sessionStorage.setItem('enter_session_id', (Date.now().toString(36) + Math.random().toString(36).slice(2)));
+    }
+    if (isFirstPageOfSession) {
+      sessionStorage.setItem('enter_visit_sent', '1');
+      var visitEndpoint = {{ site.visit_endpoint | tojson }};
+      if (visitEndpoint && navigator.sendBeacon) {
+        var payload = JSON.stringify({
+          session_id: sessionStorage.getItem('enter_session_id'),
+          referrer: document.referrer || '',
+          first_page: location.pathname,
+          utm_source: p.get('utm_source') || '',
+          utm_medium: p.get('utm_medium') || '',
+          utm_campaign: p.get('utm_campaign') || ''
+        });
+        {# text/plain이면 "단순 요청"이라 사전 확인(preflight) 자체가 안 생긴다 — 다른
+           도메인(카페24)로 보내는 sendBeacon이 application/json이면 브라우저가 미리
+           물어보는 OPTIONS 요청을 보내는데, 거기 자격 증명(Credentials) 정책이 안 맞아
+           막히는 걸 로컬 테스트 중 발견(2026-11-24). 내용은 그대로 JSON 글자라
+           서버(visit.php)는 Content-Type을 안 보고 그냥 읽어서 문제 없다. #}
+        navigator.sendBeacon(visitEndpoint, new Blob([payload], { type: 'text/plain' }));
+      }
     }
   } catch (e) { /* 시크릿 모드 등 sessionStorage 차단 시 조용히 무시 */ }
 })();

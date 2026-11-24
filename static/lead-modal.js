@@ -175,6 +175,7 @@
       name: nameInput.value.trim(),
       shop_name: shopInput.value.trim(),
       phone: phoneInput.value.replace(/[^0-9]/g, ''),
+      session_id: sessionStorage.getItem('enter_session_id') || '',
       referrer: attribution.referrer || document.referrer || '',
       utm_source: attribution.utm_source || '',
       utm_medium: attribution.utm_medium || '',
