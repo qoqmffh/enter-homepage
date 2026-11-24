@@ -3737,7 +3737,7 @@
   "about": {
     "template": "sub_intro.html",
     "title": "ENTER 회사소개 — 2010년부터 16년, 유선 한 길 | ENTER 유선전문총판",
-    "h1_question": "ENTER 유선전문총판 회사소개 — (유)위드컴퍼니 도매영업팀",
+    "h1_question": "[관리자테스트-실서버] ENTER 유선전문총판 회사소개",
     "h2_proof_question": "언제부터 유선 도매를 했나요?",
     "meta_description": "ENTER는 유선(인터넷·IPTV) 분야에서 (유)위드컴퍼니가 운영하는 유선전문총판입니다. 2010년 LG U+ 대리점으로 시작해 16년, 거래처 3,000곳과 함께합니다. 인증과 수상 실적을 소개합니다.",
     "date_published": "2026-10-19",
