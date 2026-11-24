@@ -1,0 +1,67 @@
+name: 자동 빌드·배포
+
+# 관리자 페이지 지시서(2026-11-24) §4-2 — 관리자(소스관리)에서 content/*.json을
+# GitHub에 커밋하면 이 워크플로가 자동으로 python build.py를 돌려 dist를
+# gh-pages에, 같은 커밋을 master에 반영한다(지금까지의 수동 배포와 같은 결과).
+# 수동 배포 명령(README 참고)은 이 워크플로가 실패했을 때 쓰는 비상용으로 남겨둔다.
+
+on:
+  push:
+    branches: [subpages]
+    paths:
+      - 'content/**'
+      - 'static/**'
+      - 'templates/**'
+      - 'build.py'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Python 의존성 설치
+        run: pip install -r requirements.txt
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: esbuild 등 Node 빌드 도구 설치
+        run: npm install --prefix scripts
+
+      - name: 사이트 빌드
+        run: python build.py
+
+      - name: dist를 gh-pages로 배포
+        run: |
+          set -e
+          cd dist
+          git init -q
+          git checkout -q -b gh-pages-deploy
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "자동 배포: ${{ github.sha }}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" gh-pages-deploy:gh-pages
+
+      - name: master를 subpages와 맞춤
+        run: |
+          git push "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:master
+
+      - name: IndexNow 알림(선택, 실패해도 배포는 이미 끝난 상태)
+        continue-on-error: true
+        run: python scripts/indexnow_notify.py
