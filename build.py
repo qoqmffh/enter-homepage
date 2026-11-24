@@ -151,8 +151,13 @@ BUNDLE_ORPHANS = sorted(_BUNDLED_FILES - _STANDALONE_FILES)
 
 
 def _esbuild_minify(text, loader):
+    # Windows에서 esbuild/bin/esbuild는 실제 네이티브 실행 파일을 골라 실행하는 작은
+    # Node 스크립트라 "node 그 파일"로 돌려야 한다. 리눅스(= GitHub Actions)에서는
+    # 그 자리에 네이티브 실행 파일(ELF)이 직접 들어가 있어서 node로 돌리면 "그 바이너리를
+    # JS로 해석하려다 문법 오류" 가 난다 — 운영체제별로 호출 방식 자체가 다르다.
+    cmd = ["node", ESBUILD_BIN] if os.name == "nt" else [ESBUILD_BIN]
     result = subprocess.run(
-        ["node", ESBUILD_BIN, f"--loader={loader}", "--minify"],
+        [*cmd, f"--loader={loader}", "--minify"],
         input=text.encode("utf-8"), capture_output=True,
     )
     if result.returncode != 0:
