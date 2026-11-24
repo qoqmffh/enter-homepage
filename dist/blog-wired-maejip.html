@@ -4,6 +4,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<script>
+(function () {
+  try {
+    var p = new URLSearchParams(location.search);
+    var hasUtm = ['utm_source', 'utm_medium', 'utm_campaign'].some(function (k) { return p.has(k); });
+    if (hasUtm || !sessionStorage.getItem('enter_attribution')) {
+      sessionStorage.setItem('enter_attribution', JSON.stringify({
+        utm_source: p.get('utm_source') || '',
+        utm_medium: p.get('utm_medium') || '',
+        utm_campaign: p.get('utm_campaign') || '',
+        referrer: document.referrer || '',
+        landing_page: location.pathname
+      }));
+    }
+  } catch (e) { /* 시크릿 모드 등 sessionStorage 차단 시 조용히 무시 */ }
+})();
+</script>
+
 <link rel="preload" href="static/fonts/pretendard/pretendard-subset.d41da887.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 @font-face{
@@ -125,13 +143,13 @@
      문서 전체 파싱이 끝난 뒤에야 실행되므로, 이 인라인 스크립트는 아래 묶음 전/후
      어디 있어도 상관없이 항상 먼저 실행된다. */
   window.ENTER_SITE = {
-    leadEndpoint: "",
+    leadEndpoint: "https://ehao0584.mycafe24.com/api/lead.php",
     leadFormEnabled: false,
     phone: "010-2222-4183"
   };
 </script>
 
-<script src="static/chrome.34d022b6.js" defer></script>
+<script src="static/chrome.e4e7afd0.js" defer></script>
 
 
 <link rel="stylesheet" href="static/blogpost.d7a27b8d.css">
@@ -959,6 +977,12 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
         </div>
 
         <div class="lm-field">
+          <label for="lmName">이름</label>
+          <input type="text" id="lmName" placeholder="예) 홍길동" autocomplete="name" data-lm-input="name">
+          <p class="lm-error" data-lm-error="name" hidden>이름을 입력해주세요</p>
+        </div>
+
+        <div class="lm-field">
           <label for="lmShop">상호명</label>
           <input type="text" id="lmShop" placeholder="예) 엔터모바일 강남점" autocomplete="organization" data-lm-input="shop">
           <p class="lm-error" data-lm-error="shop" hidden>상호명을 2자 이상 입력해주세요</p>
@@ -979,7 +1003,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
             <button type="button" class="lm-consent-more" data-lm-consent-toggle aria-expanded="false">내용 보기</button>
             <a class="lm-consent-more" href="/privacy" target="_blank" rel="noopener">개인정보처리방침</a>
           </div>
-          <div class="lm-consent-detail" data-lm-consent-detail hidden>수집 항목: 상호명, 연락처 · 이용 목적: 정책 안내 및 거래 상담 · 보관 기간: 상담 종료 후 1년</div>
+          <div class="lm-consent-detail" data-lm-consent-detail hidden>수집 항목: 이름, 상호명, 연락처 · 이용 목적: 정책 안내 및 거래 상담 · 보관 장소: 카페24 호스팅 서버(국내) · 보관 기간: 상담 종료 후 1년(거래 시작 건은 거래 종료 후까지)</div>
         </div>
 
         <button type="submit" class="lm-submit" data-lm-submit disabled>정책 받기 신청</button>

@@ -4,6 +4,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<script>
+(function () {
+  try {
+    var p = new URLSearchParams(location.search);
+    var hasUtm = ['utm_source', 'utm_medium', 'utm_campaign'].some(function (k) { return p.has(k); });
+    if (hasUtm || !sessionStorage.getItem('enter_attribution')) {
+      sessionStorage.setItem('enter_attribution', JSON.stringify({
+        utm_source: p.get('utm_source') || '',
+        utm_medium: p.get('utm_medium') || '',
+        utm_campaign: p.get('utm_campaign') || '',
+        referrer: document.referrer || '',
+        landing_page: location.pathname
+      }));
+    }
+  } catch (e) { /* 시크릿 모드 등 sessionStorage 차단 시 조용히 무시 */ }
+})();
+</script>
+
 <link rel="preload" href="static/fonts/pretendard/pretendard-subset.d41da887.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 @font-face{

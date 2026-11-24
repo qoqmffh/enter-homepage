@@ -5,7 +5,7 @@
   "noindex": false,
   "domain_display": "유선도매.kr",
   "phone": "010-2222-4183",
-  "lead_endpoint": "",
+  "lead_endpoint": "https://ehao0584.mycafe24.com/api/lead.php",
   "lead_form_enabled": false,
   "consult_enabled": false,
   "google_verify": "nt_En3bZdbAeOCELge02ilb1QQT6p8wMLYRm82tFxMs",

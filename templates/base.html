@@ -3,6 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{# 관리자 페이지 지시서(2026-11-24) §4-1 — 접수 폼에 실어 보낼 첫 유입 정보(처음
+   들어온 페이지의 utm_*·리퍼러)를 세션 동안 기억한다. 이후 다른 페이지에서 신청해도
+   처음 유입 기준으로 남게. sessionStorage라 탭을 닫으면 사라진다(의도된 동작). #}
+<script>
+(function () {
+  try {
+    var p = new URLSearchParams(location.search);
+    var hasUtm = ['utm_source', 'utm_medium', 'utm_campaign'].some(function (k) { return p.has(k); });
+    if (hasUtm || !sessionStorage.getItem('enter_attribution')) {
+      sessionStorage.setItem('enter_attribution', JSON.stringify({
+        utm_source: p.get('utm_source') || '',
+        utm_medium: p.get('utm_medium') || '',
+        utm_campaign: p.get('utm_campaign') || '',
+        referrer: document.referrer || '',
+        landing_page: location.pathname
+      }));
+    }
+  } catch (e) { /* 시크릿 모드 등 sessionStorage 차단 시 조용히 무시 */ }
+})();
+</script>
 {# 속도 개선 지시서(2026-11-23) §2-① — 실제로 쓰는 글자·굵기(300~800)만 담은 가변
    폰트 1개를 <head> 맨 앞에서 인라인 @font-face + preload한다. 파일 이름의
    __FONT_SUBSET_HREF__ 자리표시자는 build.py가 dist 전체를 쓴 뒤 실제 글자 집합

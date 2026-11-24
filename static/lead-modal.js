@@ -23,6 +23,7 @@
   };
   var viewTitleIds = { contact: 'lmTitleContact', form: 'lmTitleForm', success: 'lmTitleSuccess', error: 'lmTitleError' };
   var form = backdrop.querySelector('[data-lm-form]');
+  var nameInput = backdrop.querySelector('[data-lm-input="name"]');
   var shopInput = backdrop.querySelector('[data-lm-input="shop"]');
   var phoneInput = backdrop.querySelector('[data-lm-input="phone"]');
   var consentInput = backdrop.querySelector('[data-lm-input="consent"]');
@@ -62,6 +63,7 @@
     return /^0\d{8,10}$/.test(d);
   }
   function isValidShop(raw) { return raw.trim().length >= 2; }
+  function isValidName(raw) { return raw.trim().length >= 2; }
 
   function toggleFieldError(name, on) {
     var input = backdrop.querySelector('[data-lm-input="' + name + '"]');
@@ -71,7 +73,7 @@
   }
 
   function updateSubmitState() {
-    var ok = isValidShop(shopInput.value) && isValidPhone(phoneInput.value) && consentInput.checked;
+    var ok = isValidName(nameInput.value) && isValidShop(shopInput.value) && isValidPhone(phoneInput.value) && consentInput.checked;
     submitBtn.disabled = !ok;
   }
 
@@ -80,11 +82,14 @@
     if (!phoneInput.classList.contains('is-error')) { /* 입력 중엔 조용히 */ }
     updateSubmitState();
   });
+  nameInput.addEventListener('input', updateSubmitState);
   shopInput.addEventListener('input', updateSubmitState);
   consentInput.addEventListener('change', updateSubmitState);
 
+  nameInput.addEventListener('blur', function () { toggleFieldError('name', !isValidName(nameInput.value)); });
   shopInput.addEventListener('blur', function () { toggleFieldError('shop', !isValidShop(shopInput.value)); });
   phoneInput.addEventListener('blur', function () { toggleFieldError('phone', !isValidPhone(phoneInput.value)); });
+  nameInput.addEventListener('focus', function () { toggleFieldError('name', false); });
   shopInput.addEventListener('focus', function () { toggleFieldError('shop', false); });
   phoneInput.addEventListener('focus', function () { toggleFieldError('phone', false); });
 
@@ -115,6 +120,7 @@
 
   function resetForm() {
     form.reset();
+    toggleFieldError('name', false);
     toggleFieldError('shop', false);
     toggleFieldError('phone', false);
     consentDetail.hidden = true;
@@ -131,7 +137,7 @@
     requestAnimationFrame(function () { backdrop.classList.add('is-open'); });
     document.documentElement.classList.add('lm-scroll-lock');
     document.addEventListener('keydown', onKeydown);
-    if (SITE.leadFormEnabled) setTimeout(function () { shopInput.focus(); }, 60);
+    if (SITE.leadFormEnabled) setTimeout(function () { nameInput.focus(); }, 60);
     if (window.ENTER_TRACK) window.ENTER_TRACK('lead_open');
   }
 
@@ -150,19 +156,31 @@
   // ---------- 전송 ----------
   form.addEventListener('submit', function (e) {
     e.preventDefault();
+    var nameOk = isValidName(nameInput.value);
     var shopOk = isValidShop(shopInput.value);
     var phoneOk = isValidPhone(phoneInput.value);
+    toggleFieldError('name', !nameOk);
     toggleFieldError('shop', !shopOk);
     toggleFieldError('phone', !phoneOk);
+    if (!nameOk) { nameInput.focus(); return; }
     if (!shopOk) { shopInput.focus(); return; }
     if (!phoneOk) { phoneInput.focus(); return; }
     if (!consentInput.checked) return;
     if (honeypot && honeypot.value) return; // 스팸봇 — 조용히 무시, 전송 안 함
 
+    var attribution = {};
+    try { attribution = JSON.parse(sessionStorage.getItem('enter_attribution') || '{}'); } catch (e2) { /* 무시 */ }
+
     var payload = {
+      name: nameInput.value.trim(),
       shop_name: shopInput.value.trim(),
       phone: phoneInput.value.replace(/[^0-9]/g, ''),
-      page: (location.pathname.split('/').pop() || 'index'),
+      referrer: attribution.referrer || document.referrer || '',
+      utm_source: attribution.utm_source || '',
+      utm_medium: attribution.utm_medium || '',
+      utm_campaign: attribution.utm_campaign || '',
+      landing_page: attribution.landing_page || location.pathname,
+      submit_page: location.pathname,
       submitted_at: new Date().toISOString(),
       consent: true
     };
@@ -180,9 +198,14 @@
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     }).then(function (res) {
+      return res.json().catch(function () { return {}; }).then(function (data) {
+        return { res: res, data: data };
+      });
+    }).then(function (result) {
       submitBtn.textContent = SUBMIT_LABEL;
-      if (!res.ok) { showView('error'); return; }
+      if (!result.res.ok || !result.data.ok) { showView('error'); return; }
       showView('success');
+      if (window.ENTER_TRACK) window.ENTER_TRACK('generate_lead');
     }).catch(function () {
       submitBtn.textContent = SUBMIT_LABEL;
       showView('error');

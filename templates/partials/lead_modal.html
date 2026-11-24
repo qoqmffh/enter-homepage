@@ -33,6 +33,12 @@
         </div>
 
         <div class="lm-field">
+          <label for="lmName">이름</label>
+          <input type="text" id="lmName" placeholder="예) 홍길동" autocomplete="name" data-lm-input="name">
+          <p class="lm-error" data-lm-error="name" hidden>이름을 입력해주세요</p>
+        </div>
+
+        <div class="lm-field">
           <label for="lmShop">상호명</label>
           <input type="text" id="lmShop" placeholder="예) 엔터모바일 강남점" autocomplete="organization" data-lm-input="shop">
           <p class="lm-error" data-lm-error="shop" hidden>상호명을 2자 이상 입력해주세요</p>
@@ -53,7 +59,7 @@
             <button type="button" class="lm-consent-more" data-lm-consent-toggle aria-expanded="false">내용 보기</button>
             <a class="lm-consent-more" href="{{ page_href('privacy') }}" target="_blank" rel="noopener">개인정보처리방침</a>
           </div>
-          <div class="lm-consent-detail" data-lm-consent-detail hidden>수집 항목: 상호명, 연락처 · 이용 목적: 정책 안내 및 거래 상담 · 보관 기간: 상담 종료 후 1년</div>
+          <div class="lm-consent-detail" data-lm-consent-detail hidden>수집 항목: 이름, 상호명, 연락처 · 이용 목적: 정책 안내 및 거래 상담 · 보관 장소: 카페24 호스팅 서버(국내) · 보관 기간: 상담 종료 후 1년(거래 시작 건은 거래 종료 후까지)</div>
         </div>
 
         <button type="submit" class="lm-submit" data-lm-submit disabled>정책 받기 신청</button>
