@@ -153,8 +153,12 @@ BUNDLE_ORPHANS = sorted(_BUNDLED_FILES - _STANDALONE_FILES)
 def _esbuild_minify(text, loader):
     result = subprocess.run(
         ["node", ESBUILD_BIN, f"--loader={loader}", "--minify"],
-        input=text.encode("utf-8"), capture_output=True, check=True,
+        input=text.encode("utf-8"), capture_output=True,
     )
+    if result.returncode != 0:
+        raise RuntimeError(
+            f"esbuild 실패(loader={loader}): {result.stderr.decode('utf-8', 'replace')}"
+        )
     return result.stdout.decode("utf-8")
 
 
