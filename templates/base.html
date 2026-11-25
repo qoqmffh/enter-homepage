@@ -3,12 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{# 캐시 신선도(2026-11-25) — 카카오톡 인앱 WebView 등 일부 브라우저가 페이지를 길게
+   캐시해 옛 버전을 보여주는 사례 대응. 브라우저가 매번 서버에 재확인(revalidate)하도록
+   유도하는 메타 태그. 다만 이건 "힌트"일 뿐 강제력이 없다 — GitHub Pages 쪽 CDN이
+   보내는 실제 HTTP Cache-Control 응답 헤더와 카카오톡 WebView 자체의 캐시 동작은
+   정적 사이트 코드로 바꿀 수 없는 영역이라 완전히 없앨 수는 없다. #}
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
 {# 관리자 페이지 지시서(2026-11-24) §4-1 — 접수 폼에 실어 보낼 첫 유입 정보(처음
    들어온 페이지의 utm_*·리퍼러)를 세션 동안 기억한다. 이후 다른 페이지에서 신청해도
    처음 유입 기준으로 남게. sessionStorage라 탭을 닫으면 사라진다(의도된 동작).
    접속경로 지시서(2026-11-24) — 같은 자리에서 세션당 1회(처음 들어온 페이지에서만)
    방문 기록을 카페24 서버로 보낸다. sendBeacon이라 전송 성공 여부와 무관하게
-   페이지 동작에 전혀 영향이 없다(응답을 기다리지도, 실패해도 아무 처리 안 함). #}
+   페이지 동작에 전혀 영향이 없다(응답을 기다리지도, 실패해도 아무 처리 안 함).
+   접속경로 후속수정(2026-11-25) — 카카오톡 인앱 브라우저 일부(특히 iOS WebView)는
+   sendBeacon 자체를 지원하거나 호출은 되어도 실제로 전송을 안 하는 경우가 있어,
+   sendBeacon이 false를 반환하거나 아예 없으면 fetch(keepalive)로 한 번 더 시도한다.
+   fetch도 실패하면 조용히 포기한다(사이트 동작에 영향 없음이 최우선). #}
 <script>
 (function () {
   try {
@@ -30,7 +41,7 @@
     if (isFirstPageOfSession) {
       sessionStorage.setItem('enter_visit_sent', '1');
       var visitEndpoint = {{ site.visit_endpoint | tojson }};
-      if (visitEndpoint && navigator.sendBeacon) {
+      if (visitEndpoint) {
         var payload = JSON.stringify({
           session_id: sessionStorage.getItem('enter_session_id'),
           referrer: document.referrer || '',
@@ -44,7 +55,22 @@
            물어보는 OPTIONS 요청을 보내는데, 거기 자격 증명(Credentials) 정책이 안 맞아
            막히는 걸 로컬 테스트 중 발견(2026-11-24). 내용은 그대로 JSON 글자라
            서버(visit.php)는 Content-Type을 안 보고 그냥 읽어서 문제 없다. #}
-        navigator.sendBeacon(visitEndpoint, new Blob([payload], { type: 'text/plain' }));
+        var sent = false;
+        try {
+          if (navigator.sendBeacon) {
+            sent = navigator.sendBeacon(visitEndpoint, new Blob([payload], { type: 'text/plain' }));
+          }
+        } catch (e) { sent = false; }
+        if (!sent && window.fetch) {
+          fetch(visitEndpoint, {
+            method: 'POST',
+            body: payload,
+            headers: { 'Content-Type': 'text/plain' },
+            keepalive: true,
+            mode: 'cors',
+            credentials: 'omit'
+          }).catch(function () { /* 전송 실패해도 사이트 동작엔 영향 없음 */ });
+        }
       }
     }
   } catch (e) { /* 시크릿 모드 등 sessionStorage 차단 시 조용히 무시 */ }
