@@ -87,7 +87,7 @@
       <summary>
         <span><span class="sp-board-tag" style="display:block;margin-bottom:4px">[{{ item.category }}]</span>{{ item.q }}</span>
       </summary>
-      <div class="sp-faq-body">{{ item.a }}</div>
+      <div class="sp-faq-body">{{ item.a | md_inline }}</div>
     </details>
     {% endfor %}
   </div>

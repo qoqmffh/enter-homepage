@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+
 <script>
 (function () {
   try {
@@ -25,17 +28,37 @@
     if (isFirstPageOfSession) {
       sessionStorage.setItem('enter_visit_sent', '1');
       var visitEndpoint = "https://ehao0584.mycafe24.com/api/visit.php";
-      if (visitEndpoint && navigator.sendBeacon) {
+      if (visitEndpoint) {
         var payload = JSON.stringify({
           session_id: sessionStorage.getItem('enter_session_id'),
           referrer: document.referrer || '',
           first_page: location.pathname,
           utm_source: p.get('utm_source') || '',
           utm_medium: p.get('utm_medium') || '',
-          utm_campaign: p.get('utm_campaign') || ''
+          utm_campaign: p.get('utm_campaign') || '',
+          utm_term: p.get('utm_term') || '',
+          n_query: p.get('n_query') || '',
+          n_keyword: p.get('n_keyword') || '',
+          query: p.get('query') || '',
+          oquery: p.get('oquery') || ''
         });
         
-        navigator.sendBeacon(visitEndpoint, new Blob([payload], { type: 'text/plain' }));
+        var sent = false;
+        try {
+          if (navigator.sendBeacon) {
+            sent = navigator.sendBeacon(visitEndpoint, new Blob([payload], { type: 'text/plain' }));
+          }
+        } catch (e) { sent = false; }
+        if (!sent && window.fetch) {
+          fetch(visitEndpoint, {
+            method: 'POST',
+            body: payload,
+            headers: { 'Content-Type': 'text/plain' },
+            keepalive: true,
+            mode: 'cors',
+            credentials: 'omit'
+          }).catch(function () { /* 전송 실패해도 사이트 동작엔 영향 없음 */ });
+        }
       }
     }
   } catch (e) { /* 시크릿 모드 등 sessionStorage 차단 시 조용히 무시 */ }
@@ -511,7 +534,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     ],
     "numbers": [
       {
-        "value": "22개",
+        "value": "26개",
         "label": "자주 묻는 질문"
       }
     ],
@@ -704,7 +727,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       <span class="sp-board-row-body">
         <span class="sp-board-tag">[업계 질문]</span>
         <span class="sp-board-title">유선 매집이란? 매집 딜러와 정식 유선 도매의 차이</span>
-        <span class="sp-board-excerpt">유선 매집은 판매점이나 딜러가 받은 인터넷·IPTV 가입 건을 모아 대리점이나 도매로 넘기는 영업 방식입니다. 같은 &#34;모아서 넘기는&#34; 일이라도 사전승낙 없이 중개만 하는 매집 딜러와, 정책 안내·접수·정산까지 책임지는 정식 도매(총판)는 판매점이 떠안는 위험이 다릅니다.</span>
+        <span class="sp-board-excerpt">유선 매집은 판매점이나 딜러가 받은 인터넷·IPTV 가입 건을 모아 대리점이나 도매로 넘기는 영업 방식이며, 업계에서는 &#39;인터넷 매집&#39;이라고도 부릅니다. 같은 &#34;모아서 넘기는&#34; 일이라도 사전승낙 없이 중개만 하는 매집업체(매집 딜러)와, 정책 안내·접수·정산까지 책임지는 정식 도매(총판)는 판매점이 떠안는 위험이 다릅니다.</span>
       </span>
       <span class="sp-board-date">2026-11-18</span>
     </a>

@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+
 <script>
 (function () {
   try {
@@ -25,17 +28,37 @@
     if (isFirstPageOfSession) {
       sessionStorage.setItem('enter_visit_sent', '1');
       var visitEndpoint = "https://ehao0584.mycafe24.com/api/visit.php";
-      if (visitEndpoint && navigator.sendBeacon) {
+      if (visitEndpoint) {
         var payload = JSON.stringify({
           session_id: sessionStorage.getItem('enter_session_id'),
           referrer: document.referrer || '',
           first_page: location.pathname,
           utm_source: p.get('utm_source') || '',
           utm_medium: p.get('utm_medium') || '',
-          utm_campaign: p.get('utm_campaign') || ''
+          utm_campaign: p.get('utm_campaign') || '',
+          utm_term: p.get('utm_term') || '',
+          n_query: p.get('n_query') || '',
+          n_keyword: p.get('n_keyword') || '',
+          query: p.get('query') || '',
+          oquery: p.get('oquery') || ''
         });
         
-        navigator.sendBeacon(visitEndpoint, new Blob([payload], { type: 'text/plain' }));
+        var sent = false;
+        try {
+          if (navigator.sendBeacon) {
+            sent = navigator.sendBeacon(visitEndpoint, new Blob([payload], { type: 'text/plain' }));
+          }
+        } catch (e) { sent = false; }
+        if (!sent && window.fetch) {
+          fetch(visitEndpoint, {
+            method: 'POST',
+            body: payload,
+            headers: { 'Content-Type': 'text/plain' },
+            keepalive: true,
+            mode: 'cors',
+            credentials: 'omit'
+          }).catch(function () { /* 전송 실패해도 사이트 동작엔 영향 없음 */ });
+        }
       }
     }
   } catch (e) { /* 시크릿 모드 등 sessionStorage 차단 시 조용히 무시 */ }
@@ -80,11 +103,11 @@
   window.ENTER_TRACK = track;
 })();
 </script>
-<title>유선 매집이란? 매집 딜러와 정식 유선 도매(총판)의 차이 | ENTER 유선전문총판</title>
+<title>유선 매집이란? 인터넷 매집·매집업체와 유선 도매(총판) 차이 | ENTER 유선전문총판</title>
 <meta name="description" content="유선 매집은 판매점·딜러가 받은 인터넷·IPTV 가입 건을 모아 대리점이나 도매로 넘기는 영업 방식입니다. 매집 딜러, 도매(총판), 대리점, 판매점의 차이와 거래 전 확인할 점을 정리했습니다.">
 <link rel="canonical" href="https://xn--hq1b59iy0gstg.kr/blog-wired-maejip">
 <link rel="alternate" type="text/markdown" title="llms.txt" href="/llms.txt">
-<meta property="og:title" content="유선 매집이란? 매집 딜러와 정식 유선 도매(총판)의 차이 | ENTER 유선전문총판">
+<meta property="og:title" content="유선 매집이란? 인터넷 매집·매집업체와 유선 도매(총판) 차이 | ENTER 유선전문총판">
 <meta property="og:description" content="유선 매집은 판매점·딜러가 받은 인터넷·IPTV 가입 건을 모아 대리점이나 도매로 넘기는 영업 방식입니다. 매집 딜러, 도매(총판), 대리점, 판매점의 차이와 거래 전 확인할 점을 정리했습니다.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ENTER 유선전문총판">
@@ -193,7 +216,7 @@
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "유선 매집이란? 매집 딜러와 정식 유선 도매의 차이",
+      "name": "유선 매집(인터넷 매집)이란? 매집업체와 유선 도매의 차이",
       "item": "https://xn--hq1b59iy0gstg.kr/blog-wired-maejip"
     }
   ]
@@ -203,10 +226,10 @@
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "유선 매집이란? 매집 딜러와 정식 유선 도매의 차이",
+  "headline": "유선 매집(인터넷 매집)이란? 매집업체와 유선 도매의 차이",
   "description": "유선 매집은 판매점·딜러가 받은 인터넷·IPTV 가입 건을 모아 대리점이나 도매로 넘기는 영업 방식입니다. 매집 딜러, 도매(총판), 대리점, 판매점의 차이와 거래 전 확인할 점을 정리했습니다.",
   "datePublished": "2026-11-18",
-  "dateModified": "2026-11-18",
+  "dateModified": "2026-11-25",
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "https://xn--hq1b59iy0gstg.kr/blog-wired-maejip"
@@ -611,7 +634,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     ],
     "numbers": [
       {
-        "value": "22개",
+        "value": "26개",
         "label": "자주 묻는 질문"
       }
     ],
@@ -714,23 +737,23 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   <div class="article-wrap">
     
 <nav class="breadcrumb" aria-label="브레드크럼">
-  <a href="/">홈</a><span aria-hidden="true">›</span><a href="/blog">블로그</a><span aria-hidden="true">›</span><span aria-current="page">유선 매집이란? 매집 딜러와 정식 유선 도매의 차이</span>
+  <a href="/">홈</a><span aria-hidden="true">›</span><a href="/blog">블로그</a><span aria-hidden="true">›</span><span aria-current="page">유선 매집(인터넷 매집)이란? 매집업체와 유선 도매의 차이</span>
 </nav>
 
     <p class="post-category">블로그 · 업계</p>
-    <h1>유선 매집이란? 매집 딜러와 정식 유선 도매의 차이</h1>
+    <h1>유선 매집(인터넷 매집)이란? 매집업체와 유선 도매의 차이</h1>
     <div class="post-byline">
       <div class="post-byline-id">
         <span class="post-logo-mark"><img src="static/brand/favicon-dark.svg" width="18" height="18" alt="" aria-hidden="true"></span>
         <span>
           <span class="post-byline-name">ENTER 영업지원팀</span>
-          <span class="post-byline-date">2026. 11. 18. · 기준일 확인</span>
+          <span class="post-byline-date">2026. 11. 25. · 기준일 확인</span>
         </span>
       </div>
       <button type="button" class="post-copy-btn" data-copy-link>링크 복사<span class="post-copy-toast">복사됨</span></button>
     </div>
     <hr class="post-divider">
-    <p class="lead"><a href="/glossary#wired" class="glossary-term-link">유선</a> <a href="/glossary#maejip" class="glossary-term-link">매집</a>은 <a href="/glossary#reseller" class="glossary-term-link">판매점</a>이나 <a href="/glossary#dealer" class="glossary-term-link">딜러</a>가 받은 인터넷·IPTV 가입 건을 모아 <a href="/glossary#agency" class="glossary-term-link">대리점</a>이나 <a href="/glossary#wholesale" class="glossary-term-link">도매</a>로 넘기는 영업 방식입니다. 같은 &#34;모아서 넘기는&#34; 일이라도 <a href="/glossary#preapproval" class="glossary-term-link">사전승낙</a> 없이 중개만 하는 매집 딜러와, <a href="/glossary#policy" class="glossary-term-link">정책</a> 안내·접수·<a href="/glossary#settlement" class="glossary-term-link">정산</a>까지 책임지는 정식 도매(총판)는 판매점이 떠안는 위험이 다릅니다.</p>
+    <p class="lead"><a href="/glossary#wired" class="glossary-term-link">유선</a> <a href="/glossary#maejip" class="glossary-term-link">매집</a>은 <a href="/glossary#reseller" class="glossary-term-link">판매점</a>이나 <a href="/glossary#dealer" class="glossary-term-link">딜러</a>가 받은 인터넷·IPTV 가입 건을 모아 <a href="/glossary#agency" class="glossary-term-link">대리점</a>이나 <a href="/glossary#wholesale" class="glossary-term-link">도매</a>로 넘기는 영업 방식이며, 업계에서는 &#39;인터넷 매집&#39;이라고도 부릅니다. 같은 &#34;모아서 넘기는&#34; 일이라도 <a href="/glossary#preapproval" class="glossary-term-link">사전승낙</a> 없이 중개만 하는 매집업체(매집 딜러)와, <a href="/glossary#policy" class="glossary-term-link">정책</a> 안내·접수·<a href="/glossary#settlement" class="glossary-term-link">정산</a>까지 책임지는 정식 도매(총판)는 판매점이 떠안는 위험이 다릅니다.</p>
     <div class="basis-box"><strong>이 글의 기준</strong> · 2026년 11월 기준 · 판매점이 유선(인터넷·IPTV) 가입 건을 넘길 거래처를 정하는 경우</div>
   </div>
 </section>
@@ -780,7 +803,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     
     
     
-    <h2>거래 전에 무엇을 확인하면 되나요?</h2>
+    <h2>유선 매집업체는 어떻게 고르나요?</h2>
     
       
       <p>운영 회사명, 사업자등록번호, 통신판매업 신고번호를 공개하는지 먼저 확인하세요. 정산일이 정해져 있는지, 정산서를 먼저 주는지도 중요합니다. 고객 정보를 어떻게 처리하는지도 물어보세요. 더 자세한 체크리스트는 <a href="/blog-wired-wholesale-checklist">유선 도매업체 추천 받기 전에 확인할 7가지</a>에 정리했습니다.</p>
@@ -842,7 +865,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     
     
     <div class="post-tags">
-      <a class="post-tag" href="/blog">#유선 매집</a><a class="post-tag" href="/blog">#매집 딜러</a><a class="post-tag" href="/blog">#유선 도매</a><a class="post-tag" href="/blog">#정식 유선</a>
+      <a class="post-tag" href="/blog">#유선 매집</a><a class="post-tag" href="/blog">#인터넷 매집</a><a class="post-tag" href="/blog">#매집업체</a><a class="post-tag" href="/blog">#유선 도매</a>
     </div>
     
 
@@ -875,7 +898,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       <div class="post-more-list">
         
         <a class="post-more-row is-current" href="/blog-wired-maejip">
-          <span class="post-more-row-title">유선 매집이란? 매집 딜러와 정식 유선 도매의 차이</span>
+          <span class="post-more-row-title">유선 매집(인터넷 매집)이란? 매집업체와 유선 도매의 차이</span>
           <span class="post-more-row-date">2026. 11. 18.</span>
         </a>
         
