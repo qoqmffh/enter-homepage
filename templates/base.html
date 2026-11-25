@@ -48,7 +48,12 @@
           first_page: location.pathname,
           utm_source: p.get('utm_source') || '',
           utm_medium: p.get('utm_medium') || '',
-          utm_campaign: p.get('utm_campaign') || ''
+          utm_campaign: p.get('utm_campaign') || '',
+          utm_term: p.get('utm_term') || '',
+          n_query: p.get('n_query') || '',
+          n_keyword: p.get('n_keyword') || '',
+          query: p.get('query') || '',
+          oquery: p.get('oquery') || ''
         });
         {# text/plain이면 "단순 요청"이라 사전 확인(preflight) 자체가 안 생긴다 — 다른
            도메인(카페24)로 보내는 sendBeacon이 application/json이면 브라우저가 미리
