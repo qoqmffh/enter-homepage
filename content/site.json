@@ -73,30 +73,31 @@
   },
   "footer": {
     "tagline": "(유)위드컴퍼니 도매영업팀이 운영하는 유선 전문 브랜드",
+    "hours": "평일 09:00~18:00",
     "columns": [
       {
         "heading": "회사",
         "links": [
-          {"label": "왜 ENTER", "slug": "why"},
-          {"label": "ENTER 소개", "slug": "about"},
-          {"label": "취급상품", "slug": "products"}
+          {"label": "왜 ENTER", "slug": "why", "desc": "숫자로 보는 정책·정산"},
+          {"label": "ENTER 소개", "slug": "about", "desc": "2010년부터 유선 한 길"}
         ]
       },
       {
         "heading": "거래",
         "links": [
-          {"label": "거래 시작하기", "slug": "start"},
-          {"label": "정산·DB보호", "slug": "settlement"}
+          {"label": "취급상품", "slug": "products", "desc": "통신사 6곳 유선 상품"},
+          {"label": "정산·DB보호", "slug": "settlement", "desc": "정해진 날 정산"},
+          {"label": "거래 시작하기", "slug": "start", "desc": "서류 없이 개통부터"}
         ]
       },
       {
         "heading": "정보",
         "links": [
-          {"label": "창업자 가이드", "slug": "startup"},
-          {"label": "FAQ", "slug": "faq"},
-          {"label": "블로그", "slug": "blog"},
-          {"label": "용어 사전", "slug": "glossary"},
-          {"label": "거래처 이야기", "slug": "stories"}
+          {"label": "창업자 가이드", "slug": "startup", "desc": "매장 창업 5챕터"},
+          {"label": "블로그", "slug": "blog", "desc": "사장님이 궁금한 것들"},
+          {"label": "FAQ", "slug": "faq", "desc": "묻기 전에 답합니다"},
+          {"label": "용어 사전", "slug": "glossary", "desc": "매집·딜러·총판 등 15개"},
+          {"label": "거래처 이야기", "slug": "stories", "desc": "사장님들의 실제 이야기"}
         ]
       }
     ]

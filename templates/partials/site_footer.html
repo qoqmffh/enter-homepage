@@ -5,12 +5,21 @@
       <div class="hp-footer-brand">
         <img src="static/brand/enter-horizontal-light.svg" width="559" height="188" alt="ENTER 유선전문총판" class="hp-footer-logo" loading="lazy">
         <p>{{ site.footer.tagline }}</p>
+        {# 메뉴구조 개편(2026-11-27) §2 — 왼쪽 브랜드 영역에 전화·업무시간·CTA 추가. #}
+        <a class="hp-footer-tel" href="tel:{{ site.phone }}">{{ site.phone }}</a>
+        <p class="hp-footer-hours">{{ site.footer.hours }}</p>
+        <a class="hp-pill hp-pill--primary hp-footer-cta" href="#lead" data-lead-trigger>{{ site.header_menu_cta.button }}</a>
       </div>
       <div class="hp-footer-cols">
         {% for col in site.footer.columns %}
         <div class="hp-footer-col">
           <span class="hp-footer-heading">{{ col.heading }}</span>
-          {% for link in col.links %}<a href="{{ page_href(link.slug) }}">{{ link.label }}</a>{% endfor %}
+          {% for link in col.links %}
+          <a href="{{ page_href(link.slug) }}">
+            <span class="hp-footer-link-title">{{ link.label }}</span>
+            {% if link.desc %}<span class="hp-footer-link-desc">{{ link.desc }}</span>{% endif %}
+          </a>
+          {% endfor %}
         </div>
         {% endfor %}
       </div>
