@@ -65,14 +65,14 @@
 })();
 </script>
 
-<link rel="preload" href="static/fonts/pretendard/pretendard-subset.3e0fe017.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="static/fonts/pretendard/pretendard-subset.46d1e0a5.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 @font-face{
   font-family:'Pretendard Variable';
   font-style:normal;
   font-display:optional;
   font-weight:300 800;
-  src:url('static/fonts/pretendard/pretendard-subset.3e0fe017.woff2') format('woff2-variations');
+  src:url('static/fonts/pretendard/pretendard-subset.46d1e0a5.woff2') format('woff2-variations');
 }
 </style>
 
@@ -196,6 +196,8 @@
 
 
 <link rel="stylesheet" href="static/article.css?v=09f3cee3">
+<link rel="stylesheet" href="static/toc.css?v=0d8e9736">
+<script src="static/toc.js?v=9b6d8d0b" defer></script>
 
 <script type="application/ld+json">{
   "@context": "https://schema.org",
@@ -696,6 +698,42 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 <main>
 
+
+<div class="article-layout">
+<aside class="article-toc">
+  <details class="toc-collapse" open>
+    <summary class="toc-summary">목차 <span aria-hidden="true">▾</span></summary>
+    <div class="toc-body">
+      <nav aria-label="목차" data-toc-chapters>
+        <p class="toc-group-label">창업자 가이드</p>
+        <ul>
+          
+          <li><a href="/guide-dealer-vs-reseller">1장 · 판매점으로 시작하기</a></li>
+          
+          <li><a href="/guide-wholesale-selection">2장 · 도매 거래처 선정 기준</a></li>
+          
+          <li><a href="/guide-activation-prep" class="is-current">3장 · 개통 준비</a></li>
+          
+          <li><a href="/guide-store-setup">4장 · 매장 시설</a></li>
+          
+          <li><a href="/guide-opening-checklist">5장 · 개업 체크리스트</a></li>
+          
+        </ul>
+      </nav>
+      <nav aria-label="이 장의 소제목" data-toc-scrollspy>
+        <p class="toc-group-label">이 장</p>
+        <ul>
+          <li><a href="#개통하려면-무엇을-준비하나요">개통하려면 무엇을 준비하나요?</a></li>
+          <li><a href="#접수-전에-무엇을-챙기나요">접수 전에 무엇을 챙기나요?</a></li>
+          
+          <li><a href="#초보-창업자가-자주-하는-실수는">초보 창업자가 자주 하는 실수는?</a></li>
+          <li><a href="#이-단계에서-확인할-것은">이 단계에서 확인할 것은?</a></li>
+        </ul>
+      </nav>
+    </div>
+  </details>
+</aside>
+<div class="article-layout-main">
 <section class="post-head post-block">
   <div class="article-wrap">
     
@@ -714,7 +752,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 <section class="post-block">
   <div class="article-wrap">
-    <h2>개통하려면 무엇을 준비하나요?</h2>
+    <h2 id="개통하려면-무엇을-준비하나요">개통하려면 무엇을 준비하나요?</h2>
     <p>개통 업무는 '접수 → 청약 → 설치 → 개통확인 → <a href="/glossary#settlement" class="glossary-term-link">정산</a>' 흐름으로 진행됩니다.</p><p>온라인 셀러는 CRM(전산)에 직접 접수를 등록하고, 오프라인 매장은 카톡 양식으로 접수를 보내는 방식이 일반적입니다.</p>
   </div>
 </section>
@@ -727,7 +765,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 <section class="post-block">
   <div class="article-wrap">
-    <h2>접수 전에 무엇을 챙기나요?</h2>
+    <h2 id="접수-전에-무엇을-챙기나요">접수 전에 무엇을 챙기나요?</h2>
     <div class="doc-grid">
       
       <div class="doc-card" data-reveal><div class="doc-icon">📋</div><div class="doc-name">사업자등록증</div><div class="doc-reason">정식 거래처 등록</div></div>
@@ -751,7 +789,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 <section class="post-block">
   <div class="article-wrap">
-    <h2>초보 창업자가 자주 하는 실수는?</h2>
+    <h2 id="초보-창업자가-자주-하는-실수는">초보 창업자가 자주 하는 실수는?</h2>
     <p>서류부터 다 갖춰야 접수를 넣을 수 있다고 생각해 시작을 미루는 경우가 많습니다. 공급처에 따라 서류 없이 접수·개통부터 먼저 하고, 첫 정산 전에만 서류를 확인하는 곳도 있습니다.</p>
   </div>
 </section>
@@ -760,7 +798,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 <section class="post-block">
   <div class="article-wrap">
-    <h2>이 단계에서 확인할 것은?</h2>
+    <h2 id="이-단계에서-확인할-것은">이 단계에서 확인할 것은?</h2>
     <ul class="doclist">
       <li data-reveal>접수 방식이 CRM 직접등록인지 카톡 양식인지 확인하기</li><li data-reveal>접수부터 청약까지 보통 얼마나 걸리는지 확인하기</li>
     </ul>
@@ -834,6 +872,8 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   </div>
 </section>
 
+</div>
+</div>
 
 </main>
 

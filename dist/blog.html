@@ -65,14 +65,14 @@
 })();
 </script>
 
-<link rel="preload" href="static/fonts/pretendard/pretendard-subset.3e0fe017.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="static/fonts/pretendard/pretendard-subset.46d1e0a5.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 @font-face{
   font-family:'Pretendard Variable';
   font-style:normal;
   font-display:optional;
   font-weight:300 800;
-  src:url('static/fonts/pretendard/pretendard-subset.3e0fe017.woff2') format('woff2-variations');
+  src:url('static/fonts/pretendard/pretendard-subset.46d1e0a5.woff2') format('woff2-variations');
 }
 </style>
 
@@ -196,6 +196,8 @@
 
 
 <link rel="stylesheet" href="static/sub.css?v=b22f4f32">
+
+
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -710,6 +712,8 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 </div>
 
 
+
+
 <section class="sp-section sp-section--after-hero" id="board">
   <div class="sp-board-tabs" data-board-tabs role="tablist">
     
@@ -920,6 +924,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 </section>
 
 
+
 <section class="sp-cta" id="lead" data-fn-cta-band>
   <div class="sp-cta-inner" data-reveal>
     <p class="sp-cta-brand">ENTER 유선전문총판 · 6개 통신사 유선 정책, 매일 아침 카카오톡으로</p>
@@ -935,7 +940,9 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 <script>
 (function () {
   var PAGE_SIZE = 8;
-  var tabs = document.querySelectorAll('[data-board-tabs] [data-tab]');
+  /* 메뉴구조 개편 지시서(2026-11-27) §3 — 왼쪽 목차의 분류 링크(data-toc-tabs 안)도
+     위 탭 버튼과 완전히 같은 필터 로직을 쓴다(둘 다 data-tab 값으로 매칭). */
+  var tabs = document.querySelectorAll('[data-board-tabs] [data-tab], [data-toc-tabs] [data-tab]');
   var search = document.querySelector('[data-board-search]');
   var rows = Array.prototype.slice.call(document.querySelectorAll('[data-board-list] > [data-cat]'));
   var pagesEl = document.querySelector('[data-board-pages]');
@@ -974,9 +981,11 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
   tabs.forEach(function (btn) {
     btn.addEventListener('click', function () {
-      tabs.forEach(function (b) { b.classList.remove('is-active'); });
-      btn.classList.add('is-active');
-      activeTab = btn.dataset.tab;
+      /* data-tab 값으로 매칭해서 top 탭 버튼·왼쪽 목차 링크 둘 다 같이 is-active가
+         바뀌게 한다(같은 분류를 가리키는 두 군데 표시가 항상 같이 움직여야 함). */
+      var tab = btn.dataset.tab;
+      tabs.forEach(function (b) { b.classList.toggle('is-active', b.dataset.tab === tab); });
+      activeTab = tab;
       page = 1;
       apply();
     });

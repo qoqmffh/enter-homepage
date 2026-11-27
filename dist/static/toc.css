@@ -1,0 +1,38 @@
+/* 메뉴구조 개편 지시서(2026-11-27) §3 — 읽을거리 페이지(창업자 가이드·블로그 글·
+   FAQ·용어 사전) 전용 왼쪽 목차. 1200px 이상은 sticky 사이드바, 1199 이하는 본문
+   위 접이식(<details> 네이티브 토글이라 JS 없이도 열고 닫힘). 디자인 토큰은
+   static/site.css 것만 쓴다(새 색 없음). */
+/* .sp-toc-wrap은 스타일이 없다 — scripts/audit_layout.mjs가 <main> 바로 아래 자식 중
+   클래스에 sp-/hp- 접두사가 있는 것만 "섹션"으로 인식해서(faq.html·glossary.html은
+   원래 이 규칙 대상), 이 래퍼가 그 접두사 없이 끼어들면 히어로~CTA 사이가 통째로
+   "빈 띠"로 오탐된다(실제로 안 비어 있음, 2026-11-27 확인). 접두사만 맞춰 준다. */
+.article-layout{ display:block; }
+.article-toc{ margin-bottom:24px; }
+
+.toc-collapse{ border:1px solid var(--hp-line); border-radius:var(--radius-card); padding:0; background:var(--hp-card-bg); }
+.toc-summary{ cursor:pointer; list-style:none; padding:14px 18px; font-size:14px; font-weight:700; color:var(--hp-ink); display:flex; align-items:center; gap:6px; }
+.toc-summary::-webkit-details-marker{ display:none; }
+.toc-body{ padding:4px 18px 16px; }
+.toc-group-label{ font-size:11px; font-weight:600; letter-spacing:.04em; color:var(--hp-grey); text-transform:uppercase; margin:14px 0 6px; }
+.toc-body nav:first-child .toc-group-label{ margin-top:0; }
+.toc-body ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:2px; }
+.toc-body a{ display:block; padding:7px 0; font-size:13.5px; line-height:1.4; color:var(--hp-grey); border-left:2px solid transparent; padding-left:10px; margin-left:-10px; word-break:keep-all; }
+.toc-body a:hover{ color:var(--hp-ink); }
+.toc-body a.is-current, .toc-body a.is-active{ color:var(--hp-accent-text); font-weight:700; border-left-color:var(--hp-accent); }
+
+@media (min-width:1200px){
+  .article-layout{ display:flex; align-items:flex-start; gap:40px; max-width:1040px; margin:0 auto; padding:0 20px; }
+  .article-layout--wide{ max-width:1480px; }
+  .article-toc{ position:sticky; top:96px; width:220px; flex:0 0 220px; margin-bottom:0; max-height:calc(100vh - 116px); overflow-y:auto; }
+  .article-layout-main{ flex:1; min-width:0; }
+  /* 본문 최대폭만 조정(문단 폭은 그대로 720px 유지, §3 하지 말 것). sp-section/sp-proof는
+     이미 1200px라 폭은 안 바꾸고 가운데 정렬만 풀어 사이드바 옆에 붙인다. */
+  .article-layout-main .article-wrap{ max-width:720px; margin:0; padding:0; }
+  .article-layout--wide .article-layout-main .sp-section,
+  .article-layout--wide .article-layout-main .sp-proof{ max-width:1200px; margin:0; }
+  /* 목차 클릭 이동 시 헤더에 안 가리게(§5 검증 항목). 헤더 실제 높이 76px + 여유. */
+  .article-layout-main [id]{ scroll-margin-top:96px; }
+  .toc-summary{ display:none; }
+  .toc-collapse{ border:0; background:none; }
+  .toc-body{ padding:0; display:block !important; }
+}

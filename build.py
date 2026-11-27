@@ -291,6 +291,19 @@ _MD_BOLD_RE = re.compile(r"\*\*(.+?)\*\*")
 _MD_ITALIC_RE = re.compile(r"(?<!\*)\*([^*]+?)\*(?!\*)")
 
 
+_HEADING_SLUG_STRIP_RE = re.compile(r"[^\w가-힣\s-]")
+_HEADING_SLUG_SPACE_RE = re.compile(r"\s+")
+
+
+def heading_slug(text):
+    """메뉴구조 개편 지시서(2026-11-27) §3 — 읽을거리 페이지 왼쪽 목차용 소제목 id를
+    build.py에서 자동 생성한다. 한글·영문·숫자만 남기고 공백을 -로 바꾼 "한글 슬러그"다
+    (같은 글자는 항상 같은 id가 나오므로 "고정"된다). 빈 문자열이면 번호로 대체한다."""
+    s = _HEADING_SLUG_STRIP_RE.sub("", str(text or "")).strip()
+    s = _HEADING_SLUG_SPACE_RE.sub("-", s)
+    return s or "section"
+
+
 def md_inline(text):
     """블로그 글 원고의 가벼운 인라인 마크다운(**굵게**·*기울임*·[글자](주소)만 지원)을
     안전하게 렌더링한다(블로그 글 3편 반영 지시서 2026-11-10). 먼저 markupsafe.escape로
@@ -738,7 +751,11 @@ def main():
     # 창업 가이드 챕터(guide.json)도 같은 방식으로 합쳐서 렌더링
     guide = load_json("guide.json")
     pages.update(guide["pages"])
+    # 메뉴구조 개편(2026-11-27) §3 — 왼쪽 목차의 "1~5장 목록"은 startup 허브 페이지의
+    # guide_categories[0].chapters를 그대로 쓴다(따로 둔 데이터 없이 재사용).
+    guide_chapters = pages["startup"]["guide_categories"][0]["chapters"]
     for slug in guide["pages"]:
+        pages[slug]["toc_chapters"] = guide_chapters
         page_categories[slug] = "guide"
         page_source_file[slug] = "content/guide.json"
 
@@ -782,6 +799,7 @@ def main():
     env.filters["date_fmt_kr"] = date_fmt_kr
     env.filters["date_fmt_dot"] = date_fmt_dot
     env.filters["md_inline"] = md_inline
+    env.filters["heading_slug"] = heading_slug
     env.filters["faq_main_entity"] = faq_main_entity
     env.filters["breadcrumb_ld"] = breadcrumb_ld
     env.globals["page_url"] = page_url

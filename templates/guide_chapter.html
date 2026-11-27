@@ -5,6 +5,8 @@
 {% set crumb_items = [{'label': '홈', 'href': page_href('index')}, {'label': '창업자 가이드', 'href': page_href('startup')}, {'label': page.h1, 'href': page_href(slug)}] %}
 {% block extra_head %}
 <link rel="stylesheet" href="static/article.css">
+<link rel="stylesheet" href="static/toc.css">
+<script src="static/toc.js" defer></script>
 {# 디자인 완성 지시서(2026-11-19) Phase 4 — blog_post.html과 본문 스타일(타이포·표·박스·
    CTA·작성자 박스)을 공유한다(static/article.css, .article-wrap/.post-category 등 공용 클래스). #}
 <script type="application/ld+json">{{ crumb_items | breadcrumb_ld(site.base_url) | tojson(indent=2) }}</script>
@@ -23,6 +25,36 @@
 <script type="application/ld+json">{{ article_ld | compact | tojson(indent=2) }}</script>
 {% endblock %}
 {% block content %}
+{# 메뉴구조 개편 지시서(2026-11-27) §3 — 왼쪽 목차(1200px 이상 sticky, 1199 이하는
+   접이식 <details>). 1~5장 목록은 toc_chapters(build.py가 startup 허브에서 그대로
+   복사), 현재 장의 소제목은 본문과 같은 조건·같은 heading_slug로 id를 맞춘다. #}
+<div class="article-layout">
+<aside class="article-toc">
+  <details class="toc-collapse" open>
+    <summary class="toc-summary">목차 <span aria-hidden="true">▾</span></summary>
+    <div class="toc-body">
+      <nav aria-label="목차" data-toc-chapters>
+        <p class="toc-group-label">창업자 가이드</p>
+        <ul>
+          {% for ch in page.toc_chapters %}
+          <li><a href="{{ page_href(ch.slug) }}"{% if ch.slug == slug %} class="is-current"{% endif %}>{{ loop.index }}장 · {{ ch.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </nav>
+      <nav aria-label="이 장의 소제목" data-toc-scrollspy>
+        <p class="toc-group-label">이 장</p>
+        <ul>
+          {% if page.concept_heading and page.concept_body %}<li><a href="#{{ page.concept_heading | heading_slug }}">{{ page.concept_heading }}</a></li>{% endif %}
+          {% if page.doc_section_title and page.docs %}<li><a href="#{{ page.doc_section_title | heading_slug }}">{{ page.doc_section_title }}</a></li>{% endif %}
+          {% if page.checklist_section_heading and page.checklist %}<li><a href="#{{ page.checklist_section_heading | heading_slug }}">{{ page.checklist_section_heading }}</a></li>{% endif %}
+          {% if page.mistake_heading and page.mistake_body %}<li><a href="#{{ page.mistake_heading | heading_slug }}">{{ page.mistake_heading }}</a></li>{% endif %}
+          {% if page.checkpoint_heading and page.checkpoint_items %}<li><a href="#{{ page.checkpoint_heading | heading_slug }}">{{ page.checkpoint_heading }}</a></li>{% endif %}
+        </ul>
+      </nav>
+    </div>
+  </details>
+</aside>
+<div class="article-layout-main">
 <section class="post-head post-block">
   <div class="article-wrap">
     {{ bc_mod.render(crumb_items) }}
@@ -37,7 +69,7 @@
 {% if page.concept_body %}
 <section class="post-block">
   <div class="article-wrap">
-    <h2>{{ page.concept_heading }}</h2>
+    <h2 id="{{ page.concept_heading | heading_slug }}">{{ page.concept_heading }}</h2>
     {% for p in page.concept_body %}<p>{{ p }}</p>{% endfor %}
   </div>
 </section>
@@ -75,7 +107,7 @@
 {% if page.docs %}
 <section class="post-block">
   <div class="article-wrap">
-    <h2>{{ page.doc_section_title }}</h2>
+    <h2 id="{{ page.doc_section_title | heading_slug }}">{{ page.doc_section_title }}</h2>
     <div class="doc-grid">
       {% for d in page.docs %}
       <div class="doc-card" data-reveal><div class="doc-icon">{{ d.icon }}</div><div class="doc-name">{{ d.name }}</div><div class="doc-reason">{{ d.reason }}</div></div>
@@ -88,7 +120,7 @@
 {% if page.checklist %}
 <section class="post-block">
   <div class="article-wrap">
-    {% if page.checklist_section_heading %}<h2>{{ page.checklist_section_heading }}</h2>{% endif %}
+    {% if page.checklist_section_heading %}<h2 id="{{ page.checklist_section_heading | heading_slug }}">{{ page.checklist_section_heading }}</h2>{% endif %}
     <div class="icon-steps">
       {% for c in page.checklist %}
       <div class="icon-step" data-reveal><span class="icon-step-num">{{ loop.index }}</span><span class="icon-step-icon">{{ c.icon }}</span><span class="icon-step-text-wrap"><span class="icon-step-text">{{ c.name }}</span><span class="icon-step-sub">{{ c.note }}</span></span></div>
@@ -115,7 +147,7 @@
 {% if page.mistake_body %}
 <section class="post-block">
   <div class="article-wrap">
-    <h2>{{ page.mistake_heading }}</h2>
+    <h2 id="{{ page.mistake_heading | heading_slug }}">{{ page.mistake_heading }}</h2>
     <p>{{ page.mistake_body }}</p>
   </div>
 </section>
@@ -124,7 +156,7 @@
 {% if page.checkpoint_items %}
 <section class="post-block">
   <div class="article-wrap">
-    <h2>{{ page.checkpoint_heading }}</h2>
+    <h2 id="{{ page.checkpoint_heading | heading_slug }}">{{ page.checkpoint_heading }}</h2>
     <ul class="doclist">
       {% for c in page.checkpoint_items %}<li data-reveal>{{ c }}</li>{% endfor %}
     </ul>
@@ -166,4 +198,6 @@
   </div>
 </section>
 {% endif %}
+</div>
+</div>
 {% endblock %}

@@ -9,6 +9,8 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="static/sub.css">
+<link rel="stylesheet" href="static/toc.css">
+<script src="static/toc.js" defer></script>
 <script type="application/ld+json">{{ crumb_items | breadcrumb_ld(site.base_url) | tojson(indent=2) }}</script>
 {% set webpage_ld = {
   '@context': 'https://schema.org',
@@ -44,13 +46,25 @@
 
 {{ hero_mod.render('compact', s.hero, bc_mod.render(crumb_items), date_modified) }}
 
+{# 메뉴구조 개편 지시서(2026-11-27) §3 — 기존에 본문 위에 있던 용어 목차를 왼쪽
+   sticky 목차(1200px 이상)/접이식(1199 이하)으로 옮긴다. id는 이미 있던 t.slug를
+   그대로 쓴다(새로 생성할 필요 없음). #}
+<div class="article-layout sp-toc-wrap">
+<aside class="article-toc">
+  <details class="toc-collapse" open>
+    <summary class="toc-summary">목차 <span aria-hidden="true">▾</span></summary>
+    <div class="toc-body">
+      <nav aria-label="용어 목차" data-toc-scrollspy>
+        <ul>
+          {% for t in page.terms %}<li><a href="#{{ t.slug }}">{{ t.term }}</a></li>{% endfor %}
+        </ul>
+      </nav>
+    </div>
+  </details>
+</aside>
+<div class="article-layout-main">
 <section class="sp-section sp-section--after-hero">
   <p class="answer-lead">{{ page.answer_lead }}</p>
-  <nav class="glossary-toc" aria-label="용어 목차">
-    <ul class="doclist">
-      {% for t in page.terms %}<li><a href="#{{ t.slug }}">{{ t.term }}</a></li>{% endfor %}
-    </ul>
-  </nav>
 </section>
 
 <section class="sp-section">
@@ -63,6 +77,8 @@
 
   {% include "partials/_related_confirm.html" %}
 </section>
+</div>
+</div>
 
 {{ cta_mod.render(s.cta) }}
 {% endblock %}

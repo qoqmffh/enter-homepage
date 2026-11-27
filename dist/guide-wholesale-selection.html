@@ -65,14 +65,14 @@
 })();
 </script>
 
-<link rel="preload" href="static/fonts/pretendard/pretendard-subset.3e0fe017.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="static/fonts/pretendard/pretendard-subset.46d1e0a5.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 @font-face{
   font-family:'Pretendard Variable';
   font-style:normal;
   font-display:optional;
   font-weight:300 800;
-  src:url('static/fonts/pretendard/pretendard-subset.3e0fe017.woff2') format('woff2-variations');
+  src:url('static/fonts/pretendard/pretendard-subset.46d1e0a5.woff2') format('woff2-variations');
 }
 </style>
 
@@ -196,6 +196,8 @@
 
 
 <link rel="stylesheet" href="static/article.css?v=09f3cee3">
+<link rel="stylesheet" href="static/toc.css?v=0d8e9736">
+<script src="static/toc.js?v=9b6d8d0b" defer></script>
 
 <script type="application/ld+json">{
   "@context": "https://schema.org",
@@ -696,6 +698,42 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 <main>
 
+
+<div class="article-layout">
+<aside class="article-toc">
+  <details class="toc-collapse" open>
+    <summary class="toc-summary">목차 <span aria-hidden="true">▾</span></summary>
+    <div class="toc-body">
+      <nav aria-label="목차" data-toc-chapters>
+        <p class="toc-group-label">창업자 가이드</p>
+        <ul>
+          
+          <li><a href="/guide-dealer-vs-reseller">1장 · 판매점으로 시작하기</a></li>
+          
+          <li><a href="/guide-wholesale-selection" class="is-current">2장 · 도매 거래처 선정 기준</a></li>
+          
+          <li><a href="/guide-activation-prep">3장 · 개통 준비</a></li>
+          
+          <li><a href="/guide-store-setup">4장 · 매장 시설</a></li>
+          
+          <li><a href="/guide-opening-checklist">5장 · 개업 체크리스트</a></li>
+          
+        </ul>
+      </nav>
+      <nav aria-label="이 장의 소제목" data-toc-scrollspy>
+        <p class="toc-group-label">이 장</p>
+        <ul>
+          <li><a href="#도매-거래처는-무엇을-보고-고르나요">도매 거래처는 무엇을 보고 고르나요?</a></li>
+          
+          
+          <li><a href="#초보-창업자가-자주-하는-실수는">초보 창업자가 자주 하는 실수는?</a></li>
+          <li><a href="#이-단계에서-확인할-것은">이 단계에서 확인할 것은?</a></li>
+        </ul>
+      </nav>
+    </div>
+  </details>
+</aside>
+<div class="article-layout-main">
 <section class="post-head post-block">
   <div class="article-wrap">
     
@@ -714,7 +752,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 <section class="post-block">
   <div class="article-wrap">
-    <h2>도매 거래처는 무엇을 보고 고르나요?</h2>
+    <h2 id="도매-거래처는-무엇을-보고-고르나요">도매 거래처는 무엇을 보고 고르나요?</h2>
     <p>도매 공급처(<a href="/glossary#agency" class="glossary-term-link">대리점</a>·총판)마다 정책 <a href="/glossary#unit-price" class="glossary-term-link">단가</a>, <a href="/glossary#settlement" class="glossary-term-link">정산</a> 주기, 고객정보 보호 방식이 다릅니다.</p><p>매달 바뀌는 정책만 보고 거래처를 고르면, 정산이 밀리거나 정보가 새는 곳을 고를 위험이 있습니다.</p>
   </div>
 </section>
@@ -748,7 +786,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 <section class="post-block">
   <div class="article-wrap">
-    <h2>초보 창업자가 자주 하는 실수는?</h2>
+    <h2 id="초보-창업자가-자주-하는-실수는">초보 창업자가 자주 하는 실수는?</h2>
     <p>당장 눈앞의 정책 단가만 보고 거래처를 정하는 경우가 많습니다. 정책은 매일 바뀌지만, 정산일을 안 지키거나 고객정보 관리가 허술한 곳은 장기적으로 더 큰 손해로 이어집니다.</p>
   </div>
 </section>
@@ -757,7 +795,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 <section class="post-block">
   <div class="article-wrap">
-    <h2>이 단계에서 확인할 것은?</h2>
+    <h2 id="이-단계에서-확인할-것은">이 단계에서 확인할 것은?</h2>
     <ul class="doclist">
       <li data-reveal>정산일이 명확하고 실제로 지켜지는지 확인하기</li><li data-reveal>고객정보 보호 방식(마스킹 등)이 있는지 확인하기</li><li data-reveal>서류 없이 접수부터 시작할 수 있는지 확인하기 (초기 진입장벽)</li>
     </ul>
@@ -831,6 +869,8 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   </div>
 </section>
 
+</div>
+</div>
 
 </main>
 
