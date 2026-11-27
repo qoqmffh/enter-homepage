@@ -24,11 +24,11 @@
       }
     }
     document.documentElement.classList.add('ad-pending');
-    /* 모듈 로드·파싱 자체가 실패하는 경우(404, 문법 오류 등)의 최후 안전장치 —
-       static/home-ad.js가 정상 시작하면 즉시 clearTimeout으로 취소한다. */
-    window.__adHardTimeout = setTimeout(function () {
-      location.replace('{{ page_href("why") }}');
-    }, 8000);
+    /* 홈표준URL 정리 지시서(2026-11-24) §1 — 모듈 로드·파싱이 실패해도(404, 문법
+       오류 등) 더 이상 /why로 강제 이동하지 않는다. 구글 렌더러가 이 자동 리디렉션을
+       타면서 "/"와 "/why"를 같은 페이지로 합쳐버린 것으로 추정되기 때문이다. 실패
+       시에는 이미 화면에 떠 있는 정적 인트로(로고+부제)와 건너뛰기 버튼이 그대로
+       보이는 것으로 충분하다(둘 다 home-ad.js 없이도 서버 렌더 시점부터 DOM에 있음). */
   } catch (e) {}
 })();
 </script>

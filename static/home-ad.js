@@ -37,12 +37,7 @@
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var coarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
 
-  function cancelHardTimeout() {
-    if (window.__adHardTimeout) { clearTimeout(window.__adHardTimeout); window.__adHardTimeout = null; }
-  }
-
   function bailOut() {
-    cancelHardTimeout();
     location.replace('/why');
   }
 
@@ -645,7 +640,6 @@
   }
 
   // ================= 시작: 에셋(webp 5장 + 지도 json) + 폰트 로딩 후 첫 렌더 =================
-  cancelHardTimeout();
   size();
 
   var fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
