@@ -1,0 +1,40 @@
+/* Pretendard Variable 교체(swap) 시 CLS 방지용 메트릭 보정 폴백(속도 개선 지시서
+   2026-11-23 §2-①-3). 예전엔 local() 여러 개(맥·윈도우·안드로이드 폰트)를 한 @font-face
+   에 몰아 넣어서, 기기마다 실제로 잡히는 폰트가 다른데 보정값은 하나뿐이라 CLS가
+   그대로 높았다. 지금은 OS별로 @font-face를 따로 둬서 각자 실제 로컬 폰트에 맞는
+   값을 쓴다 — 기기에 없는 local()은 그냥 안 걸리고 다음 폰트로 넘어간다.
+
+   값 산출: size-adjust = (Pretendard ascent+descent)/(대상 폰트 ascent+descent)(둘 다
+   unitsPerEm으로 정규화), ascent/descent-override = Pretendard 값 ÷ size-adjust
+   (Fontaine 방식, 공개된 Apple SD Gothic Neo 값과 소수 둘째자리까지 교차검증함).
+   Pretendard 기준값(실제 파일에서 추출): ascent 1950, descent 494, lineGap 0, upm 2048.
+   - Windows: Malgun Gothic 실제 설치 파일(C:\Windows\Fonts\malgun.ttf)에서 직접 추출
+     (hhea ascent 2229 / descent 495, useTypoMetrics 꺼짐이라 hhea 값이 적용됨).
+   - macOS·iOS: Apple SD Gothic Neo — 라이선스상 파일을 구할 수 없어 공개 계산 사례의
+     ascent 1950/0.9996·descent 494/0.9996 역산 값을 그대로 썼다(교차검증됨).
+   - Android: Noto Sans KR — @capsizecss/metrics(Google 공식 수치) ascent 1160 / descent
+     288 / upm 1000. */
+@font-face {
+  font-family: 'Pretendard Fallback Win';
+  size-adjust: 89.72%;
+  ascent-override: 106.12%;
+  descent-override: 26.88%;
+  line-gap-override: 0%;
+  src: local('Malgun Gothic');
+}
+@font-face {
+  font-family: 'Pretendard Fallback Mac';
+  size-adjust: 99.96%;
+  ascent-override: 95.25%;
+  descent-override: 24.13%;
+  line-gap-override: 0%;
+  src: local('Apple SD Gothic Neo');
+}
+@font-face {
+  font-family: 'Pretendard Fallback Android';
+  size-adjust: 82.41%;
+  ascent-override: 115.53%;
+  descent-override: 29.27%;
+  line-gap-override: 0%;
+  src: local('Noto Sans KR');
+}
