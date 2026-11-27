@@ -595,45 +595,56 @@ def make_png_ignore_fn(static_dir, reference_text):
     return ignore
 
 
+def iter_header_menu_items(site):
+    """메뉴구조 개편 지시서(2026-11-27) §1 — header_menu가 드롭다운 그룹(type:
+    "group", items 배열)과 바로가기 링크(type: "link", 자기 자신이 item)가 섞여
+    있다. 둘 다 순회하며 (group_num_or_None, item) 쌍을 낸다."""
+    for entry in site["header_menu"]:
+        if entry.get("type") == "link":
+            yield None, entry
+        else:
+            for item in entry["items"]:
+                yield entry["num"], item
+
+
 def build_menu_summaries(site, pages, blog_posts):
     """메가 메뉴 초록 CTA 카드용 페이지 요약 — 지시서 2026-11-03.
     런타임에 다른 페이지를 불러오지 않도록 빌드 시점에 전부 미리 계산해서
     헤더 템플릿에 JSON으로 박아 넣는다(9개 항목 전부, 페이지 공통)."""
     summaries = {}
-    for group in site["header_menu"]:
-        for item in group["items"]:
-            slug = item["slug"]
-            page = pages[slug]
-            if slug == "why":
-                headline = page["poetic"]["hero"]["headline"]
-            else:
-                headline = page["sub"]["hero"]["headline"]
+    for group_num, item in iter_header_menu_items(site):
+        slug = item["slug"]
+        page = pages[slug]
+        if slug == "why":
+            headline = page["poetic"]["hero"]["headline"]
+        else:
+            headline = page["sub"]["hero"]["headline"]
 
-            numbers = None
-            special_text = None
-            if slug == "why":
-                numbers = [{"value": s["num"], "label": s["label"]} for s in page["poetic"]["stats"][:2]]
-            elif slug == "stories":
-                special_text = "거래처 대표님 인터뷰"
-            elif slug == "blog":
-                count = len(blog_posts["pages"])
-                numbers = [{"value": f"{count}편", "label": "발행된 글"}]
-            elif slug == "faq":
-                count = len(page["items"])
-                numbers = [{"value": f"{count}개", "label": "자주 묻는 질문"}]
-            elif slug == "glossary":
-                numbers = [{"value": "15개", "label": "유선 용어"}]
-            else:
-                facts = page["sub"]["proof"]["facts"][:2]
-                numbers = [{"value": f["value"], "label": f["label"]} for f in facts]
+        numbers = None
+        special_text = None
+        if slug == "why":
+            numbers = [{"value": s["num"], "label": s["label"]} for s in page["poetic"]["stats"][:2]]
+        elif slug == "stories":
+            special_text = "거래처 대표님 인터뷰"
+        elif slug == "blog":
+            count = len(blog_posts["pages"])
+            numbers = [{"value": f"{count}편", "label": "발행된 글"}]
+        elif slug == "faq":
+            count = len(page["items"])
+            numbers = [{"value": f"{count}개", "label": "자주 묻는 질문"}]
+        elif slug == "glossary":
+            numbers = [{"value": "15개", "label": "유선 용어"}]
+        else:
+            facts = page["sub"]["proof"]["facts"][:2]
+            numbers = [{"value": f["value"], "label": f["label"]} for f in facts]
 
-            summaries[slug] = {
-                "groupNum": group["num"],
-                "pageLabel": item["label"],
-                "headline": headline,
-                "numbers": numbers,
-                "specialText": special_text,
-            }
+        summaries[slug] = {
+            "groupNum": group_num,
+            "pageLabel": item["label"],
+            "headline": headline,
+            "numbers": numbers,
+            "specialText": special_text,
+        }
     return summaries
 
 
@@ -957,10 +968,9 @@ def main():
         "",
         "## 핵심 페이지",
     ]
-    for group in site["header_menu"]:
-        for item in group["items"]:
-            s = item["slug"]
-            llms_lines.append(f"- [{item['label']}]({page_url(s)}): {pages[s].get('meta_description', '')}")
+    for _group_num, item in iter_header_menu_items(site):
+        s = item["slug"]
+        llms_lines.append(f"- [{item['label']}]({page_url(s)}): {pages[s].get('meta_description', '')}")
 
     llms_lines += ["", "## 창업자 가이드"]
     for s, p in guide["pages"].items():

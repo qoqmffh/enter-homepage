@@ -3,8 +3,18 @@
    static/site.css + static/home-ad.css(광고 무대 투명/흰 글자 처리)가 참조하므로 유지한다.
    메가 패널/미리보기 전용 스타일은 static/megamenu.css, 동작은 static/megamenu.js. #}
 {# Jinja2는 {% for %} 안의 {% set %}이 바깥 스코프로 안 새어나간다 — namespace()로 우회. #}
+{# 메뉴구조 개편(2026-11-27) §1 — header_menu 항목은 드롭다운 그룹(items 배열)과
+   바로가기 링크(type: "link", 자기 slug가 바로 페이지)가 섞여 있다. 바로가기는
+   자기 slug를, 그룹은 그룹 num을 active 키로 쓴다(인디케이터·초록 글자가
+   data-group 속성 하나로 그룹/링크를 가리지 않고 동작하게). #}
 {% set ns = namespace(active_group=none) %}
-{% for g in site.header_menu %}{% for it in g['items'] %}{% if it.slug == slug %}{% set ns.active_group = g.num %}{% endif %}{% endfor %}{% endfor %}
+{% for g in site.header_menu %}
+  {% if g.type == 'link' %}
+    {% if g.slug == slug %}{% set ns.active_group = g.slug %}{% endif %}
+  {% else %}
+    {% for it in g['items'] %}{% if it.slug == slug %}{% set ns.active_group = g.num %}{% endif %}{% endfor %}
+  {% endif %}
+{% endfor %}
 <header class="hp-header" id="hpHeader">
   {# 체크박스는 .hp-nav-mobile과 같은 레벨(header의 직계 자식)에 있어야
      #hpNavToggle:checked ~ .hp-nav-mobile 형제 선택자가 동작한다. #}
@@ -29,10 +39,15 @@
        서버 렌더 기본값은 현재 페이지 그룹 — JS 없이도 올바른 그룹이 초록으로 보인다. #}
     <nav class="hp-nav" id="hpMegaNav" data-active-group="{{ ns.active_group or '' }}">
       {% for g in site.header_menu %}
-      <button type="button" class="hp-nav-group{% if g.num == ns.active_group %} active{% endif %}" data-group="{{ g.num }}" aria-expanded="false" aria-controls="hpMegaPanel">
-        <span class="hp-nav-group-num">{{ g.num }}</span>
-        <span class="hp-nav-group-label">{{ g.label }}</span>
-      </button>
+        {% if g.type == 'link' %}
+        <a href="{{ page_href(g.slug) }}" class="hp-nav-group hp-nav-group--link{% if g.slug == slug %} active{% endif %}" data-group="{{ g.slug }}">
+          <span class="hp-nav-group-label">{{ g.label }}</span>
+        </a>
+        {% else %}
+        <button type="button" class="hp-nav-group{% if g.num == ns.active_group %} active{% endif %}" data-group="{{ g.num }}" aria-expanded="false" aria-controls="hpMegaPanel">
+          <span class="hp-nav-group-label">{{ g.label }}</span>
+        </button>
+        {% endif %}
       {% endfor %}
       <span class="hp-nav-indicator" id="hpNavIndicator" aria-hidden="true"></span>
     </nav>
@@ -54,6 +69,7 @@
     <div class="hp-mega-inner">
       <div class="hp-mega-grid" id="hpMegaGrid">
         {% for g in site.header_menu %}
+        {% if g.type != 'link' %}
         <div class="hp-mega-col" data-col="{{ g.num }}">
           <div class="hp-mega-card">
             <div class="hp-mega-card-text">
@@ -71,6 +87,7 @@
             {% endfor %}
           </div>
         </div>
+        {% endif %}
         {% endfor %}
         <div class="hp-mega-col hp-mega-col--cta">
           <div class="hp-mega-cta">
@@ -93,15 +110,25 @@
   <script type="application/json" id="hpMegaSummaries">{{ menu_summaries | tojson }}</script>
   <script type="application/json" id="hpMegaCtaDefault">{{ {"title": site.header_menu_cta.title, "sub": site.header_menu_cta.sub} | tojson }}</script>
 
-  {# 모바일(1023px 이하) 메뉴 — 그룹 제목 아래 페이지 나열 #}
+  {# 모바일(1023px 이하) 메뉴(2026-11-27 개편) — 맨 위에 바로가기 3개를 큰 버튼형으로,
+     그 아래 회사소개·정보마당 묶음을 기존 방식대로. #}
   <nav class="hp-nav-mobile">
+    <div class="hp-nav-mobile-quicklinks">
+      {% for g in site.header_menu %}
+      {% if g.type == 'link' %}
+      <a href="{{ page_href(g.slug) }}" class="hp-nav-mobile-quicklink{% if g.slug == slug %} active{% endif %}">{{ g.label }}</a>
+      {% endif %}
+      {% endfor %}
+    </div>
     {% for g in site.header_menu %}
+    {% if g.type != 'link' %}
     <div class="hp-nav-mobile-group">
-      <p class="hp-nav-mobile-group-title">{{ g.num }} {{ g.label }}</p>
+      <p class="hp-nav-mobile-group-title">{{ g.label }}</p>
       {% for it in g['items'] %}
       <a href="{{ page_href(it.slug) }}"{% if it.slug == slug %} class="active"{% endif %}>{{ it.label }}</a>
       {% endfor %}
     </div>
+    {% endif %}
     {% endfor %}
     {% if slug == 'why' %}<a href="{{ page_href('index') }}?intro=1" class="hp-nav-mobile-sub">{{ site.ad_replay_label }}</a>{% endif %}
     <div class="hp-nav-mobile-cta">
