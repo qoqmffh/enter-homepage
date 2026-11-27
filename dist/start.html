@@ -11,6 +11,26 @@
 (function () {
   try {
     var p = new URLSearchParams(location.search);
+    if (p.has('exclude_me')) {
+      if (p.get('exclude_me') === '0') {
+        localStorage.removeItem('enter_exclude_me');
+      } else {
+        localStorage.setItem('enter_exclude_me', '1');
+      }
+    }
+    if (localStorage.getItem('enter_exclude_me') === '1') {
+      window.ENTER_EXCLUDED = true;
+      window['ga-disable-G-7ZSW55MY3H'] = true;
+    }
+  } catch (e) { /* 시크릿 모드 등 localStorage 차단 시 조용히 무시(제외 적용 안 됨) */ }
+})();
+</script>
+
+<script>
+(function () {
+  try {
+    if (window.ENTER_EXCLUDED) return; // 제외 IP 기능 보완 지시서(2026-11-27) §2 — 이 기기는 방문 기록도 안 보냄
+    var p = new URLSearchParams(location.search);
     var hasUtm = ['utm_source', 'utm_medium', 'utm_campaign'].some(function (k) { return p.has(k); });
     var isFirstPageOfSession = !sessionStorage.getItem('enter_visit_sent');
     if (hasUtm || !sessionStorage.getItem('enter_attribution')) {
@@ -65,14 +85,14 @@
 })();
 </script>
 
-<link rel="preload" href="static/fonts/pretendard/pretendard-subset.46d1e0a5.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="static/fonts/pretendard/pretendard-subset.3a90ef74.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 @font-face{
   font-family:'Pretendard Variable';
   font-style:normal;
   font-display:optional;
   font-weight:300 800;
-  src:url('static/fonts/pretendard/pretendard-subset.46d1e0a5.woff2') format('woff2-variations');
+  src:url('static/fonts/pretendard/pretendard-subset.3a90ef74.woff2') format('woff2-variations');
 }
 </style>
 

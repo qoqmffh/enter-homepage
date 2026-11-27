@@ -10,6 +10,30 @@
    정적 사이트 코드로 바꿀 수 없는 영역이라 완전히 없앨 수는 없다. #}
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
+{# 제외 IP 기능 보완 지시서(2026-11-27) §2 — ?exclude_me=1로 한 번 들어오면 이 브라우저
+   (기기)에 localStorage로 표시가 남아 이후 모든 방문에서 GA4 전송과 방문 기록 beacon을
+   둘 다 안 보낸다. ?exclude_me=0은 해제. GA4는 window['ga-disable-측정ID']를 true로
+   두면 gtag.js 자체가 아무 것도 전송하지 않는데, 그 변수는 gtag.js 스크립트 태그가
+   실행되기 전에 미리 있어야 하므로 <head> 맨 위, 아래 방문 기록 스크립트보다도 먼저
+   둔다(둘 다 이 블록 뒤라 ENTER_EXCLUDED를 그대로 읽을 수 있음). #}
+<script>
+(function () {
+  try {
+    var p = new URLSearchParams(location.search);
+    if (p.has('exclude_me')) {
+      if (p.get('exclude_me') === '0') {
+        localStorage.removeItem('enter_exclude_me');
+      } else {
+        localStorage.setItem('enter_exclude_me', '1');
+      }
+    }
+    if (localStorage.getItem('enter_exclude_me') === '1') {
+      window.ENTER_EXCLUDED = true;
+      {% if site.ga_id %}window['ga-disable-{{ site.ga_id }}'] = true;{% endif %}
+    }
+  } catch (e) { /* 시크릿 모드 등 localStorage 차단 시 조용히 무시(제외 적용 안 됨) */ }
+})();
+</script>
 {# 관리자 페이지 지시서(2026-11-24) §4-1 — 접수 폼에 실어 보낼 첫 유입 정보(처음
    들어온 페이지의 utm_*·리퍼러)를 세션 동안 기억한다. 이후 다른 페이지에서 신청해도
    처음 유입 기준으로 남게. sessionStorage라 탭을 닫으면 사라진다(의도된 동작).
@@ -23,6 +47,7 @@
 <script>
 (function () {
   try {
+    if (window.ENTER_EXCLUDED) return; // 제외 IP 기능 보완 지시서(2026-11-27) §2 — 이 기기는 방문 기록도 안 보냄
     var p = new URLSearchParams(location.search);
     var hasUtm = ['utm_source', 'utm_medium', 'utm_campaign'].some(function (k) { return p.has(k); });
     var isFirstPageOfSession = !sessionStorage.getItem('enter_visit_sent');
