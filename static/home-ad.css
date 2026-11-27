@@ -25,6 +25,79 @@ html.ad-pending .hp-ad-stage{ display:block; }
 .hp-ad-canvas{ position:absolute; inset:0; z-index:1; display:block; width:100%; height:100%; opacity:0; transition:opacity 1s ease; }
 .hp-ad-stage--film .hp-ad-canvas{ opacity:1; }
 
+/* ---------- §B-4 끝 장면 도달 뒤: 고정(fixed)에서 문서 흐름(relative)으로 ----------
+   스크롤 잠금은 html.ad-pending 제거로 풀리지만, .hp-ad-stage 자신이 계속 position:fixed
+   라면 스크롤해도 화면에 안 움직인다 — 이 클래스가 붙으면 보통 블록처럼 100vh를 차지하며
+   흐름에 들어가 아래 #why가 바로 이어 붙는다(지시서 "인트로 화면이 위로 밀려 올라가고"). */
+.hp-ad-stage--settled{ display:block !important; position:relative; inset:auto; height:100vh; width:100%; z-index:1; }
+/* .hp-ad-txt·.hp-ad-end·.hp-ad-foot는 시안4 기준 position:fixed(뷰포트 기준) — 재생 중엔
+   무대 자체가 position:fixed라 상관없었지만, settled 뒤 무대가 position:relative로
+   문서 흐름에 들어가면 이 자식들만 뷰포트에 그대로 붙어 있어 스크롤해도 안 움직이고
+   아래 #why 위에 겹쳐 보인다(2026-11-27 확인) — settled일 땐 무대 기준 absolute로. */
+.hp-ad-stage--settled .hp-ad-txt,
+.hp-ad-stage--settled .hp-ad-end,
+.hp-ad-stage--settled .hp-ad-foot{ position:absolute; }
+
+/* ---------- §B-1 로딩바 ---------- */
+.hp-ad-loading{
+  position:absolute; inset:0; z-index:10; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:18px; background:#FBF8F4;
+  transition:opacity .3s ease; opacity:1;
+}
+.hp-ad-loading--done{ opacity:0; pointer-events:none; }
+.hp-ad-loading-logo{ height:40px; width:auto; }
+.hp-ad-loading-bar{ width:240px; max-width:60vw; height:3px; border-radius:2px; background:rgba(31,26,23,.1); overflow:hidden; }
+.hp-ad-loading-bar-fill{ height:100%; width:0%; background:#E36B2C; transition:width .2s ease; }
+.hp-ad-loading-pct{ font-size:12px; font-variant-numeric:tabular-nums; color:#9A8E84; letter-spacing:.04em; }
+
+/* ---------- §B-2 reduced-motion: "인트로 보기" 버튼(정적 마지막 장면 위) ---------- */
+.hp-ad-watch-intro{
+  position:absolute; left:50%; bottom:96px; transform:translateX(-50%); z-index:4;
+  height:44px; padding:0 22px; border-radius:999px; border:1px solid rgba(31,26,23,.16);
+  background:#fff; color:#1F1A17; font-size:14px; font-weight:700; font-family:inherit;
+  cursor:pointer; display:none; align-items:center; gap:6px;
+}
+.hp-ad-watch-intro.is-visible{ display:inline-flex; }
+
+/* ---------- §B-4 "↺ 다시 보기"(끝 장면 버튼 아래, 작게) ---------- */
+.hp-ad-replay{
+  display:none; margin:14px auto 0; background:none; border:none; font-family:inherit;
+  font-size:13px; color:rgba(31,26,23,.55); cursor:pointer; padding:6px;
+}
+.hp-ad-replay:hover{ color:#1F1A17; }
+.hp-ad-stage--settled .hp-ad-replay{ display:block; }
+
+/* ---------- §B-3 장면 진행 막대 9칸 + 재생 조작 ---------- */
+.hp-ad-scenebar{
+  position:absolute; left:50%; bottom:76px; transform:translateX(-50%); z-index:4;
+  display:flex; gap:5px; width:min(72vw,340px);
+}
+.hp-ad-stage--settled .hp-ad-scenebar, .hp-ad-stage--settled .hp-ad-player-controls{ display:none; }
+.hp-ad-scenebar-seg{
+  flex:1; height:3px; border-radius:2px; background:rgba(31,26,23,.14);
+  border:none; padding:0; cursor:pointer; overflow:hidden;
+}
+.hp-ad-scenebar-fill{ display:block; height:100%; width:0%; background:#E36B2C; }
+.hp-ad-player-controls{
+  position:absolute; right:22px; bottom:52px; z-index:4;
+  display:flex; align-items:center; gap:14px;
+}
+.hp-ad-player-btn{
+  background:none; border:none; font-family:inherit; cursor:pointer; padding:4px;
+  color:rgba(31,26,23,.6); font-size:13px;
+}
+.hp-ad-player-btn:hover{ color:#1F1A17; }
+.hp-ad-player-btn--text{ font-weight:600; }
+
+/* ---------- §B-4 "↓ 내려서 더 보기"(끝 장면, 잠금 해제 뒤) ---------- */
+.hp-ad-more-hint{
+  position:absolute; left:50%; bottom:20px; transform:translateX(-50%); z-index:4;
+  font-size:12px; color:rgba(31,26,23,.5); opacity:0; transition:opacity .4s ease;
+  animation:hpAdMoreHintBob 1.8s ease-in-out infinite;
+}
+.hp-ad-more-hint--in{ opacity:1; }
+@keyframes hpAdMoreHintBob{ 0%,100%{ transform:translateX(-50%) translateY(0); } 50%{ transform:translateX(-50%) translateY(5px); } }
+
 /* ---------- 인트로 로고(효과 없음: 페이드인 -> 머묾 -> 페이드아웃), cream 배경용으로 재배색 ---------- */
 .hp-ad-intro{
   position:absolute; inset:0; z-index:5; display:flex; flex-direction:column;
@@ -129,6 +202,15 @@ html.ad-pending .hp-ad-stage{ display:block; }
   .hp-ad-scroll-hint-label--mouse{ display:none; }
   .hp-ad-scroll-hint-label--touch{ display:block; }
 }
+@media (max-width:767px){
+  /* 모바일은 아래쪽이 좁아 §3 UI·.hp-ad-foot(두 줄로 줄바꿈)·스크롤 안내가 한 자리에
+     겹쳤다(2026-11-27 확인) — 아래부터 foot · 재생 조작 · 장면 막대 · 스크롤 안내 순으로
+     층을 나눈다(이 규칙이 위 기본값보다 뒤에 와야 이긴다 — 같은 class 1개짜리 선택자라
+     @media만으로는 우선순위가 안 올라간다). */
+  .hp-ad-player-controls{ right:16px; bottom:72px; gap:10px; }
+  .hp-ad-scenebar{ bottom:104px; }
+  .hp-ad-scroll-hint{ bottom:136px; }
+}
 
 /* ---------- 막 걷힘: 주황 띠 와이프 3장 ---------- */
 .hp-ad-wipe{ position:absolute; inset:0; z-index:6; pointer-events:none; }
@@ -154,11 +236,20 @@ html.ad-pending .hp-ad-stage{ display:block; }
   .hp-ad-intro-logo{ height:56px; }
 }
 
-/* ---------- 안전장치 ----------
-   index.html의 동기 인라인 스크립트가 reduced-motion이면 ad-pending을 붙이기 전에
-   이미 why.html로 보낸다 — 아래는 혹시 모를 경우를 위한 2차 방어선일 뿐이다. */
+/* ---------- 모션 최소화(§B-2) ----------
+   인트로자동재생 지시서(2026-11-27 오후) §B-2 — reduced-motion이면 자동 재생하지 않고
+   마지막 장면(CTA)을 정적으로 보여준다(static/home-ad.js가 로딩이 끝나자마자 바로
+   settleAtEnd()를 불러 처리 — 더 이상 why로 리디렉션하지 않는다). 여기서는 점멸류
+   미세 애니메이션만 끈다. */
 @media (prefers-reduced-motion:reduce){
-  html.ad-pending .hp-ad-stage{ display:none !important; }
-  html.ad-pending body, html.ad-pending{ overflow:visible !important; height:auto !important; }
   .hp-ad-scroll-hint-dot{ animation:none; opacity:1; }
+  .hp-ad-more-hint{ animation:none; }
 }
+
+/* ---------- §B-4 끝 장면 도달 전(.hp-ad-pending)엔 플로팅 내비를 숨긴다 ----------
+   floatnav의 z-index(35)가 광고 무대(30)보다 높아 그대로 두면 재생 중에도 하단바·
+   우측 퀵메뉴가 캔버스 위에 겹쳐 보인다 — 그 자리는 이제 §B-3 재생 조작 UI가 쓴다.
+   잠금이 풀리면(ad-pending 제거) 다른 페이지와 똑같이 보인다. */
+html.ad-pending .fn-bottombar,
+html.ad-pending .fn-quickmenu,
+html.ad-pending .fn-consult{ display:none !important; }

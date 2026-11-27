@@ -2,15 +2,11 @@
    기준: 기획서/마케팅/클로드코드_인트로시안4적용_지시서_1120.md +
          기획서/마케팅/인트로시안/시안4/intro4.html("기준 구현" — 카메라 키프레임(KF)·장면
          타이밍·곡선·크기·문구는 대표가 하나하나 확인한 값이므로 임의로 바꾸지 않는다).
-   이전(시안3, 선화 스크롤 필름) 버전은 intro-v2-lineart 태그 +
-   자료/_backup/intro_v2_lineart_1120/에 백업되어 있다. 그 이전(파티클)은 intro-v1-particles.
-
-   스크롤 감각(대표 지적 사항) — "굴린 만큼만" 움직인다:
-   최소 재생 시간·속도 상한을 전부 없앴다. 휠 이벤트마다 목표 진행도(target)에 바로
-   더하고, 화면(P)은 매 프레임 P += (target-P)*0.18로만 따라간다. 입력이 쌓이지 않으므로
-   손을 떼면 금방(이론상 ~390ms, 0.18 수렴 특성) 멈춘다 — 기준 구현의 스크롤 공식과 동일.
-
-   reduced-motion 처리: 시안3 적용 때와 같은 방식(why.html로 즉시 리다이렉트) 유지. */
+   draw()/cam()/proj()/billboard() 등 "장면이 어떻게 그려지는가"는 시안4 포팅 이후 그대로다
+   — 인트로자동재생 지시서(2026-11-27 오후)로 바뀐 건 "누가 진행도(P)를 움직이느냐"
+   (스크롤/휠 입력 → 시간 기반 자동재생 스케줄)와 로딩·조작 UI·스크롤 잠금/해제뿐이다.
+   이전(시안3, 선화 스크롤 필름) 버전은 intro-v2-lineart 태그, 그 전(스크롤 입력판,
+   시안4 포팅~2026-11-27)은 intro-v3-scroll-driven 태그로 남겨 둔다. */
 
 (function () {
   'use strict';
@@ -34,20 +30,16 @@
 
   var params = new URLSearchParams(location.search);
   var forced = params.get('intro') === '1';
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reduce = html.classList.contains('ad-reduced-motion') && !forced;
   var coarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+  var returning = !forced && recentlySeen();
 
-  function bailOut() {
-    location.replace('/why');
-  }
-
-  if (reduce || (!forced && recentlySeen())) {
-    bailOut();
-    return;
-  }
   html.classList.add('ad-pending');
 
   // ================= DOM refs =================
+  var loadingEl = safeGet('[data-ad-loading]');
+  var loadingFill = safeGet('[data-ad-loading-fill]');
+  var loadingPct = safeGet('[data-ad-loading-pct]');
   var introEl = safeGet('[data-ad-intro]');
   var canvas = safeGet('[data-ad-canvas]');
   var txtRoot = safeGet('[data-ad-txt]');
@@ -57,16 +49,30 @@
   var hudEl = safeGet('[data-ad-hud]');
   var enterHomeBtn = safeGet('[data-ad-enter-home]');
   var ctaPrimaryBtn = safeGet('[data-ad-cta-primary]');
-  var skipBtn = safeGet('[data-ad-skip]');
+  var replayBtn = safeGet('[data-ad-replay]');
+  var watchIntroBtn = safeGet('[data-ad-watch-intro]');
   var scrollHint = safeGet('[data-ad-scroll-hint]');
+  var moreHint = safeGet('[data-ad-more-hint]');
+  var sceneBar = safeGet('[data-ad-scenebar]');
+  var sceneBtns = Array.prototype.slice.call(stage.querySelectorAll('[data-ad-scene-btn]'));
+  var sceneFills = Array.prototype.slice.call(stage.querySelectorAll('[data-ad-scene-fill]'));
+  var playerControls = safeGet('[data-ad-player-controls]');
+  var playPauseBtn = safeGet('[data-ad-playpause]');
+  var skipEndBtn = safeGet('[data-ad-skip-end]');
   var wipeLayers = Array.prototype.slice.call(stage.querySelectorAll('.hp-ad-wipe-layer'));
+  var whyEl = document.getElementById('why');
 
   var copyEl = document.getElementById('hp-ad-copy');
   var COPY = {};
   try { COPY = JSON.parse(copyEl.textContent); } catch (e) {}
 
+  function track(name, data) {
+    if (window.ENTER_TRACK) { try { window.ENTER_TRACK(name, data || {}); } catch (e) {} }
+  }
+
   // ================= 상태 =================
-  var introDone = false;
+  var introDone = false; // 로고 인트로(효과 없음)까지 끝나고 장면 재생이 시작됐는가
+  var settled = false;   // 마지막 장면에 도달해 스크롤 잠금이 풀렸는가(§B-4)
   var transitioning = false;
 
   function clamp01(v) { return Math.max(0, Math.min(1, v)); }
@@ -481,30 +487,270 @@
       hudEl.innerHTML = p < .9 ? ('<b>' + String(scn).padStart(2, '0') + '</b> / 09') : '';
     }
     // 스크롤 안내: 1장면(p<.1)에서만, intro 끝난 뒤부터
-    if (scrollHint) scrollHint.classList.toggle('hp-ad-scroll-hint--in', introDone && p < .1);
+    if (scrollHint) scrollHint.classList.toggle('hp-ad-scroll-hint--in', introDone && p < .1 && !settled);
+    updatePlayerUI(p);
   }
 
-  // ================= 재생 루프: "굴린 만큼만" — 입력을 쌓지 않는다 =================
-  // target: 휠/터치/키보드가 바로 더하는 목표 진행도. P: 화면에 그리는 값, 매 프레임
-  // target을 18%씩 따라간다(최소재생시간·속도상한 없음 — 기준 구현과 같은 공식).
-  var target = 0, P = 0, raf = null;
-  function tick() {
-    var dm = Math.abs(MX - mx) + Math.abs(MY - my);
-    mx += (MX - mx) * .06; my += (MY - my) * .06;
-    var moving = Math.abs(target - P) > 1e-5 || dm > 1e-4;
-    if (moving) {
-      draw(P + (target - P) * .14);
-      raf = requestAnimationFrame(tick);
-    } else {
-      P = target; draw(P);
-      raf = null; // 진행도·마우스 둘 다 멈추면 rAF도 멈춘다
+  // ================= §B-3 장면 진행 막대·HUD =================
+  function updatePlayerUI(p) {
+    if (!sceneBar) return;
+    var scene = Math.min(8, Math.floor(p * 10 + 1e-6));
+    for (var i = 0; i < sceneFills.length; i++) {
+      var frac = i < scene ? 1 : (i === scene ? clamp01((p - i * .1) / .1) : 0);
+      sceneFills[i].style.width = (frac * 100) + '%';
     }
   }
-  function startLoop() {
-    if (raf) return;
+
+  // ================= 재생: 시간 기반 자동 스케줄(§B-2) =================
+  // target: 지금 재생이 노리는 진행도. P: 캔버스에 실제로 그리는 값(target을 바로 따라간다
+  // — 자동재생은 입력을 "쌓을" 필요가 없어 지시서의 "굴린 만큼만" lerp는 더 이상 안 쓴다).
+  // SCHEDULE: 9개 멈춤점(장면마다 문구가 다 찬 자리)까지 이동(1.4s)+멈춤(1.8s)을 반복하고,
+  // 마지막엔 끝 장면(p=1)까지 한 번 더 이동한다 — 9*1.8 + 10*1.4 = 30.2s(지시서 "약 30초").
+  var STOPS = [0.082, 0.182, 0.282, 0.382, 0.482, 0.582, 0.682, 0.782, 0.882];
+  var MOVE_MS = 1400, HOLD_MS = 1800;
+  var schedule = [];
+  (function buildSchedule() {
+    var from = 0;
+    for (var i = 0; i < STOPS.length; i++) {
+      schedule.push({ type: 'move', from: from, to: STOPS[i], dur: MOVE_MS });
+      schedule.push({ type: 'hold', at: STOPS[i], dur: HOLD_MS });
+      from = STOPS[i];
+    }
+    schedule.push({ type: 'move', from: from, to: 1, dur: MOVE_MS });
+  })();
+
+  var target = 0, P = 0, raf = null;
+  var playing = false, paused = false;
+  var stepIndex = 0, stepStartAt = 0, stepElapsed = 0; // stepElapsed: 일시정지 동안 누적해 재생 지점 유지
+  var seenScenes = {};
+
+  function stepDuration() {
+    var step = schedule[stepIndex];
+    return step ? (step.dur || 0) : 0;
+  }
+
+  function applyStep(now) {
+    var step = schedule[stepIndex];
+    if (!step) { settleAtEnd(); return; }
+    var elapsed = stepElapsed + (now - stepStartAt);
+    var dur = step.dur || 1;
+    var t = clamp01(elapsed / dur);
+    if (step.type === 'move') {
+      target = lerp(step.from, step.to, io(t));
+    } else {
+      target = step.at;
+    }
+    draw(target);
+    maybeFireSceneEvent(target);
+    if (t >= 1) {
+      stepIndex++;
+      stepStartAt = now;
+      stepElapsed = 0;
+      if (stepIndex >= schedule.length) { settleAtEnd(); return; }
+    }
+    if (playing && !paused) raf = requestAnimationFrame(tick);
+  }
+  function tick(now) { applyStep(now); }
+
+  function maybeFireSceneEvent(p) {
+    var scene = Math.floor(p * 10 + 1e-6);
+    if (scene >= 0 && scene <= 8 && !seenScenes[scene] && p >= scene * .1 + .008) {
+      seenScenes[scene] = true;
+      track('intro_scene', { scene: scene + 1 });
+    }
+  }
+
+  function startAutoplay() {
+    playing = true; paused = false;
+    stepIndex = 0; stepStartAt = performance.now(); stepElapsed = 0;
+    setPlayPauseUI();
     raf = requestAnimationFrame(tick);
   }
-  function stopLoop() { if (raf) { cancelAnimationFrame(raf); raf = null; } }
+  function pauseAutoplay(manual) {
+    if (!playing || paused) return;
+    paused = true;
+    stepElapsed += performance.now() - stepStartAt;
+    if (raf) { cancelAnimationFrame(raf); raf = null; }
+    setPlayPauseUI();
+    if (manual) track('intro_pause', {});
+  }
+  function resumeAutoplay() {
+    if (!playing || !paused || settled) return;
+    paused = false;
+    stepStartAt = performance.now();
+    setPlayPauseUI();
+    raf = requestAnimationFrame(tick);
+  }
+  function setPlayPauseUI() {
+    if (!playPauseBtn) return;
+    playPauseBtn.textContent = paused ? '▶' : '❚❚';
+    playPauseBtn.setAttribute('aria-label', paused ? '재생' : '일시정지');
+  }
+
+  // 장면 막대 클릭/건너뛰기/키보드·휠·스와이프 = 그 장면(또는 다음/이전 장면)으로 바로 이동.
+  // STOPS[i]는 schedule의 (i*2+1)번째 항목("hold", 그 장면 멈춤점)과 정확히 같은 값이라
+  // 원본 schedule을 건드리지 않고도(가변 상태 없이) 그 자리부터 자동재생을 자연스럽게
+  // 이어갈 수 있다 — 사용자가 고른 지점이므로 "이동 1.4초" 연출 없이 즉시 이동한다.
+  function currentSceneIndex() {
+    return Math.min(8, Math.max(0, Math.floor(target * 10 + 1e-6)));
+  }
+  function jumpToStop(i) {
+    if (i > 8) { goToEnd(false); return; }
+    i = Math.max(0, Math.min(8, i));
+    var p = STOPS[i];
+    target = p; draw(p); maybeFireSceneEvent(p);
+    stepIndex = i * 2 + 1;
+    stepStartAt = performance.now(); stepElapsed = 0;
+    playing = true;
+    if (!paused) { if (raf) cancelAnimationFrame(raf); raf = requestAnimationFrame(tick); }
+  }
+  function jumpScene(dir) { jumpToStop(currentSceneIndex() + dir); }
+
+  function goToEnd(isSkip) {
+    if (playing) { if (raf) cancelAnimationFrame(raf); raf = null; }
+    target = 1; draw(1);
+    if (isSkip) track('intro_skip', {});
+    settleAtEnd(isSkip);
+  }
+
+  // ================= §B-4 스크롤 잠금 해제 + 와이프 전환 =================
+  function settleAtEnd(viaSkip) {
+    if (settled) return;
+    settled = true;
+    playing = false; paused = false;
+    if (raf) { cancelAnimationFrame(raf); raf = null; }
+    target = 1; draw(1);
+    detachPlaybackInput();
+    html.classList.remove('ad-pending');
+    stage.classList.add('hp-ad-stage--settled');
+    // 로딩바·로고 인트로가 아직 안 끝난 채로(예: 장면 막대를 아주 빨리 조작) 끝 장면에
+    // 먼저 닿는 경우를 대비한 방어 — 둘 다 확실히 치운다(안 그러면 끝 장면 위에
+    // 겹쳐 보인다).
+    hideLoading();
+    introEl.classList.add('hp-ad-intro--done');
+    stage.classList.add('hp-ad-stage--film');
+    markSeen();
+    // 건너뛰기는 intro_skip으로 따로 세므로 완주(intro_complete)에 또 안 겹친다.
+    if (!viaSkip) track('intro_complete', {});
+    loadWhyBundle();
+    showMoreHintUntilScroll();
+  }
+
+  function showMoreHintUntilScroll() {
+    if (!moreHint) return;
+    moreHint.classList.add('hp-ad-more-hint--in');
+    var onScroll = function () {
+      moreHint.classList.remove('hp-ad-more-hint--in');
+      window.removeEventListener('scroll', onScroll);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  var whyBundleLoaded = false;
+  function loadWhyBundle() {
+    // §B-4 "인트로가 끝난 뒤에 초기화" — why 섹션의 리빌·캐러셀·차트·trail 스크립트는
+    // 재생 중엔 아예 안 받다가(메인 스레드 안 나눠 씀), 끝난 뒤 한 번만 끼워 넣는다.
+    if (whyBundleLoaded) return;
+    whyBundleLoaded = true;
+    var hrefsEl = document.getElementById('hp-why-bundle-hrefs');
+    var hrefs = {};
+    try { hrefs = JSON.parse(hrefsEl.textContent); } catch (e) {}
+    if (hrefs.css) {
+      var link = document.createElement('link');
+      link.rel = 'stylesheet'; link.href = hrefs.css;
+      document.head.appendChild(link);
+    }
+    if (hrefs.js) {
+      var script = document.createElement('script');
+      script.src = hrefs.js; script.defer = true;
+      document.head.appendChild(script);
+    }
+  }
+
+  // 와이프(주황 띠)로 화면을 덮은 채 #why로 스크롤 이동시키고 다시 걷는다 — 같은 페이지
+  // 안이라 지시서의 "체감은 지금과 동일"을 그대로 만족한다(예전엔 페이지 이동 뒤
+  // wipe-reveal.js가 반대쪽에서 같은 띠를 걷어냈는데, 이제 한 자리에서 다 한다).
+  function wipeToWhy() {
+    if (transitioning) return;
+    transitioning = true;
+    if (!settled) goToEnd(false);
+
+    wipeLayers.forEach(function (layer, i) {
+      setTimeout(function () {
+        layer.style.transition = 'transform .36s cubic-bezier(.7,0,.3,1)';
+        layer.style.transform = 'translateX(0)';
+      }, i * 60);
+    });
+
+    setTimeout(function () {
+      if (whyEl) whyEl.scrollIntoView({ behavior: 'instant' in document.documentElement.style ? 'instant' : 'auto', block: 'start' });
+    }, 260);
+
+    setTimeout(function () {
+      wipeLayers.forEach(function (layer, i) {
+        setTimeout(function () {
+          layer.style.transition = 'transform .5s cubic-bezier(.7,0,.3,1)';
+          layer.style.transform = 'translateX(100%)';
+        }, i * 60);
+      });
+    }, 340);
+
+    setTimeout(function () {
+      transitioning = false;
+      wipeLayers.forEach(function (layer) { layer.style.transition = ''; layer.style.transform = 'translateX(-100%)'; });
+    }, 900);
+  }
+
+  // "다시 보기" — 맨 위로 올라가 처음부터 자동 재생을 다시 시작한다.
+  function replayIntro() {
+    window.scrollTo({ top: 0, behavior: 'auto' });
+    settled = false;
+    stage.classList.remove('hp-ad-stage--settled');
+    html.classList.add('ad-pending');
+    seenScenes = {};
+    attachPlaybackInput();
+    startAutoplay();
+  }
+
+  // ================= 입력: 자동재생 중엔 휠·스와이프·키보드 = "다음/이전 장면으로" =================
+  var touchY = 0;
+  function onWheel(e) {
+    if (!introDone || settled || transitioning) return;
+    e.preventDefault();
+    jumpScene(e.deltaY > 0 ? 1 : -1);
+  }
+  // e.touches가 비어 있을 수 있는 경우(손가락을 떼는 순간의 touchend 직전 touchmove,
+  // 멀티터치 해제 등)를 방어한다 — 실기기·헤드리스 모바일 모두에서 실제로 발생 확인(2026-11-27).
+  function onTouchStart(e) { if (e.touches.length) touchY = e.touches[0].clientY; }
+  function onTouchMove(e) {
+    if (!introDone || settled || transitioning || !e.touches.length) return;
+    e.preventDefault();
+    var y = e.touches[0].clientY;
+    var dy = touchY - y;
+    if (Math.abs(dy) < 24) return; // 스와이프로 인정할 최소 이동량
+    touchY = y;
+    jumpScene(dy > 0 ? 1 : -1);
+  }
+  function onKey(e) {
+    if (!introDone || settled || transitioning) return;
+    if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') { jumpScene(1); e.preventDefault(); }
+    else if (e.key === 'ArrowUp' || e.key === 'PageUp') { jumpScene(-1); e.preventDefault(); }
+  }
+  function attachPlaybackInput() {
+    window.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: false });
+    window.addEventListener('keydown', onKey);
+    if (!coarsePointer) window.addEventListener('mousemove', onMouseMove);
+  }
+  function detachPlaybackInput() {
+    window.removeEventListener('wheel', onWheel);
+    window.removeEventListener('touchstart', onTouchStart);
+    window.removeEventListener('touchmove', onTouchMove);
+    window.removeEventListener('keydown', onKey);
+    window.removeEventListener('mousemove', onMouseMove);
+  }
+  function startLoop() { if (!raf && playing && !paused) raf = requestAnimationFrame(tick); }
 
   var resizeTimer = null;
   function onResize() {
@@ -513,170 +759,196 @@
   }
   window.addEventListener('resize', onResize);
 
-  // ================= 입력: "굴린 만큼만" — 휠/터치 같은 계수(/14000), 쌓이지 않음 =================
-  // 대표 요청(2026-11-20): 휠 한 칸에 진행되는 양을 절반으로(/14000 -> /28000) 줄여 천천히,
-  // 그리고 장면마다 문구·숫자가 다 찬 지점(멈춤점)에서는 휠을 3~4번(420) 더 굴려야 넘어간다.
-  var BASE = 28000, DETENT = 420;
-  var STOPS = [0.082, 0.182, 0.282, 0.382, 0.482, 0.582, 0.682, 0.782, 0.882];
-  var hold = -1, holdDir = 0, holdAcc = 0;
-  function advance(d) {
-    if (!d) return;
-    var dir = d > 0 ? 1 : -1;
-    if (hold >= 0) {
-      if (dir !== holdDir) { hold = -1; holdAcc = 0; }
-      else {
-        holdAcc += Math.abs(d);
-        if (holdAcc < DETENT) return;
-        var rest = holdAcc - DETENT; hold = -1; holdAcc = 0;
-        target = clamp01(target + dir * rest / BASE);
-        return;
-      }
+  // 탭이 숨겨지면 일시정지, 돌아오면 이어서(§B-2) — 사용자가 직접 멈춘 상태(paused)는
+  // 탭이 돌아와도 그대로 멈춰 둔다(의도와 다르게 저절로 재생되면 안 됨).
+  var pausedByVisibility = false;
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
+      if (playing && !paused) { pauseAutoplay(false); pausedByVisibility = true; }
+    } else if (pausedByVisibility) {
+      pausedByVisibility = false;
+      resumeAutoplay();
     }
-    var nt = clamp01(target + d / BASE);
-    for (var i = 0; i < STOPS.length; i++) {
-      var s = STOPS[i];
-      if ((dir > 0 && target < s - 1e-6 && nt >= s) || (dir < 0 && target > s + 1e-6 && nt <= s)) {
-        target = s; hold = s; holdDir = dir; holdAcc = Math.abs(nt - s) * BASE;
-        if (holdAcc >= DETENT) { var r = holdAcc - DETENT; hold = -1; holdAcc = 0; target = clamp01(s + dir * r / BASE); }
-        return;
-      }
-    }
-    target = nt;
+  });
+
+  if (playPauseBtn) {
+    playPauseBtn.addEventListener('click', function () {
+      if (paused) resumeAutoplay(); else pauseAutoplay(true);
+    });
   }
-  var touchY = 0;
-  function onWheel(e) {
-    e.preventDefault();
-    if (!introDone || transitioning) return;
-    var d = e.deltaY;
-    if (e.deltaMode === 1) d *= 16;
-    d = Math.max(-120, Math.min(120, d));
-    advance(d);
-    startLoop();
+  if (skipEndBtn) skipEndBtn.addEventListener('click', function () { goToEnd(true); });
+  sceneBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      jumpToStop(parseInt(btn.getAttribute('data-ad-scene-btn'), 10));
+    });
+  });
+
+  if (enterHomeBtn) {
+    enterHomeBtn.addEventListener('click', function () {
+      track('intro_cta', { button: 'home' });
+      wipeToWhy();
+    });
   }
-  function onTouchStart(e) { touchY = e.touches[0].clientY; }
-  function onTouchMove(e) {
-    e.preventDefault();
-    if (!introDone || transitioning) return;
-    var y = e.touches[0].clientY;
-    var dy = touchY - y;
-    touchY = y;
-    advance(dy);
-    startLoop();
+  if (ctaPrimaryBtn) {
+    ctaPrimaryBtn.addEventListener('click', function (e) {
+      if (ctaPrimaryBtn.getAttribute('href') === '#') e.preventDefault();
+      track('intro_cta', { button: 'kakao' });
+    });
   }
-  function jumpScene(dir) {
-    var idx = target * 10;
-    var newIdx = dir > 0 ? Math.floor(idx + 1e-6) + 1 : Math.ceil(idx - 1e-6) - 1;
-    target = clamp01(Math.round(newIdx) / 10);
-    startLoop();
-  }
-  function onKey(e) {
-    if (!introDone || transitioning) return;
-    if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') { jumpScene(1); e.preventDefault(); }
-    else if (e.key === 'ArrowUp' || e.key === 'PageUp') { jumpScene(-1); e.preventDefault(); }
-  }
-  function attachInput() {
-    window.addEventListener('wheel', onWheel, { passive: false });
-    window.addEventListener('touchstart', onTouchStart, { passive: true });
-    window.addEventListener('touchmove', onTouchMove, { passive: false });
-    window.addEventListener('keydown', onKey);
-    if (!coarsePointer) window.addEventListener('mousemove', onMouseMove);
-  }
-  function detachInput() {
-    window.removeEventListener('wheel', onWheel);
-    window.removeEventListener('touchstart', onTouchStart);
-    window.removeEventListener('touchmove', onTouchMove);
-    window.removeEventListener('keydown', onKey);
-    window.removeEventListener('mousemove', onMouseMove);
+  if (replayBtn) replayBtn.addEventListener('click', replayIntro);
+  if (watchIntroBtn) {
+    watchIntroBtn.addEventListener('click', function () {
+      // 명시적으로 누른 것이므로 reduced-motion 설정을 이 세션에서만 넘어간다(§B-2
+      // "원하면 누르는 버튼" — 다시 보기를 눌러도 또 정적으로 돌아가면 안 된다).
+      reduce = false;
+      watchIntroBtn.classList.remove('is-visible');
+      html.classList.add('ad-pending');
+      stage.classList.remove('hp-ad-stage--settled');
+      settled = false;
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      attachPlaybackInput();
+      playIntroSequence(0.3);
+    });
   }
 
-  // ================= 인트로(자동재생, 효과 없음) =================
-  function playIntro() {
-    attachInput();
+  // ================= §B-1 로딩바 =================
+  var LOAD_MIN_MS = returning ? 0 : 600, LOAD_MAX_MS = 8000;
+  var loadTasksTotal = names.length + 2; // 이미지 5장 + grid.json + 폰트
+  var loadTasksDone = 0;
+  function bumpLoad() {
+    loadTasksDone++;
+    var pct = Math.round(clamp01(loadTasksDone / loadTasksTotal) * 100);
+    if (loadingFill) loadingFill.style.width = pct + '%';
+    if (loadingPct) loadingPct.textContent = pct + '%';
+  }
+  function hideLoading() {
+    if (!loadingEl) return;
+    loadingEl.classList.add('hp-ad-loading--done');
+  }
+
+  // ================= 인트로(로고, 효과 없음) -> 자동 재생 시작 =================
+  // introMs: 로고를 보여 주는 길이. 재방문(returning)이면 0.3초로 짧게(§B-1), 처음이면
+  // 기존 타이밍(700+1100+700+1000ms) 그대로.
+  function playIntroSequence(shortMs) {
+    attachPlaybackInput();
+    var fadeIn = shortMs ? 150 : 700, hold = shortMs ? 0 : 1100, fadeOut = shortMs ? 150 : 700, settle = shortMs ? 0 : 1000;
     requestAnimationFrame(function () { introEl.classList.add('hp-ad-intro--in'); });
     setTimeout(function () {
       introEl.classList.remove('hp-ad-intro--in');
       introEl.classList.add('hp-ad-intro--out');
-    }, 700 + 1100);
+    }, fadeIn + hold);
     setTimeout(function () {
       introEl.classList.add('hp-ad-intro--done');
       stage.classList.add('hp-ad-stage--film');
-    }, 700 + 1100 + 700);
+    }, fadeIn + hold + fadeOut);
     setTimeout(function () {
       introDone = true;
-    }, 700 + 1100 + 700 + 1000);
+      if (reduce) {
+        goToEnd(false);
+        if (watchIntroBtn) watchIntroBtn.classList.add('is-visible');
+      } else {
+        startAutoplay();
+      }
+    }, fadeIn + hold + fadeOut + settle);
   }
 
   function stopCanvas() {
-    stopLoop();
+    if (raf) { cancelAnimationFrame(raf); raf = null; }
     clearTimeout(resizeTimer);
   }
-
-  function beginTransition() {
-    if (transitioning) return;
-    transitioning = true;
-    detachInput();
-    markSeen();
-
-    wipeLayers.forEach(function (layer, i) {
-      setTimeout(function () {
-        layer.style.transition = 'transform .72s cubic-bezier(.7,0,.3,1)';
-        layer.style.transform = 'translateX(0)';
-      }, i * 80);
-    });
-
-    setTimeout(function () {
-      stopCanvas();
-      location.href = '/why#from-ad';
-    }, 900);
-  }
-
-  if (skipBtn) skipBtn.addEventListener('click', beginTransition);
-  if (enterHomeBtn) enterHomeBtn.addEventListener('click', beginTransition);
-  if (ctaPrimaryBtn) {
-    ctaPrimaryBtn.addEventListener('click', function (e) {
-      if (ctaPrimaryBtn.getAttribute('href') === '#') e.preventDefault();
-      beginTransition();
-    });
-  }
+  window.addEventListener('pagehide', stopCanvas);
 
   // ================= 시작: 에셋(webp 5장 + 지도 json) + 폰트 로딩 후 첫 렌더 =================
   size();
+  var loadStartedAt = performance.now();
 
   var fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
 
-  Promise.all([
-    Promise.all(names.map(loadImage)),
+  var assetsPromise = Promise.all([
+    Promise.all(names.map(function (n) { return loadImage(n).then(bumpLoad); })),
     fetch('static/intro/korea-grid.json').then(function (r) {
       if (!r.ok) throw new Error('korea-grid fetch failed');
       return r.json();
-    }),
-    fontsReady
-  ])
-    .then(function (results) {
-      var gridData = results[1];
-      hub = gridData.hub;
-      GRID = gridData.grid;
-      city = gridData.city;
-      LINKS = gridData.links.map(function (l) {
-        return { pts: arcPts(l.a, l.b, l.lift, l.n), main: l.main };
-      });
+    }).then(function (data) { bumpLoad(); return data; }),
+    fontsReady.then(bumpLoad)
+  ]);
+
+  function installDebugHooks() {
+    /* 검증용 훅(기준 구현 intro4.html의 window.render처럼) — 정확한 진행도로 캡처해
+       시안과 비교할 때만 쓴다. 평소 사용자 흐름에는 전혀 관여하지 않는다. */
+    window.__adSetProgress = function (p) {
+      introEl.classList.remove('hp-ad-intro--in', 'hp-ad-intro--out');
+      introEl.classList.add('hp-ad-intro--done');
+      stage.classList.add('hp-ad-stage--film');
+      introDone = true; target = p; P = p; draw(p);
+    };
+    window.__adDebugP = function () { return P; };
+    window.__adDebugTarget = function () { return target; };
+    window.__adDebugState = function () { return { introDone: introDone, playing: playing, paused: paused, settled: settled, stepIndex: stepIndex, hub: !!hub }; };
+  }
+
+  function proceedToIntro() {
+    var elapsed = performance.now() - loadStartedAt;
+    var wait = Math.max(0, LOAD_MIN_MS - elapsed);
+    setTimeout(function () {
+      hideLoading();
       buildKF();
       draw(0);
-      playIntro();
-      /* 검증용 훅(기준 구현 intro4.html의 window.render처럼) — 정확한 진행도로 캡처해
-         시안과 비교할 때만 쓴다. 평소 사용자 흐름에는 전혀 관여하지 않는다. */
-      window.__adSetProgress = function (p) {
-        introEl.classList.remove('hp-ad-intro--in', 'hp-ad-intro--out');
-        introEl.classList.add('hp-ad-intro--done');
-        stage.classList.add('hp-ad-stage--film');
-        introDone = true; target = p; P = p; draw(p);
-      };
-      /* 검증용 훅: 현재 화면 진행도(P)·목표 진행도(target)를 읽기만 한다(스크롤 감각
-         수치 검증용, §3-2). 쓰기는 하지 않으므로 평소 흐름에 관여하지 않는다. */
-      window.__adDebugP = function () { return P; };
-      window.__adDebugTarget = function () { return target; };
+      installDebugHooks();
+      setTimeout(function () { playIntroSequence(returning ? 0.3 : 0); }, 300);
+    }, wait);
+  }
+
+  var settledBeforeLoad = false;
+  Promise.race([
+    assetsPromise.then(function (results) { return { ok: true, grid: results[1] }; }),
+    new Promise(function (resolve) { setTimeout(resolve, LOAD_MAX_MS); }).then(function () { return { ok: false }; })
+  ])
+    .then(function (result) {
+      track('intro_load_ms', { ms: Math.round(performance.now() - loadStartedAt) });
+      if (result.ok) applyLoadedData(result.grid);
+      if (!hub) {
+        // 8초가 지나도 지도 데이터(grid.json)를 못 받았다 — 더 기다리지 않는다(리디렉션
+        // 금지, §B-1). 뒤늦게 도착하면 배경에서 계속 그릴 준비만 해 두고(§3 참고), 지금은
+        // 보여줄 캔버스가 없으니 자리를 접어 바로 아래 왜 ENTER 본문부터 보이게 한다.
+        assetsPromise.then(function (results) {
+          if (settledBeforeLoad) return;
+          applyLoadedData(results[1]);
+          if (hub) { buildKF(); draw(target); }
+        }).catch(function () {});
+        settledBeforeLoad = true;
+        forceSettleBroken();
+        return;
+      }
+      proceedToIntro();
     })
     .catch(function () {
-      bailOut();
+      settledBeforeLoad = true;
+      forceSettleBroken();
     });
+
+  function applyLoadedData(gridData) {
+    if (!gridData || hub) return;
+    hub = gridData.hub;
+    GRID = gridData.grid;
+    city = gridData.city;
+    LINKS = gridData.links.map(function (l) {
+      return { pts: arcPts(l.a, l.b, l.lift, l.n), main: l.main };
+    });
+    // hub가 서자마자 바로 짓는다 — draw()는 hub만 보고 cam()을 부르는데, cam()은 KF가
+    // 비어 있으면 KF[0]이 undefined라 그 안의 a[0]에서 죽는다. hub를 세운 뒤(여기) 실제
+    // 재생 시작(proceedToIntro, 최소 표시 시간만큼 늦게 옴) 사이에 리사이즈 한 번만
+    // 끼어도(onResize가 바로 draw(P)를 부름) 재현되는 걸 확인했다(2026-11-27) — 그 틈을
+    // 아예 없앤다.
+    buildKF();
+  }
+
+  // 자산을 끝내 못 받은 극히 드문 경우(404 등 진짜 실패) — 지시서(§B-1) "리디렉션 금지"를
+  // 그대로 지켜 어디로도 보내지 않는다. 더 보여줄 캔버스가 없으니 그 자리를 접어 두고
+  // (스크롤 잠금도 풀어) 바로 아래 왜 ENTER 본문부터 보이게 한다.
+  function forceSettleBroken() {
+    hideLoading();
+    html.classList.remove('ad-pending');
+    stage.style.display = 'none';
+  }
 })();

@@ -1,39 +1,48 @@
 {% extends "base.html" %}
+{% import "_poetic_macros.html" as m %}
+{% import "partials/confirm_box.html" as confirm_mod %}
+{% import "partials/voices_carousel.html" as voices_mod %}
 
 {% block extra_head %}
 <script>
 (function () {
-  /* 기획서/클로드코드_홈_왜ENTER_구조변경_지시서.md §2 — index.html은 광고만 남는다.
-     광고를 안 틀어야 하는 경우(1시간 재방문 / reduced-motion)는 전부 이 자리에서 즉시
-     why.html로 보낸다(깜빡임 없이) — 더 이상 index 안에 보여줄 "하얀 홈"이 없기 때문이다.
-     ?intro=1이면 이 판단 전체를 건너뛰고 항상 광고를 튼다.
-     (캔버스 2D만 쓰므로 WebGL 가능 여부 확인은 필요 없다 — 시안3 포팅 때 지웠고 그대로.) */
+  /* 인트로자동재생 지시서(2026-11-27 오후) §B-1·B-2 — 더 이상 why로 보내는 분기가
+     없다(왜 ENTER 본문이 이 페이지 #why에 그대로 있으므로). 여기서는 reduced-motion
+     여부만 미리 읽어 html에 표시해 둔다 — 실제 분기(정적 마지막 장면 vs 자동 재생)는
+     static/home-ad.js가 이 클래스를 보고 처리한다(깜빡임 없이 바로 올바른 모습으로
+     시작하도록, 로고 세로 중앙 등 레이아웃에 쓰는 css는 ad-pending 기준 그대로 둔다). */
   try {
-    var params = new URLSearchParams(location.search);
-    var forced = params.get('intro') === '1';
-    if (!forced) {
-      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var recentlySeen = false;
-      try {
-        var last = localStorage.getItem('enter_ad_seen');
-        recentlySeen = !!last && (Date.now() - parseInt(last, 10)) < 60 * 60 * 1000;
-      } catch (e) {}
-      if (reduce || recentlySeen) {
-        location.replace('{{ page_href("why") }}');
-        return;
-      }
-    }
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     document.documentElement.classList.add('ad-pending');
-    /* 홈표준URL 정리 지시서(2026-11-24) §1 — 모듈 로드·파싱이 실패해도(404, 문법
-       오류 등) 더 이상 /why로 강제 이동하지 않는다. 구글 렌더러가 이 자동 리디렉션을
-       타면서 "/"와 "/why"를 같은 페이지로 합쳐버린 것으로 추정되기 때문이다. 실패
-       시에는 이미 화면에 떠 있는 정적 인트로(로고+부제)와 건너뛰기 버튼이 그대로
-       보이는 것으로 충분하다(둘 다 home-ad.js 없이도 서버 렌더 시점부터 DOM에 있음). */
+    if (reduce) document.documentElement.classList.add('ad-reduced-motion');
   } catch (e) {}
 })();
 </script>
 <link rel="stylesheet" href="static/home-ad.css">
 <script type="module" src="static/home-ad.js"></script>
+{# §B-6 — 왜 ENTER 본문이 이 페이지에 그대로 실리므로 그 스키마(WebPage·FAQPage)도
+   여기서 낸다. index 자신의 title·description은 그대로(홈 고유), FAQ만 why_page 것. #}
+{% set webpage_ld = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  'name': page.title,
+  'description': page.meta_description,
+  'url': page_url('index'),
+  'dateModified': date_modified
+} %}
+<script type="application/ld+json">{{ webpage_ld | compact | tojson(indent=2) }}</script>
+{% if why_page.faq_mini %}
+{% set faq_ld = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  'mainEntity': why_page.faq_mini | faq_main_entity
+} %}
+<script type="application/ld+json">{{ faq_ld | tojson(indent=2) }}</script>
+{% endif %}
+{# why.html 전용 why 묶음(가격표·캐러셀·차트·CRM/채팅 연출)은 인트로 재생이 끝난 뒤에야
+   필요하므로 static/home-ad.js가 그때 직접 <link>/<script>를 만들어 끼워 넣는다
+   (§B-4 "인트로가 끝난 뒤에 초기화" — 재생 중 메인 스레드를 안 나눠 쓰게). #}
+<script type="application/json" id="hp-why-bundle-hrefs">{{ {"css": bundle_href('why', 'css'), "js": bundle_href('why', 'js')} | tojson }}</script>
 {% endblock %}
 
 {% block content %}
@@ -48,8 +57,7 @@
 </noscript>
 
 {# 캔버스는 숫자로 바로 그리지만, 벡터로 그리는 칩/말풍선/라벨/태그 문구는 pages.json의 ad
-   블록에서 그대로 가져와 JSON으로 심어둔다 — static/home-ad.js가 init 때 한 번 읽는다.
-   (기획서/마케팅/클로드코드_인트로시안4적용_지시서_1120.md §2-5) #}
+   블록에서 그대로 가져와 JSON으로 심어둔다 — static/home-ad.js가 init 때 한 번 읽는다. #}
 <script type="application/json" id="hp-ad-copy">
 {
   "phoneTitle": {{ ad.phone_title | tojson }},
@@ -64,6 +72,15 @@
 </script>
 
 <div class="hp-ad-stage" data-ad-stage aria-hidden="true">
+  {# 인트로자동재생 지시서(2026-11-27 오후) §B-1 — 로딩바. 실제 로딩(빌보드 webp 5장 +
+     korea-grid.json + 폰트)을 센다. 다 받으면 100%로 차고 0.3초 뒤 사라지며 기존 로고
+     인트로(.hp-ad-intro)로 이어진다. 최소 표시 0.6초·최대 8초는 home-ad.js가 관리한다. #}
+  <div class="hp-ad-loading" data-ad-loading>
+    <img class="hp-ad-loading-logo" src="static/brand/enter-horizontal-light.svg" width="559" height="188" alt="ENTER" loading="eager" fetchpriority="high">
+    <div class="hp-ad-loading-bar"><div class="hp-ad-loading-bar-fill" data-ad-loading-fill></div></div>
+    <span class="hp-ad-loading-pct" data-ad-loading-pct>0%</span>
+  </div>
+
   <div class="hp-ad-intro" data-ad-intro>
     <img class="hp-ad-intro-logo" src="static/brand/enter-horizontal-light.svg" width="559" height="188" alt="ENTER" loading="eager" fetchpriority="high">
     <p class="hp-ad-intro-sub">{{ p.intro.subtitle }}</p>
@@ -98,23 +115,33 @@
     <div class="hp-ad-m hp-ad-cap"><span>{{ line }}</span></div>
     {% endfor %}
     <div class="hp-ad-end-btns" data-ad-end-btns>
-      <a href="#" class="hp-ad-btn hp-ad-btn--primary" data-ad-cta-primary>{{ ad.end.cta_kakao }}</a>
+      <a href="#lead" class="hp-ad-btn hp-ad-btn--primary" data-ad-cta-primary data-lead-trigger>{{ ad.end.cta_kakao }}</a>
       <button type="button" class="hp-ad-btn hp-ad-btn--ghost" data-ad-enter-home>{{ ad.end.cta_home }}</button>
     </div>
+    {# §B-4 — 끝 장면(스크롤 잠금 해제된 뒤)에만 보이는 안내+다시 보기. #}
+    <button type="button" class="hp-ad-replay" data-ad-replay>↺ 다시 보기</button>
   </div>
 
-  {# 아래쪽 한 줄: 왼쪽은 "NN / 09"(hud) + SEO H1(eyebrow, 인트로 내내 보임 — CSS로 숨기지
-     않는다. 문구 SEO·GEO 지시서(2026-11-18) §1), 오른쪽은 건너뛰기(기존 .hp-ad-skip 그대로).
-     모바일은 H1 줄을 숨기지 않고 두 줄로 줄바꿈한다(시안4 적용 지시서 §2-4, 기준 구현의
-     '.foot .h1{display:none}'과 다르게 간다 — 숨기면 SEO상 손해라 대표 지시로 바꿈). #}
+  {# §B-2 — reduced-motion이면 자동 재생 없이 마지막 장면을 정적으로 보여주고, 재생을
+     원하면 누르는 버튼. 평소(자동 재생 가능)엔 숨어 있는다. #}
+  <button type="button" class="hp-ad-watch-intro" data-ad-watch-intro>▶ 인트로 보기</button>
+
   <div class="hp-ad-foot" data-ad-foot>
     <span class="hp-ad-hud" data-ad-hud></span>
     <h1 class="hp-ad-eyebrow" data-ad-eyebrow>{{ ad.eyebrow }}</h1>
   </div>
 
-  {# 스크롤 안내(2026-11-12) — "갑자기 화면만 떠 있어서 뭔지 모르겠다" 피드백 대응.
-     마우스/터치 아이콘 둘 다 마크업에 넣어두고 CSS(pointer:coarse)로 하나만 보인다.
-     시안4부터는 1장면(p<.1)에서만 보이고 그다음엔 사라진다(static/home-ad.js draw() 참고). #}
+  {# §B-3 — 장면 진행 막대 9칸(인스타 스토리형) + 오른쪽 아래 일시정지/재생·건너뛰기. #}
+  <div class="hp-ad-scenebar" data-ad-scenebar role="tablist" aria-label="장면 이동">
+    {% for i in range(9) %}
+    <button type="button" class="hp-ad-scenebar-seg" data-ad-scene-btn="{{ i }}" aria-label="{{ i + 1 }}장면으로 이동"><span class="hp-ad-scenebar-fill" data-ad-scene-fill="{{ i }}"></span></button>
+    {% endfor %}
+  </div>
+  <div class="hp-ad-player-controls" data-ad-player-controls>
+    <button type="button" class="hp-ad-player-btn" data-ad-playpause aria-label="일시정지">❚❚</button>
+    <button type="button" class="hp-ad-player-btn hp-ad-player-btn--text" data-ad-skip-end>건너뛰기 →</button>
+  </div>
+
   <div class="hp-ad-scroll-hint" data-ad-scroll-hint aria-hidden="true">
     <span class="hp-ad-scroll-hint-mouse">
       <span class="hp-ad-scroll-hint-dot"></span>
@@ -124,7 +151,10 @@
     <span class="hp-ad-scroll-hint-label hp-ad-scroll-hint-label--touch">위로 넘겨서 보기</span>
   </div>
 
-  <button type="button" class="hp-ad-skip" data-ad-skip>{{ ad.skip_label }}</button>
+  {# §B-4 — 끝 장면(스크롤 잠금 해제 뒤) 하단의 "내려서 더 보기" 안내, 내리기 시작하면 사라짐. #}
+  <div class="hp-ad-more-hint" data-ad-more-hint aria-hidden="true">
+    <span>↓ 내려서 더 보기</span>
+  </div>
 
   <div class="hp-ad-wipe" data-ad-wipe>
     <span class="hp-ad-wipe-layer hp-ad-wipe-layer--1"></span>
@@ -133,14 +163,22 @@
   </div>
 </div>
 
-{# 본문 SEO·GEO 보강 지시서(2026-11-13) 1-1 — 광고 무대는 전부 캔버스·오버레이라 텍스트가
-   거의 없다. 광고 아래·푸터 위에 화면에 실제로 보이는 소개 문단을 둔다(숨김 텍스트 금지). #}
+{# §B-4 — 왜 ENTER 본문을 인트로 바로 아래, 같은 페이지에 그대로 둔다(섹션 id="why").
+   reveal·캐러셀·차트·trail 등은 인트로가 끝난 뒤 static/home-ad.js가 why 묶음 스크립트를
+   끼워 넣어야 비로소 움직인다(그 전엔 마크업만 있고 CSS는 받아서 보기엔 멀쩡하다). #}
+<div id="why">
+{% set page = why_page %}
+{% set p = page.poetic %}
+{% set r = page.reasons[0] %}
+{% set why_date_modified = why_page.date_modified %}
+{% include "partials/why_section.html" %}
+</div>
+
 <section id="home-intro">
   <div class="wrap">
     <h2>ENTER 유선전문총판은 어떤 곳인가요?</h2>
     <p>ENTER 유선전문총판은 (유)위드컴퍼니 도매영업팀이 운영하는 유선 도매 브랜드입니다. 2010년부터 SKT·SK브로드밴드·LG U+·KT·스카이라이프·LG헬로비전 6개 통신사의 인터넷·IPTV·CCTV·가전렌탈·유심 상품을 전국 판매점과 온라인 셀러 3,000곳에 공급하고, 월 평균 4,000건을 개통합니다(2026년 평균).</p>
     <ul class="doclist">
-      <li><a class="more-link" href="{{ page_href('why') }}">왜 ENTER 보기 →</a></li>
       <li><a class="more-link" href="{{ page_href('start') }}">거래 시작하기 →</a></li>
       <li><a class="more-link" href="{{ page_href('settlement') }}">정산·DB보호 보기 →</a></li>
     </ul>

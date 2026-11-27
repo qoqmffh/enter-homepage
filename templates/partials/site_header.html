@@ -59,7 +59,6 @@
       <span class="hp-nav-indicator" id="hpNavIndicator" aria-hidden="true"></span>
     </nav>
     <div class="hp-header-right">
-      {% if slug == 'why' %}<a href="{{ page_href('index') }}?intro=1" class="hp-replay-link">{{ site.ad_replay_label }}</a>{% endif %}
       <a class="hp-header-tel" href="tel:{{ site.phone }}" aria-label="전화 문의 {{ site.phone }}">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
         {{ site.phone }}
@@ -137,7 +136,6 @@
     </div>
     {% endif %}
     {% endfor %}
-    {% if slug == 'why' %}<a href="{{ page_href('index') }}?intro=1" class="hp-nav-mobile-sub">{{ site.ad_replay_label }}</a>{% endif %}
     <div class="hp-nav-mobile-cta">
       <a class="hp-pill hp-pill--primary" href="#lead" data-lead-trigger>{{ site.header_menu_cta.button }}</a>
       <a class="hp-nav-mobile-tel" href="tel:{{ site.phone }}">전화 {{ site.phone }}</a>

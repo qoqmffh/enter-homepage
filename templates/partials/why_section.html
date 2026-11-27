@@ -1,0 +1,387 @@
+{# 인트로자동재생 지시서(2026-11-27 오후) §B-4 — why.html 본문이 홈(index)에 합쳐지면서
+   생긴 공용 파셜. 전에는 why.html 전용 {% block content %}였던 내용을 그대로 옮겼다.
+   home.html이 include 바로 앞에서 {% set page = why_page %}{% set p = page.poetic %}
+   {% set r = page.reasons[0] %}{% set why_date_modified = why_page.date_modified %}로
+   원래 why.html 꼭대기와 똑같은 지역 변수를 만들어 둔다(include는 호출부 지역 변수를
+   그대로 보므로, page.related·page.confirm_sources를 읽는 partials/_related_confirm.html
+   도 고치지 않고 그대로 재사용된다 — index 자신의 page는 include가 끝나면 그 아래에서
+   다시 쓰이지 않으므로 이 자리에서만 잠깐 가려도 안전하다).
+   딱 하나만 원본과 다르다: 실제 <h1>은 이제 인트로 쪽에 있으므로(§B-6, "인트로를 H1,
+   왜 ENTER 첫 제목은 H2") 여기 라벨 줄은 <h1>이 아니라 <h2>다.
+   예전 why.html에만 있던 <div class="hp-page-wipe">(광고에서 해시로 넘어올 때 쓰던
+   막 걷힘)는 더 이상 쓰지 않는다 — 같은 페이지 안에서 home-ad.js의 기존 .hp-ad-wipe를
+   재사용한다(§B-4 "지금처럼 주황색 물결(와이프) 전환"). #}
+
+<section class="hp-section hp-hero hp-trail-host" id="hero" data-trail="gray">
+  <div class="hp-trail" aria-hidden="true"></div>
+  <div class="hp-wrap">
+    <div class="hp-hero-top">
+      <h2 class="hp-label" data-reveal>{{ page.h1_question }}</h2>
+      <p class="hp-display-xl" data-scroll-headline>
+        {% for line in p.hero.headline %}<span class="hp-headline-line">{% for word in line.split(' ') %}<span class="hp-word">{{ word }}</span>{{ ' ' if not loop.last else '' }}{% endfor %}</span>{% endfor %}
+      </p>
+      <p class="hp-hero-subhead">{{ p.hero.subhead }}</p>
+    </div>
+    <div class="hp-hero-below">
+      <div class="hp-hero-ctas">
+        {{ m.pill(p.hero.cta_kakao, '#', 'primary', False, True) }}
+        {{ m.pill(p.hero.cta_tel, 'tel:' ~ site.phone, 'secondary') }}
+      </div>
+      {% if why_date_modified %}<p class="post-date page-basis-date">기준일 {{ why_date_modified | date_fmt_kr }} · ENTER 영업지원팀 확인</p>{% endif %}
+      {% if p.hero.sketch %}
+      {% set sk_dims = {'company': [1672, 820], 'trade': [1672, 793], 'info': [1672, 816]} %}
+      <div class="hp-hairline hp-ground"><img class="hp-hero-sketch" src="static/photos/hero/hero-{{ p.hero.sketch }}.webp" width="{{ sk_dims[p.hero.sketch][0] }}" height="{{ sk_dims[p.hero.sketch][1] }}" loading="lazy" alt="" aria-hidden="true"></div>
+      {% else %}
+      <div class="hp-hairline"></div>
+      {% endif %}
+      {% if p.hero.sub %}<p class="answer-lead">{{ p.hero.sub | safe }}</p>{% endif %}
+      <div class="sp-chart-row" id="stats" data-chart-container>
+        {% set heights = [100, 100, 100, 0] %}
+        {% for s in p.stats %}
+        {% set h = heights[loop.index0] %}
+        <div class="sp-chart-card{% if h == 0 %} sp-chart-card--zero{% elif loop.index0 > 0 %} sp-chart-card--light{% endif %}" data-chart-card data-bar-h="{{ h }}" data-delay="{{ (loop.index0 * 0.08) | round(2) }}" style="--bar-h:0%">
+          <div class="sp-chart-bar"></div>
+          <div class="sp-chart-text">
+            <span class="sp-chart-value"{% if s.num | countable %} data-count data-count-manual{% endif %}>{{ s.num }}</span>
+            <span class="sp-chart-label">{{ s.label }}</span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% if page.stats_basis_note %}<p class="hp-muted sp-hero-facts-note">{{ page.stats_basis_note }}</p>{% endif %}
+    </div>
+  </div>
+</section>
+
+<section class="hp-section hp-statement hp-trail-host hp-section--after-hero" id="statement" data-trail="gray">
+  <div class="hp-trail" aria-hidden="true"></div>
+  <div class="hp-wrap hp-wrap--narrow">
+    <h2 class="hp-headline-lg hp-center hp-two-tone" data-reveal>{{ p.statement.question }}</h2>
+    <p class="hp-slogan-sub hp-center">{{ p.statement.headline_ink }} {{ p.statement.headline_green }}</p>
+    <p class="hp-statement-desc hp-center" data-reveal>{{ p.statement.desc }}</p>
+  </div>
+  <div class="hp-wrap">
+    <div class="hp-photo-block hp-trail-host" data-photo-carousel data-interval="5000" data-trail="green" data-cursor="swipe" data-reveal>
+      <div class="hp-trail" aria-hidden="true"></div>
+      <div class="hp-photo-stage">
+        {% for src in p.statement.photos %}
+        <img class="hp-photo-img{% if loop.first %} is-active{% endif %}" {% if loop.first %}src="{{ src }}" loading="lazy"{% else %}data-src="{{ src }}" loading="lazy" decoding="async"{% endif %} width="1600" height="900" alt="ENTER {{ p.statement.photo_caption }} 업무 현장 {{ loop.index }}">
+        {% endfor %}
+      </div>
+      <div class="hp-photo-overlay"></div>
+      <div class="hp-photo-corner hp-photo-corner--tl" data-corner-text="{{ p.statement.photo_top_left }}"></div>
+      <div class="hp-photo-corner hp-photo-corner--bl" data-corner-text="{{ p.statement.photo_geo }}"></div>
+      <div class="hp-photo-corner hp-photo-corner--br hp-photo-nav">
+        <span class="hp-photo-counter" data-photo-counter>01 / {{ '%02d' | format(p.statement.photos|length) }}</span>
+        <div class="hp-carousel-btns hp-carousel-btns--photo">
+          <button type="button" aria-label="이전 사진" data-photo-prev>{{ m.icon('arrow-left') }}</button>
+          <button type="button" aria-label="다음 사진" data-photo-next>{{ m.icon('arrow-right') }}</button>
+        </div>
+      </div>
+    </div>
+    <div class="hp-photo-foot">
+      <p class="hp-photo-caption-below">{{ p.statement.photo_caption }}</p>
+      <p class="hp-photo-disclaimer">{{ p.statement.photo_disclaimer }}</p>
+    </div>
+  </div>
+</section>
+
+{% if r.market_table %}
+<section class="hp-section hp-bg-tint" id="kosis">
+  <div class="hp-wrap hp-wrap--narrow">
+    <div class="sp-detail-head" data-reveal>
+      <span class="hp-label">MARKET DATA</span>
+      <h2>{{ r.market_table_caption }}</h2>
+    </div>
+    <div class="hp-kosis-table-wrap">
+      <table class="hp-kosis-table">
+        <thead><tr>{% for cell in r.market_table[0] %}<th>{{ cell }}</th>{% endfor %}</tr></thead>
+        <tbody>
+          {% for row in r.market_table[1:] %}
+          <tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% if r.market_share_text %}<p class="hp-kosis-share">{{ r.market_share_text }}</p>{% endif %}
+    {% if r.source_label %}
+    <div class="hp-kosis-source">
+      <span>{{ r.source_label }}</span>
+      {% if r.source_url %}<a href="{{ r.source_url }}" target="_blank" rel="noopener">{{ r.source_link_text or "바로가기 →" }}</a>{% endif %}
+    </div>
+    {% endif %}
+    {% if r.source_label2 %}
+    <div class="hp-kosis-source">
+      <span>보조 출처: {{ r.source_label2 }}</span>
+      {% if r.source_url2 %}<a href="{{ r.source_url2 }}" target="_blank" rel="noopener">바로가기 →</a>{% endif %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endif %}
+
+<section class="hp-section hp-features hp-trail-host" id="features" data-trail="gray">
+  <div class="hp-trail" aria-hidden="true"></div>
+  <div class="hp-wrap">
+    <div class="hp-center hp-features-head" data-reveal>
+      {{ m.section_label(p.features.label) }}
+      <h2 class="hp-headline-lg hp-two-tone">{{ p.features.question }}</h2>
+      <p class="hp-slogan-sub">{{ p.features.headline_ink }}{{ p.features.headline_green }}</p>
+    </div>
+
+    <div class="hp-feature-grid">
+    {% for card in p.features.cards %}
+    <div class="hp-feature-card hp-trail-host" data-trail="green" data-reveal>
+      <div class="hp-trail" aria-hidden="true"></div>
+      <div class="hp-feature-card-head">
+        <h3 class="hp-headline-lg">{{ card.question }}</h3>
+        <span class="hp-feature-index">/ {{ card.index }}</span>
+      </div>
+      <p class="hp-slogan-sub">{{ card.title }}</p>
+
+      {% if card.mockup == 'ledger' %}
+      {% set ticker_rows = (page.evidence_summary.ticker_rows | reverse | list) %}
+      <div class="hp-mockup hp-mockup--ledger">
+        <div class="hp-mockup-head">
+          <div class="hp-mockup-head-left">
+            <span class="hp-mockup-title">{{ p.ledger.title }}</span>
+            <span class="hp-chip hp-chip--tint">{{ p.ledger.tag }}</span>
+          </div>
+          <span class="hp-mono-muted">{{ p.ledger.term }}</span>
+        </div>
+        <div class="hp-ledger-head">
+          {% for c in p.ledger.columns %}<span>{{ c }}</span>{% endfor %}
+        </div>
+        <div class="hp-ledger-viewport">
+          <div class="hp-ledger-track" style="--hp-ledger-dur:{{ (ticker_rows|length) * 1.6 }}s">
+            {% for _ in range(2) %}
+            {% for row in ticker_rows %}
+            <div class="hp-ledger-row">
+              <span class="hp-strong">{{ row.date }}</span>
+              <span class="hp-muted">{{ row.dow[:1] }}</span>
+              <span class="hp-num">{{ row.count }}건</span>
+              <span class="hp-num hp-strong">{{ row.amount }}</span>
+              <span class="hp-num"><span class="hp-chip hp-chip--tint">● <span class="hp-chip-label">정산완료</span></span></span>
+            </div>
+            {% endfor %}
+            {% endfor %}
+          </div>
+        </div>
+        <p class="hp-ledger-reduced-note">최근 5건 표시 · 전체 {{ ticker_rows|length }}건</p>
+      </div>
+      {% elif card.mockup == 'crm' %}
+      <div class="hp-mockup hp-mockup--crm" data-crm-scene
+           data-crm-name-unmasked="{{ p.crm.customer.name_unmasked }}" data-crm-name-masked="{{ p.crm.customer.name_masked }}"
+           data-crm-phone-unmasked="{{ p.crm.customer.phone_unmasked }}" data-crm-phone-masked="{{ p.crm.customer.phone_masked }}"
+           data-crm-rrn-unmasked="{{ p.crm.customer.rrn_unmasked }}" data-crm-rrn-masked="{{ p.crm.customer.rrn_masked }}"
+           data-crm-status-start="{{ p.crm.statuses[0] }}" data-crm-status-mid="{{ p.crm.statuses[1] }}" data-crm-status-end="{{ p.crm.statuses[2] }}">
+        <div class="hp-mockup-head">
+          <span class="hp-mockup-title">{{ p.crm.title }}</span>
+          <span class="hp-crm-badges">
+            <span class="hp-chip hp-chip--tint" data-crm-status>{{ p.crm.statuses[-1] }}</span>
+            <span class="hp-chip hp-chip--solid" data-crm-hardmark>{{ p.crm.hardmark_tag }}</span>
+          </span>
+        </div>
+        <div class="hp-crm-grid">
+          <div class="hp-crm-field">
+            <span class="hp-field-label">고객명</span>
+            <span class="hp-field-value" data-crm-field="name">{{ p.crm.customer.name_masked }}</span>
+          </div>
+          <div class="hp-crm-field">
+            <span class="hp-field-label">연락처</span>
+            <span class="hp-field-value" data-crm-field="phone">{{ p.crm.customer.phone_masked }}</span>
+          </div>
+          <div class="hp-crm-field">
+            <span class="hp-field-label">주민등록번호</span>
+            <span class="hp-field-value" data-crm-field="rrn">{{ p.crm.customer.rrn_masked }}</span>
+          </div>
+          <div class="hp-crm-field">
+            <span class="hp-field-label">설치주소</span>
+            <span class="hp-field-value">{{ p.crm.address }}</span>
+          </div>
+        </div>
+        <div class="hp-mockup-foot">
+          <span class="hp-mono-muted">{{ p.crm.footer_left }}</span>
+          <span class="hp-mono-green">{{ p.crm.footer_right }}</span>
+        </div>
+      </div>
+      {% elif card.mockup == 'chat' %}
+      <div class="hp-mockup hp-mockup--chat" data-chat-scene>
+        <div class="hp-mockup-head">
+          <div class="hp-mockup-head-left">
+            <span class="hp-chat-dot"></span>
+            <span class="hp-mockup-title">{{ p.chat.title }}</span>
+          </div>
+          <span class="hp-mono-muted">{{ p.chat.members }}</span>
+        </div>
+        <div class="hp-chat-list" data-chat-list>
+          {% for msg in p.chat.messages %}
+          {% if msg.kind == 'sheet' %}
+          <div class="hp-chat-bubble hp-chat-bubble--sheet" data-chat-msg>
+            <div class="hp-policy-sheet">
+              <div class="hp-policy-sheet-head">
+                <span>{{ p.chat.sheet.title }}</span>
+                <span class="hp-mono-muted">{{ p.chat.sheet.time }}</span>
+              </div>
+              {% for row in p.chat.sheet.rows %}
+              <div class="hp-policy-sheet-row">
+                <span>{{ row[0] }}</span>
+                <span>{{ row[1] }}</span>
+                <span class="hp-policy-sheet-price">{{ row[2] }}</span>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% else %}
+          <div class="hp-chat-bubble{% if msg.accent %} hp-chat-bubble--accent{% endif %}" data-chat-msg>
+            <span class="hp-chat-label">{{ msg.label }}</span>
+            <p class="hp-chat-text">{{ msg.text }}</p>
+          </div>
+          {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="hp-feature-card-foot">
+        <p>{{ card.desc }}</p>
+      </div>
+    </div>
+    {% endfor %}
+
+    </div>
+    <div class="hp-center hp-features-foot" data-reveal>
+      <h3 class="hp-headline-md">{{ p.features.closing_question }}</h3>
+      <p class="hp-slogan-sub">{{ p.features.closing_line }}</p>
+      {{ m.pill(p.features.cta_kakao, '#', 'primary', False, True) }}
+    </div>
+  </div>
+</section>
+
+<section class="hp-section hp-bg-dark hp-promise hp-trail-host" id="promise" data-trail="green">
+  <div class="hp-trail" aria-hidden="true"></div>
+  <div class="hp-wrap hp-promise-grid">
+    <div class="hp-promise-photo-col" data-reveal>
+      <img class="hp-promise-photo-lg" src="{{ p.promise.photo_src }}" width="720" height="900" alt="" aria-hidden="true" loading="lazy">
+    </div>
+    <div class="hp-promise-content" data-cursor="swipe" data-reveal>
+      {{ m.section_label(p.promise.label) }}
+      <div class="hp-quote-stage" data-quote-carousel data-interval="7000" aria-live="polite">
+        {% for q in p.promise.quotes %}
+        <div class="hp-quote-item{% if loop.first %} is-active{% endif %}">
+          <blockquote class="hp-quote">{% for line in q.lines %}<span>{% if loop.first %}“{% endif %}{{ line }}{% if loop.last %}”{% endif %}</span>{% endfor %}</blockquote>
+          {{ m.pill(q.cta, page_href(q.cta_slug) if q.cta_slug != '#' else '#', 'inverted') }}
+        </div>
+        {% endfor %}
+      </div>
+      <div class="hp-promise-foot">
+        <div class="hp-promise-person">
+          <div>
+            <span class="hp-promise-name">{{ p.promise.name }}</span>
+            <span class="hp-promise-title">{{ p.promise.title }}</span>
+          </div>
+        </div>
+        <div class="hp-promise-carousel">
+          <span class="hp-mono-muted" data-quote-counter>01 / {{ '%02d' | format(p.promise.quotes|length) }}</span>
+          <div class="hp-carousel-btns">
+            <button type="button" aria-label="이전 약속" data-quote-prev>{{ m.icon('arrow-left') }}</button>
+            <button type="button" aria-label="다음 약속" data-quote-next>{{ m.icon('arrow-right') }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hp-section" id="voices">
+  <div class="hp-wrap">
+    {{ voices_mod.render(stories.quotes, more_link=page_href('stories')) }}
+  </div>
+</section>
+
+<section class="hp-section hp-bg-tint hp-start hp-trail-host" id="start" data-trail="gray">
+  <div class="hp-trail" aria-hidden="true"></div>
+  <div class="hp-wrap hp-wrap--narrow">
+    <div class="hp-center hp-start-head" data-reveal>
+      {{ m.section_label(p.start.label) }}
+      <h2 class="hp-headline-lg hp-two-tone">{{ p.start.question }}</h2>
+      <p class="hp-slogan-sub">{{ p.start.headline_ink }}{{ p.start.headline_green }}</p>
+    </div>
+    <div class="hp-start-list">
+      {% for step in p.start.steps %}
+      <div class="hp-start-row" data-reveal>
+        <span class="hp-start-text">{{ step.text }}</span>
+        <span class="hp-mono-muted hp-strong">{{ step.num }}</span>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="hp-center" data-reveal>
+      <p class="hp-start-note">{{ p.start.note }}</p>
+      {{ m.pill(p.start.cta, '#contact', 'primary') }}
+    </div>
+  </div>
+</section>
+
+<section class="hp-section hp-trust hp-trail-host" id="trust" data-trail="gray">
+  <div class="hp-trail" aria-hidden="true"></div>
+  <div class="hp-wrap">
+    {{ m.section_label(p.trust.label) }}
+    <h2 class="hp-headline-lg" data-reveal>{{ p.trust.question }}</h2>
+    <p class="hp-slogan-sub">{{ p.trust.headline }}</p>
+    <p class="hp-body-xl hp-trust-body" data-reveal>{{ p.trust.body }}</p>
+    <div class="hp-trust-badges">
+      {% for b in p.trust.badges %}
+      <div class="hp-badge" data-reveal>
+        {{ m.icon(b.icon) }}
+        <div>
+          <h4>{{ b.name }}</h4>
+          <p>{{ b.note }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="hp-section hp-bg-dark hp-carriers hp-trail-host" id="carriers" data-trail="green">
+  <div class="hp-trail" aria-hidden="true"></div>
+  <div class="hp-wrap">
+    <div class="hp-carriers-label">{{ m.section_label(p.carriers.label) }}</div>
+    <div class="hp-carriers-names">
+      {% for n in p.carriers.names %}<div>{{ n }}</div>{% endfor %}
+    </div>
+    <p class="hp-body-lg hp-carriers-body">{{ p.carriers.body }}</p>
+    {{ m.pill(p.carriers.cta, page_href(p.carriers.cta_slug), 'inverted') }}
+  </div>
+</section>
+
+<section class="sp-section sp-bg-tint" id="faq">
+  {% if page.faq_mini %}
+  <h2 class="sp-proof-title">자주 묻는 질문</h2>
+  <div style="margin-top:32px">
+    {% for item in page.faq_mini %}
+    <details class="sp-faq-item" data-reveal{% if loop.first %} open{% endif %}>
+      <summary>{{ item.q }}</summary>
+      <div class="sp-faq-body">{{ item.a }}</div>
+    </details>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% include "partials/_related_confirm.html" %}
+</section>
+
+<section class="hp-section hp-closing hp-trail-host" id="contact" data-trail="gray" data-fn-cta-band>
+  <div class="hp-trail" aria-hidden="true"></div>
+  <div class="hp-wrap hp-center">
+    {% if site.cta_brand_line %}<p class="sp-cta-brand">{{ site.cta_brand_line }}</p>{% endif %}
+    <h2 class="hp-display-lg hp-two-tone-block" data-scroll-fill data-reveal>
+      <span class="hp-ink">{{ p.closing.headline_ink }}</span>
+      <span class="hp-green">{{ p.closing.headline_green }}</span>
+    </h2>
+    <div class="hp-closing-ctas" data-reveal>
+      {{ m.pill(p.closing.cta_kakao, '#', 'primary', False, True) }}
+      {{ m.pill(p.closing.cta_tel, 'tel:' ~ site.phone, 'secondary') }}
+    </div>
+  </div>
+</section>

@@ -135,7 +135,7 @@ JS_BUNDLES = {
     "chrome": ["static/reveal.js", "static/lead-modal.js", "static/floatnav.js"],
     "why": [
         "static/home-poetic.js", "static/home-poetic-cards.js", "static/home-poetic-trail.js",
-        "static/voices-carousel.js", "static/why-carousels.js", "static/why-chart.js", "static/wipe-reveal.js",
+        "static/voices-carousel.js", "static/why-carousels.js", "static/why-chart.js",
     ],
 }
 # 어느 묶음에도 안 들어가지만 그 자체로 압축은 해야 하는 단일 파일(원래 이름 그대로 둠).
@@ -764,10 +764,18 @@ def main():
     # dist의 파일명(about.html 등)은 그대로 둔다 — GitHub Pages가 /about 요청에
     # about.html을 내준다. page_url은 절대주소(canonical·og:url·sitemap·RSS·llms*용),
     # page_href는 사이트 안 상대 링크(href="...")용이다.
+    # 인트로자동재생 지시서(2026-11-27 오후) §B-6 — 왜 ENTER 본문이 홈(index)에 합쳐지면서
+    # /why는 더 이상 독립 페이지가 아니다(리디렉션 스텁만 남음). 사이트 어디서든 "왜 ENTER"를
+    # 가리키는 주소는 전부 홈의 #why 위치를 쓰게 두 함수에서 한 번에 처리한다 — 메뉴·푸터·
+    # 본문 전부가 page_href('why')/page_url('why')를 거치므로 호출부를 일일이 안 고쳐도 된다.
     def page_url(slug):
+        if slug == "why":
+            return f"{base_url}/"
         return f"{base_url}/" if slug == "index" else f"{base_url}/{slug}"
 
     def page_href(slug):
+        if slug == "why":
+            return "/#why"
         return "/" if slug == "index" else f"/{slug}"
 
     today = datetime.date.today().isoformat()
@@ -889,7 +897,11 @@ def main():
     # 용어 사전 자동 링크(지시서 2026-11-16 §4) — 서비스 페이지(아래 8개)·가이드·블로그
     # 본문에서만 건다. index(광고 무대, 텍스트 거의 없음)·privacy·editorial·blog.html(목록)·
     # glossary 자신은 대상이 아니다.
-    _GLOSSARY_LINK_SERVICE_SLUGS = {"why", "about", "products", "start", "settlement", "startup", "faq", "stories"}
+    # 인트로자동재생 지시서(2026-11-27 오후) §B-6 — why 본문이 index에 합쳐지면서 "why"
+    # slug 자체는 리디렉션 스텁만 렌더해 더 이상 링크할 본문이 없다. index는 일부러
+    # 안 넣는다 — 본문 대부분이 캔버스 인트로용 문구(ad.scenes)라 거기 자동 링크(<a>)가
+    # 끼면 글자 단위로 조작하는 리빌 애니메이션(.hp-ad-m>span)과 부딪힐 수 있다.
+    _GLOSSARY_LINK_SERVICE_SLUGS = {"about", "products", "start", "settlement", "startup", "faq", "stories"}
     glossary_terms = pages["glossary"]["terms"]
     glossary_link_stats = {}  # slug -> 링크된 term slug 목록
 
@@ -903,7 +915,7 @@ def main():
         # 거래처이야기4건_홈추가 지시서(2026-11-19) — 홈(why.html)이 stories.html과 같은
         # 인터뷰 매크로를 쓰면서 질문 목록(어떤 질문이 아예 답이 없는지 판단)을 보려면
         # stories 전체 데이터가 필요하다. blog_posts와 같은 방식으로 모든 템플릿에 노출한다.
-        html = template.render(site=site, page=page, slug=slug, legal_text=legal_text, blog_posts=blog_posts["pages"], stories=pages["stories"], menu_summaries=menu_summaries, info_nav=info_nav, date_modified=lastmod)
+        html = template.render(site=site, page=page, slug=slug, legal_text=legal_text, blog_posts=blog_posts["pages"], stories=pages["stories"], menu_summaries=menu_summaries, info_nav=info_nav, why_page=pages["why"], date_modified=lastmod)
         if slug != "glossary" and (slug in _GLOSSARY_LINK_SERVICE_SLUGS or page_categories.get(slug) in ("guide", "blog")):
             html, linked_slugs = auto_link_glossary_terms(html, glossary_terms)
             if linked_slugs:
@@ -913,7 +925,10 @@ def main():
         with open(out_path, "w", encoding="utf-8") as f:
             f.write(html)
         main_text_map[slug] = extract_main_text(html)
-        sitemap_entries.append((slug, lastmod, page_categories[slug]))
+        # §B-6 — why.html 자체는 계속 만들되(리디렉션 스텁 — 직접 들어오는 링크·오래된
+        # 북마크 대비), 사이트맵엔 안 넣는다(이제 진짜 콘텐츠는 index에 있다).
+        if slug != "why":
+            sitemap_entries.append((slug, lastmod, page_categories[slug]))
         print(f"  생성: {slug}.html")
 
     if glossary_link_stats:
@@ -1120,7 +1135,9 @@ def main():
         print("\n금지어 검사: 이상 없음")
 
     # A34-2: 고아 페이지(내부 링크 없는 dist 페이지) 검사
-    orphans = find_orphan_pages(DIST_DIR, all_slugs)
+    # §B-6 — why는 일부러 href="/#why"(해시)로만 걸려 있어 href="/slug" 정규식에 안 걸린다.
+    # 실제로는 메뉴·푸터·본문 전부가 링크하므로(해시만 다를 뿐) 고아가 아니다 — 제외.
+    orphans = [s for s in find_orphan_pages(DIST_DIR, all_slugs) if s != "why"]
     # index는 모든 페이지가 '정상적으로' 링크 안 할 수 있는 시작점이라 제외하지 않고 그대로 보고하되,
     # 실제로는 헤더 로고(a.hp-brand)가 모든 페이지에서 index.html로 링크하므로 보통 고아가 아니다.
     if orphans:

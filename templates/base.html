@@ -175,12 +175,11 @@
 <link rel="apple-touch-icon" href="static/brand/apple-touch-icon.png">
 <link rel="stylesheet" href="static/fonts/pretendard/pretendard-fallback.css">
 {# 속도 개선 지시서(2026-11-23) §2-④ — common.css+site.css+megamenu.css를 공통 묶음
-   하나로. index를 뺀 모든 페이지가 쓰는 reveal·lead-modal·floatnav도 따로 묶음 하나로
-   (index는 전과 같이 안 받는다 — 조건 그대로 유지). #}
+   하나로. reveal·lead-modal·floatnav는 따로 묶음 하나로.
+   인트로자동재생 지시서(2026-11-27 오후) §B-4 — index도 이제 받는다(왜 ENTER 본문이
+   실리면서 reveal 애니메이션·정책 받기 팝업이 index에서도 필요해졌다). #}
 <link rel="stylesheet" href="{{ bundle_href('common', 'css') }}">
-{% if slug != 'index' %}
 <link rel="stylesheet" href="{{ bundle_href('chrome', 'css') }}">
-{% endif %}
 {# 속도 개선 지시서(2026-11-23) §2-② — 터치 기기(pointer:coarse)에서는 커스텀 커서
    CSS·JS를 아예 안 받는다. src/href를 리터럴로 안 쓰고 JS로 조건부 삽입해야 네트워크
    요청 자체가 안 생긴다(media 속성만으로는 link도 어차피 받아간다). #}
@@ -226,7 +225,9 @@
 } %}
 <script type="application/ld+json">{{ website_ld | tojson(indent=2) }}</script>
 {% endif %}
-{% if slug != 'index' %}
+{# 인트로자동재생 지시서(2026-11-27 오후) §B-4 — 왜 ENTER 본문이 index에도 실리면서
+   그 안의 정책 받기 버튼(data-lead-trigger)이 index에서도 동작해야 한다. 전엔
+   index(광고 무대만 있던 시절)는 제외했지만 이제는 뺄 이유가 없다. #}
 <script>
   /* 정책 받기 팝업·플로팅 내비(지시서 2026-11-13) 전역 설정값 — site.json에서만 관리.
      lead_endpoint가 비어 있거나 lead_form_enabled가 false면 각 스크립트가 알아서
@@ -241,7 +242,6 @@
 </script>
 {# 속도 개선 지시서(2026-11-23) §2-④ — reveal+lead-modal+floatnav 묶음 하나. #}
 <script src="{{ bundle_href('chrome', 'js') }}" defer></script>
-{% endif %}
 {% block extra_head %}{% endblock %}
 </head>
 <body>
@@ -276,13 +276,12 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 {% include "partials/site_footer.html" %}
 {% endblock %}
 
-{% if slug != 'index' %}
 {# 정책 받기 팝업 + 플로팅 내비(하단 바·우측 퀵메뉴·1:1 상담센터) — 예전의 .footerbar
    (전화/문자/카카오톡 고정 바)를 대신한다. main() 밖에 둬서 페이지 레이아웃의 position
-   맥락에 안 갇히게 한다(지시서 2026-11-13). #}
+   맥락에 안 갇히게 한다(지시서 2026-11-13). index도 §B-4부터 포함(왜 ENTER 본문의
+   정책 받기 버튼이 index 안에 있다). #}
 {% include "partials/lead_modal.html" %}
 {% include "partials/floatnav.html" %}
-{% endif %}
 
 </body>
 </html>
