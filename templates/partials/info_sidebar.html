@@ -1,0 +1,39 @@
+{# 메뉴구조 개편 지시서(2026-11-27 오후) §A-3 — 정보마당 전 페이지 공통 왼쪽 사이드
+   메뉴. 기존 왼쪽 목차(static/toc.*, f619bb6)를 이 메뉴 "안"으로 합친다 — 따로 두
+   덩어리가 생기지 않게 <details> 두 개(정보마당 메뉴 / 이 페이지 목차)를 같은
+   article-toc 안에 둔다. 1200px 이상은 static/toc.css가 통째로 하나의 sticky
+   사이드바처럼 보이게 한다.
+   caller()는 "이 페이지 목차"(현재 장 소제목·FAQ 탭·용어 목록 등) — 호출하는
+   템플릿이 {% call %}로 넘긴다. 없으면(예: 블로그 목록·거래처 이야기·정보마당
+   허브 자신) 두 번째 details는 아예 안 나온다. #}
+{% macro render(slug, info_nav) %}
+<aside class="article-toc">
+  <details class="toc-collapse" open>
+    <summary class="toc-summary">정보마당 메뉴 <span aria-hidden="true">▾</span></summary>
+    <div class="toc-body">
+      <a href="{{ page_href('info') }}" class="info-toc-brand{% if slug == 'info' %} is-current{% endif %}">정보마당</a>
+      {% for g in info_nav %}
+      {% set is_active = slug in g.member_slugs %}
+      <div class="info-toc-group{% if is_active %} is-active{% endif %}">
+        <a href="{{ page_href(g.hub_slug) }}" class="info-toc-group-label{% if g.hub_slug == slug %} is-current{% endif %}">{{ g.label }}{% if g.expandable %} <span aria-hidden="true">▾</span>{% endif %}</a>
+        {% if is_active and g.chapters %}
+        <ul class="info-toc-chapters">
+          {% for ch in g.chapters %}
+          <li><a href="{{ page_href(ch.slug) }}"{% if ch.slug == slug %} class="is-current"{% endif %}>{{ ch.title }}</a></li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </details>
+  {% if caller %}
+  <details class="toc-collapse" open>
+    <summary class="toc-summary">이 페이지 목차 <span aria-hidden="true">▾</span></summary>
+    <div class="toc-body">
+      {{ caller() }}
+    </div>
+  </details>
+  {% endif %}
+</aside>
+{% endmacro %}

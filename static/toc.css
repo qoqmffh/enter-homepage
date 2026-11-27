@@ -10,6 +10,7 @@
 .article-toc{ margin-bottom:24px; }
 
 .toc-collapse{ border:1px solid var(--hp-line); border-radius:var(--radius-card); padding:0; background:var(--hp-card-bg); }
+.toc-collapse + .toc-collapse{ margin-top:16px; }
 .toc-summary{ cursor:pointer; list-style:none; padding:14px 18px; font-size:14px; font-weight:700; color:var(--hp-ink); display:flex; align-items:center; gap:6px; }
 .toc-summary::-webkit-details-marker{ display:none; }
 .toc-body{ padding:4px 18px 16px; }
@@ -19,6 +20,24 @@
 .toc-body a{ display:block; padding:7px 0; font-size:13.5px; line-height:1.4; color:var(--hp-grey); border-left:2px solid transparent; padding-left:10px; margin-left:-10px; word-break:keep-all; }
 .toc-body a:hover{ color:var(--hp-ink); }
 .toc-body a.is-current, .toc-body a.is-active{ color:var(--hp-accent-text); font-weight:700; border-left-color:var(--hp-accent); }
+
+/* 메뉴구조 개편 지시서(2026-11-27 오후) §A-3 — 정보마당 사이드 메뉴(5개 영역 전환).
+   읽을거리 페이지 전용 .toc-* 틀(위) 안에 끼워 넣어 1200px 이상은 같은 sticky
+   카드로, 1199 이하는 "정보마당 메뉴 ▾"/"이 페이지 목차 ▾" 접이식 둘로 보인다
+   (각자 다른 <details>라 따로 접고 펼 수 있음, @media(min-width:1200px)에서 둘 다
+   강제로 펼쳐지며 .article-toc 하나가 통째로 sticky돼 한 사이드바처럼 보인다). */
+.info-toc-brand{ display:block; background:var(--hp-ink); color:var(--hp-white); border-radius:var(--radius-btn); padding:10px 14px; font-size:14px; font-weight:700; margin-bottom:10px; }
+.info-toc-brand:hover{ background:var(--hp-grey); }
+.info-toc-group{ padding:8px 0; border-top:1px solid var(--hp-line); }
+.info-toc-group:first-of-type{ border-top:none; }
+.info-toc-group-label{ display:block; font-size:14px; font-weight:700; color:var(--hp-grey); padding:4px 0; }
+.info-toc-group-label:hover{ color:var(--hp-ink); }
+.info-toc-group.is-active .info-toc-group-label{ color:var(--hp-ink); }
+.info-toc-group-label.is-current{ color:var(--hp-accent-text); }
+.info-toc-chapters{ list-style:none; margin:4px 0 2px; padding:0; display:flex; flex-direction:column; gap:2px; }
+.info-toc-chapters a{ display:block; padding:6px 0 6px 10px; font-size:13.5px; color:var(--hp-grey); border-left:2px solid transparent; }
+.info-toc-chapters a:hover{ color:var(--hp-ink); }
+.info-toc-chapters a.is-current{ color:var(--hp-accent-text); font-weight:700; border-left-color:var(--hp-accent); }
 
 @media (min-width:1200px){
   .article-layout{ display:flex; align-items:flex-start; gap:40px; max-width:1040px; margin:0 auto; padding:0 20px; }

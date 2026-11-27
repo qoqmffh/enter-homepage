@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% import "partials/hero.html" as hero_mod %}
+{% import "partials/cta_band.html" as cta_mod with context %}
+{% import "partials/breadcrumb.html" as bc_mod %}
+{% import "partials/info_sidebar.html" as info_sidebar_mod %}
+{# 메뉴구조 개편 지시서(2026-11-27 오후) §A-2 — 정보마당 허브 페이지. 새 글은 없음,
+   전부 이미 있는 페이지·FAQ·블로그 글을 모아 보여주기만 한다. #}
+{% set crumb_items = [{'label': '홈', 'href': page_href('index')}, {'label': '정보마당', 'href': page_href('info')}] %}
+{% set info_group = (site.header_menu | selectattr('type', 'equalto', 'infohub') | first) %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="static/sub.css">
+<link rel="stylesheet" href="static/toc.css">
+<script type="application/ld+json">{{ crumb_items | breadcrumb_ld(site.base_url) | tojson(indent=2) }}</script>
+{% set webpage_ld = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  'name': page.title,
+  'description': page.meta_description,
+  'url': page_url(slug),
+  'dateModified': date_modified
+} %}
+<script type="application/ld+json">{{ webpage_ld | compact | tojson(indent=2) }}</script>
+{% endblock %}
+
+{% block content %}
+{% set s = page.sub %}
+{{ hero_mod.render('compact', s.hero, bc_mod.render(crumb_items), date_modified) }}
+
+<div class="article-layout article-layout--wide sp-toc-wrap">
+{{ info_sidebar_mod.render(slug, info_nav) }}
+<div class="article-layout-main">
+
+<section class="sp-section sp-section--after-hero" id="intro">
+  <p class="answer-lead">{{ page.intro }}</p>
+</section>
+
+<section class="sp-section sp-bg-tint" id="cards">
+  <h2 class="sp-proof-title">무엇이 궁금하신가요</h2>
+  <div class="info-hub-cards" style="margin-top:28px">
+    {% for it in info_group['items'] %}
+    <a class="info-hub-card" href="{{ page_href(it.slug) }}" data-reveal>
+      <h3>{{ it.label }}</h3>
+      <p>{{ it.desc }}</p>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+{% if page.latest_posts %}
+<section class="sp-section" id="latest-blog">
+  <h2 class="sp-proof-title">최신 블로그</h2>
+  <div class="sp-board-featured" style="margin-top:28px">
+    {% for p in page.latest_posts %}
+    <a class="sp-board-feature-card" href="{{ page_href(p.slug) }}" data-reveal>
+      <span class="sp-board-feature-title">{{ p.title }}</span>
+      <span class="sp-board-feature-foot"><span>{{ p.date_published }}</span><span>읽기 →</span></span>
+    </a>
+    {% endfor %}
+  </div>
+  <div class="sp-detail-foot">
+    <a href="{{ page_href('blog') }}">블로그 전체 보기 →</a>
+  </div>
+</section>
+{% endif %}
+
+{% if page.faq_preview %}
+<section class="sp-section sp-bg-tint" id="faq-preview">
+  <h2 class="sp-proof-title">자주 묻는 질문</h2>
+  <div style="margin-top:28px">
+    {% for item in page.faq_preview %}
+    <details class="sp-faq-item" data-reveal{% if loop.first %} open{% endif %}>
+      <summary>{{ item.q }}</summary>
+      <div class="sp-faq-body">{{ item.a | md_inline }}</div>
+    </details>
+    {% endfor %}
+  </div>
+  <div class="sp-detail-foot">
+    <a href="{{ page_href('faq') }}">FAQ 전체 보기 →</a>
+  </div>
+</section>
+{% endif %}
+
+</div>
+</div>
+
+{{ cta_mod.render(s.cta) }}
+{% endblock %}

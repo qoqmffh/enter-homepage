@@ -154,6 +154,18 @@
   .sp-num-value{ font-size:40px; }
 }
 
+/* 메뉴구조 개편 지시서(2026-11-27 오후) §A-2 — 정보마당 허브(/info)의 5개 바로가기
+   카드. 기존 .sp-card(어두운 420px 대형 카드, 4개 이유 카드 전용)는 이 용도엔 너무
+   무겁다 — 가벼운 카드 하나 새로 둔다(새 토큰 없이 기존 --hp-card-*·--hp-accent만). */
+.info-hub-cards{ display:grid; grid-template-columns:1fr; gap:16px; }
+.info-hub-card{ display:block; background:var(--hp-card-bg); border:1px solid var(--hp-card-border); border-radius:var(--radius-card); padding:24px; transition:border-color .15s ease, background-color .15s ease; }
+.info-hub-card:hover{ border-color:var(--hp-accent); background:var(--hp-accent-tint); }
+.info-hub-card h3{ font-size:var(--fs-h3); font-weight:800; color:var(--hp-ink); margin:0; }
+.info-hub-card:hover h3{ color:var(--hp-accent-text); }
+.info-hub-card p{ margin:8px 0 0; font-size:14px; color:var(--hp-grey); line-height:1.5; }
+@media (min-width:768px){ .info-hub-cards{ grid-template-columns:repeat(2,1fr); } }
+@media (min-width:1024px){ .info-hub-cards{ grid-template-columns:repeat(3,1fr); } }
+
 /* ---------- 3. 검은 카드 3장 ---------- */
 .sp-cards{ display:grid; grid-template-columns:1fr; gap:16px; }
 .sp-card{ background:var(--hp-brown); color:var(--hp-white); border-radius:var(--radius-card); padding:28px 24px; min-height:320px; display:flex; flex-direction:column; justify-content:space-between; gap:20px; }

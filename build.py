@@ -609,15 +609,16 @@ def make_png_ignore_fn(static_dir, reference_text):
 
 
 def iter_header_menu_items(site):
-    """메뉴구조 개편 지시서(2026-11-27) §1 — header_menu가 드롭다운 그룹(type:
-    "group", items 배열)과 바로가기 링크(type: "link", 자기 자신이 item)가 섞여
-    있다. 둘 다 순회하며 (group_num_or_None, item) 쌍을 낸다."""
+    """메뉴구조 개편 지시서(2026-11-27 오후) §A-1 — header_menu가 바로가기 링크(type:
+    "link", 자기 자신이 item)와 정보마당 허브(type: "infohub", items 배열)가 섞여
+    있다. 둘 다 순회하며 (group_label_or_None, item) 쌍을 낸다. group_label은 메가
+    메뉴 호버 CTA의 "그룹 · 페이지" 눈썹 글자에 쓰인다(build_menu_summaries)."""
     for entry in site["header_menu"]:
         if entry.get("type") == "link":
             yield None, entry
         else:
             for item in entry["items"]:
-                yield entry["num"], item
+                yield entry["label"], item
 
 
 def build_menu_summaries(site, pages, blog_posts):
@@ -721,6 +722,39 @@ def compute_related_cards(pages, page_categories):
         page["related"] = cards
 
 
+def build_info_nav(pages, guide, blog_posts):
+    """메뉴구조 개편 지시서(2026-11-27 오후) §A-3 — 정보마당 사이드 메뉴(5개 영역)용
+    데이터. 각 영역이 어느 slug들을 "자기 영역"으로 보는지(member_slugs)만 여기서
+    한 번 계산해서 모든 템플릿이 같은 기준으로 재사용한다(템플릿에서 가이드·블로그
+    전체 slug 목록을 다시 모으지 않게). 영역별 page-specific 내용(소제목·탭·용어
+    목록)은 각 템플릿이 그대로 만들어 info_sidebar 매크로의 caller()로 넘긴다."""
+    guide_slugs = set(guide["pages"].keys())
+    blog_slugs = set(blog_posts["pages"].keys())
+    return [
+        {
+            "key": "startup", "label": "창업자 가이드", "hub_slug": "startup", "expandable": True,
+            "member_slugs": {"startup"} | guide_slugs,
+            "chapters": pages["startup"]["guide_categories"][0]["chapters"],
+        },
+        {
+            "key": "blog", "label": "블로그", "hub_slug": "blog", "expandable": True,
+            "member_slugs": {"blog"} | blog_slugs, "chapters": None,
+        },
+        {
+            "key": "faq", "label": "FAQ", "hub_slug": "faq", "expandable": True,
+            "member_slugs": {"faq"}, "chapters": None,
+        },
+        {
+            "key": "glossary", "label": "용어 사전", "hub_slug": "glossary", "expandable": True,
+            "member_slugs": {"glossary"}, "chapters": None,
+        },
+        {
+            "key": "stories", "label": "거래처 이야기", "hub_slug": "stories", "expandable": False,
+            "member_slugs": {"stories"}, "chapters": None,
+        },
+    ]
+
+
 def main():
     site = load_json("site.json")
     base_url = site["base_url"]
@@ -765,6 +799,26 @@ def main():
     for slug in blog_posts["pages"]:
         page_categories[slug] = "blog"
         page_source_file[slug] = "content/blog_posts.json"
+
+    # 메뉴구조 개편 지시서(2026-11-27 오후) §A-2·A-3 — 정보마당 허브(/info) 전용 데이터.
+    # info_nav는 5개 영역의 소속 slug(사이드 메뉴 공통), latest_posts·faq_preview는
+    # 허브 페이지 본문 전용(둘 다 이미 있는 콘텐츠를 그대로 재사용, 새 글 없음).
+    info_nav = build_info_nav(pages, guide, blog_posts)
+    latest_blog_slugs = sorted(
+        blog_posts["pages"].keys(),
+        key=lambda s: blog_posts["pages"][s].get("date_published", ""),
+        reverse=True,
+    )[:3]
+    pages["info"]["latest_posts"] = [
+        {
+            "slug": s,
+            "title": blog_posts["pages"][s].get("h1", ""),
+            "intro": blog_posts["pages"][s].get("intro", ""),
+            "date_published": blog_posts["pages"][s].get("date_published", ""),
+        }
+        for s in latest_blog_slugs
+    ]
+    pages["info"]["faq_preview"] = pages["faq"]["items"][:3]
 
     # 개인정보처리방침(A26-3) — 전용 content 파일 없이 여기서 바로 한 페이지 추가
     pages["privacy"] = {
@@ -849,7 +903,7 @@ def main():
         # 거래처이야기4건_홈추가 지시서(2026-11-19) — 홈(why.html)이 stories.html과 같은
         # 인터뷰 매크로를 쓰면서 질문 목록(어떤 질문이 아예 답이 없는지 판단)을 보려면
         # stories 전체 데이터가 필요하다. blog_posts와 같은 방식으로 모든 템플릿에 노출한다.
-        html = template.render(site=site, page=page, slug=slug, legal_text=legal_text, blog_posts=blog_posts["pages"], stories=pages["stories"], menu_summaries=menu_summaries, date_modified=lastmod)
+        html = template.render(site=site, page=page, slug=slug, legal_text=legal_text, blog_posts=blog_posts["pages"], stories=pages["stories"], menu_summaries=menu_summaries, info_nav=info_nav, date_modified=lastmod)
         if slug != "glossary" and (slug in _GLOSSARY_LINK_SERVICE_SLUGS or page_categories.get(slug) in ("guide", "blog")):
             html, linked_slugs = auto_link_glossary_terms(html, glossary_terms)
             if linked_slugs:
@@ -986,6 +1040,7 @@ def main():
         "",
         "## 핵심 페이지",
     ]
+    llms_lines.append(f"- [정보마당]({page_url('info')}): {pages['info'].get('meta_description', '')}")
     for _group_num, item in iter_header_menu_items(site):
         s = item["slug"]
         llms_lines.append(f"- [{item['label']}]({page_url(s)}): {pages[s].get('meta_description', '')}")

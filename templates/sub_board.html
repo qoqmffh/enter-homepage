@@ -3,17 +3,14 @@
 {% import "partials/cta_band.html" as cta_mod with context %}
 {% import "partials/breadcrumb.html" as bc_mod %}
 {% import "partials/confirm_box.html" as confirm_mod %}
-{# 마케팅 마무리 지시서(2026-11-12) D — block 안에서 set하면 다른 block에서 안 보이므로
-   템플릿 최상위에서 설정한다. #}
-{% set crumb_items = [{'label': '홈', 'href': page_href('index')}, {'label': page.eyebrow, 'href': page_href(slug)}] %}
+{% import "partials/info_sidebar.html" as info_sidebar_mod %}
+{# 메뉴구조 개편 지시서(2026-11-27 오후) §A-3 — 정보마당 하위 페이지(FAQ·블로그 목록)
+   모두 "홈 > 정보마당 > ..." 3단 경로. #}
+{% set crumb_items = [{'label': '홈', 'href': page_href('index')}, {'label': '정보마당', 'href': page_href('info')}, {'label': page.eyebrow, 'href': page_href(slug)}] %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="static/sub.css">
-{# 메뉴구조 개편 지시서(2026-11-27) §3 — 왼쪽 목차는 FAQ(board_type=='faq')에만.
-   블로그 목록 페이지는 그대로 둔다(§3 "블로그 목록 페이지에는 달지 않는다"). #}
-{% if page.sub.board_type == 'faq' %}
-<link rel="stylesheet" href="static/toc.css">
-{% endif %}
+<link rel="stylesheet" href="static/toc.css">{# §A-3 — FAQ·블로그 목록 둘 다 왼쪽 사이드 메뉴 대상. #}
 <script type="application/ld+json">{{ crumb_items | breadcrumb_ld(site.base_url) | tojson(indent=2) }}</script>
 {# C — FAQ 페이지(page.items가 있는 보드)만 FAQPage 출력.
    블로그 목록(board_type=='blog')은 page.posts만 쓰고 page.items가 없어 자연히 제외된다. #}
@@ -45,27 +42,24 @@
 
 {{ hero_mod.render('compact', s.hero, bc_mod.render(crumb_items), date_modified if s.board_type == 'faq' else none, page.h1_question) }}
 
-{# 메뉴구조 개편 지시서(2026-11-27) §3 — FAQ만 왼쪽 목차(질문 분류 바로가기). 분류는
-   스크롤 앵커가 아니라 기존 탭 필터(JS 맨 아래)를 그대로 재사용한다 — 목차 링크도
-   top 탭과 똑같이 data-tab을 달아 같은 클릭 로직을 타게 한다. #}
-{% if s.board_type == 'faq' %}
+{# 메뉴구조 개편 지시서(2026-11-27 오후) §A-3 — 정보마당 공통 사이드 메뉴. FAQ는
+   질문 분류(기존 탭 필터 재사용, data-tab) caller로, 블로그 목록은 caller 없이
+   영역 전환 메뉴만(목록 자체가 이미 전체 글 목록이라 더 보여줄 페이지 목차가 없음). #}
 <div class="article-layout article-layout--wide sp-toc-wrap">
-<aside class="article-toc">
-  <details class="toc-collapse" open>
-    <summary class="toc-summary">목차 <span aria-hidden="true">▾</span></summary>
-    <div class="toc-body">
-      <nav aria-label="질문 분류">
-        <ul data-toc-tabs>
-          {% for tab in s.tabs %}
-          <li><a href="#board" data-tab="{{ tab }}"{% if loop.first %} class="is-active"{% endif %}>{{ tab }}</a></li>
-          {% endfor %}
-        </ul>
-      </nav>
-    </div>
-  </details>
-</aside>
-<div class="article-layout-main">
+{% if s.board_type == 'faq' %}
+{% call info_sidebar_mod.render(slug, info_nav) %}
+<nav aria-label="질문 분류">
+  <ul data-toc-tabs>
+    {% for tab in s.tabs %}
+    <li><a href="#board" data-tab="{{ tab }}"{% if loop.first %} class="is-active"{% endif %}>{{ tab }}</a></li>
+    {% endfor %}
+  </ul>
+</nav>
+{% endcall %}
+{% else %}
+{{ info_sidebar_mod.render(slug, info_nav) }}
 {% endif %}
+<div class="article-layout-main">
 <section class="sp-section sp-section--after-hero" id="board">
   <div class="sp-board-tabs" data-board-tabs role="tablist">
     {% for tab in s.tabs %}
@@ -129,10 +123,8 @@
   {% include "partials/_related_confirm.html" %}
   {% endif %}
 </section>
-{% if s.board_type == 'faq' %}
 </div>
 </div>
-{% endif %}
 
 {{ cta_mod.render(s.cta) }}
 

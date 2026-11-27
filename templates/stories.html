@@ -4,10 +4,13 @@
 {% import "partials/breadcrumb.html" as bc_mod %}
 {% import "partials/confirm_box.html" as confirm_mod %}
 {% import "partials/voices_carousel.html" as voices_mod %}
-{% set crumb_items = [{'label': '홈', 'href': page_href('index')}, {'label': page.eyebrow, 'href': page_href(slug)}] %}
+{% import "partials/info_sidebar.html" as info_sidebar_mod %}
+{# 메뉴구조 개편 지시서(2026-11-27 오후) §A-3 — 경로에 "정보마당" 중간 단계 추가. #}
+{% set crumb_items = [{'label': '홈', 'href': page_href('index')}, {'label': '정보마당', 'href': page_href('info')}, {'label': page.eyebrow, 'href': page_href(slug)}] %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="static/sub.css">
+<link rel="stylesheet" href="static/toc.css">
 <script src="static/voices-carousel.js" defer></script>
 <script type="application/ld+json">{{ crumb_items | breadcrumb_ld(site.base_url) | tojson(indent=2) }}</script>
 {% set webpage_ld = {
@@ -25,6 +28,12 @@
 {% set s = page.sub %}
 {# 거래처 인터뷰 인용구 3건 — content/pages.json의 page.quotes가 원문. #}
 {{ hero_mod.render('tall', s.hero, bc_mod.render(crumb_items), date_modified, page.h1_question, show_facts=false) }}
+
+{# 메뉴구조 개편 지시서(2026-11-27 오후) §A-3 — 정보마당 공통 사이드 메뉴(caller
+   없음 — 거래처 이야기는 하위 페이지·소제목이 없는 단일 페이지). #}
+<div class="article-layout article-layout--wide sp-toc-wrap">
+{{ info_sidebar_mod.render(slug, info_nav) }}
+<div class="article-layout-main">
 
 {% set rhythm = namespace(i=-1) %}
 
@@ -62,6 +71,9 @@
   {% include "partials/_related_confirm.html" %}
 </section>
 {% endif %}
+
+</div>
+</div>
 
 {{ cta_mod.render(s.cta) }}
 {% endblock %}

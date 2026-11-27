@@ -4067,5 +4067,33 @@
     "code_text": "LG 기업유선·기업모바일 코드를 직접 운영합니다. 대리점과 판매점의 차이가 궁금하시면 아래에서 확인하실 수 있습니다.",
     "code_link_slug": "guide-dealer-vs-reseller",
     "code_link_text": "대리점과 판매점의 차이 보기 →"
+  },
+  "info": {
+    "template": "info_hub.html",
+    "title": "정보마당 — 창업 가이드·블로그·FAQ·용어 사전 | ENTER 유선전문총판",
+    "meta_description": "ENTER 유선전문총판의 정보마당입니다. 창업자 가이드 5챕터, 블로그, FAQ, 용어 사전, 거래처 이야기를 한 곳에서 확인하실 수 있습니다.",
+    "date_published": "2026-11-27",
+    "date_modified": "2026-11-27",
+    "eyebrow": "정보마당",
+    "h1": "정보마당",
+    "intro": "창업 가이드부터 FAQ, 용어 사전까지 — ENTER가 정리한 정보를 한 곳에서 확인하세요.",
+    "sub": {
+      "hero": {
+        "label": "정보마당",
+        "headline": ["궁금한 건", "여기 다 있습니다."],
+        "cta_primary": "정책표 받아보기",
+        "photo": "faq",
+        "photo_mood": "헤드셋을 쓴 CS 데스크, 흑백",
+        "sketch": "info"
+      },
+      "cta": {
+        "headline": [
+          "찾는 답이 없으면",
+          "직접 물어보세요."
+        ],
+        "cta_primary": "정책표 받아보기",
+        "cta_secondary": "전화 010-2222-4183"
+      }
+    }
   }
 }

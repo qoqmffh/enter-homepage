@@ -3,12 +3,17 @@
 {% import "partials/cta_band.html" as cta_mod with context %}
 {% import "partials/breadcrumb.html" as bc_mod %}
 {% import "partials/confirm_box.html" as confirm_mod %}
+{% import "partials/info_sidebar.html" as info_sidebar_mod %}
 {# 마케팅 마무리 지시서(2026-11-12) D — 서브페이지는 2단: 홈 › 페이지명.
-   block 안에서 set하면 다른 block에서 안 보이므로 템플릿 최상위에서 설정한다. #}
-{% set crumb_items = [{'label': '홈', 'href': page_href('index')}, {'label': page.eyebrow, 'href': page_href(slug)}] %}
+   block 안에서 set하면 다른 block에서 안 보이므로 템플릿 최상위에서 설정한다.
+   메뉴구조 개편 지시서(2026-11-27 오후) §A-3 — 이 템플릿은 products·settlement·
+   start·about·startup이 같이 쓰는데, 그중 startup(창업자 가이드 허브)만 "정보마당"
+   소속이라 중간 크럼·사이드 메뉴가 붙는다(나머지 4개는 그대로 2단 경로). #}
+{% set crumb_items = ([{'label': '홈', 'href': page_href('index')}, {'label': '정보마당', 'href': page_href('info')}, {'label': page.eyebrow, 'href': page_href(slug)}] if slug == 'startup' else [{'label': '홈', 'href': page_href('index')}, {'label': page.eyebrow, 'href': page_href(slug)}]) %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="static/sub.css">
+{% if slug == 'startup' %}<link rel="stylesheet" href="static/toc.css">{% endif %}
 <script type="application/ld+json">{{ crumb_items | breadcrumb_ld(site.base_url) | tojson(indent=2) }}</script>
 {# AI 검색 대응 지시서(2026-11-16) §3 — 사이트맵 lastmod와 같은 date_modified를 WebPage
    스키마에도 넣는다. #}
@@ -37,6 +42,15 @@
 {% set s = page.sub %}
 
 {{ hero_mod.render('tall', s.hero, bc_mod.render(crumb_items), date_modified, page.h1_question) }}
+
+{# 메뉴구조 개편 지시서(2026-11-27 오후) §A-3 — startup(창업자 가이드 허브)만 정보마당
+   공통 사이드 메뉴(caller 없음 — 허브 페이지 자체엔 더 보여줄 페이지 목차가 없고,
+   매크로가 is_active 그룹의 1~5장 목록은 알아서 그려준다). #}
+{% if slug == 'startup' %}
+<div class="article-layout article-layout--wide sp-toc-wrap">
+{{ info_sidebar_mod.render(slug, info_nav) }}
+<div class="article-layout-main">
+{% endif %}
 
 {# 색 온도 정리(2026-11-17) §3 — 히어로·어두운 섹션(검은 카드형 detail)·마지막 CTA는
    빼고, 그 사이 일반 섹션만 세면서 번갈아 크림/연한 주황을 칠한다. 페이지마다 detail이
@@ -232,6 +246,11 @@
 
   {% include "partials/_related_confirm.html" %}
 </section>
+
+{% if slug == 'startup' %}
+</div>
+</div>
+{% endif %}
 
 {{ cta_mod.render(s.cta) }}
 {% endblock %}

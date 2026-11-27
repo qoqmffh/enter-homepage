@@ -3,16 +3,18 @@
    static/site.css + static/home-ad.css(광고 무대 투명/흰 글자 처리)가 참조하므로 유지한다.
    메가 패널/미리보기 전용 스타일은 static/megamenu.css, 동작은 static/megamenu.js. #}
 {# Jinja2는 {% for %} 안의 {% set %}이 바깥 스코프로 안 새어나간다 — namespace()로 우회. #}
-{# 메뉴구조 개편(2026-11-27) §1 — header_menu 항목은 드롭다운 그룹(items 배열)과
-   바로가기 링크(type: "link", 자기 slug가 바로 페이지)가 섞여 있다. 바로가기는
-   자기 slug를, 그룹은 그룹 num을 active 키로 쓴다(인디케이터·초록 글자가
-   data-group 속성 하나로 그룹/링크를 가리지 않고 동작하게). #}
+{# 메뉴구조 개편 지시서(2026-11-27 오후) §A-1 — header_menu 항목은 바로가기 링크
+   (type: "link", 자기 slug가 바로 페이지)와 정보마당 허브(type: "infohub", items
+   배열)가 섞여 있다. 바로가기는 자기 slug를, 허브는 허브 자신의 slug("info")를
+   active 키로 쓴다(인디케이터·초록 글자가 data-group 속성 하나로 가리지 않고
+   동작하게). 허브 페이지 자신이거나 허브 하위 5페이지 중 하나면 "info"가 켜진다. #}
 {% set ns = namespace(active_group=none) %}
 {% for g in site.header_menu %}
   {% if g.type == 'link' %}
     {% if g.slug == slug %}{% set ns.active_group = g.slug %}{% endif %}
   {% else %}
-    {% for it in g['items'] %}{% if it.slug == slug %}{% set ns.active_group = g.num %}{% endif %}{% endfor %}
+    {% if g.slug == slug %}{% set ns.active_group = g.slug %}{% endif %}
+    {% for it in g['items'] %}{% if it.slug == slug %}{% set ns.active_group = g.slug %}{% endif %}{% endfor %}
   {% endif %}
 {% endfor %}
 <header class="hp-header" id="hpHeader">
@@ -41,10 +43,15 @@
       {% for g in site.header_menu %}
         {% if g.type == 'link' %}
         <a href="{{ page_href(g.slug) }}" class="hp-nav-group hp-nav-group--link{% if g.slug == slug %} active{% endif %}" data-group="{{ g.slug }}">
-          <span class="hp-nav-group-label">{{ g.label }}</span>
+          <span class="hp-nav-group-label">
+            {% if g.short_label %}<span class="hp-nav-label-full">{{ g.label }}</span><span class="hp-nav-label-short">{{ g.short_label }}</span>{% else %}{{ g.label }}{% endif %}
+          </span>
         </a>
         {% else %}
-        <button type="button" class="hp-nav-group{% if g.num == ns.active_group %} active{% endif %}" data-group="{{ g.num }}" aria-expanded="false" aria-controls="hpMegaPanel">
+        {# 정보마당만 다른 모양(§A-1) — 앞 5개 바로가기와 구분선으로 떨어뜨리고,
+           연한 배경 알약 + 책 모양 인라인 SVG 아이콘. 주황 채움 없음. #}
+        <button type="button" class="hp-nav-group hp-nav-group--infohub{% if g.slug == ns.active_group %} active{% endif %}" data-group="{{ g.slug }}" aria-expanded="false" aria-controls="hpMegaPanel">
+          <svg class="hp-nav-group-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7.5c-2.2-1.8-5-2.3-8-1.5v12.5c3-.8 5.8-.3 8 1.5 2.2-1.8 5-2.3 8-1.5V6c-3-.8-5.8-.3-8 1.5z"/><path d="M12 7.5v12.5"/></svg>
           <span class="hp-nav-group-label">{{ g.label }}</span>
         </button>
         {% endif %}
@@ -69,15 +76,15 @@
     <div class="hp-mega-inner">
       <div class="hp-mega-grid" id="hpMegaGrid">
         {% for g in site.header_menu %}
-        {% if g.type != 'link' %}
-        <div class="hp-mega-col" data-col="{{ g.num }}">
-          <div class="hp-mega-card">
+        {% if g.type == 'infohub' %}
+        <div class="hp-mega-col" data-col="{{ g.slug }}">
+          {# §A-1 "패널 왼쪽에 정보마당 전체 보기 →" — 카드 자체를 /info로 가는 링크로. #}
+          <a href="{{ page_href(g.slug) }}" class="hp-mega-card">
             <div class="hp-mega-card-text">
               <span class="hp-mega-card-label">{{ g.label }}</span>
-              <span class="hp-mega-card-en">{{ g.en }}</span>
+              <span class="hp-mega-card-en">정보마당 전체 보기 →</span>
             </div>
-            <span class="hp-mega-card-num" aria-hidden="true">{{ g.num }}</span>
-          </div>
+          </a>
           <div class="hp-mega-links">
             {% for it in g['items'] %}
             <a href="{{ page_href(it.slug) }}" class="hp-mega-link{% if it.slug == slug %} is-current{% endif %}" data-slug="{{ it.slug }}">
@@ -110,8 +117,8 @@
   <script type="application/json" id="hpMegaSummaries">{{ menu_summaries | tojson }}</script>
   <script type="application/json" id="hpMegaCtaDefault">{{ {"title": site.header_menu_cta.title, "sub": site.header_menu_cta.sub} | tojson }}</script>
 
-  {# 모바일(1023px 이하) 메뉴(2026-11-27 개편) — 맨 위에 바로가기 3개를 큰 버튼형으로,
-     그 아래 회사소개·정보마당 묶음을 기존 방식대로. #}
+  {# 모바일(1023px 이하) 메뉴(지시서 2026-11-27 오후 §A-1) — 맨 위에 바로가기 5개를
+     큰 버튼형으로, 그 아래 정보마당 묶음(제목이 /info 링크). #}
   <nav class="hp-nav-mobile">
     <div class="hp-nav-mobile-quicklinks">
       {% for g in site.header_menu %}
@@ -121,9 +128,9 @@
       {% endfor %}
     </div>
     {% for g in site.header_menu %}
-    {% if g.type != 'link' %}
+    {% if g.type == 'infohub' %}
     <div class="hp-nav-mobile-group">
-      <p class="hp-nav-mobile-group-title">{{ g.label }}</p>
+      <a href="{{ page_href(g.slug) }}" class="hp-nav-mobile-group-title-link"><p class="hp-nav-mobile-group-title">{{ g.label }} 전체 보기 →</p></a>
       {% for it in g['items'] %}
       <a href="{{ page_href(it.slug) }}"{% if it.slug == slug %} class="active"{% endif %}>{{ it.label }}</a>
       {% endfor %}

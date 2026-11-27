@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 {% import "partials/breadcrumb.html" as bc_mod %}
 {% import "partials/confirm_box.html" as confirm_mod %}
+{% import "partials/info_sidebar.html" as info_sidebar_mod %}
 {% set author = (site.authors | selectattr('id', 'equalto', page.author) | first) if page.author else none %}
-{% set crumb_items = [{'label': '홈', 'href': page_href('index')}, {'label': '블로그', 'href': page_href('blog')}, {'label': page.h1, 'href': page_href(slug)}] %}
+{# 메뉴구조 개편 지시서(2026-11-27 오후) §A-3 — 경로에 "정보마당" 중간 단계 추가. #}
+{% set crumb_items = [{'label': '홈', 'href': page_href('index')}, {'label': '정보마당', 'href': page_href('info')}, {'label': '블로그', 'href': page_href('blog')}, {'label': page.h1, 'href': page_href(slug)}] %}
 {% block extra_head %}
 <link rel="stylesheet" href="{{ bundle_href('blogpost', 'css') }}">
 <link rel="stylesheet" href="static/toc.css">
@@ -47,30 +49,25 @@
    이하 타이포·표·박스 클래스를 공유한다(static/article.css). #}
 <div class="post-progress" data-post-progress aria-hidden="true"></div>
 
-{# 메뉴구조 개편 지시서(2026-11-27) §3 — 왼쪽 목차(1200px 이상 sticky, 1199 이하는
-   접이식). 이 글의 소제목(h2) + 관련 글 3개(page.related, 이미 계산돼 있는 값 재사용). #}
+{# 메뉴구조 개편 지시서(2026-11-27 오후) §A-3 — 왼쪽 목차가 정보마당 공통 사이드
+   메뉴 안으로 합쳐졌다. 이 글의 소제목(h2) + 관련 글 3개를 caller()로 넘긴다. #}
 <div class="article-layout">
-<aside class="article-toc">
-  <details class="toc-collapse" open>
-    <summary class="toc-summary">목차 <span aria-hidden="true">▾</span></summary>
-    <div class="toc-body">
-      <nav aria-label="이 글의 목차" data-toc-scrollspy>
-        <ul>
-          {% for s in page.sections %}<li><a href="#{{ s.heading | heading_slug }}">{{ s.heading }}</a></li>{% endfor %}
-          {% if page.checklist_items %}<li><a href="#{{ page.checklist_heading | heading_slug }}">{{ page.checklist_heading }}</a></li>{% endif %}
-        </ul>
-      </nav>
-      {% if page.related %}
-      <nav aria-label="관련 글">
-        <p class="toc-group-label">관련 글</p>
-        <ul>
-          {% for r in page.related %}<li><a href="{{ page_href(r.slug) }}">{{ r.title }}</a></li>{% endfor %}
-        </ul>
-      </nav>
-      {% endif %}
-    </div>
-  </details>
-</aside>
+{% call info_sidebar_mod.render(slug, info_nav) %}
+<nav aria-label="이 글의 목차" data-toc-scrollspy>
+  <ul>
+    {% for s in page.sections %}<li><a href="#{{ s.heading | heading_slug }}">{{ s.heading }}</a></li>{% endfor %}
+    {% if page.checklist_items %}<li><a href="#{{ page.checklist_heading | heading_slug }}">{{ page.checklist_heading }}</a></li>{% endif %}
+  </ul>
+</nav>
+{% if page.related %}
+<nav aria-label="관련 글">
+  <p class="toc-group-label">관련 글</p>
+  <ul>
+    {% for r in page.related %}<li><a href="{{ page_href(r.slug) }}">{{ r.title }}</a></li>{% endfor %}
+  </ul>
+</nav>
+{% endif %}
+{% endcall %}
 <div class="article-layout-main">
 <section class="post-head post-block">
   <div class="article-wrap">

@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 {% import "partials/breadcrumb.html" as bc_mod %}
 {% import "partials/confirm_box.html" as confirm_mod %}
+{% import "partials/info_sidebar.html" as info_sidebar_mod %}
 {% set author = (site.authors | selectattr('id', 'equalto', page.author) | first) if page.author else none %}
-{% set crumb_items = [{'label': '홈', 'href': page_href('index')}, {'label': '창업자 가이드', 'href': page_href('startup')}, {'label': page.h1, 'href': page_href(slug)}] %}
+{# 메뉴구조 개편 지시서(2026-11-27 오후) §A-3 — 경로에 "정보마당" 중간 단계 추가. #}
+{% set crumb_items = [{'label': '홈', 'href': page_href('index')}, {'label': '정보마당', 'href': page_href('info')}, {'label': '창업자 가이드', 'href': page_href('startup')}, {'label': page.h1, 'href': page_href(slug)}] %}
 {% block extra_head %}
 <link rel="stylesheet" href="static/article.css">
 <link rel="stylesheet" href="static/toc.css">
@@ -25,35 +27,21 @@
 <script type="application/ld+json">{{ article_ld | compact | tojson(indent=2) }}</script>
 {% endblock %}
 {% block content %}
-{# 메뉴구조 개편 지시서(2026-11-27) §3 — 왼쪽 목차(1200px 이상 sticky, 1199 이하는
-   접이식 <details>). 1~5장 목록은 toc_chapters(build.py가 startup 허브에서 그대로
-   복사), 현재 장의 소제목은 본문과 같은 조건·같은 heading_slug로 id를 맞춘다. #}
+{# 메뉴구조 개편 지시서(2026-11-27 오후) §A-3 — 왼쪽 목차가 정보마당 공통 사이드
+   메뉴 안으로 합쳐졌다. 1~5장 목록은 info_nav(build.py, startup 영역의 chapters)가
+   매크로 안에서 그려주고, 여기선 "이 장의 소제목"만 caller()로 넘긴다. #}
 <div class="article-layout">
-<aside class="article-toc">
-  <details class="toc-collapse" open>
-    <summary class="toc-summary">목차 <span aria-hidden="true">▾</span></summary>
-    <div class="toc-body">
-      <nav aria-label="목차" data-toc-chapters>
-        <p class="toc-group-label">창업자 가이드</p>
-        <ul>
-          {% for ch in page.toc_chapters %}
-          <li><a href="{{ page_href(ch.slug) }}"{% if ch.slug == slug %} class="is-current"{% endif %}>{{ loop.index }}장 · {{ ch.title }}</a></li>
-          {% endfor %}
-        </ul>
-      </nav>
-      <nav aria-label="이 장의 소제목" data-toc-scrollspy>
-        <p class="toc-group-label">이 장</p>
-        <ul>
-          {% if page.concept_heading and page.concept_body %}<li><a href="#{{ page.concept_heading | heading_slug }}">{{ page.concept_heading }}</a></li>{% endif %}
-          {% if page.doc_section_title and page.docs %}<li><a href="#{{ page.doc_section_title | heading_slug }}">{{ page.doc_section_title }}</a></li>{% endif %}
-          {% if page.checklist_section_heading and page.checklist %}<li><a href="#{{ page.checklist_section_heading | heading_slug }}">{{ page.checklist_section_heading }}</a></li>{% endif %}
-          {% if page.mistake_heading and page.mistake_body %}<li><a href="#{{ page.mistake_heading | heading_slug }}">{{ page.mistake_heading }}</a></li>{% endif %}
-          {% if page.checkpoint_heading and page.checkpoint_items %}<li><a href="#{{ page.checkpoint_heading | heading_slug }}">{{ page.checkpoint_heading }}</a></li>{% endif %}
-        </ul>
-      </nav>
-    </div>
-  </details>
-</aside>
+{% call info_sidebar_mod.render(slug, info_nav) %}
+<nav aria-label="이 장의 소제목" data-toc-scrollspy>
+  <ul>
+    {% if page.concept_heading and page.concept_body %}<li><a href="#{{ page.concept_heading | heading_slug }}">{{ page.concept_heading }}</a></li>{% endif %}
+    {% if page.doc_section_title and page.docs %}<li><a href="#{{ page.doc_section_title | heading_slug }}">{{ page.doc_section_title }}</a></li>{% endif %}
+    {% if page.checklist_section_heading and page.checklist %}<li><a href="#{{ page.checklist_section_heading | heading_slug }}">{{ page.checklist_section_heading }}</a></li>{% endif %}
+    {% if page.mistake_heading and page.mistake_body %}<li><a href="#{{ page.mistake_heading | heading_slug }}">{{ page.mistake_heading }}</a></li>{% endif %}
+    {% if page.checkpoint_heading and page.checkpoint_items %}<li><a href="#{{ page.checkpoint_heading | heading_slug }}">{{ page.checkpoint_heading }}</a></li>{% endif %}
+  </ul>
+</nav>
+{% endcall %}
 <div class="article-layout-main">
 <section class="post-head post-block">
   <div class="article-wrap">
